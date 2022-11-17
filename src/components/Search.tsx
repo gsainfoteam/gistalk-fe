@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { theme } from "../style/theme";
 
 import SearchCard from "./SearchCard";
-import Tempicon from "./TempIcon";
+import TempIcon from "./TempIcon";
 import LogoSrc from "../assets/TEMPLOGO_GISTALK.png";
 import Search_Svg from "../assets/svgs/search_black.svg";
 import Filter_Svg from "../assets/svgs/tune_black.svg";
@@ -27,6 +27,7 @@ interface IProps {
 
 /** (임시로 쓰일진 모르겠지만 어쨌든) 각 카드에서 받아와야 하는 오브젝트 형식 */
 interface IItem {
+  id:number;
   subjectCode: string;
   professorName: string;
   subjectName: string;
@@ -52,7 +53,6 @@ const SearchInput = styled.input<{ color: string }>`
   height: 45px;
   padding-left: 15px;
   font-family: NSRegular;
-  font-size: 17px;
   border: none;
   text-align: left;
   display: block;
@@ -317,7 +317,7 @@ export default function Search() {
         key={item.id}
         onClick={() => switchDepartmentOption(item.fullKorean)}
       >
-        <Tempicon text={item.subjectCode} color={iconColor}></Tempicon>
+        <TempIcon text={item.subjectCode} color={iconColor}></TempIcon>
         <DepartmentGridItemName color={textColor}>
           {item.korean}
         </DepartmentGridItemName>
@@ -328,6 +328,7 @@ export default function Search() {
   /** 임시 아이템 리스트 */
   const TempSearchList: IItem[] = [
     {
+      id:1,
       subjectCode: "GS1001-01",
       professorName: "황치옥",
       subjectName: "미적분학과 응용",
@@ -335,6 +336,7 @@ export default function Search() {
     },
 
     {
+      id:2,
       subjectCode: "BS2201-01",
       professorName: "엄수현",
       subjectName: "생명과학의 정량적 이해",
@@ -342,6 +344,7 @@ export default function Search() {
     },
 
     {
+      id:3,
       subjectCode: "CH4205-01",
       professorName: "서지원",
       subjectName: "생유기화학과 바이오의약품",
@@ -439,7 +442,7 @@ export default function Search() {
             </div>
             <div>
               <SortSelect color={theme.secondaryText} bg={theme.inputBg}>
-                {sortList.map(item => <option>{item.content}</option>)}
+                {sortList.map(item => <option key={item.id}>{item.content}</option>)}
               </SortSelect>
             </div>
           </SearchDrop>
@@ -449,6 +452,7 @@ export default function Search() {
       <ItemList>
         {TempSearchList.map((item) => (
           <SearchCard
+              key={item.id}
             subjectCode={item.subjectCode}
             professorName={item.professorName}
             subjectName={item.subjectName}
@@ -456,7 +460,6 @@ export default function Search() {
           ></SearchCard>
         ))}
       </ItemList>
-
       {/* header, footer 어떻게 할지 논의 필요할듯? */}
     </>
   );
