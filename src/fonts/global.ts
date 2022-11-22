@@ -16,8 +16,4 @@ export default createGlobalStyle`
         font-family: "NSMedium";
         src: url(${NSMedium}) format('woff2');
     }
-
-    *{
-        font-family:NSRegular;
-    }
 `;
