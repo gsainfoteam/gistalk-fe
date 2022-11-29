@@ -102,7 +102,7 @@ const SearchOptionOpenedWrap = styled.div`
 const SearchDrop = styled.div<{
   color: string;
   afterColor: string;
-  option: string;
+  option: number;
 }>`
   width: 78vw;
   margin: 18px 4vw 0 4vw;
@@ -129,7 +129,7 @@ const SearchDrop = styled.div<{
     span {
       margin-right: 5px;
       color: ${(props) => {
-        if (props.option === "") return props.color;
+        if (props.option === 0) return props.color;
         else return props.afterColor;
       }};
     }
@@ -269,7 +269,9 @@ const sortList: { id:number, content:string }[] = [
 export default function Search() {
   const [optionOpen, setOptionOpen] = useState(false);
   const [departmentOpen, setDepartmentOpen] = useState(false);
-  const [departmentOption, setDepartmentOption] = useState<string>("");
+
+  /** 담는 형식은 [[...fullKorean],[...korean]], 여기에 현재 필터 분과 정보를 저장함. */
+  const [departmentOption, setDepartmentOption] = useState<[string[],string[]]>([[],[]]);
 
   /** 검색 옵션-전공에서 분과 선택 시 보이는 부분(선택하세요 / 전공(부전공) 이름) */
   const [displayedDepartmentOption, setDisplayedDepartmentOption] =
@@ -277,11 +279,21 @@ export default function Search() {
 
   /** 검색 옵션에서 분과를 선택하면 '선택하세요'가 해당 분과 이름으로 바뀌게 함 */
   useEffect(() => {
-    if (departmentOption === "") {
+    // departmentOption[0]의 array 안에 아무것도 없으면 '선택하세요' 출력
+    if (departmentOption[0].length === 0) {
       setDisplayedDepartmentOption("선택하세요");
-    } else {
-      setDisplayedDepartmentOption(departmentOption);
     }
+    else if (departmentOption[0].length === 1){
+      //어차피 array 길이가 하나뿐이므로 fullKorean의 [0], 그리고 그 안의 내용물 [0]을 지칭함
+      setDisplayedDepartmentOption(departmentOption[0][0]);
+    }
+    else if (departmentOption[0].length === 2){
+      setDisplayedDepartmentOption(`${departmentOption[1][0]}, ${departmentOption[1][1]}`);
+    }
+    else {
+      setDisplayedDepartmentOption(`${departmentOption[1][0]} 외 ${departmentOption[0].length - 1}개`);
+    }
+
   }, [departmentOption]);
 
   /** 검색 옵션 열기 */
@@ -293,17 +305,20 @@ export default function Search() {
   /** 검색 옵션-분과 열기 */
   const toggleDepartmentOpen = () => {
     setDepartmentOpen(!departmentOpen);
-    if (!departmentOpen) {
-      //열면 departmentOption 초기화
-      setDepartmentOption("");
-    }
   };
 
   /** 검색 옵션 State를 바꿔주는 함수 */
-  const switchDepartmentOption = (item: string) => {
-    setDepartmentOption(item);
-    setDepartmentOpen(false); //검색 옵션-분과 선택 후 해당 탭 닫음
-    console.log(item);
+  const switchDepartmentOption = (fullKorean: string, korean:string) => {
+    const findItem = (i:string) => {
+      return departmentOption[0].find(j => j === i) !== undefined;
+    }
+
+    if(findItem(fullKorean)){ // 이미 있으면
+      setDepartmentOption([departmentOption[0].filter(i => i !== fullKorean), departmentOption[1].filter(i => i !== korean)])
+    } else { // 없으면
+      setDepartmentOption([[...departmentOption[0], fullKorean],[...departmentOption[1], korean]]);
+    }
+    console.log(departmentOption)
   };
 
   /** 분과 선택하는 아이콘 + 밑에 한글까지 감싸는 Wrap (이걸 DepartmentGrid가 감싸는 구조) */
@@ -312,12 +327,18 @@ export default function Search() {
     iconColor,
     textColor,
   }: IProps) {
+
+    /** departmentOption[0] 안에 item.fullKorean이 있는지 검사하는 함수 */
+    const findItem = (i:string) => {
+      return departmentOption[0].find(j => j === i) !== undefined;
+    }
+
     return (
       <DepartmentGridItemWrap
         key={item.id}
-        onClick={() => switchDepartmentOption(item.fullKorean)}
+        onClick={() => switchDepartmentOption(item.fullKorean, item.korean)}
       >
-        <TempIcon text={item.subjectCode} color={iconColor}></TempIcon>
+        <TempIcon text={item.subjectCode} color={iconColor} isChecked={findItem(item.fullKorean)}></TempIcon>
         <DepartmentGridItemName color={textColor}>
           {item.korean}
         </DepartmentGridItemName>
@@ -374,7 +395,7 @@ export default function Search() {
           <SearchDrop
             color={theme.secondaryText}
             afterColor={theme.primaryText}
-            option={departmentOption}
+            option={departmentOption[0].length}
           >
             <div>
               <SchoolSvg size={26} src={School_Svg}></SchoolSvg>
@@ -434,7 +455,7 @@ export default function Search() {
           <SearchDrop
             color={theme.secondaryText}
             afterColor={theme.secondaryText}
-            option={departmentOption}
+            option={0}
           >
             <div>
               <SchoolSvg size={26} src={Sort_Svg}></SchoolSvg>
