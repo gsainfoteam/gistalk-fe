@@ -32,12 +32,6 @@ const data = {
     ],
 };
 
-const option = {
-    scales: {
-        animate:false
-    }
-}
-
 export default function Hexagon() {
     return <Radar data={data}></Radar>
 }
