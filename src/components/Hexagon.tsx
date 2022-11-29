@@ -1,37 +1,53 @@
-import {
-    Chart as ChartJS,
-    RadialLinearScale,
-    PointElement,
-    LineElement,
-    Filler,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-import { Radar } from 'react-chartjs-2';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 
-ChartJS.register(
-    RadialLinearScale,
-    PointElement,
-    LineElement,
-    Filler,
-    Tooltip,
-    Legend
-);
-
-const data = {
-    labels: ['수업 난이도', '유익함', '성적 만족도', '과제량', '재미/흥미', '강의 진행력'],
-    datasets: [
-        {
-            label: 'Statistics',
-            data: [2.4, 1.7, 2.5, 3.4, 1.8, 4.1],
-            backgroundColor: 'rgba(255, 101, 101, 0.7)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 0,
-            pointRadius: 0,
-        },
-    ],
-};
+const data = [
+    {
+        subject: 'Math',
+        A: 120,
+        B: 110,
+        fullMark: 150,
+    },
+    {
+        subject: 'Chinese',
+        A: 98,
+        B: 130,
+        fullMark: 150,
+    },
+    {
+        subject: 'English',
+        A: 86,
+        B: 130,
+        fullMark: 150,
+    },
+    {
+        subject: 'Geography',
+        A: 99,
+        B: 100,
+        fullMark: 150,
+    },
+    {
+        subject: 'Physics',
+        A: 85,
+        B: 90,
+        fullMark: 150,
+    },
+    {
+        subject: 'History',
+        A: 65,
+        B: 85,
+        fullMark: 150,
+    },
+];
 
 export default function Hexagon() {
-    return <Radar data={data}></Radar>
+    return (
+        <ResponsiveContainer width="100%" height={500}>
+            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="subject" />
+                <PolarRadiusAxis />
+                <Radar name="Mike" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+            </RadarChart>
+        </ResponsiveContainer>
+    );
 }
