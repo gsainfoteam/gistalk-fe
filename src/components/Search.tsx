@@ -10,29 +10,7 @@ import Filter_Svg from "../assets/svgs/tune_black.svg";
 import Sort_Svg from "../assets/svgs/sort_black.svg";
 import School_Svg from "../assets/svgs/school_black.svg";
 import ArrowL_Svg from "../assets/svgs/arrowL_black.svg";
-
-interface IDepartment {
-  subjectCode: string;
-  korean: string;
-  fullKorean: string;
-  id: number;
-}
-
-/** DepartmentGridItemWrapComponent를 위한 프롭스 타입 정의 인터페이스 */
-interface IProps {
-  item: IDepartment;
-  iconColor: string;
-  textColor: string;
-}
-
-/** (임시로 쓰일진 모르겠지만 어쨌든) 각 카드에서 받아와야 하는 오브젝트 형식 */
-interface IItem {
-  id:number;
-  subjectCode: string;
-  professorName: string;
-  subjectName: string;
-  subjectScore: string;
-}
+import {IDepartment, IDepartmentGridItemWrapComponent, ISearchCard} from "../Interfaces/interfaces";
 
 const LogoImg = styled.img`
   width: 300px;
@@ -326,7 +304,7 @@ export default function Search() {
     item,
     iconColor,
     textColor,
-  }: IProps) {
+  }: IDepartmentGridItemWrapComponent) {
 
     /** departmentOption[0] 안에 item.fullKorean이 있는지 검사하는 함수 */
     const findItem = (i:string) => {
@@ -347,7 +325,7 @@ export default function Search() {
   }
 
   /** 임시 아이템 리스트 */
-  const TempSearchList: IItem[] = [
+  const TempSearchList: ISearchCard[] = [
     {
       id:1,
       subjectCode: "GS1001-01",
@@ -378,14 +356,14 @@ export default function Search() {
       <SearchWrap>
         <SearchInput
           placeholder="강의명/교수명으로 검색"
-          color={theme.primaryText}
+          color={theme.colors.primaryText}
         />
         <SearchBtnWrap>
           <SearchSvg size={30} src={Search_Svg} />
         </SearchBtnWrap>
       </SearchWrap>
 
-      <OptionBtnWrap color={theme.secondaryText} onClick={toggleOptionOpen}>
+      <OptionBtnWrap color={theme.colors.secondaryText} onClick={toggleOptionOpen}>
         <p>검색 옵션</p>
         <FilterSvg size={20} src={Filter_Svg}></FilterSvg>
       </OptionBtnWrap>
@@ -393,8 +371,8 @@ export default function Search() {
       {optionOpen && (
         <SearchOptionOpenedWrap>
           <SearchDrop
-            color={theme.secondaryText}
-            afterColor={theme.primaryText}
+            color={theme.colors.secondaryText}
+            afterColor={theme.colors.primaryText}
             option={departmentOption[0].length}
           >
             <div>
@@ -412,7 +390,7 @@ export default function Search() {
           </SearchDrop>
           {departmentOpen && (
             <DepartmentListWrap>
-              <DepartmentListTitle color={theme.secondaryText}>
+              <DepartmentListTitle color={theme.colors.secondaryText}>
                 · 전공 ·
               </DepartmentListTitle>
               <DepartmentGrid>
@@ -420,7 +398,7 @@ export default function Search() {
                   <DepartmentGridItemWrapComponent
                     item={item}
                     iconColor={"#FFCF23"}
-                    textColor={theme.secondaryText}
+                    textColor={theme.colors.secondaryText}
                     key={item.id}
                   ></DepartmentGridItemWrapComponent>
                 ))}
@@ -433,11 +411,11 @@ export default function Search() {
                     subjectCode: "UC",
                   }}
                   iconColor={"#E0E0E0"}
-                  textColor={theme.secondaryText}
+                  textColor={theme.colors.secondaryText}
                 ></DepartmentGridItemWrapComponent>
               </DepartmentGrid>
 
-              <DepartmentListTitle color={theme.secondaryText}>
+              <DepartmentListTitle color={theme.colors.secondaryText}>
                 · 부전공 ·
               </DepartmentListTitle>
               <DepartmentGrid>
@@ -445,7 +423,7 @@ export default function Search() {
                   <DepartmentGridItemWrapComponent
                     item={item}
                     iconColor={"#8CBAFF"}
-                    textColor={theme.secondaryText}
+                    textColor={theme.colors.secondaryText}
                     key={item.id}
                   ></DepartmentGridItemWrapComponent>
                 ))}
@@ -453,8 +431,8 @@ export default function Search() {
             </DepartmentListWrap>
           )}
           <SearchDrop
-            color={theme.secondaryText}
-            afterColor={theme.secondaryText}
+            color={theme.colors.secondaryText}
+            afterColor={theme.colors.secondaryText}
             option={0}
           >
             <div>
@@ -462,7 +440,7 @@ export default function Search() {
               <span>정렬</span>
             </div>
             <div>
-              <SortSelect color={theme.secondaryText} bg={theme.inputBg}>
+              <SortSelect color={theme.colors.secondaryText} bg={theme.colors.inputBg}>
                 {sortList.map(item => <option key={item.id}>{item.content}</option>)}
               </SortSelect>
             </div>

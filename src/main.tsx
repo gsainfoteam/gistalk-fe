@@ -7,7 +7,7 @@ import { theme } from "./style/theme";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Search from "../src/components/Search";
-import Hexagon from "./components/Hexagon";
+import ClassEvaluation from "./components/ClassEvaluation";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <GlobalStyle />
         <Routes>
           <Route path="/" element={<Search />} />
-          <Route path="/hexTemp" element={<Hexagon />} />
+          <Route path="/ClassEvaluation" element={<ClassEvaluation />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>

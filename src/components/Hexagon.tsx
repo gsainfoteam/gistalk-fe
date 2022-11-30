@@ -1,6 +1,13 @@
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 
-const data = [
+interface IProps {
+    subject:string;
+    A:number;
+    B:number;
+    fullMark:number;
+}
+
+const data : IProps[] = [
     {
         subject: 'Math',
         A: 120,

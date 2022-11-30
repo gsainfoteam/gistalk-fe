@@ -78,15 +78,15 @@ export default function SearchCard({
 
   return (
     <SearchCardWrap>
-      <TempIcon text={Division} color={"#FFCF23"}></TempIcon>
-      <CardContentWrap color={theme.primaryText}>
+      <TempIcon text={Division} color={"#FFCF23"} isChecked={false}></TempIcon>
+      <CardContentWrap color={theme.colors.primaryText}>
         <p>
           {subjectCode}&nbsp;&nbsp;|&nbsp;&nbsp; {/* 과목 코드 */}
           <span>{professorName}</span> {/* 교수 이름 */}
         </p>
         <div>{subjectName}</div> {/* 과목 이름 */}
       </CardContentWrap>
-      <AverageScoreWrap color={theme.primaryText}>
+      <AverageScoreWrap color={theme.colors.primaryText}>
         <p>평균점수</p>
         <div>
           {subjectScore}
