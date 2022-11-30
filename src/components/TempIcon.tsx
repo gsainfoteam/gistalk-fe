@@ -1,18 +1,12 @@
 import styled from "styled-components";
 import { theme } from "../style/theme";
-import Checked_Svg from "../assets/svgs/done_black.svg";
+import Checked_Svg from "../assets/svgs/done.svg";
 
 interface IProps {
   text: string;
   color: string;
   isChecked:boolean;
 }
-
-export const SvgIcon = styled.img<{ size: number }>`
-  height: ${(props) => props.size}px;
-  width: ${(props) => props.size}px;
-`;
-
 
 const IconFrame = styled.div<{ color: string }>`
   width: 50px;
@@ -39,7 +33,7 @@ const CheckMark = styled.div`
   top:0; right:0;
 `
 
-const CheckedSvg = styled(SvgIcon)``
+const CheckedSvg = styled(theme.universalComponent.SvgIcon)``
 
 
 /** 임시 분과 아이콘 (text는 아이콘 안에 들어갈 텍스트 두 글자, color은 아이콘 색깔) */

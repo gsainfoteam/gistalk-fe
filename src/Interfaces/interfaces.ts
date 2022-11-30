@@ -23,3 +23,7 @@ export interface ISearchCard {
     subjectScore: string;
 }
 
+export interface IHeader {
+    text:string
+}
+

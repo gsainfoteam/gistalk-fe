@@ -1,60 +1,70 @@
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
+import {Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer} from 'recharts';
+import styled from "styled-components";
+import {theme} from "../style/theme";
 
 interface IProps {
-    subject:string;
-    A:number;
-    B:number;
-    fullMark:number;
+    subject: string;
+    A: number;
+    fullMark: number;
 }
 
-const data : IProps[] = [
+const data: IProps[] = [
     {
-        subject: 'Math',
-        A: 120,
-        B: 110,
-        fullMark: 150,
+        subject: '수업 난이도',
+        A: 1.0,
+        fullMark: 5.0,
     },
     {
-        subject: 'Chinese',
-        A: 98,
-        B: 130,
-        fullMark: 150,
+        subject: '유익함',
+        A: 2.0,
+        fullMark: 5.0,
     },
     {
-        subject: 'English',
-        A: 86,
-        B: 130,
-        fullMark: 150,
+        subject: '성적 만족도',
+        A: 3.5,
+        fullMark: 5.0,
     },
     {
-        subject: 'Geography',
-        A: 99,
-        B: 100,
-        fullMark: 150,
+        subject: '과제량',
+        A: 4.0,
+        fullMark: 5.0,
     },
     {
-        subject: 'Physics',
-        A: 85,
-        B: 90,
-        fullMark: 150,
+        subject: '재미/흥미',
+        A: 5.0,
+        fullMark: 5.0,
     },
     {
-        subject: 'History',
-        A: 65,
-        B: 85,
-        fullMark: 150,
+        subject: '강의력',
+        A: 2.5,
+        fullMark: 5.0,
     },
 ];
 
+const formattedData = data.map(i => {
+    return {
+        subject: i.subject + ' (' + i.A.toString() + ')',
+        A: i.A,
+        fullMark: i.fullMark
+    }
+})
+
+const Wrap = styled.div`
+  font-family: NSRegular;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+`
+
 export default function Hexagon() {
     return (
-        <ResponsiveContainer width="100%" height={500}>
-            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="subject" />
-                <PolarRadiusAxis />
-                <Radar name="Mike" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+        <Wrap>
+            <RadarChart width={360} height={350} cx="50%" cy="50%" outerRadius="50%" data={formattedData}>
+                <PolarGrid polarRadius={[28.34, 56.67, 85]}/>
+                <PolarAngleAxis dataKey="subject" tick={{fill: theme.colors.secondaryText, fontSize: 14}}/>
+                <PolarRadiusAxis domain={[0, 5]}/>
+                <Radar name="Standard" dataKey="A" fill={theme.colors.primary} fillOpacity={0.8}/>
             </RadarChart>
-        </ResponsiveContainer>
+        </Wrap>
     );
 }
