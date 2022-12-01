@@ -11,6 +11,7 @@ import Sort_Svg from "../assets/svgs/sort.svg";
 import School_Svg from "../assets/svgs/school.svg";
 import ArrowL_Svg from "../assets/svgs/arrowL.svg";
 import {IDepartment, IDepartmentGridItemWrapComponent, ISearchCard} from "../Interfaces/interfaces";
+import {tempdb} from "../tempdb/tempdb";
 
 const LogoImg = styled.img`
   width: 300px;
@@ -113,12 +114,8 @@ const SearchDrop = styled.div<{
   }
 `;
 
-/** '검색 옵션' 표시되어 있는 버튼 */
-const OptionBtnWrap = styled.div<{ color: string }>`
+const OptionBtnWrap = styled(theme.universalComponent.DivTextContainer)`
   display: flex;
-  color: ${(props) => props.color};
-  font-size: 14px;
-
   p {
     margin-right: 5px;
   }
@@ -128,18 +125,17 @@ const OptionBtnWrap = styled.div<{ color: string }>`
   display: flex;
   justify-content: right;
   font-family: NSRegular;
-`;
+`
+
 /** 분과 선택 옵션 부분을 모두 감싸는 div. 검색 옵션-분과를 열었을 때 이것을 보여주게 됨. */
 const DepartmentListWrap = styled.div``;
 
 /** ·전공· ·부전공· 써져있는 제목부분 */
-const DepartmentListTitle = styled.div<{ color: string }>`
-  color: ${(props) => props.color};
+const DepartmentListTitle = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
-  font-size: 16px;
   text-align: center;
   margin: 7px 0;
-`;
+`
 
 /** 분과 아이콘이 그리드 형태로 들어갈 수 있게 해주는 div */
 const DepartmentGrid = styled.div`
@@ -156,13 +152,11 @@ const DepartmentGridItemWrap = styled.div`
 `;
 
 /** 검색 옵션에서 분과 선택하는 아이콘 밑에 있는 분과 이름 */
-const DepartmentGridItemName = styled.div<{ color: string }>`
-  color: ${(props) => props.color};
+const DepartmentGridItemName = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSMedium;
-  font-size: 15px;
   text-align: center;
   margin-top: 5px;
-`;
+`
 
 const SortSelect = styled.select<{ color: string; bg: string; }>`
   border: none;
@@ -315,7 +309,7 @@ export default function Search() {
                 onClick={() => switchDepartmentOption(item.fullKorean, item.korean)}
             >
                 <TempIcon text={item.subjectCode} color={iconColor} isChecked={findItem(item.fullKorean)}></TempIcon>
-                <DepartmentGridItemName color={textColor}>
+                <DepartmentGridItemName color={textColor} fontSize={15}>
                     {item.korean}
                 </DepartmentGridItemName>
             </DepartmentGridItemWrap>
@@ -323,31 +317,21 @@ export default function Search() {
     }
 
     /** 임시 아이템 리스트 */
-    const TempSearchList: ISearchCard[] = [
-        {
-            id: 1,
-            subjectCode: "GS1001-01",
-            professorName: "황치옥",
-            subjectName: "미적분학과 응용",
-            subjectScore: "4.5",
-        },
+    const TempSearchList:ISearchCard[] = tempdb.map(i => {
+        /** 평균 점수 계산 */
+        let avgScore:number = 0
+        i.hexData.map(j => avgScore += j.score)
+        avgScore /= 6
+        let avgScoreStr:string = (Math.round((avgScore + Number.EPSILON) * 100) / 100).toFixed(1) //소수점 둘째자리에서 반올림, 소수점 고정
 
-        {
-            id: 2,
-            subjectCode: "BS2201-01",
-            professorName: "엄수현",
-            subjectName: "생명과학의 정량적 이해",
-            subjectScore: "4.5",
-        },
-
-        {
-            id: 3,
-            subjectCode: "CH4205-01",
-            professorName: "서지원",
-            subjectName: "생유기화학과 바이오의약품",
-            subjectScore: "4.5",
-        },
-    ];
+        return {
+            id:i.id,
+            subjectCode:i.subjectCode,
+            professorName:i.professorName,
+            subjectName:i.subjectName,
+            subjectScore:avgScoreStr,
+        }
+    })
 
     return (
         <>
@@ -361,7 +345,7 @@ export default function Search() {
                 </SearchBtnWrap>
             </SearchWrap>
 
-            <OptionBtnWrap color={theme.colors.secondaryText} onClick={toggleOptionOpen}>
+            <OptionBtnWrap color={theme.colors.secondaryText} fontSize={14} onClick={toggleOptionOpen}>
                 <p>검색 옵션</p>
                 <FilterSvg size={20} src={Filter_Svg}></FilterSvg>
             </OptionBtnWrap>
@@ -388,7 +372,7 @@ export default function Search() {
                     </SearchDrop>
                     {departmentOpen && (
                         <DepartmentListWrap>
-                            <DepartmentListTitle color={theme.colors.secondaryText}>
+                            <DepartmentListTitle color={theme.colors.secondaryText} fontSize={16}>
                                 · 전공 ·
                             </DepartmentListTitle>
                             <DepartmentGrid>
@@ -413,7 +397,7 @@ export default function Search() {
                                 ></DepartmentGridItemWrapComponent>
                             </DepartmentGrid>
 
-                            <DepartmentListTitle color={theme.colors.secondaryText}>
+                            <DepartmentListTitle color={theme.colors.secondaryText} fontSize={16}>
                                 · 부전공 ·
                             </DepartmentListTitle>
                             <DepartmentGrid>
