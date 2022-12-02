@@ -1,43 +1,41 @@
-import {
-    Chart as ChartJS,
-    RadialLinearScale,
-    PointElement,
-    LineElement,
-    Filler,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-import { Radar } from 'react-chartjs-2';
+import {Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer} from 'recharts';
+import styled from "styled-components";
+import {theme} from "../style/theme";
+import {IHexData} from "../Interfaces/interfaces";
 
-ChartJS.register(
-    RadialLinearScale,
-    PointElement,
-    LineElement,
-    Filler,
-    Tooltip,
-    Legend
-);
-
-const data = {
-    labels: ['수업 난이도', '유익함', '성적 만족도', '과제량', '재미/흥미', '강의 진행력'],
-    datasets: [
-        {
-            label: 'Statistics',
-            data: [2.4, 1.7, 2.5, 3.4, 1.8, 4.1],
-            backgroundColor: 'rgba(255, 101, 101, 0.7)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 0,
-            pointRadius: 0,
-        },
-    ],
-};
-
-const option = {
-    scales: {
-        animate:false
-    }
+interface IProps {
+    HexData: IHexData[]
 }
 
-export default function Hexagon() {
-    return <Radar data={data}></Radar>
+const Wrap = styled.div`
+  font-family: NSRegular;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+`
+
+const Coloring = styled.span<{ color: string }>`
+  color: ${props => props.color};
+`
+
+export default function Hexagon({HexData}: IProps) {
+
+    const formattedData = HexData.map(i => {
+        return {
+            subject: i.subject + ' (' + i.score.toString() + ')',
+            A: i.score,
+            fullMark: 5.0
+        }
+    })
+
+    return (
+        <Wrap>
+            <RadarChart width={400} height={300} cx="50%" cy="50%" outerRadius="50%" data={formattedData}>
+                <PolarGrid polarRadius={[23.34, 48.67, 73]}/>
+                <PolarAngleAxis dataKey="subject" tick={{fill: theme.colors.secondaryText, fontSize: 13}}/>
+                <PolarRadiusAxis domain={[0, 5]}/>
+                <Radar name="Standard" dataKey="A" fill={theme.colors.primary} fillOpacity={0.8}/>
+            </RadarChart>
+        </Wrap>
+    );
 }
