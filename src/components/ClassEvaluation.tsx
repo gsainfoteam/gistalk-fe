@@ -125,7 +125,7 @@ export default function ClassEvaluation() {
     const [concreteOpen, setConcreteOpen] = useState(false)
 
     const toggleDetailedOpen = () => {
-        setConcreteOpen(!concreteOpen)
+        setConcreteOpen(prev => !prev)
     }
 
     /** 강의평가 응답자 수 */

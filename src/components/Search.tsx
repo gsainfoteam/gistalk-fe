@@ -274,7 +274,7 @@ export default function Search() {
 
     /** 검색 옵션-분과 열기 */
     const toggleDepartmentOpen = () => {
-        setDepartmentOpen(!departmentOpen);
+        setDepartmentOpen(prev => !prev);
     };
 
     /** 검색 옵션 State를 바꿔주는 함수 */
