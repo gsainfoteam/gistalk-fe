@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Search from "../src/components/Search";
 import ClassEvaluation from "./components/ClassEvaluation";
+import ProfilePage from "./pages/ProfilePage";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <Routes>
           <Route path="/" element={<Search />} />
           <Route path="/ClassEvaluation" element={<ClassEvaluation />} />
+          <Route path="/Profile" element={<ProfilePage />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>
