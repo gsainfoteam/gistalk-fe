@@ -1,18 +1,12 @@
 import styled from "styled-components";
 import { theme } from "../style/theme";
-import Checked_Svg from "../assets/svgs/done_black.svg";
+import Checked_Svg from "../assets/svgs/done.svg";
 
 interface IProps {
   text: string;
   color: string;
-  isChecked:boolean;
+  isChecked: boolean;
 }
-
-export const SvgIcon = styled.img<{ size: number }>`
-  height: ${(props) => props.size}px;
-  width: ${(props) => props.size}px;
-`;
-
 
 const IconFrame = styled.div<{ color: string }>`
   width: 50px;
@@ -22,8 +16,8 @@ const IconFrame = styled.div<{ color: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  position:relative;
+
+  position: relative;
   p {
     color: #000000;
     font-family: NSBold;
@@ -32,25 +26,31 @@ const IconFrame = styled.div<{ color: string }>`
 `;
 
 const CheckMark = styled.div`
-  position:absolute;
-  width:15px; height:15px;
+  position: absolute;
+  width: 15px;
+  height: 15px;
   border-radius: 15px;
   background-color: #2ecc71;
-  top:0; right:0;
-`
+  top: 0;
+  right: 0;
+`;
 
-const CheckedSvg = styled(SvgIcon)``
-
+const CheckedSvg = styled(theme.universalComponent.SvgIcon)``;
 
 /** 임시 분과 아이콘 (text는 아이콘 안에 들어갈 텍스트 두 글자, color은 아이콘 색깔) */
 export default function TempIcon({ text, color, isChecked }: IProps) {
-  return <>
-    <IconFrame color={color}>
-      <p>{text}</p>{isChecked && <CheckMark>
-      <CheckedSvg size={15} src={Checked_Svg}></CheckedSvg>
-    </CheckMark>}
-    </IconFrame>
-  </>;
+  return (
+    <>
+      <IconFrame color={color}>
+        <p>{text}</p>
+        {isChecked && (
+          <CheckMark>
+            <CheckedSvg size={15} src={Checked_Svg}></CheckedSvg>
+          </CheckMark>
+        )}
+      </IconFrame>
+    </>
+  );
 }
 
 TempIcon.defaultProps = {

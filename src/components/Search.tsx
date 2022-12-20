@@ -5,34 +5,17 @@ import { theme } from "../style/theme";
 import SearchCard from "./SearchCard";
 import TempIcon from "./TempIcon";
 import LogoSrc from "../assets/TEMPLOGO_GISTALK.png";
-import Search_Svg from "../assets/svgs/search_black.svg";
-import Filter_Svg from "../assets/svgs/tune_black.svg";
-import Sort_Svg from "../assets/svgs/sort_black.svg";
-import School_Svg from "../assets/svgs/school_black.svg";
-import ArrowL_Svg from "../assets/svgs/arrowL_black.svg";
-
-interface IDepartment {
-  subjectCode: string;
-  korean: string;
-  fullKorean: string;
-  id: number;
-}
-
-/** DepartmentGridItemWrapComponent를 위한 프롭스 타입 정의 인터페이스 */
-interface IProps {
-  item: IDepartment;
-  iconColor: string;
-  textColor: string;
-}
-
-/** (임시로 쓰일진 모르겠지만 어쨌든) 각 카드에서 받아와야 하는 오브젝트 형식 */
-interface IItem {
-  id:number;
-  subjectCode: string;
-  professorName: string;
-  subjectName: string;
-  subjectScore: string;
-}
+import Search_Svg from "../assets/svgs/search.svg";
+import Filter_Svg from "../assets/svgs/tune.svg";
+import Sort_Svg from "../assets/svgs/sort.svg";
+import School_Svg from "../assets/svgs/school.svg";
+import ArrowL_Svg from "../assets/svgs/arrowL.svg";
+import {
+  IDepartment,
+  IDepartmentGridItemWrapComponent,
+  ISearchCard,
+} from "../Interfaces/interfaces";
+import { tempdb } from "../tempdb/tempdb";
 
 const LogoImg = styled.img`
   width: 300px;
@@ -73,20 +56,15 @@ const SearchBtnWrap = styled.div`
   border-radius: 0 5px 5px 0;
 `;
 
-const SvgIcon = styled.img<{ size: number }>`
-  height: ${(props) => props.size}px;
-  width: ${(props) => props.size}px;
-`;
-
-const SearchSvg = styled(SvgIcon)`
+const SearchSvg = styled(theme.universalComponent.SvgIcon)`
   display: block;
   cursor: pointer;
 `;
 
-const FilterSvg = styled(SvgIcon)``;
-const SchoolSvg = styled(SvgIcon)``;
-const SortSvg = styled(SvgIcon)``;
-const ArrowLSvg = styled(SvgIcon)<{ open: boolean }>`
+const FilterSvg = styled(theme.universalComponent.SvgIcon)``;
+const SchoolSvg = styled(theme.universalComponent.SvgIcon)``;
+const SortSvg = styled(theme.universalComponent.SvgIcon)``;
+const ArrowLSvg = styled(theme.universalComponent.SvgIcon)<{ open: boolean }>`
   transform: ${(props) => props.open && "rotate(-90deg)"};
   transition: 0.1s;
 `;
@@ -106,26 +84,30 @@ const SearchDrop = styled.div<{
 }>`
   width: 78vw;
   margin: 18px 4vw 0 4vw;
-  transition:.2s;
-  
+  transition: 0.2s;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: ${(props) => props.color};
+
   div:nth-child(1) {
     font-family: NSRegular;
     font-size: 15px;
     display: flex;
     align-items: center;
+
     span {
       margin-left: 12px;
     }
   }
+
   div:nth-child(2) {
     font-family: NSBold;
     font-size: 18px;
     display: flex;
     align-items: center;
+
     span {
       margin-right: 5px;
       color: ${(props) => {
@@ -136,28 +118,25 @@ const SearchDrop = styled.div<{
   }
 `;
 
-/** '검색 옵션' 표시되어 있는 버튼 */
-const OptionBtnWrap = styled.div<{ color: string }>`
+const OptionBtnWrap = styled(theme.universalComponent.DivTextContainer)`
   display: flex;
-  color: ${(props) => props.color};
-  font-size: 14px;
   p {
     margin-right: 5px;
   }
+
   margin-top: 10px;
   margin-right: 7.5vw;
   display: flex;
   justify-content: right;
   font-family: NSRegular;
 `;
+
 /** 분과 선택 옵션 부분을 모두 감싸는 div. 검색 옵션-분과를 열었을 때 이것을 보여주게 됨. */
 const DepartmentListWrap = styled.div``;
 
 /** ·전공· ·부전공· 써져있는 제목부분 */
-const DepartmentListTitle = styled.div<{ color: string }>`
-  color: ${(props) => props.color};
+const DepartmentListTitle = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
-  font-size: 16px;
   text-align: center;
   margin: 7px 0;
 `;
@@ -177,30 +156,30 @@ const DepartmentGridItemWrap = styled.div`
 `;
 
 /** 검색 옵션에서 분과 선택하는 아이콘 밑에 있는 분과 이름 */
-const DepartmentGridItemName = styled.div<{ color: string }>`
-  color: ${(props) => props.color};
+const DepartmentGridItemName = styled(
+  theme.universalComponent.DivTextContainer
+)`
   font-family: NSMedium;
-  font-size: 15px;
   text-align: center;
   margin-top: 5px;
 `;
 
-const SortSelect = styled.select<{color: string; bg:string;}>`
-  border:none;
+const SortSelect = styled.select<{ color: string; bg: string }>`
+  border: none;
   font-family: NSBold;
-  color : ${props => props.color};
-  background: ${props => props.bg};
-  height:30px;
-  width:200px;
+  color: ${(props) => props.color};
+  background: ${(props) => props.bg};
+  height: 30px;
+  width: 200px;
   padding-left: 8px;
   padding-right: 8px;
-  
-  select{
-    border:none;
+
+  select {
+    border: none;
     font-family: NSBold;
-    background: ${props => props.bg};
+    background: ${(props) => props.bg};
   }
-`
+`;
 
 /** SearchCard 나열하는거 감싸는 div. 검색했을 때 리스트 형태로 나오는 걸 감싸는 부분 */
 const ItemList = styled.div`
@@ -257,21 +236,23 @@ const minor: IDepartment[] = [
 ];
 
 /** 정렬을 어떻게 할지 선택할 수 있는 리스트 */
-const sortList: { id:number, content:string }[] = [
-  {id:1, content:"수업 쉬운 순"},
-  {id:2, content:"유익한 순"},
-  {id:3, content:"성적 만족도 순"},
-  {id:4, content:"과제 적은 순"},
-  {id:5, content:"수업 재밌는 순"},
-  {id:6, content:"강의력 좋은 순"}
-]
+const sortList: { id: number; content: string }[] = [
+  { id: 1, content: "수업 쉬운 순" },
+  { id: 2, content: "유익한 순" },
+  { id: 3, content: "성적 만족도 순" },
+  { id: 4, content: "과제 적은 순" },
+  { id: 5, content: "수업 재밌는 순" },
+  { id: 6, content: "강의력 좋은 순" },
+];
 
 export default function Search() {
   const [optionOpen, setOptionOpen] = useState(false);
   const [departmentOpen, setDepartmentOpen] = useState(false);
 
   /** 담는 형식은 [[...fullKorean],[...korean]], 여기에 현재 필터 분과 정보를 저장함. */
-  const [departmentOption, setDepartmentOption] = useState<[string[],string[]]>([[],[]]);
+  const [departmentOption, setDepartmentOption] = useState<
+    [string[], string[]]
+  >([[], []]);
 
   /** 검색 옵션-전공에서 분과 선택 시 보이는 부분(선택하세요 / 전공(부전공) 이름) */
   const [displayedDepartmentOption, setDisplayedDepartmentOption] =
@@ -282,18 +263,18 @@ export default function Search() {
     // departmentOption[0]의 array 안에 아무것도 없으면 '선택하세요' 출력
     if (departmentOption[0].length === 0) {
       setDisplayedDepartmentOption("선택하세요");
-    }
-    else if (departmentOption[0].length === 1){
+    } else if (departmentOption[0].length === 1) {
       //어차피 array 길이가 하나뿐이므로 fullKorean의 [0], 그리고 그 안의 내용물 [0]을 지칭함
       setDisplayedDepartmentOption(departmentOption[0][0]);
+    } else if (departmentOption[0].length === 2) {
+      setDisplayedDepartmentOption(
+        `${departmentOption[1][0]}, ${departmentOption[1][1]}`
+      );
+    } else {
+      setDisplayedDepartmentOption(
+        `${departmentOption[1][0]} 외 ${departmentOption[0].length - 1}개`
+      );
     }
-    else if (departmentOption[0].length === 2){
-      setDisplayedDepartmentOption(`${departmentOption[1][0]}, ${departmentOption[1][1]}`);
-    }
-    else {
-      setDisplayedDepartmentOption(`${departmentOption[1][0]} 외 ${departmentOption[0].length - 1}개`);
-    }
-
   }, [departmentOption]);
 
   /** 검색 옵션 열기 */
@@ -308,17 +289,25 @@ export default function Search() {
   };
 
   /** 검색 옵션 State를 바꿔주는 함수 */
-  const switchDepartmentOption = (fullKorean: string, korean:string) => {
-    const findItem = (i:string) => {
-      return departmentOption[0].find(j => j === i) !== undefined;
-    }
+  const switchDepartmentOption = (fullKorean: string, korean: string) => {
+    const findItem = (i: string) => {
+      return departmentOption[0].find((j) => j === i) !== undefined;
+    };
 
-    if(findItem(fullKorean)){ // 이미 있으면
-      setDepartmentOption([departmentOption[0].filter(i => i !== fullKorean), departmentOption[1].filter(i => i !== korean)])
-    } else { // 없으면
-      setDepartmentOption([[...departmentOption[0], fullKorean],[...departmentOption[1], korean]]);
+    if (findItem(fullKorean)) {
+      // 이미 있으면
+      setDepartmentOption([
+        departmentOption[0].filter((i) => i !== fullKorean),
+        departmentOption[1].filter((i) => i !== korean),
+      ]);
+    } else {
+      // 없으면
+      setDepartmentOption([
+        [...departmentOption[0], fullKorean],
+        [...departmentOption[1], korean],
+      ]);
     }
-    console.log(departmentOption)
+    console.log(departmentOption);
   };
 
   /** 분과 선택하는 아이콘 + 밑에 한글까지 감싸는 Wrap (이걸 DepartmentGrid가 감싸는 구조) */
@@ -326,20 +315,23 @@ export default function Search() {
     item,
     iconColor,
     textColor,
-  }: IProps) {
-
+  }: IDepartmentGridItemWrapComponent) {
     /** departmentOption[0] 안에 item.fullKorean이 있는지 검사하는 함수 */
-    const findItem = (i:string) => {
-      return departmentOption[0].find(j => j === i) !== undefined;
-    }
+    const findItem = (i: string) => {
+      return departmentOption[0].find((j) => j === i) !== undefined;
+    };
 
     return (
       <DepartmentGridItemWrap
         key={item.id}
         onClick={() => switchDepartmentOption(item.fullKorean, item.korean)}
       >
-        <TempIcon text={item.subjectCode} color={iconColor} isChecked={findItem(item.fullKorean)}></TempIcon>
-        <DepartmentGridItemName color={textColor}>
+        <TempIcon
+          text={item.subjectCode}
+          color={iconColor}
+          isChecked={findItem(item.fullKorean)}
+        ></TempIcon>
+        <DepartmentGridItemName color={textColor} fontSize={15}>
           {item.korean}
         </DepartmentGridItemName>
       </DepartmentGridItemWrap>
@@ -347,45 +339,41 @@ export default function Search() {
   }
 
   /** 임시 아이템 리스트 */
-  const TempSearchList: IItem[] = [
-    {
-      id:1,
-      subjectCode: "GS1001-01",
-      professorName: "황치옥",
-      subjectName: "미적분학과 응용",
-      subjectScore: "4.5",
-    },
+  const TempSearchList: ISearchCard[] = tempdb.map((i) => {
+    /** 평균 점수 계산 */
+    let avgScore: number = 0;
+    i.hexData.map((j) => (avgScore += j.score));
+    avgScore /= 6;
+    let avgScoreStr: string = (
+      Math.round((avgScore + Number.EPSILON) * 100) / 100
+    ).toFixed(1); //소수점 둘째자리에서 반올림, 소수점 고정
 
-    {
-      id:2,
-      subjectCode: "BS2201-01",
-      professorName: "엄수현",
-      subjectName: "생명과학의 정량적 이해",
-      subjectScore: "4.5",
-    },
-
-    {
-      id:3,
-      subjectCode: "CH4205-01",
-      professorName: "서지원",
-      subjectName: "생유기화학과 바이오의약품",
-      subjectScore: "4.5",
-    },
-  ];
+    return {
+      id: i.id,
+      subjectCode: i.subjectCode,
+      professorName: i.professorName,
+      subjectName: i.subjectName,
+      subjectScore: avgScoreStr,
+    };
+  });
 
   return (
     <>
       <SearchWrap>
         <SearchInput
           placeholder="강의명/교수명으로 검색"
-          color={theme.primaryText}
+          color={theme.colors.primaryText}
         />
         <SearchBtnWrap>
           <SearchSvg size={30} src={Search_Svg} />
         </SearchBtnWrap>
       </SearchWrap>
 
-      <OptionBtnWrap color={theme.secondaryText} onClick={toggleOptionOpen}>
+      <OptionBtnWrap
+        color={theme.colors.secondaryText}
+        fontSize={14}
+        onClick={toggleOptionOpen}
+      >
         <p>검색 옵션</p>
         <FilterSvg size={20} src={Filter_Svg}></FilterSvg>
       </OptionBtnWrap>
@@ -393,8 +381,8 @@ export default function Search() {
       {optionOpen && (
         <SearchOptionOpenedWrap>
           <SearchDrop
-            color={theme.secondaryText}
-            afterColor={theme.primaryText}
+            color={theme.colors.secondaryText}
+            afterColor={theme.colors.primaryText}
             option={departmentOption[0].length}
           >
             <div>
@@ -412,7 +400,10 @@ export default function Search() {
           </SearchDrop>
           {departmentOpen && (
             <DepartmentListWrap>
-              <DepartmentListTitle color={theme.secondaryText}>
+              <DepartmentListTitle
+                color={theme.colors.secondaryText}
+                fontSize={16}
+              >
                 · 전공 ·
               </DepartmentListTitle>
               <DepartmentGrid>
@@ -420,7 +411,7 @@ export default function Search() {
                   <DepartmentGridItemWrapComponent
                     item={item}
                     iconColor={"#FFCF23"}
-                    textColor={theme.secondaryText}
+                    textColor={theme.colors.secondaryText}
                     key={item.id}
                   ></DepartmentGridItemWrapComponent>
                 ))}
@@ -433,11 +424,14 @@ export default function Search() {
                     subjectCode: "UC",
                   }}
                   iconColor={"#E0E0E0"}
-                  textColor={theme.secondaryText}
+                  textColor={theme.colors.secondaryText}
                 ></DepartmentGridItemWrapComponent>
               </DepartmentGrid>
 
-              <DepartmentListTitle color={theme.secondaryText}>
+              <DepartmentListTitle
+                color={theme.colors.secondaryText}
+                fontSize={16}
+              >
                 · 부전공 ·
               </DepartmentListTitle>
               <DepartmentGrid>
@@ -445,7 +439,7 @@ export default function Search() {
                   <DepartmentGridItemWrapComponent
                     item={item}
                     iconColor={"#8CBAFF"}
-                    textColor={theme.secondaryText}
+                    textColor={theme.colors.secondaryText}
                     key={item.id}
                   ></DepartmentGridItemWrapComponent>
                 ))}
@@ -453,8 +447,8 @@ export default function Search() {
             </DepartmentListWrap>
           )}
           <SearchDrop
-            color={theme.secondaryText}
-            afterColor={theme.secondaryText}
+            color={theme.colors.secondaryText}
+            afterColor={theme.colors.secondaryText}
             option={0}
           >
             <div>
@@ -462,8 +456,13 @@ export default function Search() {
               <span>정렬</span>
             </div>
             <div>
-              <SortSelect color={theme.secondaryText} bg={theme.inputBg}>
-                {sortList.map(item => <option key={item.id}>{item.content}</option>)}
+              <SortSelect
+                color={theme.colors.secondaryText}
+                bg={theme.colors.inputBg}
+              >
+                {sortList.map((item) => (
+                  <option key={item.id}>{item.content}</option>
+                ))}
               </SortSelect>
             </div>
           </SearchDrop>
@@ -473,7 +472,7 @@ export default function Search() {
       <ItemList>
         {TempSearchList.map((item) => (
           <SearchCard
-              key={item.id}
+            key={item.id}
             subjectCode={item.subjectCode}
             professorName={item.professorName}
             subjectName={item.subjectName}

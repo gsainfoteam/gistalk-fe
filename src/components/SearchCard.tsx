@@ -32,10 +32,12 @@ const CardContentWrap = styled.div<{ color: string }>`
     position: relative;
     top: 1px;
   }
+
   span {
     font-family: NSMedium;
     text-overflow: ellipsis;
   }
+
   div {
     font-family: NSBold;
     font-size: 19px;
@@ -52,14 +54,17 @@ const AverageScoreWrap = styled.div<{ color: string }>`
   width: 55px;
   color: ${(props) => props.color};
   font-family: NSBold;
+
   p {
     font-size: 13px;
     position: relative;
     top: 4px;
   }
+
   span {
     font-size: 13px;
   }
+
   div {
     font-size: 25px;
     position: relative;
@@ -78,15 +83,16 @@ export default function SearchCard({
 
   return (
     <SearchCardWrap>
-      <TempIcon text={Division} color={"#FFCF23"}></TempIcon>
-      <CardContentWrap color={theme.primaryText}>
+      <TempIcon text={Division} color={"#FFCF23"} isChecked={false}></TempIcon>
+      <CardContentWrap color={theme.colors.primaryText}>
         <p>
           {subjectCode}&nbsp;&nbsp;|&nbsp;&nbsp; {/* 과목 코드 */}
           <span>{professorName}</span> {/* 교수 이름 */}
         </p>
-        <div>{subjectName}</div> {/* 과목 이름 */}
+        <div>{subjectName}</div>
+        {/* 과목 이름 */}
       </CardContentWrap>
-      <AverageScoreWrap color={theme.primaryText}>
+      <AverageScoreWrap color={theme.colors.primaryText}>
         <p>평균점수</p>
         <div>
           {subjectScore}
