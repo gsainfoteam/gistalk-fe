@@ -2,11 +2,6 @@ import Hexagon from "@/components/Hexagon";
 import {theme} from "@/style/theme";
 import Header from "@/components/Header";
 import styled from "styled-components";
-import {useState} from "react";
-
-import ArrowL_Svg from "@/assets/svgs/arrowL.svg";
-import {IHexData} from "@/Interfaces/interfaces";
-import {tempdb} from "@/tempdb/tempdb";
 
 
 const TitleWrap = styled.div<{ color: string }>`
@@ -116,26 +111,8 @@ const Upper = styled.div`
 `
 
 /** Radar Chart에 들어갈 임시 데이터 */
-const tempData: IHexData[] = tempdb[0].hexData
 
 export default function ProfilePage() {
-    const [concreteOpen, setConcreteOpen] = useState(false)
-
-    const toggleDetailedOpen = () => {
-        setConcreteOpen(prev => !prev)
-    }
-
-    /** 강의평가 응답자 수 */
-    const NumberOfResponse: number = 79
-
-    /** 평균 점수 계산 */
-    let avgScore: number = 0
-    tempData.map(i => avgScore += i.score)
-    avgScore /= 6
-    avgScore = Math.round((avgScore + Number.EPSILON) * 100) / 100 //소수점 둘째자리에서 반올림
-
-    /** 세부 강의평가 개수 */
-    const NumberOfDetailedCE: number = 16
 
     return <>
         <Header text={"강의"}></Header>
@@ -150,18 +127,7 @@ export default function ProfilePage() {
         <Upper>
             <SeeConcreteInfoWrap fontSize={15} color={theme.colors.secondaryText} onClick={toggleDetailedOpen}>
                 구체적인 수치 보기
-                <ArrowLSvg size={22} src={ArrowL_Svg} open={concreteOpen}/>
             </SeeConcreteInfoWrap>
-            {concreteOpen && <ConcreteInfoGrid>
-                <ConcreteInfo color={theme.colors.secondaryText} colorP={theme.colors.primary} fontSize={15}>
-                    <div>전체 응답자</div>
-                    <div><span>{NumberOfResponse}</span>명</div>
-                </ConcreteInfo>
-                <ConcreteInfo color={theme.colors.secondaryText} colorP={theme.colors.primary} fontSize={15}>
-                    <div>평균</div>
-                    <div><span>{avgScore}</span></div>
-                </ConcreteInfo>
-            </ConcreteInfoGrid>}
             <GotoDetailedCEBtn fontSize={16} color={theme.colors.primary}>세부 강의평가 ({NumberOfDetailedCE})
                 →</GotoDetailedCEBtn>
 
