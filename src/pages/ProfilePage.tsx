@@ -2,6 +2,7 @@ import Hexagon from "@/components/Hexagon";
 import { theme } from "@/style/theme";
 import Header from "@/components/Header";
 import styled from "styled-components";
+import Button from "@/components/Button";
 
 const TitleWrap = styled.div<{ color: string }>`
   width: 87vw;
@@ -43,6 +44,12 @@ export default function ProfilePage() {
         <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
           ID: HongGilDong
         </SubjectTitle>
+        <Button
+          text="프로필 관리"
+          onClick={() => {}}
+          color={"white"}
+          background={theme.colors.primary}
+        />
       </TitleWrap>
 
       <>
