@@ -57,7 +57,7 @@ const ArrowLSvg = styled(theme.universalComponent.SvgIcon)<{ open: boolean }>`
 `;
 
 const ConcreteInfoGrid = styled.div`
-  width: 87vw;
+  width: 84vw;
   margin: 10px auto 0 auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
