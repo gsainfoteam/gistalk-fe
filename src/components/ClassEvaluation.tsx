@@ -115,7 +115,7 @@ const OneLineReviewText = styled(theme.universalComponent.DivTextContainer)<{ bo
 /** Hexagon position 처리 때문에 밀려난 부분들 싹 다 위로 올리는 컴포넌트 */
 const Upper = styled.div`
   position: relative;
-  top: -80px;
+  top: -85px;
 `
 
 /** Radar Chart에 들어갈 임시 데이터 */
