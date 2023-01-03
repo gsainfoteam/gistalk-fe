@@ -8,7 +8,7 @@ import {useState} from "react";
 import ArrowL_Svg from "../assets/svgs/arrowL.svg";
 import {IHexData} from "../Interfaces/interfaces";
 import {tempdb} from "../tempdb/tempdb";
-import RecommendTextForm from "./RecommendTextForm";
+
 import Reply from "./Reply";
 
 
@@ -67,8 +67,7 @@ const ConcreteInfoGrid = styled.div`
 `
 
 /** 구체적인 수치 보기를 클릭했을 보여주는 info */
-const ConcreteInfo = styled(theme.universalComponent.DivTextContainer)<{ colorP: string }>
-    `
+const ConcreteInfo = styled(theme.universalComponent.DivTextContainer)<{ colorP: string }>`
       font-family: NSMedium;
       display: flex;
       justify-content: space-between;
@@ -87,7 +86,7 @@ const ConcreteInfo = styled(theme.universalComponent.DivTextContainer)<{ colorP:
 
         margin-right: 10px;
       }
-    `
+`
 
 /** 세부 강의평가 보러 가는 버튼 */
 const GotoDetailedCEBtn = styled(theme.universalComponent.DivTextContainer)`
@@ -129,16 +128,16 @@ export default function ClassEvaluation() {
     }
 
     /** 강의평가 응답자 수 */
-    const NumberOfResponse: number = 79
+    const NumberOfResponse = 79
 
     /** 평균 점수 계산 */
-    let avgScore: number = 0
+    let avgScore = 0
     tempData.map(i => avgScore += i.score)
     avgScore /= 6
     avgScore = Math.round((avgScore + Number.EPSILON) * 100) / 100 //소수점 둘째자리에서 반올림
 
     /** 세부 강의평가 개수 */
-    const NumberOfDetailedCE: number = 16
+    const NumberOfDetailedCE = 16
 
     return <>
         <Header text={"강의"}></Header>

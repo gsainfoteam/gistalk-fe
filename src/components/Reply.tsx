@@ -3,6 +3,7 @@ import styled from "styled-components";
 import {IReply} from "../Interfaces/interfaces";
 import RecommendTextForm from "./RecommendTextForm";
 import LikeDislikeBtnWrap from "./LikeDislikeBtnWrap";
+import {createContext, useContext} from "react";
 
 interface IProps {
     replyData: IReply
@@ -41,12 +42,26 @@ const SemesterText = styled(theme.universalComponent.DivTextContainer)`
 `
 
 const ContentWrap = styled(theme.universalComponent.DivTextContainer)`
-  font-family: NSMedium;
+  font-family: NSRegular;
   word-break: break-all;
 `
 
+const DetailedCESubtitle = styled(theme.universalComponent.DivTextContainer)`
+  margin-top: 12px;
+  margin-bottom: 3px;
+  font-family: NSBold;
+`
+
+const LockBox = styled(theme.universalComponent.DivTextContainer)<{ borderColor: string }>`
+  width:87vw;
+  height: 200px;
+  margin:25px auto 0 auto;
+  border: 3px solid ${props => props.borderColor};
+`
+
 export default function Reply({replyData}: IProps) {
-    return <Wrap>
+    return (
+    <Wrap>
         <InfoWrap>
             <LeftWrap>
                 <RecommendTextForm like={replyData.recommend}></RecommendTextForm>
@@ -57,6 +72,22 @@ export default function Reply({replyData}: IProps) {
                 <LikeDislikeBtnWrap like={replyData.like} dislike={replyData.dislike} pushedLike={replyData.pushedLike}></LikeDislikeBtnWrap>
             </RightWrap>
         </InfoWrap>
-        <ContentWrap fontSize={13} color={theme.colors.primaryText}>{replyData.content}</ContentWrap>
+        {
+            (replyData.content.length == 1) && <ContentWrap fontSize={13} color={theme.colors.primaryText}>
+                {replyData.content[0]}</ContentWrap>
+        }
+        {
+            (replyData.content.length == 3) && <ContentWrap fontSize={13} color={theme.colors.primaryText}>
+                {['시험 문제 유형', '과제 유형', '학점 잘 받는 팁'].map((i, index) => <>
+                    <DetailedCESubtitle color={theme.colors.primaryText} fontSize={17}>{i}</DetailedCESubtitle>
+                    {replyData.content[index]}
+                </>)}
+            </ContentWrap>
+        }
+        {
+            <LockBox fontSize={15} color={theme.colors.primaryText} borderColor={theme.colors.primary}></LockBox>
+        }
+
     </Wrap>
+    )
 }
