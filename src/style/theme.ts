@@ -12,6 +12,7 @@ const colors = {
     secondaryText: "#959595",
 
     black: "#000000",
+    white: "#ffffff",
 };
 
 const universalComponent = {

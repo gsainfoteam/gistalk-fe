@@ -3,7 +3,10 @@ import styled from "styled-components";
 import {IReply} from "../Interfaces/interfaces";
 import RecommendTextForm from "./RecommendTextForm";
 import LikeDislikeBtnWrap from "./LikeDislikeBtnWrap";
-import {createContext, useContext} from "react";
+import React, {createContext, useContext, useState} from "react";
+
+import lock_Svg from "../assets/svgs/lock.svg";
+import UnlockModal from "./UnlockModal";
 
 interface IProps {
     replyData: IReply
@@ -55,11 +58,38 @@ const DetailedCESubtitle = styled(theme.universalComponent.DivTextContainer)`
 const LockBox = styled(theme.universalComponent.DivTextContainer)<{ borderColor: string }>`
   width:87vw;
   height: 200px;
-  margin:25px auto 0 auto;
+  margin: 5px auto 0 auto;
   border: 3px solid ${props => props.borderColor};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const LockBoxInfo = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`
+const LockSvgWrap = styled.div<{ bgColor:string }>`
+  width: 45px;
+  height: 45px;
+  background-color: ${props => props.bgColor};
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const LockSvg = styled(theme.universalComponent.SvgIcon)``
+
+/** '몇p 써서 보기' 와 'n자' 표시하는 글자 */
+const LockViewText = styled(theme.universalComponent.DivTextContainer)`
+  font-family: NSBold
 `
 
 export default function Reply({replyData}: IProps) {
+    const [isOpen,setIsOpen] = useState(false);
+
     return (
     <Wrap>
         <InfoWrap>
@@ -77,7 +107,7 @@ export default function Reply({replyData}: IProps) {
                 {replyData.content[0]}</ContentWrap>
         }
         {
-            (replyData.content.length == 3) && <ContentWrap fontSize={13} color={theme.colors.primaryText}>
+            (replyData.content.length == 3) && (!replyData.isLocked) && <ContentWrap fontSize={13} color={theme.colors.primaryText}>
                 {['시험 문제 유형', '과제 유형', '학점 잘 받는 팁'].map((i, index) => <>
                     <DetailedCESubtitle color={theme.colors.primaryText} fontSize={17}>{i}</DetailedCESubtitle>
                     {replyData.content[index]}
@@ -85,9 +115,27 @@ export default function Reply({replyData}: IProps) {
             </ContentWrap>
         }
         {
-            <LockBox fontSize={15} color={theme.colors.primaryText} borderColor={theme.colors.primary}></LockBox>
+            (replyData.content.length == 3) && (replyData.isLocked) &&
+            <LockBox fontSize={15} color={theme.colors.primaryText} borderColor={theme.colors.primary} onClick={()=>setIsOpen(true)}>
+                <LockBoxInfo>
+                    <LockSvgWrap bgColor={theme.colors.primary}>
+                        <LockSvg size={30} src={lock_Svg} />
+                    </LockSvgWrap>
+                    <LockViewText fontSize={13} color={theme.colors.primary}>10p 써서 보기</LockViewText>
+                    <LockViewText fontSize={11} color={theme.colors.primaryText}>(1234자)</LockViewText>
+                </LockBoxInfo>
+            </LockBox>
         }
-
+    <UnlockModal
+    recommend={replyData.recommend}
+    year={replyData.year}
+    semester={replyData.semester}
+    like={replyData.like}
+    dislike={replyData.dislike}
+    pushedLike={replyData.pushedLike}
+    isOpen={isOpen}
+    setOpen={setIsOpen}
+    currentPoint={100} />
     </Wrap>
     )
 }
