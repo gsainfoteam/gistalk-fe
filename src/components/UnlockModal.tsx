@@ -21,7 +21,8 @@ interface IProps {
     pushedLike:pushedLike,
     isOpen:boolean,
     setOpen:React.Dispatch<React.SetStateAction<boolean>>,
-    currentPoint:number
+    currentPoint:number,
+    isMine:boolean
 }
 
 /** 추천 or 비추천, 몇 학기 수강자인지, 좋아요/싫어요 수는 몇개인지 표시하는 전체 부분 Wrap */
@@ -51,6 +52,12 @@ const SemesterText = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
 `
 
+/** (ME) 표시하는 컴포넌트 */
+const ME = styled(theme.universalComponent.DivTextContainer)`
+  margin-left: 7px;
+  font-family: NSBold;
+`
+
 /** 상단 InfoWrap을 제외한 부분을 감싸는 Wrap */
 const ModalContentWrap = styled.div`
   display: flex;
@@ -58,6 +65,8 @@ const ModalContentWrap = styled.div`
   align-items: center;
   margin-bottom: 25px;
 `
+
+
 
 const LockSvgWrap = styled.div<{ bgColor:string }>`
   width: 55px;
@@ -111,7 +120,7 @@ const Button = styled(theme.universalComponent.DivTextContainer)<{ whiteColor:st
   text-align: center;
 `
 
-export default function UnlockModal({recommend, year, semester, like, dislike, pushedLike, isOpen, setOpen, currentPoint}:IProps) {
+export default function UnlockModal({recommend, year, semester, like, dislike, pushedLike, isOpen, setOpen, currentPoint, isMine}:IProps) {
     return <Sheet isOpen={isOpen} onClose={() => setOpen(false)} snapPoints={[300]}>
         <Sheet.Container>
             <Sheet.Header />
@@ -121,6 +130,7 @@ export default function UnlockModal({recommend, year, semester, like, dislike, p
                         <RecommendTextForm like={recommend}></RecommendTextForm>
                         <SemesterText fontSize={13}
                                       color={theme.colors.secondaryText}>{year}년 {semester}학기</SemesterText>
+                        {isMine && <ME fontSize={13} color={theme.colors.primary}>(ME)</ME>}
                     </LeftWrap>
                     <RightWrap>
                         <LikeDislikeBtnWrap like={like} dislike={dislike} pushedLike={pushedLike}></LikeDislikeBtnWrap>

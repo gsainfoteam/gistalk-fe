@@ -197,7 +197,7 @@ export default function ClassEvaluation() {
             </OneLineReviewText>
             {
                 //여기서 i는 tempdb[0]이 가리키는 강의평가에 해당하는 각 한줄평을 가리킴
-                tempdb[0].oneLineReview.map(i => <Reply key={i.id} replyData={i}></Reply>)
+                tempdb[0].oneLineReview.map(i => <Reply key={i.id} replyData={i} isMine={true}></Reply>)
             }</Upper>
     </>
 }

@@ -40,10 +40,10 @@ export default function DetailedCE() {
             <SubjectTitle fontSize={15} color={theme.colors.secondaryText}>김상호 / EB2724</SubjectTitle>
         </TitleWrap>
         {
-            tempdb[0].detailedReview.map(i => <>
-                <Reply key={i.id} replyData={i} />
+            tempdb[0].detailedReview.map(i => <div key={i.id}>
+                <Reply replyData={i} isMine={true} />
                 <HorizontalLine borderColor={theme.colors.secondaryText}></HorizontalLine>
-            </>)
+            </div>)
         }
     </>
 }
