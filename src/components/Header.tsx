@@ -5,7 +5,7 @@ import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
 import { IHeader } from "../Interfaces/interfaces";
 import { Link } from "react-router-dom";
 
-const Wrap = styled.div<{ bgColor:string }>`
+const Wrap = styled.div<{ bgColor: string }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -14,8 +14,8 @@ const Wrap = styled.div<{ bgColor:string }>`
   height: 60px;
   position: sticky;
   position: -webkit-sticky;
-  top:0px;
-  background-color: ${props => props.bgColor};
+  top: 0px;
+  background-color: ${(props) => props.bgColor};
   z-index: 100;
 `;
 
