@@ -134,7 +134,7 @@ export default function UnlockModal({recommend, year, semester, like, dislike, p
                         fontSize={17}
                         color={theme.colors.primaryText}
                         primaryTextColor={theme.colors.primary}>
-                        <span>10</span>P를 소모하여 이 세부평가를 봅니다.
+                        <span>10</span>P를 소모하여 이 세부평가를 볼까요?
                     </LockViewText>
                     <LockViewText
                         fontSize={15}
