@@ -12,11 +12,11 @@ import {tempdb} from "../tempdb/tempdb";
 import Reply from "./Reply";
 
 
-const TitleWrap = styled.div<{ color: string }>`
+const TitleWrap = styled.div<{ color: string, bgColor:string }>`
   width: 87vw;
   display: flex;
   align-items: center;
-  margin: 10px auto 0 auto;
+  margin: 0 auto 0 auto;
 
   div:nth-child(1) {
     margin-right: 8px;
@@ -25,6 +25,12 @@ const TitleWrap = styled.div<{ color: string }>`
   padding-bottom: 13px;
   border-bottom: ${props => props.color} 1.5px solid;
   border-radius: 0;
+  background-color: ${props => props.bgColor};
+  
+  position: sticky;
+  position: -webkit-sticky;
+  top: 60px;
+  z-index: 100;
 `
 
 /** 과목 이름과 코드를 감싸는 div. 과목과 이름이 같은 형태라서 재사용함 */
@@ -142,7 +148,7 @@ export default function ClassEvaluation() {
 
     return <>
         <Header text={"강의"}></Header>
-        <TitleWrap color={theme.colors.grayStroke}>
+        <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
             <SubjectTitle fontSize={20} color={theme.colors.primaryText}>거시경제학</SubjectTitle>
             <SubjectTitle fontSize={15} color={theme.colors.secondaryText}>김상호 / EB2724</SubjectTitle>
         </TitleWrap>

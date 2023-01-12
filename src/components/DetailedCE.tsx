@@ -8,7 +8,7 @@ const TitleWrap = styled.div<{ color: string }>`
   width: 87vw;
   display: flex;
   align-items: center;
-  margin: 10px auto 0 auto;
+  margin: 0 auto 0 auto;
 
   div:nth-child(1) {
     margin-right: 8px;
@@ -17,6 +17,11 @@ const TitleWrap = styled.div<{ color: string }>`
   padding-bottom: 13px;
   border-bottom: ${props => props.color} 1.5px solid;
   border-radius: 0;
+
+  position: sticky;
+  position: -webkit-sticky;
+  top: 60px;
+  z-index: 100;
 `
 
 /** 각 세부평가를 구분짓는 가로선 */
