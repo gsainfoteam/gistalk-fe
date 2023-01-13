@@ -140,7 +140,7 @@ export default function ClassEvaluation() {
       <Header text={"강의"}></Header>
       <Title></Title>
       <EvaluationText fontSize={16} color={theme.colors.primaryText}>
-        · 수강생들의 평가 ·
+        · {41}명의 수강생들이 남긴 평가에요 ·
       </EvaluationText>
       <GraphWrap>
         <Hexagon HexData={tempData}></Hexagon>

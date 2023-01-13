@@ -30,6 +30,7 @@ export default function Hexagon({ HexData }: IProps) {
     return {
       subject: i.subject + " (" + i.score.toString() + ")",
       A: i.score,
+      B: 2.5,
       fullMark: 5.0,
     };
   });
@@ -54,7 +55,13 @@ export default function Hexagon({ HexData }: IProps) {
           name="Standard"
           dataKey="A"
           fill={theme.colors.primary}
-          fillOpacity={0.8}
+          fillOpacity={0.6}
+        />
+        <Radar
+            name="Standard"
+            dataKey="B"
+            fill={theme.colors.reverse}
+            fillOpacity={0.4}
         />
       </RadarChart>
     </Wrap>
