@@ -104,6 +104,19 @@ const Upper = styled.div`
 /** Radar Chart에 들어갈 임시 데이터 */
 const tempData: IHexData[] = tempdb[0].hexData;
 
+/** '강의평 쓰러가기' 버튼 */
+const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{ bgColor:string }>`
+  text-align: center;
+  width: 95vw;
+  background-color: ${props => props.bgColor};
+  height: 50px;
+  line-height: 50px;
+  position: sticky;
+  bottom: 2.5vw;
+  font-family: NSBold;
+  margin: 0 2.5vw;
+`
+
 export default function ClassEvaluation() {
   const [concreteOpen, setConcreteOpen] = useState(false);
 
@@ -239,6 +252,7 @@ export default function ClassEvaluation() {
           ))
         }
       </Upper>
+        <GoWriteBtn fontSize={20} bgColor={theme.colors.primary} color={theme.colors.white}>강의평 쓰러가기</GoWriteBtn>
     </>
   );
 }
