@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { theme } from "../style/theme";
 import { pushedLike } from "../Interfaces/interfaces";
+import { useState } from "react";
 
 import ThumbUp_Svg from "../assets/svgs/thumbUp.svg";
 import ThumbUpBlack_Svg from "../assets/svgs/thumbUp_Black.svg";
@@ -39,14 +40,16 @@ const DislikeSvg = styled(Svg)`
   top: 2px;
 `;
 
-export default function LikeDislikeBtnWrap({
-  like,
-  dislike,
-  pushedLike,
-}: IProps) {
+//pushedLike none으로 설정후에 Btn이 눌리면 바뀌는 형식으로
+export default function LikeDislikeBtnWrap({ like, dislike }: IProps) {
+  const [pushedLike, setLikeState] = useState("none");
   return (
     <>
       <Btn
+        onClick={() => {
+          console.log({ pushedLike });
+          setLikeState(pushedLike == "like" ? "none" : "like");
+        }}
         color={
           pushedLike == "like" ? theme.colors.primary : theme.colors.primaryText
         }
@@ -60,6 +63,10 @@ export default function LikeDislikeBtnWrap({
         <div>{like}</div>
       </Btn>
       <Btn
+        onClick={() => {
+          console.log(pushedLike);
+          setLikeState(pushedLike == "dislike" ? "none" : "dislike");
+        }}
         color={
           pushedLike == "dislike"
             ? theme.colors.primary
