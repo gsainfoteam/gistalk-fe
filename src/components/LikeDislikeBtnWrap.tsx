@@ -43,12 +43,14 @@ const DislikeSvg = styled(Svg)`
 //pushedLike none으로 설정후에 Btn이 눌리면 바뀌는 형식으로
 export default function LikeDislikeBtnWrap({ like, dislike }: IProps) {
   const [pushedLike, setLikeState] = useState("none");
+  const [likeNum, setLikeNum] = useState(0);
+
   return (
     <>
       <Btn
         onClick={() => {
-          console.log({ pushedLike });
           setLikeState(pushedLike == "like" ? "none" : "like");
+          setLikeNum(likeNum != 1 ? 1 : 0);
         }}
         color={
           pushedLike == "like" ? theme.colors.primary : theme.colors.primaryText
@@ -60,12 +62,12 @@ export default function LikeDislikeBtnWrap({ like, dislike }: IProps) {
           src={pushedLike == "like" ? ThumbUp_Svg : ThumbUpBlack_Svg}
           size={16}
         ></Svg>
-        <div>{like}</div>
+        <div>{likeNum == 1 ? like + likeNum : like}</div>
       </Btn>
       <Btn
         onClick={() => {
-          console.log(pushedLike);
           setLikeState(pushedLike == "dislike" ? "none" : "dislike");
+          setLikeNum(likeNum != -1 ? -1 : 0);
         }}
         color={
           pushedLike == "dislike"
@@ -79,7 +81,7 @@ export default function LikeDislikeBtnWrap({ like, dislike }: IProps) {
           src={pushedLike == "dislike" ? ThumbDown_Svg : ThumbDownBlack_Svg}
           size={16}
         ></DislikeSvg>
-        <div>{dislike}</div>
+        <div>{likeNum == -1 ? dislike + likeNum : dislike}</div>
       </Btn>
     </>
   );

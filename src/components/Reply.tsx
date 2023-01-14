@@ -104,6 +104,7 @@ export default function Reply({ replyData }: IProps) {
           <LikeDislikeBtnWrap
             like={replyData.like}
             dislike={replyData.dislike}
+            pushedLike="none"
           ></LikeDislikeBtnWrap>
         </RightWrap>
       </InfoWrap>
@@ -155,7 +156,8 @@ export default function Reply({ replyData }: IProps) {
         semester={replyData.semester}
         like={replyData.like}
         dislike={replyData.dislike}
-        pushedLike={replyData.pushedLike}
+        //pushedLike 초기값으로 "none" 할당
+        pushedLike="none"
         isOpen={isOpen}
         setOpen={setIsOpen}
         currentPoint={100}
