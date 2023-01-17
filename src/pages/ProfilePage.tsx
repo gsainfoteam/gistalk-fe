@@ -7,13 +7,9 @@ import Button from "@/components/Button";
 const TitleWrap = styled.div<{ color: string }>`
   width: 87vw;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   margin: 10px auto 0 auto;
-
-  div:nth-child(1) {
-    margin-right: 8px;
-  }
-
   padding-bottom: 13px;
   border-bottom: ${(props) => props.color} 1.5px solid;
   border-radius: 0;
@@ -34,6 +30,10 @@ const MyReviewsText = styled(theme.universalComponent.DivTextContainer)`
   line-height: 42px;
 `;
 
+const Point = styled(theme.universalComponent.DivTextContainer)`
+  color: red;
+`;
+
 /** Radar Chart에 들어갈 임시 데이터 */
 
 export default function ProfilePage() {
@@ -41,9 +41,13 @@ export default function ProfilePage() {
     <>
       <Header text={"MY"}></Header>
       <TitleWrap color={theme.colors.grayStroke}>
-        <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
-          ID: HongGilDong
-        </SubjectTitle>
+        <div>
+          <SubjectTitle fontSize={16} color={theme.colors.primaryText}>
+            ID: HongGilDong
+          </SubjectTitle>
+          <Point>54P</Point>
+        </div>
+
         <Button
           text="프로필 관리"
           onClick={() => {}}
@@ -53,7 +57,7 @@ export default function ProfilePage() {
       </TitleWrap>
 
       <>
-        <MyReviewsText fontSize={18} color={theme.colors.primaryText}>
+        <MyReviewsText fontSize={16} color={theme.colors.primaryText}>
           · 내가 쓴 강의평 ·
         </MyReviewsText>
       </>
