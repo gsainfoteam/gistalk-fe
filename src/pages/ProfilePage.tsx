@@ -56,12 +56,13 @@ const Semester = styled(theme.universalComponent.DivTextContainer)`
   width: 40vw;
   border-radius: 0;
   padding-bottom: 0.5em;
+  margin-bottom: 0.5em;
 `;
 
 const Subject = styled.div`
   display: flex;
   text-align: center;
-  padding: 1em 0;
+  padding: 0.5em 0;
 `;
 
 const SubjectName = styled(theme.universalComponent.DivTextContainer)`
@@ -83,6 +84,34 @@ const ContentWrap = styled.div`
 export default function ProfilePage() {
   const USER_NAME = "HongGilDong";
   const POINT_VALUE = 54;
+  const CLASS_LIST = [
+    {
+      time: "2022년 1학기",
+      subjects: [
+        {
+          className: "컴퓨터 프로그래밍",
+          professor: "Suman Pandey",
+        },
+        {
+          className: "일반물리학 및 연습",
+          professor: "박찬용  ",
+        },
+      ],
+    },
+    {
+      time: "2022년 2 학기",
+      subjects: [
+        {
+          className: "컴퓨터 프로그래밍",
+          professor: "Suman Pandey",
+        },
+        {
+          className: "일반물리학 및 연습",
+          professor: "박찬용  ",
+        },
+      ],
+    },
+  ];
   return (
     <>
       <Header text={"MY"} />
@@ -109,18 +138,25 @@ export default function ProfilePage() {
         <MyReviewsText fontSize={16} color={theme.colors.primaryText}>
           · 내가 쓴 강의평 ·
         </MyReviewsText>
-        <Semester fontSize={14} color={theme.colors.primary}>
-          2022년 1학기
-        </Semester>
-        <Subject>
-          <SubjectName fontSize={16} color={theme.colors.primaryText}>
-            컴퓨터 프로그래밍
-          </SubjectName>
-          <ProfessorName fontSize={14} color={theme.colors.grayStroke}>
-            Suman Pandey
-          </ProfessorName>
-          <ArrowIcon size={12} src={NavigationArrow_Svg} />
-        </Subject>
+
+        {CLASS_LIST.map((list) => (
+          <>
+            <Semester fontSize={14} color={theme.colors.primary}>
+              {list.time}
+            </Semester>
+            {list.subjects.map((subject) => (
+              <Subject>
+                <SubjectName fontSize={16} color={theme.colors.primaryText}>
+                  {subject.className}
+                </SubjectName>
+                <ProfessorName fontSize={14} color={theme.colors.grayStroke}>
+                  {subject.professor}
+                </ProfessorName>
+                <ArrowIcon size={12} src={NavigationArrow_Svg} />
+              </Subject>
+            ))}
+          </>
+        ))}
       </ContentWrap>
     </>
   );
