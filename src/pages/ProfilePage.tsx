@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import styled from "styled-components";
 import Button from "@/components/Button";
 import QuestionMark_svg from "../assets/svgs/circledQuestionMark.svg";
+import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
 
 const TitleWrap = styled.div<{ color: string }>`
   width: 87vw;
@@ -59,13 +60,20 @@ const Semester = styled(theme.universalComponent.DivTextContainer)`
 
 const Subject = styled.div`
   display: flex;
-  justify-content: space-between;
+  text-align: center;
+  padding: 1em 0;
 `;
 
-const SubjectName = styled(theme.universalComponent.DivTextContainer)``;
-const ProfessorName = styled(theme.universalComponent.DivTextContainer)``;
-const ArrowIcon = styled.div``;
-/** Radar Chart에 들어갈 임시 데이터 */
+const SubjectName = styled(theme.universalComponent.DivTextContainer)`
+  font-weight: bold;
+`;
+const ProfessorName = styled(theme.universalComponent.DivTextContainer)`
+  margin-left: 1em;
+`;
+const ArrowIcon = styled(theme.universalComponent.SvgIcon)`
+  transform: rotate(180deg);
+  margin-left: auto;
+`;
 
 const ContentWrap = styled.div`
   width: 87vw;
@@ -101,17 +109,17 @@ export default function ProfilePage() {
         <MyReviewsText fontSize={16} color={theme.colors.primaryText}>
           · 내가 쓴 강의평 ·
         </MyReviewsText>
-        <Semester fontSize={12} color={theme.colors.primary}>
+        <Semester fontSize={14} color={theme.colors.primary}>
           2022년 1학기
         </Semester>
         <Subject>
           <SubjectName fontSize={16} color={theme.colors.primaryText}>
             컴퓨터 프로그래밍
           </SubjectName>
-          <ProfessorName fontSize={16} color={theme.colors.primaryText}>
-            suman pandey
+          <ProfessorName fontSize={14} color={theme.colors.grayStroke}>
+            Suman Pandey
           </ProfessorName>
-          <ArrowIcon> &gt; </ArrowIcon>
+          <ArrowIcon size={12} src={NavigationArrow_Svg} />
         </Subject>
       </ContentWrap>
     </>
