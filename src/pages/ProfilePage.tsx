@@ -62,7 +62,7 @@ const Semester = styled(theme.universalComponent.DivTextContainer)`
 const Subject = styled.div`
   display: flex;
   text-align: center;
-  padding: 0.5em 0;
+  padding: 0.4em 0;
 `;
 
 const SubjectName = styled(theme.universalComponent.DivTextContainer)`
@@ -79,6 +79,10 @@ const ArrowIcon = styled(theme.universalComponent.SvgIcon)`
 const ContentWrap = styled.div`
   width: 87vw;
   margin: 10px auto 0 auto;
+`;
+
+const MyEvaluationWrap = styled.div`
+  margin-top: 1em;
 `;
 
 export default function ProfilePage() {
@@ -140,7 +144,7 @@ export default function ProfilePage() {
         </MyReviewsText>
 
         {CLASS_LIST.map((list) => (
-          <>
+          <MyEvaluationWrap>
             <Semester fontSize={14} color={theme.colors.primary}>
               {list.time}
             </Semester>
@@ -155,7 +159,7 @@ export default function ProfilePage() {
                 <ArrowIcon size={12} src={NavigationArrow_Svg} />
               </Subject>
             ))}
-          </>
+          </MyEvaluationWrap>
         ))}
       </ContentWrap>
     </>
