@@ -43,7 +43,7 @@ export interface IButton {
 /** like : 좋아요 누름 / dislike : 싫어요 누름 / none : 둘 다 안 누름 */
 export type pushedLike = "like" | "dislike" | "none";
 
-/** 한줄평 */
+/** 한줄평 또는 세부 강의평가 */
 export interface IReply {
   id: number;
 
@@ -57,16 +57,15 @@ export interface IReply {
   like: number;
   /** 해당 한줄평(또는 세부평가)에 대한 싫어요 수 */
   dislike: number;
-  /** 한줄평(세부 평가) 내용 */
-  content: string;
+  /** 한줄평(또는 세부평가) 내용
+   * 이 string array의 length가 1이면 한줄평, 3이면 세부평가 글 (1도 3도 아니면 에러 뜨게)
+   * 세부평가 글이면, 첫번째에는 시험 문제 유형, 두번째에는 과제 유형, 세번째에는 학점 잘 받는 팁 문단이 들어감*/
+  content: string[];
   /** 좋아요/싫어요 중에 사용자가 누른 거 있는지, 있으면 뭐 눌렀는지 */
   pushedLike: pushedLike;
-}
 
-/** 세부 강의평가 (CE는 ClassEvaluation 줄인거) */
-export interface IDetailedCE extends IReply {
-  content2: string;
-  content3: string;
+  /** 해당 수강평이 사용자에게 잠겼는지 여부*/
+  isLocked: boolean;
 }
 
 /** 받아야 할 과목 데이터 형식 */
@@ -84,5 +83,5 @@ export interface ISubjectData {
   /** 한줄평 리스트 */
   oneLineReview: IReply[];
   /** 세부평가 리스트*/
-  detailedReview: IDetailedCE[];
+  detailedReview: IReply[];
 }
