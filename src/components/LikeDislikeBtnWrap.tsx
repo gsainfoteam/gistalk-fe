@@ -49,25 +49,27 @@ export default function LikeDislikeBtnWrap({ like, dislike }: IProps) {
     <>
       <Btn
         onClick={() => {
-          setLikeState(pushedLike == "like" ? "none" : "like");
-          setLikeNum(likeNum != 1 ? 1 : 0);
+          setLikeState(pushedLike === "like" ? "none" : "like");
+          setLikeNum(likeNum !== 1 ? 1 : 0);
         }}
         color={
-          pushedLike == "like" ? theme.colors.primary : theme.colors.primaryText
+          pushedLike === "like"
+            ? theme.colors.primary
+            : theme.colors.primaryText
         }
         bgColor={theme.colors.inputBg}
         fontSize={11}
       >
         <Svg
-          src={pushedLike == "like" ? ThumbUp_Svg : ThumbUpBlack_Svg}
+          src={pushedLike === "like" ? ThumbUp_Svg : ThumbUpBlack_Svg}
           size={16}
         ></Svg>
-        <div>{likeNum == 1 ? like + likeNum : like}</div>
+        <div>{likeNum === 1 ? like + likeNum : like}</div>
       </Btn>
       <Btn
         onClick={() => {
-          setLikeState(pushedLike == "dislike" ? "none" : "dislike");
-          setLikeNum(likeNum != -1 ? -1 : 0);
+          setLikeState(pushedLike === "dislike" ? "none" : "dislike");
+          setLikeNum(likeNum !== -1 ? -1 : 0);
         }}
         color={
           pushedLike == "dislike"
@@ -78,10 +80,10 @@ export default function LikeDislikeBtnWrap({ like, dislike }: IProps) {
         fontSize={11}
       >
         <DislikeSvg
-          src={pushedLike == "dislike" ? ThumbDown_Svg : ThumbDownBlack_Svg}
+          src={pushedLike === "dislike" ? ThumbDown_Svg : ThumbDownBlack_Svg}
           size={16}
         ></DislikeSvg>
-        <div>{likeNum == -1 ? dislike + likeNum : dislike}</div>
+        <div>{likeNum === -1 ? dislike + likeNum : dislike}</div>
       </Btn>
     </>
   );
