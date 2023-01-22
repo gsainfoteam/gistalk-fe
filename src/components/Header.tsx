@@ -5,13 +5,18 @@ import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
 import { IHeader } from "../Interfaces/interfaces";
 import { Link } from "react-router-dom";
 
-const Wrap = styled.div`
+const Wrap = styled.div<{ bgColor: string }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   width: 100vw;
   height: 60px;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0px;
+  background-color: ${(props) => props.bgColor};
+  z-index: 100;
 `;
 
 const NavigationArrowSvg = styled(theme.universalComponent.SvgIcon)`
@@ -26,7 +31,7 @@ const NavigationText = styled.div<{ color: string }>`
 
 export default function Header({ text }: IHeader) {
   return (
-    <Wrap>
+    <Wrap bgColor={theme.colors.white}>
       <Link to="/">
         <NavigationArrowSvg
           size={22}
