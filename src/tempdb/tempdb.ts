@@ -45,7 +45,6 @@ export const tempdb: ISubjectData[] = [
         content: [
           "여름학기를 즐길 생각이라면 로드가 많아서 비추천, 하지만 수업 자체로 놓고 본다면 지스트에서 하는 것보다 환경이 잘 정리되어 있고 신기술 adoption이 빨라 많은 도움이 됨",
         ],
-        pushedLike: "none",
         isLocked: false,
       },
       {
@@ -56,7 +55,6 @@ export const tempdb: ISubjectData[] = [
         like: 871,
         dislike: 169,
         content: ["이분 수업 늦게 끝내주셔서 밥을 제때 못먹음 진짜 미쳐버림림"],
-        pushedLike: "like",
         isLocked: false,
       },
       {
@@ -69,7 +67,6 @@ export const tempdb: ISubjectData[] = [
         content: [
           "진짜 가슴이 웅장해진다... 강의 실화냐?? 정말 세계관 최강자의 강의이다...",
         ],
-        pushedLike: "dislike",
         isLocked: false,
       },
     ],
@@ -87,7 +84,6 @@ export const tempdb: ISubjectData[] = [
           "과제가 진짜 개많습니다. 일주일에 하나씩 나가는데 진짜 하는데 한세월걸림 / 리포트 작성 형식인데, 한번당 1000단어 이상이라서 진짜 어질어질함 그래도 얻어가는 건 있음",
           "첫째로 교수님 심기를 건드리지 마세유. 둘째로 과제를 척척 잘 내세유. 시험을 겁나 잘 보면 됩니다. 간단하쥬?",
         ],
-        pushedLike: "none",
         isLocked: false,
       },
       {
@@ -103,7 +99,6 @@ export const tempdb: ISubjectData[] = [
           "Aliquam diam est, interdum sed diam at, auctor elementum turpis. Sed scelerisque, justo sit amet tincidunt iaculis, lectus enim facilisis ex, vulputate efficitur lorem purus nec ipsum. Sed id purus sed purus laoreet maximus in sed sapien.\n" +
             "Ut sem turpis, dignissim vel sapien non, mattis tristique tortor.",
         ],
-        pushedLike: "none",
         isLocked: true,
       },
     ],
@@ -151,7 +146,6 @@ export const tempdb: ISubjectData[] = [
         content: [
           "여름학기를 즐길 생각이라면 로드가 많아서 비추천, 하지만 수업 자체로 놓고 본다면 지스트에서 하는 것보다 환경이 잘 정리되어 있고 신기술 adoption이 빨라 많은 도움이 됨",
         ],
-        pushedLike: "none",
         isLocked: false,
       },
       {
@@ -162,7 +156,6 @@ export const tempdb: ISubjectData[] = [
         like: 871,
         dislike: 169,
         content: ["이분 수업 늦게 끝내주셔서 밥을 제때 못먹음 진짜 미쳐버림림"],
-        pushedLike: "like",
         isLocked: false,
       },
       {
@@ -175,7 +168,6 @@ export const tempdb: ISubjectData[] = [
         content: [
           "진짜 가슴이 웅장해진다... 강의 실화냐?? 정말 세계관 최강자의 강의이다...",
         ],
-        pushedLike: "dislike",
         isLocked: false,
       },
     ],
@@ -193,7 +185,6 @@ export const tempdb: ISubjectData[] = [
           "과제가 진짜 개많습니다. 일주일에 하나씩 나가는데 진짜 하는데 한세월걸림 / 리포트 작성 형식인데, 한번당 1000단어 이상이라서 진짜 어질어질함 그래도 얻어가는 건 있음",
           "첫째로 교수님 심기를 건드리지 마세유. 둘째로 과제를 척척 잘 내세유. 시험을 겁나 잘 보면 됩니다. 간단하쥬?",
         ],
-        pushedLike: "none",
         isLocked: false,
       },
     ],
@@ -241,7 +232,6 @@ export const tempdb: ISubjectData[] = [
         content: [
           "여름학기를 즐길 생각이라면 로드가 많아서 비추천, 하지만 수업 자체로 놓고 본다면 지스트에서 하는 것보다 환경이 잘 정리되어 있고 신기술 adoption이 빨라 많은 도움이 됨",
         ],
-        pushedLike: "none",
         isLocked: false,
       },
       {
@@ -252,7 +242,6 @@ export const tempdb: ISubjectData[] = [
         like: 871,
         dislike: 169,
         content: ["이분 수업 늦게 끝내주셔서 밥을 제때 못먹음 진짜 미쳐버림림"],
-        pushedLike: "like",
         isLocked: false,
       },
       {
@@ -265,7 +254,6 @@ export const tempdb: ISubjectData[] = [
         content: [
           "진짜 가슴이 웅장해진다... 강의 실화냐?? 정말 세계관 최강자의 강의이다...",
         ],
-        pushedLike: "dislike",
         isLocked: false,
       },
     ],
@@ -283,7 +271,6 @@ export const tempdb: ISubjectData[] = [
           "과제가 진짜 개많습니다. 일주일에 하나씩 나가는데 진짜 하는데 한세월걸림 / 리포트 작성 형식인데, 한번당 1000단어 이상이라서 진짜 어질어질함 그래도 얻어가는 건 있음",
           "첫째로 교수님 심기를 건드리지 마세유. 둘째로 과제를 척척 잘 내세유. 시험을 겁나 잘 보면 됩니다. 간단하쥬?",
         ],
-        pushedLike: "none",
         isLocked: false,
       },
     ],
