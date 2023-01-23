@@ -386,7 +386,6 @@ export default function Search() {
           <SearchSvg size={30} src={Search_Svg} />
         </SearchBtnWrap>
       </SearchWrap>
-
       <OptionBtnWrap
         color={theme.colors.secondaryText}
         fontSize={14}
@@ -395,7 +394,6 @@ export default function Search() {
         <p>검색 옵션</p>
         <FilterSvg size={20} src={Filter_Svg}></FilterSvg>
       </OptionBtnWrap>
-
       {optionOpen && (
         <SearchOptionOpenedWrap>
           <SearchDrop
@@ -489,17 +487,33 @@ export default function Search() {
           </SearchDrop>
         </SearchOptionOpenedWrap>
       )}
-
+      {/**case 1: 아무것도 선택되지 않은 경우, 전체 출력/ case 2: 선택된 것이 있는 경우 includes로 필터링하여 출력*/}
       <ItemList>
-        {TempSearchList.map((item) => (
-          <SearchCard
-            key={item.id}
-            subjectCode={item.subjectCode}
-            professorName={item.professorName}
-            subjectName={item.subjectName}
-            subjectScore={item.subjectScore}
-          ></SearchCard>
-        ))}
+        {TempSearchList.map((item) =>
+          departmentOption[2].length != 0 ? (
+            departmentOption[2].map((code) =>
+              item.subjectCode.includes(code) ? (
+                <SearchCard
+                  key={item.id}
+                  subjectCode={item.subjectCode}
+                  professorName={item.professorName}
+                  subjectName={item.subjectName}
+                  subjectScore={item.subjectScore}
+                ></SearchCard>
+              ) : (
+                <></>
+              )
+            )
+          ) : (
+            <SearchCard
+              key={item.id}
+              subjectCode={item.subjectCode}
+              professorName={item.professorName}
+              subjectName={item.subjectName}
+              subjectScore={item.subjectScore}
+            ></SearchCard>
+          )
+        )}
       </ItemList>
       {/* header, footer 어떻게 할지 논의 필요할듯? */}
     </>
