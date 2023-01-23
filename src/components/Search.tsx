@@ -341,23 +341,31 @@ export default function Search() {
   }
 
   /** 임시 아이템 리스트 */
-  const TempSearchList: ISearchCard[] = tempdb.map((i) => {
-    /** 평균 점수 계산 */
-    let avgScore: number = 0;
-    i.hexData.map((j) => (avgScore += j.score));
-    avgScore /= 6;
-    let avgScoreStr: string = (
-      Math.round((avgScore + Number.EPSILON) * 100) / 100
-    ).toFixed(1); //소수점 둘째자리에서 반올림, 소수점 고정
+  const TempSearchList: ISearchCard[] = tempdb
+    .map((i) => {
+      /** 평균 점수 계산 */
+      let avgScore: number = 0;
+      i.hexData.map((j) => (avgScore += j.score));
+      avgScore /= 6;
+      let avgScoreStr: string = (
+        Math.round((avgScore + Number.EPSILON) * 100) / 100
+      ).toFixed(1); //소수점 둘째자리에서 반올림, 소수점 고정
 
-    return {
-      id: i.id,
-      subjectCode: i.subjectCode,
-      professorName: i.professorName,
-      subjectName: i.subjectName,
-      subjectScore: avgScoreStr,
-    };
-  });
+      return {
+        id: i.id,
+        subjectCode: i.subjectCode,
+        professorName: i.professorName,
+        subjectName: i.subjectName,
+        subjectScore: avgScoreStr,
+        stdData: i.hexData,
+      };
+    }) /**내림차순 정렬: hexData의 subject가 정렬 토글 선택값에 따른 sortStd의 score에 값에 따라 정렬됨 */
+    .sort((a, b) => {
+      return (
+        b.stdData.filter((hex) => hex.subject === sortStd)[0].score -
+        a.stdData.filter((hex) => hex.subject === sortStd)[0].score
+      );
+    });
 
   return (
     <>
