@@ -235,19 +235,21 @@ const minor: IDepartment[] = [
   { subjectCode: "AI", korean: "AI융합", fullKorean: "AI융합 부전공", id: 7 },
 ];
 
-/** 정렬을 어떻게 할지 선택할 수 있는 리스트 */
-const sortList: { id: number; content: string }[] = [
-  { id: 1, content: "수업 쉬운 순" },
-  { id: 2, content: "유익한 순" },
-  { id: 3, content: "성적 만족도 순" },
-  { id: 4, content: "과제 적은 순" },
-  { id: 5, content: "수업 재밌는 순" },
-  { id: 6, content: "강의력 좋은 순" },
+/** 정렬을 어떻게 할지 선택할 수 있는 리스트: std 기준으로 sort 함수 생성 */
+const sortList: { id: number; content: string; std: string }[] = [
+  { id: 1, content: "수업 쉬운 순", std: "수업 난이도" },
+  { id: 2, content: "유익한 순", std: "유익함" },
+  { id: 3, content: "성적 만족도 순", std: "성적 만족도" },
+  { id: 4, content: "과제 적은 순", std: "과제량" },
+  { id: 5, content: "수업 재밌는 순", std: "재미/흥미" },
+  { id: 6, content: "강의력 좋은 순", std: "강의력" },
 ];
 
 export default function Search() {
   const [optionOpen, setOptionOpen] = useState(false);
   const [departmentOpen, setDepartmentOpen] = useState(false);
+
+  const [sortStd, setSortStd] = useState("수업 난이도");
 
   /** 담는 형식은 [[...fullKorean],[...korean]], 여기에 현재 필터 분과 정보를 저장함. */
   const [departmentOption, setDepartmentOption] = useState<
@@ -459,9 +461,12 @@ export default function Search() {
               <SortSelect
                 color={theme.colors.secondaryText}
                 bg={theme.colors.inputBg}
+                onChange={(e) => setSortStd(e.target.value)}
               >
                 {sortList.map((item) => (
-                  <option key={item.id}>{item.content}</option>
+                  <option key={item.id} value={item.std}>
+                    {item.content}
+                  </option>
                 ))}
               </SortSelect>
             </div>
