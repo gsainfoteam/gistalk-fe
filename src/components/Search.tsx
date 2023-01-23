@@ -235,7 +235,7 @@ const minor: IDepartment[] = [
   { subjectCode: "AI", korean: "AI융합", fullKorean: "AI융합 부전공", id: 7 },
 ];
 
-/** 정렬을 어떻게 할지 선택할 수 있는 리스트: std 기준으로 sort 함수 생성 */
+/** 정렬을 어떻게 할지 선택할 수 있는 리스트: std 기준으로 sort*/
 const sortList: { id: number; content: string; std: string }[] = [
   { id: 1, content: "수업 쉬운 순", std: "수업 난이도" },
   { id: 2, content: "유익한 순", std: "유익함" },
@@ -251,10 +251,10 @@ export default function Search() {
 
   const [sortStd, setSortStd] = useState("수업 난이도");
 
-  /** 담는 형식은 [[...fullKorean],[...korean]], 여기에 현재 필터 분과 정보를 저장함. */
+  /** 담는 형식은 [[...fullKorean],[...korean],[...subjectCode]], 여기에 현재 필터 분과 정보를 저장함. */
   const [departmentOption, setDepartmentOption] = useState<
-    [string[], string[]]
-  >([[], []]);
+    [string[], string[], string[]]
+  >([[], [], []]);
 
   /** 검색 옵션-전공에서 분과 선택 시 보이는 부분(선택하세요 / 전공(부전공) 이름) */
   const [displayedDepartmentOption, setDisplayedDepartmentOption] =
@@ -291,7 +291,11 @@ export default function Search() {
   };
 
   /** 검색 옵션 State를 바꿔주는 함수 */
-  const switchDepartmentOption = (fullKorean: string, korean: string) => {
+  const switchDepartmentOption = (
+    fullKorean: string,
+    korean: string,
+    subjectCode: string
+  ) => {
     const findItem = (i: string) => {
       return departmentOption[0].find((j) => j === i) !== undefined;
     };
@@ -301,12 +305,14 @@ export default function Search() {
       setDepartmentOption([
         departmentOption[0].filter((i) => i !== fullKorean),
         departmentOption[1].filter((i) => i !== korean),
+        departmentOption[2].filter((i) => i !== subjectCode),
       ]);
     } else {
       // 없으면
       setDepartmentOption([
         [...departmentOption[0], fullKorean],
         [...departmentOption[1], korean],
+        [...departmentOption[2], subjectCode],
       ]);
     }
     console.log(departmentOption);
@@ -326,7 +332,9 @@ export default function Search() {
     return (
       <DepartmentGridItemWrap
         key={item.id}
-        onClick={() => switchDepartmentOption(item.fullKorean, item.korean)}
+        onClick={() =>
+          switchDepartmentOption(item.fullKorean, item.korean, item.subjectCode)
+        }
       >
         <TempIcon
           text={item.subjectCode}
