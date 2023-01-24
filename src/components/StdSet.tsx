@@ -41,9 +41,33 @@ export const minor: IDepartment[] = [
   },
   {
     subjectCode: "LH",
-    korean: "인문사회",
-    fullKorean: "인문사회 부전공",
+    korean: "문학·역사",
+    fullKorean: "문학과 역사 부전공",
     id: 6,
   },
-  { subjectCode: "AI", korean: "AI융합", fullKorean: "AI융합 부전공", id: 7 },
+  {
+    subjectCode: "PP",
+    korean: "공공정책",
+    fullKorean: "공공정책(법정치사회) 부전공",
+    id: 7,
+  },
+  {
+    subjectCode: "EB",
+    korean: "경제·경영",
+    fullKorean: "경제·경영 부전공",
+    id: 6,
+  },
+  {
+    subjectCode: "SS",
+    korean: "기술사회",
+    fullKorean: "과학기술과 사회 부전공",
+    id: 8,
+  },
+  {
+    subjectCode: "MB",
+    korean: "마음·행동",
+    fullKorean: "마음과 행동 부전공",
+    id: 9,
+  },
+  { subjectCode: "AI", korean: "AI융합", fullKorean: "AI융합 부전공", id: 10 },
 ];
