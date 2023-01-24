@@ -442,31 +442,24 @@ export default function Search() {
       )}
       {/**case 1: 아무것도 선택되지 않은 경우, 전체 출력/ case 2: 선택된 것이 있는 경우 includes로 필터링하여 출력*/}
       <ItemList>
-        {TempSearchList.map((item) =>
-          departmentOption[2].length != 0 ? (
-            departmentOption[2].map((code) =>
-              item.subjectCode.includes(code) ? (
-                <SearchCard
-                  key={item.id}
-                  subjectCode={item.subjectCode}
-                  professorName={item.professorName}
-                  subjectName={item.subjectName}
-                  subjectScore={item.subjectScore}
-                ></SearchCard>
-              ) : (
-                <></>
-              )
-            )
-          ) : (
-            <SearchCard
-              key={item.id}
-              subjectCode={item.subjectCode}
-              professorName={item.professorName}
-              subjectName={item.subjectName}
-              subjectScore={item.subjectScore}
-            ></SearchCard>
-          )
-        )}
+        {TempSearchList.map((item) => {
+          if (
+            departmentOption[2].length === 0 ||
+            departmentOption[2].some((code) => item.subjectCode.includes(code))
+          ) {
+            return (
+              <SearchCard
+                key={item.id}
+                subjectCode={item.subjectCode}
+                professorName={item.professorName}
+                subjectName={item.subjectName}
+                subjectScore={item.subjectScore}
+              />
+            );
+          } else {
+            return null;
+          }
+        })}
       </ItemList>
       {/* header, footer 어떻게 할지 논의 필요할듯? */}
     </>
