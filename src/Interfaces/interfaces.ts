@@ -33,6 +33,13 @@ export interface IHeader {
   text: string;
 }
 
+export interface IButton {
+  text: string;
+  onClick: () => void;
+  color: string;
+  background: string;
+}
+
 /** like : 좋아요 누름 / dislike : 싫어요 누름 / none : 둘 다 안 누름 */
 export type pushedLike = "like" | "dislike" | "none";
 
