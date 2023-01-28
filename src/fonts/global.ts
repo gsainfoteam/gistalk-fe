@@ -16,4 +16,13 @@ export default createGlobalStyle`
         font-family: "NSMedium";
         src: url(${NSMedium}) format('woff2');
     }
+    @font-face {
+      font-family: "Aharoni"; 
+      src: url("//db.onlinewebfonts.com/t/22db60d19480ba0274c9eb6ba877ea9b.eot"); 
+      src: url("//db.onlinewebfonts.com/t/22db60d19480ba0274c9eb6ba877ea9b.eot?#iefix") 
+      format("embedded-opentype"), url("//db.onlinewebfonts.com/t/22db60d19480ba0274c9eb6ba877ea9b.woff2") 
+      format("woff2"), url("//db.onlinewebfonts.com/t/22db60d19480ba0274c9eb6ba877ea9b.woff") format("woff"), 
+      url("//db.onlinewebfonts.com/t/22db60d19480ba0274c9eb6ba877ea9b.ttf") format("truetype"), 
+      url("//db.onlinewebfonts.com/t/22db60d19480ba0274c9eb6ba877ea9b.svg#Aharoni") format("svg"); 
+    }
 `;

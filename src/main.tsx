@@ -6,9 +6,9 @@ import { ThemeProvider } from "styled-components";
 import { theme } from "./style/theme";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Search from "../src/components/Search";
-import ClassEvaluation from "./components/ClassEvaluation";
-import DetailedCE from "./components/DetailedCE";
+import Search from "./pages/Search";
+import ClassEvaluation from "./pages/ClassEvaluation";
+import DetailedCE from "./pages/DetailedCE";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

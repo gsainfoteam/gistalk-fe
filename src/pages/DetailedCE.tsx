@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { theme } from "../style/theme";
-import Header from "./Header";
+import Header from "../components/Header";
 import { tempdb } from "../tempdb/tempdb";
-import Reply from "./Reply";
+import Reply from "../components/Reply";
 
-import Title from "./Title";
+import Title from "../components/Title";
 
 /** 각 세부평가를 구분짓는 가로선 */
 const HorizontalLine = styled.div<{ borderColor: string }>`
