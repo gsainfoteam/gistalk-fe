@@ -33,6 +33,13 @@ export interface IHeader {
   text: string;
 }
 
+export interface IButton {
+  text: string;
+  onClick: () => void;
+  color: string;
+  background: string;
+}
+
 /** like : 좋아요 누름 / dislike : 싫어요 누름 / none : 둘 다 안 누름 */
 export type pushedLike = "like" | "dislike" | "none";
 
@@ -55,7 +62,7 @@ export interface IReply {
    * 세부평가 글이면, 첫번째에는 시험 문제 유형, 두번째에는 과제 유형, 세번째에는 학점 잘 받는 팁 문단이 들어감*/
   content: string[];
   /** 좋아요/싫어요 중에 사용자가 누른 거 있는지, 있으면 뭐 눌렀는지 */
-  pushedLike: pushedLike;
+  //pushedLike:pushedLike;
 
   /** 해당 수강평이 사용자에게 잠겼는지 여부*/
   isLocked: boolean;

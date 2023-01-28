@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Search from "./pages/Search";
 import ClassEvaluation from "./pages/ClassEvaluation";
+import ProfilePage from "./pages/ProfilePage";
 import DetailedCE from "./pages/DetailedCE";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <Routes>
           <Route path="/" element={<Search />} />
           <Route path="/ClassEvaluation" element={<ClassEvaluation />} />
+          <Route path="/Profile" element={<ProfilePage />} />
           <Route path="/DetailedCE" element={<DetailedCE />} />
         </Routes>
       </ThemeProvider>
