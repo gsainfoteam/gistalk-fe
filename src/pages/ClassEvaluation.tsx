@@ -1,6 +1,6 @@
-import Hexagon from "./Hexagon";
+import Hexagon from "../components/Hexagon";
 import { theme } from "../style/theme";
-import Header from "./Header";
+import Header from "../components/Header";
 import styled from "styled-components";
 import { useState } from "react";
 
@@ -8,8 +8,8 @@ import ArrowL_Svg from "../assets/svgs/arrowL.svg";
 import { IHexData } from "../Interfaces/interfaces";
 import { tempdb } from "../tempdb/tempdb";
 
-import Reply from "./Reply";
-import Title from "./Title";
+import Reply from "../components/Reply";
+import Title from "../components/Title";
 
 /** · 수강생들의 평가 · 를 표시하는 div */
 const EvaluationText = styled(theme.universalComponent.DivTextContainer)`
