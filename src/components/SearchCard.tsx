@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { theme } from "../style/theme";
 import TempIcon from "./TempIcon";
+import { major, minor } from "./StdSet";
 
 interface IProps {
   subjectCode: string;
@@ -80,10 +81,17 @@ export default function SearchCard({
   subjectScore,
 }: IProps) {
   const Division = subjectCode.slice(0, 2);
-
+  /**major, minor 강의 코드와 대조해서 일치하면 전공/부전공/공통 과목 색상 부여 */
+  const IconColor: string = major
+    .map((item) => Division === item.subjectCode)
+    .includes(true)
+    ? "#FFCF23"
+    : minor.map((item) => Division === item.subjectCode).includes(true)
+    ? "#8CBAFF"
+    : "#E0E0E0";
   return (
     <SearchCardWrap>
-      <TempIcon text={Division} color={"#FFCF23"} isChecked={false}></TempIcon>
+      <TempIcon text={Division} color={IconColor} isChecked={false}></TempIcon>
       <CardContentWrap color={theme.colors.primaryText}>
         <p>
           {subjectCode}&nbsp;&nbsp;|&nbsp;&nbsp; {/* 과목 코드 */}
