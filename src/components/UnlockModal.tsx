@@ -6,7 +6,6 @@ import React, { useState } from "react";
 import { tempdb } from "../tempdb/tempdb";
 import RecommendTextForm from "./RecommendTextForm";
 import LikeDislikeBtnWrap from "./LikeDislikeBtnWrap";
-import { pushedLike } from "../Interfaces/interfaces";
 
 import lock_Svg from "../assets/svgs/lock.svg";
 import done_Svg from "../assets/svgs/done.svg";
@@ -18,7 +17,6 @@ interface IProps {
   semester: string;
   like: number;
   dislike: number;
-  pushedLike: pushedLike;
   isOpen: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   currentPoint: number;
@@ -130,7 +128,6 @@ export default function UnlockModal({
   semester,
   like,
   dislike,
-  pushedLike,
   isOpen,
   setOpen,
   currentPoint,
@@ -157,7 +154,6 @@ export default function UnlockModal({
               <LikeDislikeBtnWrap
                 like={like}
                 dislike={dislike}
-                pushedLike={pushedLike}
               ></LikeDislikeBtnWrap>
             </RightWrap>
           </InfoWrap>
