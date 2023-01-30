@@ -2,8 +2,7 @@ import { theme } from "../style/theme";
 import styled from "styled-components";
 import Sheet from "react-modal-sheet";
 import React, { ReactNode, useState } from "react";
-import { elements } from "chart.js";
-
+import done_Svg from "../assets/svgs/done.svg";
 interface IProps {
   isOpen: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -72,7 +71,6 @@ const PointRule = ({ rule, point }: { rule: string; point: number }) => {
     font-size: 14px;
     font-family: NSMedium;
   `;
-
   const DashedLine = styled.hr`
     height: 1px;
     flex-basis: 1px;
@@ -81,25 +79,42 @@ const PointRule = ({ rule, point }: { rule: string; point: number }) => {
     border: 0px;
     border-top: 1px dashed ${theme.colors.secondaryText};
   `;
-
   const PointRulePoint = styled.span<{ point: number }>`
     color: ${(props) =>
       props.point > 0 ? theme.colors.primary : theme.colors.reverse};
   `;
-  return point > 0 ? (
+  const P = styled.span`
+    color: ${theme.colors.black};
+  `;
+  return (
     <PointRuleWrap>
       {rule}
       <DashedLine />
-      <PointRulePoint point={point}>{point}P 적립</PointRulePoint>
-    </PointRuleWrap>
-  ) : (
-    <PointRuleWrap>
-      <p>{rule}</p>
-      <DashedLine />
-      <PointRulePoint point={point}>{point}P 적립</PointRulePoint>
+      <PointRulePoint point={point}>
+        {Math.abs(point)}
+        <P>P</P> {point > 0 ? "적립" : "차감"}
+      </PointRulePoint>
     </PointRuleWrap>
   );
 };
+
+const Button = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  background-color: ${theme.colors.primary};
+  color: ${theme.colors.white};
+  font-family: NSBold;
+  height: 40px;
+  width: 218px;
+  margin: 35px auto 19px auto;
+`;
+
+const DoneSvg = styled(theme.universalComponent.SvgIcon)`
+  margin: 0 3px;
+`;
 
 export default function DescriptionModal({ isOpen, setOpen }: IProps) {
   return (
@@ -124,6 +139,14 @@ export default function DescriptionModal({ isOpen, setOpen }: IProps) {
             <PointRule rule={"강의평가 작성"} point={5} />
             <PointRule rule={"세부 강의평가 작성"} point={10} />
             <PointRule rule={"세부 강의평가 열람"} point={-5} />
+            <Button
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              확인했어요
+              <DoneSvg size={19} src={done_Svg} />
+            </Button>
           </Wrap>
         </Sheet.Content>
       </Sheet.Container>
