@@ -1,8 +1,12 @@
-import Hexagon from "@/components/Hexagon";
-import { theme } from "@/style/theme";
-import Header from "@/components/Header";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { theme } from "@/style/theme";
+
+import Hexagon from "@/components/Hexagon";
+import Header from "@/components/Header";
 import Button from "@/components/Button";
+import DescriptionModal from "@/components/DescriptionModal";
+
 import QuestionMark_svg from "../assets/svgs/circledQuestionMark.svg";
 import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
 
@@ -86,6 +90,8 @@ const MyEvaluationWrap = styled.div`
 `;
 
 export default function ProfilePage() {
+  const [isOpen, setIsOpen] = useState(false);
+
   const USER_NAME = "HongGilDong";
   const POINT_VALUE = 54;
   const CLASS_LIST = [
@@ -127,7 +133,11 @@ export default function ProfilePage() {
           <Point>
             <PointValue>{POINT_VALUE}</PointValue>
             <div>P</div>
-            <HelperIcon src={QuestionMark_svg} size={16} />
+            <HelperIcon
+              src={QuestionMark_svg}
+              size={16}
+              onClick={() => setIsOpen(true)}
+            />
           </Point>
         </div>
 
@@ -162,6 +172,7 @@ export default function ProfilePage() {
           </MyEvaluationWrap>
         ))}
       </ContentWrap>
+      <DescriptionModal isOpen={isOpen} setOpen={setIsOpen} />
     </>
   );
 }

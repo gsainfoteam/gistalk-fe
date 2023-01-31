@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { theme } from "../style/theme";
-import { pushedLike } from "../Interfaces/interfaces";
 import { useState } from "react";
 
 import ThumbUp_Svg from "../assets/svgs/thumbUp.svg";
@@ -11,7 +10,6 @@ import ThumbDownBlack_Svg from "../assets/svgs/thumbDown_Black.svg";
 interface IProps {
   like: number;
   dislike: number;
-  pushedLike: pushedLike;
 }
 
 const Btn = styled(theme.universalComponent.DivTextContainer)<{
