@@ -14,15 +14,15 @@ const TitleWrap = styled.div<{ color: string; bgColor: string }>`
     align-items: center;
   }
 
+  padding-top: 13px;
   padding-bottom: 13px;
   border-bottom: ${(props) => props.color} 1.5px solid;
   border-radius: 0;
   background-color: ${(props) => props.bgColor};
-
+  
+  top:0px;
   position: sticky;
-  position: -webkit-sticky;
-  top: 60px;
-  z-index: 100;
+  z-index: 10;
 `;
 
 /** 과목 이름과 코드를 감싸는 div. 과목과 이름이 같은 형태라서 재사용함 */

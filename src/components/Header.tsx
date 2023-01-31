@@ -12,11 +12,7 @@ const Wrap = styled.div<{ bgColor: string }>`
 
   width: 100vw;
   height: 60px;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0px;
   background-color: ${(props) => props.bgColor};
-  z-index: 100;
 `;
 
 const NavigationArrowSvg = styled(theme.universalComponent.SvgIcon)`

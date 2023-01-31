@@ -16,6 +16,7 @@ import {
   ISearchCard,
 } from "../Interfaces/interfaces";
 import { tempdb } from "../tempdb/tempdb";
+import { major, minor } from "../components/StdSet";
 
 /** 페이지 최상단의 로고, 마이페이지 버튼 있는 부분 */
 const TopWrap = styled.div`
@@ -210,72 +211,26 @@ const ItemList = styled.div`
   margin: 15px auto 0 auto;
 `;
 
-/** 전공 분과 선택을 위한 오브젝트 리스트 */
-const major: IDepartment[] = [
-  { subjectCode: "GS", korean: "기초", fullKorean: "기초교육학부", id: 1 },
-  { subjectCode: "BS", korean: "생명", fullKorean: "생명과학부", id: 2 },
-  { subjectCode: "CH", korean: "화학", fullKorean: "화학과", id: 3 },
-  {
-    subjectCode: "EC",
-    korean: "전컴",
-    fullKorean: "전기전자컴퓨터공학부",
-    id: 4,
-  },
-  { subjectCode: "EV", korean: "지환공", fullKorean: "지구·환경공학부", id: 5 },
-  { subjectCode: "MA", korean: "신소재", fullKorean: "신소재공학부", id: 6 },
-  { subjectCode: "PS", korean: "물리", fullKorean: "물리·광과학과", id: 7 },
-  { subjectCode: "ME", korean: "기계", fullKorean: "기계공학부", id: 8 },
-];
-
-/** 부전공 분과 선택을 위한 오브젝트 리스트 */
-const minor: IDepartment[] = [
-  { subjectCode: "MM", korean: "수학", fullKorean: "수학 부전공", id: 1 },
-  {
-    subjectCode: "MD",
-    korean: "의생공",
-    fullKorean: "의생명공학 부전공",
-    id: 2,
-  },
-  { subjectCode: "ET", korean: "에너지", fullKorean: "에너지 부전공", id: 3 },
-  {
-    subjectCode: "CT",
-    korean: "문화기술",
-    fullKorean: "문화기술 부전공",
-    id: 4,
-  },
-  {
-    subjectCode: "IR",
-    korean: "지능로봇",
-    fullKorean: "지능로봇 부전공",
-    id: 5,
-  },
-  {
-    subjectCode: "LH",
-    korean: "인문사회",
-    fullKorean: "인문사회 부전공",
-    id: 6,
-  },
-  { subjectCode: "AI", korean: "AI융합", fullKorean: "AI융합 부전공", id: 7 },
-];
-
-/** 정렬을 어떻게 할지 선택할 수 있는 리스트 */
-const sortList: { id: number; content: string }[] = [
-  { id: 1, content: "수업 쉬운 순" },
-  { id: 2, content: "유익한 순" },
-  { id: 3, content: "성적 만족도 순" },
-  { id: 4, content: "과제 적은 순" },
-  { id: 5, content: "수업 재밌는 순" },
-  { id: 6, content: "강의력 좋은 순" },
+/** 정렬을 어떻게 할지 선택할 수 있는 리스트: std 기준으로 sort*/
+const sortList: { id: number; content: string; std: string }[] = [
+  { id: 1, content: "수업 쉬운 순", std: "수업 난이도" },
+  { id: 2, content: "유익한 순", std: "유익함" },
+  { id: 3, content: "성적 만족도 순", std: "성적 만족도" },
+  { id: 4, content: "과제 적은 순", std: "과제량" },
+  { id: 5, content: "수업 재밌는 순", std: "재미/흥미" },
+  { id: 6, content: "강의력 좋은 순", std: "강의력" },
 ];
 
 export default function Search() {
   const [optionOpen, setOptionOpen] = useState(false);
   const [departmentOpen, setDepartmentOpen] = useState(false);
 
-  /** 담는 형식은 [[...fullKorean],[...korean]], 여기에 현재 필터 분과 정보를 저장함. */
+  const [sortStd, setSortStd] = useState("수업 난이도");
+
+  /** 담는 형식은 [[...fullKorean],[...korean],[...subjectCode]], 여기에 현재 필터 분과 정보를 저장함. */
   const [departmentOption, setDepartmentOption] = useState<
-      [string[], string[]]
-  >([[], []]);
+      [string[], string[], string[]]
+  >([[], [], []]);
 
   /** 검색 옵션-전공에서 분과 선택 시 보이는 부분(선택하세요 / 전공(부전공) 이름) */
   const [displayedDepartmentOption, setDisplayedDepartmentOption] =
@@ -312,7 +267,11 @@ export default function Search() {
   };
 
   /** 검색 옵션 State를 바꿔주는 함수 */
-  const switchDepartmentOption = (fullKorean: string, korean: string) => {
+  const switchDepartmentOption = (
+      fullKorean: string,
+      korean: string,
+      subjectCode: string
+  ) => {
     const findItem = (i: string) => {
       return departmentOption[0].find((j) => j === i) !== undefined;
     };
@@ -322,12 +281,14 @@ export default function Search() {
       setDepartmentOption([
         departmentOption[0].filter((i) => i !== fullKorean),
         departmentOption[1].filter((i) => i !== korean),
+        departmentOption[2].filter((i) => i !== subjectCode),
       ]);
     } else {
       // 없으면
       setDepartmentOption([
         [...departmentOption[0], fullKorean],
         [...departmentOption[1], korean],
+        [...departmentOption[2], subjectCode],
       ]);
     }
     console.log(departmentOption);
@@ -347,7 +308,9 @@ export default function Search() {
     return (
         <DepartmentGridItemWrap
             key={item.id}
-            onClick={() => switchDepartmentOption(item.fullKorean, item.korean)}
+            onClick={() =>
+                switchDepartmentOption(item.fullKorean, item.korean, item.subjectCode)
+            }
         >
           <TempIcon
               text={item.subjectCode}
@@ -362,23 +325,31 @@ export default function Search() {
   }
 
   /** 임시 아이템 리스트 */
-  const TempSearchList: ISearchCard[] = tempdb.map((i) => {
-    /** 평균 점수 계산 */
-    let avgScore: number = 0;
-    i.hexData.map((j) => (avgScore += j.score));
-    avgScore /= 6;
-    let avgScoreStr: string = (
-        Math.round((avgScore + Number.EPSILON) * 100) / 100
-    ).toFixed(1); //소수점 둘째자리에서 반올림, 소수점 고정
+  const TempSearchList: ISearchCard[] = tempdb
+      .map((i) => {
+        /** 평균 점수 계산 */
+        let avgScore: number = 0;
+        i.hexData.map((j) => (avgScore += j.score));
+        avgScore /= 6;
+        let avgScoreStr: string = (
+            Math.round((avgScore + Number.EPSILON) * 100) / 100
+        ).toFixed(1); //소수점 둘째자리에서 반올림, 소수점 고정
 
-    return {
-      id: i.id,
-      subjectCode: i.subjectCode,
-      professorName: i.professorName,
-      subjectName: i.subjectName,
-      subjectScore: avgScoreStr,
-    };
-  });
+        return {
+          id: i.id,
+          subjectCode: i.subjectCode,
+          professorName: i.professorName,
+          subjectName: i.subjectName,
+          subjectScore: avgScoreStr,
+          stdData: i.hexData,
+        };
+      }) /**내림차순 정렬: hexData의 subject가 정렬 토글 선택값에 따른 sortStd의 score에 값에 따라 정렬됨 */
+      .sort((a, b) => {
+        return (
+            b.stdData.filter((hex) => hex.subject === sortStd)[0].score -
+            a.stdData.filter((hex) => hex.subject === sortStd)[0].score
+        );
+      });
 
   return (
       <>
@@ -389,7 +360,6 @@ export default function Search() {
           </LogoWrap>
           <MyBtn fontSize={16} color={theme.colors.primaryText}>MY</MyBtn>
         </TopWrap>
-
         <SearchWrap>
           <SearchInput
               placeholder="강의명/교수명으로 검색"
@@ -399,7 +369,6 @@ export default function Search() {
             <SearchSvg size={30} src={Search_Svg} />
           </SearchBtnWrap>
         </SearchWrap>
-
         <OptionBtnWrap
             color={theme.colors.secondaryText}
             fontSize={14}
@@ -408,7 +377,6 @@ export default function Search() {
           <p>검색 옵션</p>
           <FilterSvg size={20} src={Filter_Svg}></FilterSvg>
         </OptionBtnWrap>
-
         {optionOpen && (
             <SearchOptionOpenedWrap>
               <SearchDrop
@@ -490,26 +458,38 @@ export default function Search() {
                   <SortSelect
                       color={theme.colors.secondaryText}
                       bg={theme.colors.inputBg}
+                      onChange={(e) => setSortStd(e.target.value)}
                   >
                     {sortList.map((item) => (
-                        <option key={item.id}>{item.content}</option>
+                        <option key={item.id} value={item.std}>
+                          {item.content}
+                        </option>
                     ))}
                   </SortSelect>
                 </div>
               </SearchDrop>
             </SearchOptionOpenedWrap>
         )}
-
+        {/**case 1: 아무것도 선택되지 않은 경우, 전체 출력/ case 2: 선택된 것이 있는 경우 includes로 필터링하여 출력*/}
         <ItemList>
-          {TempSearchList.map((item) => (
-              <SearchCard
-                  key={item.id}
-                  subjectCode={item.subjectCode}
-                  professorName={item.professorName}
-                  subjectName={item.subjectName}
-                  subjectScore={item.subjectScore}
-              ></SearchCard>
-          ))}
+          {TempSearchList.map((item) => {
+            if (
+                departmentOption[2].length === 0 ||
+                departmentOption[2].some((code) => item.subjectCode.includes(code))
+            ) {
+              return (
+                  <SearchCard
+                      key={item.id}
+                      subjectCode={item.subjectCode}
+                      professorName={item.professorName}
+                      subjectName={item.subjectName}
+                      subjectScore={item.subjectScore}
+                  />
+              );
+            } else {
+              return null;
+            }
+          })}
         </ItemList>
         {/* header, footer 어떻게 할지 논의 필요할듯? */}
       </>
