@@ -23,7 +23,10 @@ const TitleWrap = styled.div<{ color: string }>`
 
 /** 과목 이름과 코드를 감싸는 div. 과목과 이름이 같은 형태라서 재사용함 */
 const SubjectTitle = styled(theme.universalComponent.DivTextContainer)`
-  font-family: NSBold;
+  font-family: NSMedium;
+  span {
+    font-family: NSBold;
+  }
 `;
 
 const MyReviewsText = styled(theme.universalComponent.DivTextContainer)`
@@ -36,17 +39,14 @@ const MyReviewsText = styled(theme.universalComponent.DivTextContainer)`
   line-height: 42px;
 `;
 
-const Point = styled.div`
+const Point = styled(theme.universalComponent.DivTextContainer)`
   display: flex;
-  color: "gray";
-  font: 12px;
-  font-weight: bold;
+  align-items: center;
+  font-family: NSBold;
 `;
 
-const PointValue = styled.div`
+const PointValue = styled(theme.universalComponent.DivTextContainer)`
   display: flex;
-  color: ${theme.colors.primary};
-  font: 12px;
 `;
 
 const HelperIcon = styled(theme.universalComponent.SvgIcon)`
@@ -65,15 +65,17 @@ const Semester = styled(theme.universalComponent.DivTextContainer)`
 
 const Subject = styled.div`
   display: flex;
+  align-items: center;
   text-align: center;
   padding: 0.4em 0;
 `;
 
 const SubjectName = styled(theme.universalComponent.DivTextContainer)`
-  font-weight: bold;
+  font-family: NSBold;
 `;
 const ProfessorName = styled(theme.universalComponent.DivTextContainer)`
   margin-left: 1em;
+  font-family: NSMedium;
 `;
 const ArrowIcon = styled(theme.universalComponent.SvgIcon)`
   transform: rotate(180deg);
@@ -127,11 +129,11 @@ export default function ProfilePage() {
       <Header text={"MY"} />
       <TitleWrap color={theme.colors.grayStroke}>
         <div>
-          <SubjectTitle fontSize={16} color={theme.colors.primaryText}>
-            ID: {USER_NAME}
+          <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
+            ID: <span>{USER_NAME}</span>
           </SubjectTitle>
-          <Point>
-            <PointValue>{POINT_VALUE}</PointValue>
+          <Point fontSize={14} color={theme.colors.primaryText}>
+            <PointValue fontSize={14} color={theme.colors.primary}>{POINT_VALUE}</PointValue>
             <div>P</div>
             <HelperIcon
               src={QuestionMark_svg}
