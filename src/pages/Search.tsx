@@ -317,7 +317,7 @@ export default function Search() {
               color={iconColor}
               isChecked={findItem(item.fullKorean)}
           ></TempIcon>
-          <DepartmentGridItemName color={textColor} fontSize={15}>
+          <DepartmentGridItemName color={textColor} fontSize={14}>
             {item.korean}
           </DepartmentGridItemName>
         </DepartmentGridItemWrap>
