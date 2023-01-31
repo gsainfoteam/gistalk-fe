@@ -24,14 +24,17 @@ const Wrap = styled.div`
   align-items: center;
 `;
 //모달 제목 부분 (GISTALK POINT)
-const Title = styled(theme.universalComponent.DivTextContainer)``;
+const Title = styled(theme.universalComponent.DivTextContainer)`
+  font-family: Aharoni;
+  margin-top:15px;
+`;
 //모달 부제목 부분 (지스톡 포인트란?)
 const SubTitle = styled(theme.universalComponent.DivTextContainer)``;
 //부제목과 본문 사이의 수평줄
 const HorizontalSolidLine = styled.hr`
   width: 131px;
   border: 0px;
-  border-top: 1px solid ${theme.colors.secondaryText};
+  border-top: 1.5px solid ${theme.colors.secondaryText};
   margin-top: 14px;
 `;
 //글자색을 하이라이트하는 span 컴포넌트
