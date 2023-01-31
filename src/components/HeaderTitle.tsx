@@ -3,6 +3,14 @@ import Title from "@/components/Title";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+interface IProps {
+  headerText: string;
+  subjectTitle: string;
+  professorName: string;
+  subjectCode: string;
+  avgScore: string;
+}
+
 // 2022/05/11 - 스로틀 헬퍼 함수 - by 1-blue
 
 const Wrap = styled.div<{ hide: boolean }>`
@@ -14,7 +22,13 @@ const Wrap = styled.div<{ hide: boolean }>`
     props.hide ? "translateY(-116px)" : "translateY(0px)"};
 `;
 
-export default function HeaderTitle() {
+export default function HeaderTitle({
+  headerText,
+  subjectTitle,
+  professorName,
+  subjectCode,
+  avgScore,
+}: IProps) {
   const throttleHelper = (callback: () => void, waitTime: number) => {
     let timerId: ReturnType<typeof setTimeout> | null = null;
 
@@ -48,8 +62,13 @@ export default function HeaderTitle() {
   }, [throttleScroll]);
   return (
     <Wrap hide={hide}>
-      <Header text={"강의"}></Header>
-      <Title></Title>
+      <Header text={headerText}></Header>
+      <Title
+        subjectTitle={subjectTitle}
+        professorName={professorName}
+        subjectCode={subjectCode}
+        avgScore={avgScore}
+      ></Title>
     </Wrap>
   );
 }

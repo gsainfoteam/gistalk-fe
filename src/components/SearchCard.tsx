@@ -94,7 +94,7 @@ export default function SearchCard({
       <TempIcon text={Division} color={IconColor} isChecked={false}></TempIcon>
       <CardContentWrap color={theme.colors.primaryText}>
         <p>
-          {subjectCode}&nbsp;&nbsp;|&nbsp;&nbsp; {/* 과목 코드 */}
+          {subjectCode}&nbsp;&nbsp;|&nbsp; {/* 과목 코드 */}
           <span>{professorName}</span> {/* 교수 이름 */}
         </p>
         <div>{subjectName}</div>

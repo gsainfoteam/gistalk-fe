@@ -140,7 +140,13 @@ export default function ClassEvaluation() {
 
   return (
     <>
-      <HeaderTitle></HeaderTitle>
+      <HeaderTitle
+        headerText={"강의"}
+        subjectTitle={"인간의 마음과 행동"}
+        professorName={"김상호"}
+        subjectCode={"EB2724"}
+        avgScore={"2.35"}
+      ></HeaderTitle>
       <EvaluationText fontSize={16} color={theme.colors.primaryText}>
         · {41}명의 수강생들이 남긴 평가에요 ·
       </EvaluationText>
