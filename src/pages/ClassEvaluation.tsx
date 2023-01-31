@@ -10,6 +10,7 @@ import { tempdb } from "../tempdb/tempdb";
 
 import Reply from "../components/Reply";
 import Title from "../components/Title";
+import HeaderTitle from "@/components/HeaderTitle";
 
 /** · 수강생들의 평가 · 를 표시하는 div */
 const EvaluationText = styled(theme.universalComponent.DivTextContainer)`
@@ -139,8 +140,7 @@ export default function ClassEvaluation() {
 
   return (
     <>
-      <Header text={"강의"}></Header>
-        <Title></Title>
+      <HeaderTitle></HeaderTitle>
       <EvaluationText fontSize={16} color={theme.colors.primaryText}>
         · {41}명의 수강생들이 남긴 평가에요 ·
       </EvaluationText>
