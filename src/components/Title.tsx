@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 
 interface IProps {
   subjectTitle: string;
@@ -27,7 +27,7 @@ const TitleWrap = styled.div<{ color: string; bgColor: string }>`
   border-radius: 0;
   background-color: ${(props) => props.bgColor};
 
-  top: 0px;
+  top: 0;
   position: sticky;
   z-index: 10;
 `;
