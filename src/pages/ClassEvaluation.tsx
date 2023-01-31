@@ -2,7 +2,7 @@ import Hexagon from "../components/Hexagon";
 import { theme } from "../style/theme";
 import Header from "../components/Header";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ArrowL_Svg from "../assets/svgs/arrowL.svg";
 import { IHexData } from "../Interfaces/interfaces";
@@ -10,6 +10,7 @@ import { tempdb } from "../tempdb/tempdb";
 
 import Reply from "../components/Reply";
 import Title from "../components/Title";
+import HeaderTitle from "@/components/HeaderTitle";
 
 /** · 수강생들의 평가 · 를 표시하는 div */
 const EvaluationText = styled(theme.universalComponent.DivTextContainer)`
@@ -105,17 +106,19 @@ const Upper = styled.div`
 const tempData: IHexData[] = tempdb[0].hexData;
 
 /** '강의평 쓰러가기' 버튼 */
-const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{ bgColor:string }>`
+const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
+  bgColor: string;
+}>`
   text-align: center;
   width: 95vw;
-  background-color: ${props => props.bgColor};
+  background-color: ${(props) => props.bgColor};
   height: 50px;
   line-height: 50px;
   position: sticky;
   bottom: 2.5vw;
   font-family: NSBold;
   margin: 0 2.5vw;
-`
+`;
 
 export default function ClassEvaluation() {
   const [concreteOpen, setConcreteOpen] = useState(false);
@@ -137,8 +140,13 @@ export default function ClassEvaluation() {
 
   return (
     <>
-      <Header text={"강의"}></Header>
-      <Title></Title>
+      <HeaderTitle
+        headerText={"강의"}
+        subjectTitle={"인간의 마음과 행동"}
+        professorName={"김상호"}
+        subjectCode={"EB2724"}
+        avgScore={"2.35"}
+      ></HeaderTitle>
       <EvaluationText fontSize={16} color={theme.colors.primaryText}>
         · {41}명의 수강생들이 남긴 평가에요 ·
       </EvaluationText>
@@ -252,7 +260,13 @@ export default function ClassEvaluation() {
           ))
         }
       </Upper>
-        <GoWriteBtn fontSize={20} bgColor={theme.colors.primary} color={theme.colors.white}>강의평 쓰러가기</GoWriteBtn>
+      <GoWriteBtn
+        fontSize={20}
+        bgColor={theme.colors.primary}
+        color={theme.colors.white}
+      >
+        강의평 쓰러가기
+      </GoWriteBtn>
     </>
   );
 }

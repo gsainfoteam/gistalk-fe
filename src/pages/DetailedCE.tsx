@@ -5,6 +5,7 @@ import { tempdb } from "../tempdb/tempdb";
 import Reply from "../components/Reply";
 
 import Title from "../components/Title";
+import HeaderTitle from "@/components/HeaderTitle";
 
 /** 각 세부평가를 구분짓는 가로선 */
 const HorizontalLine = styled.div<{ borderColor: string }>`
@@ -16,8 +17,7 @@ const HorizontalLine = styled.div<{ borderColor: string }>`
 export default function DetailedCE() {
   return (
     <>
-      <Header text={"세부 강의평가"}></Header>
-      <Title></Title>
+      <HeaderTitle></HeaderTitle>
       {tempdb[0].detailedReview.map((i) => (
         <div key={i.id}>
           <Reply replyData={i} isMine={true} />
