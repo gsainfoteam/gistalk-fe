@@ -3,7 +3,7 @@ import { theme } from "../style/theme";
 
 import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
 import { IHeader } from "../Interfaces/interfaces";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Wrap = styled.div<{ bgColor: string }>`
   display: flex;
@@ -26,14 +26,21 @@ const NavigationText = styled.div<{ color: string }>`
 `;
 
 export default function Header({ text }: IHeader) {
+  const navigate = useNavigate();
+
   return (
     <Wrap bgColor={theme.colors.white}>
-      <Link to="/">
+      <div
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
         <NavigationArrowSvg
           size={22}
           src={NavigationArrow_Svg}
         ></NavigationArrowSvg>
-      </Link>
+      </div>
+
       <NavigationText color={theme.colors.primaryText}>{text}</NavigationText>
     </Wrap>
   );

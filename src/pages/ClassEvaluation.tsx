@@ -11,6 +11,7 @@ import { tempdb } from "../tempdb/tempdb";
 import Reply from "../components/Reply";
 import Title from "../components/Title";
 import HeaderTitle from "@/components/HeaderTitle";
+import { Link } from "react-router-dom";
 
 /** · 수강생들의 평가 · 를 표시하는 div */
 const EvaluationText = styled(theme.universalComponent.DivTextContainer)`
@@ -242,9 +243,12 @@ export default function ClassEvaluation() {
             </ConcreteInfo>
           </ConcreteInfoGrid>
         )}
-        <GotoDetailedCEBtn fontSize={16} color={theme.colors.primary}>
-          세부 강의평가 ({NumberOfDetailedCE}) →
-        </GotoDetailedCEBtn>
+
+        <Link to={`/1/detail`} style={{ textDecoration: "none" }}>
+          <GotoDetailedCEBtn fontSize={16} color={theme.colors.primary}>
+            세부 강의평가 ({NumberOfDetailedCE}) →
+          </GotoDetailedCEBtn>
+        </Link>
 
         <OneLineReviewText
           fontSize={18}

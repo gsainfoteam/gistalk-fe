@@ -18,6 +18,7 @@ import {
 } from "../Interfaces/interfaces";
 import { tempdb } from "../tempdb/tempdb";
 import { major, minor } from "../components/StdSet";
+import { Link } from "react-router-dom";
 
 /** 페이지 최상단의 로고, 마이페이지 버튼 있는 부분 */
 const TopWrap = styled.div`
@@ -372,13 +373,18 @@ export default function Search() {
         departmentOption[2].some((code) => item.subjectCode.includes(code))
       ) {
         return (
-          <SearchCard
-            key={item.id}
-            subjectCode={item.subjectCode}
-            professorName={item.professorName}
-            subjectName={item.subjectName}
-            subjectScore={item.subjectScore}
-          />
+          <Link
+            to={`/${item.id}/evaluation`}
+            style={{ textDecoration: "none" }}
+          >
+            <SearchCard
+              key={item.id}
+              subjectCode={item.subjectCode}
+              professorName={item.professorName}
+              subjectName={item.subjectName}
+              subjectScore={item.subjectScore}
+            />
+          </Link>
         );
       } else {
         return null;
@@ -395,9 +401,11 @@ export default function Search() {
           <LogoSvg src={InfoteamLogo_Svg} size={35}></LogoSvg>
           GISTALK
         </LogoWrap>
-        <MyBtn fontSize={16} color={theme.colors.primaryText}>
-          MY
-        </MyBtn>
+        <Link to={`/profile`} style={{ textDecoration: "none" }}>
+          <MyBtn fontSize={16} color={theme.colors.primaryText}>
+            MY
+          </MyBtn>
+        </Link>
       </TopWrap>
       <SearchWrap>
         <SearchInput
