@@ -10,6 +10,7 @@ import Sort_Svg from "../assets/svgs/sort.svg";
 import School_Svg from "../assets/svgs/school.svg";
 import ArrowL_Svg from "../assets/svgs/arrowL.svg";
 import InfoteamLogo_Svg from "../assets/svgs/infoteamLogo.svg";
+import CatBlankList_Svg from "../assets/svgs/catBlankList.svg";
 import {
   IDepartment,
   IDepartmentGridItemWrapComponent,
@@ -26,16 +27,16 @@ const TopWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 /** 지스톡 로고 (아이콘, 텍스트) 같이 있는 Wrap */
 const LogoWrap = styled.div<{ color: string }>`
   font-family: Aharoni;
-  color: ${props => props.color};
+  color: ${(props) => props.color};
   font-size: 18px;
   display: flex;
   align-items: center;
-`
+`;
 
 const LogoSvg = styled(theme.universalComponent.SvgIcon)`
   margin-right: 7px;
@@ -45,7 +46,7 @@ const LogoSvg = styled(theme.universalComponent.SvgIcon)`
 const MyBtn = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
   margin: 0 10px;
-`
+`;
 
 const SearchWrap = styled.div`
   width: 85vw;
@@ -181,7 +182,7 @@ const DepartmentGridItemWrap = styled.div`
 
 /** 검색 옵션에서 분과 선택하는 아이콘 밑에 있는 분과 이름 */
 const DepartmentGridItemName = styled(
-    theme.universalComponent.DivTextContainer
+  theme.universalComponent.DivTextContainer
 )`
   font-family: NSMedium;
   text-align: center;
@@ -211,6 +212,19 @@ const ItemList = styled.div`
   margin: 15px auto 0 auto;
 `;
 
+/** Search 리스트가 비었을 떄 나오는 냥이 일러스트, 문구 Wrap */
+const BlankWrap = styled.div`
+  margin: 70px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const BlankSvg = styled(theme.universalComponent.SvgIcon)``;
+const BlankText = styled(theme.universalComponent.DivTextContainer)`
+  font-family: NSBold;
+`;
+
 /** 정렬을 어떻게 할지 선택할 수 있는 리스트: std 기준으로 sort*/
 const sortList: { id: number; content: string; std: string }[] = [
   { id: 1, content: "수업 쉬운 순", std: "수업 난이도" },
@@ -229,12 +243,12 @@ export default function Search() {
 
   /** 담는 형식은 [[...fullKorean],[...korean],[...subjectCode]], 여기에 현재 필터 분과 정보를 저장함. */
   const [departmentOption, setDepartmentOption] = useState<
-      [string[], string[], string[]]
+    [string[], string[], string[]]
   >([[], [], []]);
 
   /** 검색 옵션-전공에서 분과 선택 시 보이는 부분(선택하세요 / 전공(부전공) 이름) */
   const [displayedDepartmentOption, setDisplayedDepartmentOption] =
-      useState<string>("선택하세요");
+    useState<string>("선택하세요");
 
   /** 검색 옵션에서 분과를 선택하면 '선택하세요'가 해당 분과 이름으로 바뀌게 함 */
   useEffect(() => {
@@ -246,11 +260,11 @@ export default function Search() {
       setDisplayedDepartmentOption(departmentOption[0][0]);
     } else if (departmentOption[0].length === 2) {
       setDisplayedDepartmentOption(
-          `${departmentOption[1][0]}, ${departmentOption[1][1]}`
+        `${departmentOption[1][0]}, ${departmentOption[1][1]}`
       );
     } else {
       setDisplayedDepartmentOption(
-          `${departmentOption[1][0]} 외 ${departmentOption[0].length - 1}개`
+        `${departmentOption[1][0]} 외 ${departmentOption[0].length - 1}개`
       );
     }
   }, [departmentOption]);
@@ -268,9 +282,9 @@ export default function Search() {
 
   /** 검색 옵션 State를 바꿔주는 함수 */
   const switchDepartmentOption = (
-      fullKorean: string,
-      korean: string,
-      subjectCode: string
+    fullKorean: string,
+    korean: string,
+    subjectCode: string
   ) => {
     const findItem = (i: string) => {
       return departmentOption[0].find((j) => j === i) !== undefined;
@@ -296,202 +310,225 @@ export default function Search() {
 
   /** 분과 선택하는 아이콘 + 밑에 한글까지 감싸는 Wrap (이걸 DepartmentGrid가 감싸는 구조) */
   function DepartmentGridItemWrapComponent({
-                                             item,
-                                             iconColor,
-                                             textColor,
-                                           }: IDepartmentGridItemWrapComponent) {
+    item,
+    iconColor,
+    textColor,
+  }: IDepartmentGridItemWrapComponent) {
     /** departmentOption[0] 안에 item.fullKorean이 있는지 검사하는 함수 */
     const findItem = (i: string) => {
       return departmentOption[0].find((j) => j === i) !== undefined;
     };
 
     return (
-        <DepartmentGridItemWrap
-            key={item.id}
-            onClick={() =>
-                switchDepartmentOption(item.fullKorean, item.korean, item.subjectCode)
-            }
-        >
-          <TempIcon
-              text={item.subjectCode}
-              color={iconColor}
-              isChecked={findItem(item.fullKorean)}
-          ></TempIcon>
-          <DepartmentGridItemName color={textColor} fontSize={14}>
-            {item.korean}
-          </DepartmentGridItemName>
-        </DepartmentGridItemWrap>
+      <DepartmentGridItemWrap
+        key={item.id}
+        onClick={() =>
+          switchDepartmentOption(item.fullKorean, item.korean, item.subjectCode)
+        }
+      >
+        <TempIcon
+          text={item.subjectCode}
+          color={iconColor}
+          isChecked={findItem(item.fullKorean)}
+        ></TempIcon>
+        <DepartmentGridItemName color={textColor} fontSize={14}>
+          {item.korean}
+        </DepartmentGridItemName>
+      </DepartmentGridItemWrap>
     );
   }
 
   /** 임시 아이템 리스트 */
   const TempSearchList: ISearchCard[] = tempdb
-      .map((i) => {
-        /** 평균 점수 계산 */
-        let avgScore: number = 0;
-        i.hexData.map((j) => (avgScore += j.score));
-        avgScore /= 6;
-        let avgScoreStr: string = (
-            Math.round((avgScore + Number.EPSILON) * 100) / 100
-        ).toFixed(1); //소수점 둘째자리에서 반올림, 소수점 고정
+    .map((i) => {
+      /** 평균 점수 계산 */
+      let avgScore: number = 0;
+      i.hexData.map((j) => (avgScore += j.score));
+      avgScore /= 6;
+      let avgScoreStr: string = (
+        Math.round((avgScore + Number.EPSILON) * 100) / 100
+      ).toFixed(1); //소수점 둘째자리에서 반올림, 소수점 고정
 
-        return {
-          id: i.id,
-          subjectCode: i.subjectCode,
-          professorName: i.professorName,
-          subjectName: i.subjectName,
-          subjectScore: avgScoreStr,
-          stdData: i.hexData,
-        };
-      }) /**내림차순 정렬: hexData의 subject가 정렬 토글 선택값에 따른 sortStd의 score에 값에 따라 정렬됨 */
-      .sort((a, b) => {
+      return {
+        id: i.id,
+        subjectCode: i.subjectCode,
+        professorName: i.professorName,
+        subjectName: i.subjectName,
+        subjectScore: avgScoreStr,
+        stdData: i.hexData,
+      };
+    }) /** 내림차순 정렬: hexData의 subject가 정렬 토글 선택값에 따른 sortStd의 score에 값에 따라 정렬됨 */
+    .sort((a, b) => {
+      return (
+        b.stdData.filter((hex) => hex.subject === sortStd)[0].score -
+        a.stdData.filter((hex) => hex.subject === sortStd)[0].score
+      );
+    });
+
+  function DisplayItemList() {
+    return TempSearchList.map((item) => {
+      if (
+        departmentOption[2].length === 0 ||
+        departmentOption[2].some((code) => item.subjectCode.includes(code))
+      ) {
         return (
-            b.stdData.filter((hex) => hex.subject === sortStd)[0].score -
-            a.stdData.filter((hex) => hex.subject === sortStd)[0].score
+          <SearchCard
+            key={item.id}
+            subjectCode={item.subjectCode}
+            professorName={item.professorName}
+            subjectName={item.subjectName}
+            subjectScore={item.subjectScore}
+          />
         );
-      });
+      } else {
+        return null;
+      }
+    });
+  }
+
+  console.log(DisplayItemList());
 
   return (
-      <>
-        <TopWrap>
-          <LogoWrap color={theme.colors.primary}>
-            <LogoSvg src={InfoteamLogo_Svg} size={35}></LogoSvg>
-            GISTALK
-          </LogoWrap>
-          <MyBtn fontSize={16} color={theme.colors.primaryText}>MY</MyBtn>
-        </TopWrap>
-        <SearchWrap>
-          <SearchInput
-              placeholder="강의명/교수명으로 검색"
-              color={theme.colors.primaryText}
-          />
-          <SearchBtnWrap>
-            <SearchSvg size={30} src={Search_Svg} />
-          </SearchBtnWrap>
-        </SearchWrap>
-        <OptionBtnWrap
+    <>
+      <TopWrap>
+        <LogoWrap color={theme.colors.primary}>
+          <LogoSvg src={InfoteamLogo_Svg} size={35}></LogoSvg>
+          GISTALK
+        </LogoWrap>
+        <MyBtn fontSize={16} color={theme.colors.primaryText}>
+          MY
+        </MyBtn>
+      </TopWrap>
+      <SearchWrap>
+        <SearchInput
+          placeholder="강의명/교수명으로 검색"
+          color={theme.colors.primaryText}
+        />
+        <SearchBtnWrap>
+          <SearchSvg size={30} src={Search_Svg} />
+        </SearchBtnWrap>
+      </SearchWrap>
+      <OptionBtnWrap
+        color={theme.colors.secondaryText}
+        fontSize={14}
+        onClick={toggleOptionOpen}
+      >
+        <p>검색 옵션</p>
+        <FilterSvg size={20} src={Filter_Svg}></FilterSvg>
+      </OptionBtnWrap>
+      {optionOpen && (
+        <SearchOptionOpenedWrap>
+          <SearchDrop
             color={theme.colors.secondaryText}
-            fontSize={14}
-            onClick={toggleOptionOpen}
-        >
-          <p>검색 옵션</p>
-          <FilterSvg size={20} src={Filter_Svg}></FilterSvg>
-        </OptionBtnWrap>
-        {optionOpen && (
-            <SearchOptionOpenedWrap>
-              <SearchDrop
-                  color={theme.colors.secondaryText}
-                  afterColor={theme.colors.primaryText}
-                  option={departmentOption[0].length}
+            afterColor={theme.colors.primaryText}
+            option={departmentOption[0].length}
+          >
+            <div>
+              <SchoolSvg size={26} src={School_Svg}></SchoolSvg>
+              <span>분과</span>
+            </div>
+            <div onClick={toggleDepartmentOpen}>
+              <span>{displayedDepartmentOption}</span>
+              <ArrowLSvg
+                size={24}
+                src={ArrowL_Svg}
+                open={departmentOpen}
+              ></ArrowLSvg>
+            </div>
+          </SearchDrop>
+          {departmentOpen && (
+            <DepartmentListWrap>
+              <DepartmentListTitle
+                color={theme.colors.secondaryText}
+                fontSize={16}
               >
-                <div>
-                  <SchoolSvg size={26} src={School_Svg}></SchoolSvg>
-                  <span>분과</span>
-                </div>
-                <div onClick={toggleDepartmentOpen}>
-                  <span>{displayedDepartmentOption}</span>
-                  <ArrowLSvg
-                      size={24}
-                      src={ArrowL_Svg}
-                      open={departmentOpen}
-                  ></ArrowLSvg>
-                </div>
-              </SearchDrop>
-              {departmentOpen && (
-                  <DepartmentListWrap>
-                    <DepartmentListTitle
-                        color={theme.colors.secondaryText}
-                        fontSize={16}
-                    >
-                      · 전공 ·
-                    </DepartmentListTitle>
-                    <DepartmentGrid>
-                      {major.map((item) => (
-                          <DepartmentGridItemWrapComponent
-                              item={item}
-                              iconColor={"#FFCF23"}
-                              textColor={theme.colors.secondaryText}
-                              key={item.id}
-                          ></DepartmentGridItemWrapComponent>
-                      ))}
-                      {/* 공통 분과 선택은 다른 색으로 하기 위해 구분. */}
-                      <DepartmentGridItemWrapComponent
-                          item={{
-                            id: 9,
-                            korean: "공통",
-                            fullKorean: "공통과목",
-                            subjectCode: "UC",
-                          }}
-                          iconColor={"#E0E0E0"}
-                          textColor={theme.colors.secondaryText}
-                      ></DepartmentGridItemWrapComponent>
-                    </DepartmentGrid>
+                · 전공 ·
+              </DepartmentListTitle>
+              <DepartmentGrid>
+                {major.map((item) => (
+                  <DepartmentGridItemWrapComponent
+                    item={item}
+                    iconColor={"#FFCF23"}
+                    textColor={theme.colors.secondaryText}
+                    key={item.id}
+                  ></DepartmentGridItemWrapComponent>
+                ))}
+                {/* 공통 분과 선택은 다른 색으로 하기 위해 구분. */}
+                <DepartmentGridItemWrapComponent
+                  item={{
+                    id: 9,
+                    korean: "공통",
+                    fullKorean: "공통과목",
+                    subjectCode: "UC",
+                  }}
+                  iconColor={"#E0E0E0"}
+                  textColor={theme.colors.secondaryText}
+                ></DepartmentGridItemWrapComponent>
+              </DepartmentGrid>
 
-                    <DepartmentListTitle
-                        color={theme.colors.secondaryText}
-                        fontSize={16}
-                    >
-                      · 부전공 ·
-                    </DepartmentListTitle>
-                    <DepartmentGrid>
-                      {minor.map((item) => (
-                          <DepartmentGridItemWrapComponent
-                              item={item}
-                              iconColor={"#8CBAFF"}
-                              textColor={theme.colors.secondaryText}
-                              key={item.id}
-                          ></DepartmentGridItemWrapComponent>
-                      ))}
-                    </DepartmentGrid>
-                  </DepartmentListWrap>
-              )}
-              <SearchDrop
-                  color={theme.colors.secondaryText}
-                  afterColor={theme.colors.secondaryText}
-                  option={0}
+              <DepartmentListTitle
+                color={theme.colors.secondaryText}
+                fontSize={16}
               >
-                <div>
-                  <SchoolSvg size={26} src={Sort_Svg}></SchoolSvg>
-                  <span>정렬</span>
-                </div>
-                <div>
-                  <SortSelect
-                      color={theme.colors.secondaryText}
-                      bg={theme.colors.inputBg}
-                      onChange={(e) => setSortStd(e.target.value)}
-                  >
-                    {sortList.map((item) => (
-                        <option key={item.id} value={item.std}>
-                          {item.content}
-                        </option>
-                    ))}
-                  </SortSelect>
-                </div>
-              </SearchDrop>
-            </SearchOptionOpenedWrap>
-        )}
-        {/**case 1: 아무것도 선택되지 않은 경우, 전체 출력/ case 2: 선택된 것이 있는 경우 includes로 필터링하여 출력*/}
-        <ItemList>
-          {TempSearchList.map((item) => {
-            if (
-                departmentOption[2].length === 0 ||
-                departmentOption[2].some((code) => item.subjectCode.includes(code))
-            ) {
-              return (
-                  <SearchCard
-                      key={item.id}
-                      subjectCode={item.subjectCode}
-                      professorName={item.professorName}
-                      subjectName={item.subjectName}
-                      subjectScore={item.subjectScore}
-                  />
-              );
-            } else {
-              return null;
-            }
-          })}
-        </ItemList>
-        {/* header, footer 어떻게 할지 논의 필요할듯? */}
-      </>
+                · 부전공 ·
+              </DepartmentListTitle>
+              <DepartmentGrid>
+                {minor.map((item) => (
+                  <DepartmentGridItemWrapComponent
+                    item={item}
+                    iconColor={"#8CBAFF"}
+                    textColor={theme.colors.secondaryText}
+                    key={item.id}
+                  ></DepartmentGridItemWrapComponent>
+                ))}
+              </DepartmentGrid>
+            </DepartmentListWrap>
+          )}
+          <SearchDrop
+            color={theme.colors.secondaryText}
+            afterColor={theme.colors.secondaryText}
+            option={0}
+          >
+            <div>
+              <SchoolSvg size={26} src={Sort_Svg}></SchoolSvg>
+              <span>정렬</span>
+            </div>
+            <div>
+              <SortSelect
+                color={theme.colors.secondaryText}
+                bg={theme.colors.inputBg}
+                onChange={(e) => setSortStd(e.target.value)}
+              >
+                {sortList.map((item) => (
+                  <option key={item.id} value={item.std}>
+                    {item.content}
+                  </option>
+                ))}
+              </SortSelect>
+            </div>
+          </SearchDrop>
+        </SearchOptionOpenedWrap>
+      )}
+      {/**case 1: 아무것도 선택되지 않은 경우, 전체 출력/ case 2: 선택된 것이 있는 경우 includes로 필터링하여 출력*/}
+      <ItemList>
+        {DisplayItemList()}
+        {DisplayItemList().filter(
+          // DisplayItemList 함수는 존재하는 리스트에서 필터링될 경우 null을 출력하는데,
+          // 아무것도 검색되지 않는 경우 null로만 이루어진 배열이 된다.
+          // 이를 위해 filter로 null들을 다 걸렀을 때 DisplayItemList의 length가 0이 되면 검색 결과 없다고 출력.
+          (item) => {
+            if (item !== null) return item;
+          }
+        ).length === 0 ? (
+          <BlankWrap>
+            <BlankSvg size={160} src={CatBlankList_Svg} />
+            <BlankText fontSize={16} color={theme.colors.secondaryText}>
+              검색 결과가 존재하지 않습니다.
+            </BlankText>
+          </BlankWrap>
+        ) : null}
+      </ItemList>
+      {/* header, footer 어떻게 할지 논의 필요할듯? */}
+    </>
   );
 }
