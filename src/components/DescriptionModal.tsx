@@ -169,6 +169,7 @@ export default function DescriptionModal({ isOpen, setOpen }: IProps) {
           </Wrap>
         </Sheet.Content>
       </Sheet.Container>
+      <Sheet.Backdrop />
     </Sheet>
   );
 }
