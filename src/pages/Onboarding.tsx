@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { theme } from "../style/theme";
 import InfoteamLogo_Svg from "../assets/svgs/infoteamLogo.svg";
+import { Link } from "react-router-dom";
 
 const Wrap = styled.div`
   width: 100vw;
@@ -40,7 +41,7 @@ const IDPBtn = styled(theme.universalComponent.DivTextContainer)<{
   line-height: 3em;
   text-align: center;
   margin-top: 40px;
-  padding:0 40px;
+  padding: 0 40px;
   span {
     color: ${(props) => props.primaryColor};
   }
@@ -62,14 +63,17 @@ export default function Onboarding() {
           GISTALK
         </GistalkText>
       </LogoWrap>
-      <IDPBtn
-        primaryColor={theme.colors.primary}
-        fontSize={18}
-        bgColor={theme.colors.primaryText}
-        color={theme.colors.white}
-      >
-        <span>G</span>ISTORY로 로그인하기
-      </IDPBtn>
+
+      <Link to="/search">
+        <IDPBtn
+          primaryColor={theme.colors.primary}
+          fontSize={18}
+          bgColor={theme.colors.primaryText}
+          color={theme.colors.white}
+        >
+          <span>G</span>ISTORY로 로그인하기
+        </IDPBtn>{" "}
+      </Link>
     </Wrap>
   );
 }
