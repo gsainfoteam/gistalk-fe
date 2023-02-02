@@ -98,6 +98,7 @@ export default function ProfilePage() {
   const POINT_VALUE = 54;
   const CLASS_LIST = [
     {
+      id:1,
       time: "2022년 1학기",
       subjects: [
         {
@@ -111,6 +112,7 @@ export default function ProfilePage() {
       ],
     },
     {
+      id:2,
       time: "2022년 2 학기",
       subjects: [
         {
@@ -156,7 +158,7 @@ export default function ProfilePage() {
         </MyReviewsText>
 
         {CLASS_LIST.map((list) => (
-          <MyEvaluationWrap>
+          <MyEvaluationWrap key={list.id}>
             <Semester fontSize={14} color={theme.colors.primary}>
               {list.time}
             </Semester>

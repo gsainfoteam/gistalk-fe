@@ -59,7 +59,7 @@ const Content = ({ children, fontSize, color }: ContentProps) => {
   return (
     <ContentBox fontSize={fontSize} color={color}>
       {content.split("\\n").map((line, index) => (
-        <p>
+        <p key={index}>
           {line
             .split("|")
             .map((text, subIndex) =>
