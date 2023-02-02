@@ -374,11 +374,11 @@ export default function Search() {
       ) {
         return (
           <Link
+            key={item.id}
             to={`/${item.id}/evaluation`}
             style={{ textDecoration: "none" }}
           >
             <SearchCard
-              key={item.id}
               subjectCode={item.subjectCode}
               professorName={item.professorName}
               subjectName={item.subjectName}
