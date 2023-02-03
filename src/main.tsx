@@ -12,21 +12,24 @@ import ProfilePage from "./pages/ProfilePage";
 import DetailedCE from "./pages/DetailedCE";
 import Onboarding from "@/pages/Onboarding";
 import Err404 from "@/pages/Err404";
+import { Provider } from "jotai";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Routes>
-          <Route path="/search" element={<Search />} />
-          <Route path="/:id/evaluation" element={<ClassEvaluation />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/:id/detail" element={<DetailedCE />} />
-          <Route path="/" element={<Onboarding />} />
-          <Route path="/404" element={<Err404 />} />
-        </Routes>
-      </ThemeProvider>
-    </BrowserRouter>
+    <Provider>
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <Routes>
+            <Route path="/search" element={<Search />} />
+            <Route path="/:id/evaluation" element={<ClassEvaluation />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/:id/detail" element={<DetailedCE />} />
+            <Route path="/" element={<Onboarding />} />
+            <Route path="/404" element={<Err404 />} />
+          </Routes>
+        </ThemeProvider>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
