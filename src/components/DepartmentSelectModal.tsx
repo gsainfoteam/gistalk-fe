@@ -1,22 +1,19 @@
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 import styled from "styled-components";
 import Sheet from "react-modal-sheet";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
-import { tempdb } from "../tempdb/tempdb";
-import RecommendTextForm from "./RecommendTextForm";
-import LikeDislikeBtnWrap from "./LikeDislikeBtnWrap";
-
-import lock_Svg from "../assets/svgs/lock.svg";
-import done_Svg from "../assets/svgs/done.svg";
-import cancel_Svg from "../assets/svgs/cancel.svg";
 import { major, minor } from "@/components/StdSet";
 import { IDepartmentGridItemWrapComponent } from "@/Interfaces/interfaces";
 import TempIcon from "@/components/TempIcon";
 import School_Svg from "@/assets/svgs/school.svg";
-import ArrowL_Svg from "@/assets/svgs/arrowL.svg";
-import {atom, useAtom} from "jotai";
-import {departmentOptionAtom} from "@/store";
+
+import done_Svg from "../assets/svgs/done.svg";
+import doneDisabled_Svg from "../assets/svgs/done_Disabled.svg";
+import reset_Svg from "../assets/svgs/reset.svg";
+
+import { useAtom } from "jotai";
+import { departmentOptionAtom } from "@/store";
 
 interface IProps {
   isOpen: boolean;
@@ -37,7 +34,8 @@ const DepartmentListTitle = styled(theme.universalComponent.DivTextContainer)`
 const DepartmentGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 85px);
+  grid-template-rows: repeat(2, 75px);
+  margin: 0 6.5vw;
 `;
 
 /** DepartmentGridItemWrapComponent function을 감싸는 div */
@@ -45,6 +43,7 @@ const DepartmentGridItemWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
 `;
 
 /** 검색 옵션에서 분과 선택하는 아이콘 밑에 있는 분과 이름 */
@@ -62,9 +61,7 @@ const SearchDrop = styled.div<{
   afterColor: string;
   option: number;
 }>`
-  width: 78vw;
-  margin: 18px 4vw 0 4vw;
-  transition: 0.2s;
+  margin: 10px 10vw 0 10vw;
 
   display: flex;
   justify-content: space-between;
@@ -84,21 +81,63 @@ const SearchDrop = styled.div<{
 
   div:nth-child(2) {
     font-family: NSBold;
-    font-size: 18px;
+    font-size: 16px;
     display: flex;
     align-items: center;
 
     span {
       margin-right: 5px;
       color: ${(props) => {
-  if (props.option === 0) return props.color;
-  else return props.afterColor;
-}};
+        if (props.option === 0) return props.color;
+        else return props.afterColor;
+      }};
     }
   }
 `;
 
+const ManipulationBtnWrap = styled.div`
+  width: 80vw;
+  margin: 25px auto 0 auto;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ApplyBtn = styled(theme.universalComponent.DivTextContainer)<{
+  bgColor: string;
+  bgColorAlt: string;
+  colorAlt: string;
+  disabled: boolean;
+}>`
+  background-color: ${(props) =>
+    props.disabled ? props.bgColorAlt : props.bgColor};
+  color: ${(props) => (props.disabled ? props.colorAlt : props.color)};
+  font-family: NSBold;
+  height: 35px;
+  line-height: 35px;
+  width: 57vw;
+  text-align: center;
+  cursor: ${(props) => (props.disabled ? "auto" : "pointer")};
+`;
+
+const ResetBtn = styled(theme.universalComponent.DivTextContainer)`
+  font-family: NSBold;
+  height: 35px;
+  line-height: 35px;
+  text-align: left;
+  cursor: pointer;
+`;
+
 const SchoolSvg = styled(theme.universalComponent.SvgIcon)``;
+const ResetSvg = styled(theme.universalComponent.SvgIcon)`
+  position: relative;
+  top: 4px;
+  margin-left: 4px;
+`;
+const DoneSvg = styled(theme.universalComponent.SvgIcon)`
+  position: relative;
+  top: 4px;
+  margin-left: 2px;
+`;
 
 export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
   /** 검색 옵션-전공에서 분과 선택 시 보이는 부분(선택하세요 / 전공(부전공) 이름) */
@@ -107,6 +146,11 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
 
   /** 담는 형식은 [[...fullKorean],[...korean],[...subjectCode]], 여기에 현재 필터 분과 정보를 저장함. */
   const [departmentOption, setDepartmentOption] = useAtom(departmentOptionAtom);
+
+  /** 초기화 버튼을 누르면 작동되는 function */
+  const resetDepartmentOption = () => {
+    setDepartmentOption([[], [], []]);
+  };
 
   /** 검색 옵션에서 분과를 선택하면 '선택하세요'가 해당 분과 이름으로 바뀌게 함 */
   useEffect(() => {
@@ -118,20 +162,20 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
       setDisplayedDepartmentOption(departmentOption[0][0]);
     } else if (departmentOption[0].length === 2) {
       setDisplayedDepartmentOption(
-          `${departmentOption[1][0]}, ${departmentOption[1][1]}`
+        `${departmentOption[1][0]}, ${departmentOption[1][1]}`
       );
     } else {
       setDisplayedDepartmentOption(
-          `${departmentOption[1][0]} 외 ${departmentOption[0].length - 1}개`
+        `${departmentOption[1][0]} 외 ${departmentOption[0].length - 1}개`
       );
     }
   }, [departmentOption]);
 
   /** 검색 옵션 State를 바꿔주는 함수 */
   const switchDepartmentOption = (
-      fullKorean: string,
-      korean: string,
-      subjectCode: string
+    fullKorean: string,
+    korean: string,
+    subjectCode: string
   ) => {
     const findItem = (i: string) => {
       return departmentOption[0].find((j) => j === i) !== undefined;
@@ -154,7 +198,6 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
     }
     console.log(departmentOption);
   };
-
 
   /** 분과 선택하는 아이콘 + 밑에 한글까지 감싸는 Wrap (이걸 DepartmentGrid가 감싸는 구조) */
   function DepartmentGridItemWrapComponent({
@@ -186,14 +229,14 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
     );
   }
   return (
-    <Sheet isOpen={isOpen} onClose={() => setOpen(false)} snapPoints={[300]}>
+    <Sheet isOpen={isOpen} onClose={() => setOpen(false)} snapPoints={[600]}>
       <Sheet.Container>
         <Sheet.Header />
         <Sheet.Content>
           <SearchDrop
-              color={theme.colors.secondaryText}
-              afterColor={theme.colors.primaryText}
-              option={departmentOption[0].length}
+            color={theme.colors.secondaryText}
+            afterColor={theme.colors.primaryText}
+            option={departmentOption[0].length}
           >
             <div>
               <SchoolSvg size={26} src={School_Svg}></SchoolSvg>
@@ -249,6 +292,31 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
               ))}
             </DepartmentGrid>
           </DepartmentListWrap>
+          <ManipulationBtnWrap>
+            <ResetBtn
+              fontSize={14}
+              color={theme.colors.secondaryText}
+              onClick={resetDepartmentOption}
+            >
+              초기화<ResetSvg size={20} src={reset_Svg}></ResetSvg>
+            </ResetBtn>
+            <ApplyBtn
+              disabled={departmentOption[0].length === 0}
+              fontSize={14}
+              color={theme.colors.white}
+              colorAlt={theme.colors.secondaryText}
+              bgColor={theme.colors.primary}
+              bgColorAlt={theme.colors.inputBg}
+              onClick={()=>{setOpen(false)}}
+            >
+              적용
+              {departmentOption[0].length === 0 ? (
+                <DoneSvg size={20} src={doneDisabled_Svg}></DoneSvg>
+              ) : (
+                <DoneSvg size={20} src={done_Svg}></DoneSvg>
+              )}
+            </ApplyBtn>
+          </ManipulationBtnWrap>
         </Sheet.Content>
       </Sheet.Container>
       <Sheet.Backdrop />
