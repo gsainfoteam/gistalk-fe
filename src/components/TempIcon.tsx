@@ -9,8 +9,8 @@ interface IProps {
 }
 
 const IconFrame = styled.div<{ color: string }>`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 25px;
   background-color: ${(props) => props.color};
   display: flex;
@@ -21,7 +21,7 @@ const IconFrame = styled.div<{ color: string }>`
   p {
     color: #000000;
     font-family: NSBold;
-    font-size: 15px;
+    font-size: 14px;
   }
 `;
 

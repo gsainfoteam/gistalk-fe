@@ -12,7 +12,7 @@ interface IProps {
 
 const SearchCardWrap = styled.div`
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 3px;
   display: flex;
   align-items: center;
 `;
@@ -29,7 +29,7 @@ const CardContentWrap = styled.div<{ color: string }>`
   ); //100%에서 TempIcon width, AverageScoreWrap width 뺀 값
   p {
     font-family: NSRegular;
-    font-size: 14px;
+    font-size: 13px;
     position: relative;
     top: 1px;
   }
@@ -41,7 +41,7 @@ const CardContentWrap = styled.div<{ color: string }>`
 
   div {
     font-family: NSBold;
-    font-size: 19px;
+    font-size: 16px;
     position: relative;
     top: -1px;
     white-space: nowrap; // 개행 방지
@@ -57,7 +57,7 @@ const AverageScoreWrap = styled.div<{ color: string }>`
   font-family: NSBold;
 
   p {
-    font-size: 13px;
+    font-size: 12px;
     position: relative;
     top: 4px;
   }
@@ -67,7 +67,7 @@ const AverageScoreWrap = styled.div<{ color: string }>`
   }
 
   div {
-    font-size: 25px;
+    font-size: 24px;
     position: relative;
     top: -4px;
   }
