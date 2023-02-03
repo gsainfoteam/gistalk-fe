@@ -9,17 +9,16 @@ import Order_Svg from "../assets/svgs/order.svg";
 import InfoteamLogo_Svg from "../assets/svgs/infoteamLogo.svg";
 import CatBlankList_Svg from "../assets/svgs/catBlankList.svg";
 import {
-  IDepartment,
-  IDepartmentGridItemWrapComponent,
-  ISearchCard,
+    IDepartment,
+    IDepartmentGridItemWrapComponent,
+    ISearchCard, ISortOption,
 } from "../Interfaces/interfaces";
 import { tempdb } from "../tempdb/tempdb";
-import { major, minor } from "../components/StdSet";
 import { Link } from "react-router-dom";
 import DepartmentSelectModal from "@/components/DepartmentSelectModal";
-import {useAtomValue} from "jotai/utils";
-import {useAtom} from "jotai";
-import {departmentOptionAtom} from "@/store";
+import { useAtom } from "jotai";
+import { departmentOptionAtom, sortOptionAtom } from "@/store";
+import SortSelectModal from "@/components/SortSelectModal";
 
 /** 페이지 최상단의 로고, 마이페이지 버튼 있는 부분 */
 const TopWrap = styled.div`
@@ -104,14 +103,6 @@ const OrderSvg = styled(theme.universalComponent.SvgIcon)`
   transform: rotate(90deg);
 `;
 
-
-/** 검색 옵션 열렸을 때 이걸 보여주게 됨. */
-const SearchOptionOpenedWrap = styled.div`
-  width: 85vw;
-  padding: 0 7.5vw;
-  margin-bottom: 20px;
-`;
-
 /** 검색 옵션에서 분과/정렬 선택하는 드롭다운 버튼 */
 const SearchDrop = styled.div<{
   color: string;
@@ -185,56 +176,6 @@ const OptionBtnWrap = styled(theme.universalComponent.DivTextContainer)`
   }
 `;
 
-/** 분과 선택 옵션 부분을 모두 감싸는 div. 검색 옵션-분과를 열었을 때 이것을 보여주게 됨. */
-const DepartmentListWrap = styled.div``;
-
-/** ·전공· ·부전공· 써져있는 제목부분 */
-const DepartmentListTitle = styled(theme.universalComponent.DivTextContainer)`
-  font-family: NSBold;
-  text-align: center;
-  margin: 7px 0;
-`;
-
-/** 분과 아이콘이 그리드 형태로 들어갈 수 있게 해주는 div */
-const DepartmentGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 85px);
-`;
-
-/** DepartmentGridItemWrapComponent function을 감싸는 div */
-const DepartmentGridItemWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-/** 검색 옵션에서 분과 선택하는 아이콘 밑에 있는 분과 이름 */
-const DepartmentGridItemName = styled(
-  theme.universalComponent.DivTextContainer
-)`
-  font-family: NSMedium;
-  text-align: center;
-  margin-top: 5px;
-`;
-
-const SortSelect = styled.select<{ color: string; bg: string }>`
-  border: none;
-  font-family: NSBold;
-  color: ${(props) => props.color};
-  background: ${(props) => props.bg};
-  height: 30px;
-  width: 200px;
-  padding-left: 8px;
-  padding-right: 8px;
-
-  select {
-    border: none;
-    font-family: NSBold;
-    background: ${(props) => props.bg};
-  }
-`;
-
 /** SearchCard 나열하는거 감싸는 div. 검색했을 때 리스트 형태로 나오는 걸 감싸는 부분 */
 const ItemList = styled.div`
   max-width: 85vw;
@@ -255,7 +196,7 @@ const BlankText = styled(theme.universalComponent.DivTextContainer)`
 `;
 
 /** 정렬을 어떻게 할지 선택할 수 있는 리스트: std 기준으로 sort*/
-const sortList: { id: number; content: string; std: string }[] = [
+const sortList: { id: number; content: string; std: ISortOption }[] = [
   { id: 1, content: "수업 쉬운 순", std: "수업 난이도" },
   { id: 2, content: "유익한 순", std: "유익함" },
   { id: 3, content: "성적 만족도 순", std: "성적 만족도" },
@@ -265,10 +206,10 @@ const sortList: { id: number; content: string; std: string }[] = [
 ];
 
 export default function Search() {
-  const [optionOpen, setOptionOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
   const [departmentOpen, setDepartmentOpen] = useState(false);
 
-  const [sortStd, setSortStd] = useState("수업 난이도");
+  const [sortStd, setSortStd] = useAtom(sortOptionAtom);
   const departmentOption = useAtom(departmentOptionAtom)[0];
 
   /** 임시 아이템 리스트 */
@@ -288,14 +229,21 @@ export default function Search() {
         professorName: i.professorName,
         subjectName: i.subjectName,
         subjectScore: avgScoreStr,
+        subjectScoreNum: avgScore, //평균점수
         stdData: i.hexData,
       };
     }) /** 내림차순 정렬: hexData의 subject가 정렬 토글 선택값에 따른 sortStd의 score에 값에 따라 정렬됨 */
     .sort((a, b) => {
-      return (
-        b.stdData.filter((hex) => hex.subject === sortStd)[0].score -
-        a.stdData.filter((hex) => hex.subject === sortStd)[0].score
-      );
+      if (sortStd === "평균점수") {
+          return (
+              b.subjectScoreNum - a.subjectScoreNum // 평균점수순 정렬을 위해 따로 만듦
+          )
+      } else {
+        return (
+          b.stdData.filter((hex) => hex.subject === sortStd)[0].score -
+          a.stdData.filter((hex) => hex.subject === sortStd)[0].score
+        );
+      }
     });
 
   function DisplayItemList() {
@@ -352,8 +300,8 @@ export default function Search() {
         </SearchBtnWrap>
       </SearchWrap>
       <OptionBtnWrap color={theme.colors.secondaryText} fontSize={14}>
-        <div>
-          <p>평균점수 순</p>
+        <div onClick={() => setSortOpen(true)}>
+          <p>{sortStd}</p>
           <OrderSvg size={20} src={Order_Svg}></OrderSvg>
         </div>
         <div></div>
@@ -362,10 +310,6 @@ export default function Search() {
           <FilterSvg size={20} src={Filter_Svg}></FilterSvg>
         </div>
       </OptionBtnWrap>
-      {optionOpen && (
-        <SearchOptionOpenedWrap>
-        </SearchOptionOpenedWrap>
-      )}
       {/**case 1: 아무것도 선택되지 않은 경우, 전체 출력/ case 2: 선택된 것이 있는 경우 includes로 필터링하여 출력*/}
       <ItemList>
         {DisplayItemList()}
@@ -386,7 +330,15 @@ export default function Search() {
         ) : null}
       </ItemList>
       {/* header, footer 어떻게 할지 논의 필요할듯? */}
-      <DepartmentSelectModal isOpen={departmentOpen} setOpen={setDepartmentOpen}></DepartmentSelectModal>
+      <DepartmentSelectModal
+        isOpen={departmentOpen}
+        setOpen={setDepartmentOpen}
+      ></DepartmentSelectModal>
+      <SortSelectModal
+        isOpen={sortOpen}
+        setOpen={setSortOpen}
+        sortList={sortList}
+      ></SortSelectModal>
     </>
   );
 }

@@ -84,3 +84,12 @@ export interface ISubjectData {
   /** 세부평가 리스트*/
   detailedReview: IReply[];
 }
+
+export type ISortOption =
+  | "평균점수"
+  | "수업 난이도"
+  | "유익함"
+  | "성적 만족도"
+  | "과제량"
+  | "재미/흥미"
+  | "강의력";
