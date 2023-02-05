@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 import InfoteamLogo_Svg from "../assets/svgs/infoteamLogo.svg";
 import { Link } from "react-router-dom";
 
@@ -47,7 +47,7 @@ const IDPBtn = styled(theme.universalComponent.DivTextContainer)<{
   }
 `;
 
-export default function Onboarding() {
+export default function Login() {
   return (
     <Wrap>
       <LogoWrap>

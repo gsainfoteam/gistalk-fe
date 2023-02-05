@@ -1,4 +1,4 @@
-import { IDepartment } from "../Interfaces/interfaces";
+import { IDepartment } from "@/Interfaces/interfaces";
 
 /** 전공 분과 선택을 위한 오브젝트 리스트 */
 export const major: IDepartment[] = [
