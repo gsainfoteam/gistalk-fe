@@ -9,9 +9,10 @@ import Order_Svg from "../assets/svgs/order.svg";
 import InfoteamLogo_Svg from "../assets/svgs/infoteamLogo.svg";
 import CatBlankList_Svg from "../assets/svgs/catBlankList.svg";
 import {
-    IDepartment,
-    IDepartmentGridItemWrapComponent,
-    ISearchCard, ISortOption,
+  IDepartment,
+  IDepartmentGridItemWrapComponent,
+  ISearchCard,
+  ISortOption,
 } from "../Interfaces/interfaces";
 import { tempdb } from "../tempdb/tempdb";
 import { Link } from "react-router-dom";
@@ -235,9 +236,9 @@ export default function Search() {
     }) /** 내림차순 정렬: hexData의 subject가 정렬 토글 선택값에 따른 sortStd의 score에 값에 따라 정렬됨 */
     .sort((a, b) => {
       if (sortStd === "평균점수") {
-          return (
-              b.subjectScoreNum - a.subjectScoreNum // 평균점수순 정렬을 위해 따로 만듦
-          )
+        return (
+          b.subjectScoreNum - a.subjectScoreNum // 평균점수순 정렬을 위해 따로 만듦
+        );
       } else {
         return (
           b.stdData.filter((hex) => hex.subject === sortStd)[0].score -

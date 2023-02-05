@@ -55,19 +55,19 @@ export const minor: IDepartment[] = [
     subjectCode: "EB",
     korean: "경제·경영",
     fullKorean: "경제·경영 부전공",
-    id: 6,
+    id: 8,
   },
   {
     subjectCode: "SS",
     korean: "기술사회",
     fullKorean: "과학기술과 사회 부전공",
-    id: 8,
+    id: 9,
   },
   {
     subjectCode: "MB",
     korean: "마음·행동",
     fullKorean: "마음과 행동 부전공",
-    id: 9,
+    id: 10,
   },
-  { subjectCode: "AI", korean: "AI융합", fullKorean: "AI융합 부전공", id: 10 },
+  { subjectCode: "AI", korean: "AI융합", fullKorean: "AI융합 부전공", id: 11 },
 ];
