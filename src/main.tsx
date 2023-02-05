@@ -10,7 +10,7 @@ import Search from "./pages/Search";
 import ClassEvaluation from "./pages/ClassEvaluation";
 import ProfilePage from "./pages/ProfilePage";
 import DetailedCE from "./pages/DetailedCE";
-import Onboarding from "@/pages/Onboarding";
+import Login from "@/pages/Login";
 import Err404 from "@/pages/Err404";
 import { Provider } from "jotai";
 
@@ -25,7 +25,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <Route path="/:id/evaluation" element={<ClassEvaluation />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/:id/detail" element={<DetailedCE />} />
-            <Route path="/" element={<Onboarding />} />
+            <Route path="/" element={<Login />} />
             <Route path="/404" element={<Err404 />} />
           </Routes>
         </ThemeProvider>
