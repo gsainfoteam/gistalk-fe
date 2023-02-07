@@ -50,17 +50,25 @@ const MyBtn = styled(theme.universalComponent.DivTextContainer)`
   margin: 0 10px;
 `;
 
-const SearchWrap = styled.div`
+const SearchWrap = styled.div<{ borderColor: string }>`
   width: 85vw;
   display: flex;
-  height: 40px;
+  flex-direction: column;
+  height: max-content;
   margin: 0 auto;
+
+  border-radius: 5px;
+  border: 2px solid ${(props) => props.borderColor};
+`;
+
+const SearchInputWrap = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 const SearchInput = styled.input<{
   color: string;
   bgColor: string;
-  borderColor: string;
 }>`
   width: calc(85vw - 60px);
   background-color: ${(props) => props.bgColor};
@@ -70,28 +78,26 @@ const SearchInput = styled.input<{
   border: none;
   text-align: left;
   display: block;
-  border-radius: 5px 0 0 5px;
-  border-left: 2px solid ${(props) => props.borderColor};
-  border-top: 2px solid ${(props) => props.borderColor};
-  border-bottom: 2px solid ${(props) => props.borderColor};
 
   //폰트 크기
   font-size: 16px;
   color: ${(props) => props.color};
 `;
 
-const SearchBtnWrap = styled.div<{ bgColor: string; borderColor: string }>`
+const SearchBtnWrap = styled.div<{ bgColor: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
   height: 40px;
   width: 40px;
   background-color: ${(props) => props.bgColor};
-  border-radius: 0 5px 5px 0;
+`;
 
-  border-right: 2px solid ${(props) => props.borderColor};
-  border-top: 2px solid ${(props) => props.borderColor};
-  border-bottom: 2px solid ${(props) => props.borderColor};
+const SearchHorizontalLine = styled.hr<{ lineColor: string }>`
+  margin: 0 7px;
+  width: auto;
+  border: 0px;
+  border-top: 1.5px solid ${(props) => props.lineColor};
 `;
 
 const SearchSvg = styled(theme.universalComponent.SvgIcon)`
@@ -286,19 +292,18 @@ export default function Search() {
           </MyBtn>
         </Link>
       </TopWrap>
-      <SearchWrap>
-        <SearchInput
-          placeholder="강의명/교수명으로 검색"
-          color={theme.colors.primaryText}
-          borderColor={theme.colors.inputBorder}
-          bgColor={theme.colors.white}
-        />
-        <SearchBtnWrap
-          borderColor={theme.colors.inputBorder}
-          bgColor={theme.colors.white}
-        >
-          <SearchSvg size={25} src={Search_Svg} />
-        </SearchBtnWrap>
+      <SearchWrap borderColor={theme.colors.inputBorder}>
+        <SearchInputWrap>
+          <SearchInput
+            placeholder="강의명/교수명으로 검색"
+            color={theme.colors.primaryText}
+            bgColor={theme.colors.white}
+          />
+          <SearchBtnWrap bgColor={theme.colors.white}>
+            <SearchSvg size={25} src={Search_Svg} />
+          </SearchBtnWrap>
+        </SearchInputWrap>
+        <SearchHorizontalLine lineColor={theme.colors.inputBorder} />
       </SearchWrap>
       <OptionBtnWrap color={theme.colors.secondaryText} fontSize={14}>
         <div onClick={() => setSortOpen(true)}>
