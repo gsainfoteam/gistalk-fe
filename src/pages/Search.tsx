@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, KeyboardEvent } from "react";
 import { theme } from "../style/theme";
 
 import SearchCard from "../components/SearchCard";
@@ -239,6 +239,13 @@ export default function Search() {
   const departmentOption = useAtom(departmentOptionAtom)[0];
 
   const [searchText, setSearchText] = useState("");
+  const [searchTextEnter, setSearchTextEnter] = useState("");
+  /**검색바에 입력된 글자가 Enter를 눌러야 SearchList에 적용될 수 있도록 하는 enterSearchText*/
+  const enterSearchText = (e: KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === "Enter") {
+      setSearchTextEnter(searchText);
+    }
+  };
 
   /** 임시 아이템 리스트 */
   const TempSearchList: ISearchCard[] = tempdb
@@ -277,8 +284,12 @@ export default function Search() {
   function DisplayItemList() {
     return TempSearchList.map((item) => {
       if (
-        departmentOption[2].length === 0 ||
-        departmentOption[2].some((code) => item.subjectCode.includes(code))
+        (departmentOption[2].length === 0 ||
+          departmentOption[2].some((code) =>
+            item.subjectCode.includes(code)
+          )) &&
+        (item.subjectName.includes(searchTextEnter) ||
+          item.professorName.includes(searchTextEnter))
       ) {
         return (
           <Link
@@ -305,14 +316,20 @@ export default function Search() {
     return TempSearchList.map((item) => {
       if (searchText != "" && item.subjectName.includes(searchText)) {
         return (
-          <SearchItem>
-            <p>
-              <span>{item.subjectName.split(searchText)[0]}</span>
-              <MatchingText>{searchText}</MatchingText>
-              <span>{item.subjectName.split(searchText)[1]}</span>
-            </p>
-            <NorthWestSvg src={NorthWest_Svg} size={20} />
-          </SearchItem>
+          <Link
+            key={item.id}
+            to={`/${item.id}/evaluation`}
+            style={{ textDecoration: "none" }}
+          >
+            <SearchItem>
+              <p>
+                <span>{item.subjectName.split(searchText)[0]}</span>
+                <MatchingText>{searchText}</MatchingText>
+                <span>{item.subjectName.split(searchText)[1]}</span>
+              </p>
+              <NorthWestSvg src={NorthWest_Svg} size={20} />
+            </SearchItem>
+          </Link>
         );
       }
     });
@@ -338,6 +355,7 @@ export default function Search() {
             color={theme.colors.primaryText}
             bgColor={theme.colors.white}
             onChange={(e) => setSearchText(e.target.value)}
+            onKeyDown={(e) => enterSearchText(e)}
           />
           <SearchBtnWrap bgColor={theme.colors.white}>
             <SearchSvg size={25} src={Search_Svg} />
