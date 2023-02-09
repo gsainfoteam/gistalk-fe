@@ -9,6 +9,7 @@ import Order_Svg from "../assets/svgs/order.svg";
 import InfoteamLogo_Svg from "../assets/svgs/infoteamLogo.svg";
 import CatBlankList_Svg from "../assets/svgs/catBlankList.svg";
 import NorthWest_Svg from "../assets/svgs/northWest.svg";
+import Cancel_Svg from "../assets/svgs/cancel_Black.svg";
 import {
   IDepartment,
   IDepartmentGridItemWrapComponent,
@@ -94,6 +95,7 @@ const SearchBtnWrap = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
 `;
 
+/**검색어 입력시 검색창과 자동완성된 검색어를 분리하는 가로선 */
 const SearchHorizontalLine = styled.hr<{
   lineColor: string;
   inlineText: string;
@@ -107,6 +109,10 @@ const SearchHorizontalLine = styled.hr<{
 `;
 
 const SearchSvg = styled(theme.universalComponent.SvgIcon)`
+  display: block;
+  cursor: pointer;
+`;
+const CancelSvg = styled(theme.universalComponent.SvgIcon)`
   display: block;
   cursor: pointer;
 `;
@@ -281,6 +287,7 @@ export default function Search() {
       }
     });
 
+  /**Search 페이지의 강의 리스트 */
   function DisplayItemList() {
     return TempSearchList.map((item) => {
       if (
@@ -314,7 +321,11 @@ export default function Search() {
   /**검색바 하단에 출력되는 강의명 리스트 */
   function SearchItemList() {
     return TempSearchList.map((item) => {
-      if (searchText != "" && item.subjectName.includes(searchText)) {
+      if (
+        searchText != "" &&
+        item.subjectName.includes(searchText) &&
+        searchTextEnter != searchText
+      ) {
         return (
           <Link
             key={item.id}
@@ -333,6 +344,26 @@ export default function Search() {
         );
       }
     });
+  }
+
+  /**검색 아이콘 -> 검색어가 입력되면 취소 아이콘 */
+  function ResponsiveSvg() {
+    if (searchText === "") {
+      return (
+        <SearchBtnWrap bgColor={theme.colors.white}>
+          <SearchSvg size={25} src={Search_Svg} />
+        </SearchBtnWrap>
+      );
+    } else {
+      return (
+        <SearchBtnWrap
+          bgColor={theme.colors.white}
+          onClick={() => setSearchText("")}
+        >
+          <CancelSvg size={25} src={Cancel_Svg} />
+        </SearchBtnWrap>
+      );
+    }
   }
 
   return (
@@ -356,10 +387,9 @@ export default function Search() {
             bgColor={theme.colors.white}
             onChange={(e) => setSearchText(e.target.value)}
             onKeyDown={(e) => enterSearchText(e)}
+            value={searchText}
           />
-          <SearchBtnWrap bgColor={theme.colors.white}>
-            <SearchSvg size={25} src={Search_Svg} />
-          </SearchBtnWrap>
+          {ResponsiveSvg()}
         </SearchInputWrap>
         <SearchHorizontalLine
           lineColor={theme.colors.inputBorder}
