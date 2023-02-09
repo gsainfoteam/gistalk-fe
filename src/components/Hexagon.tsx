@@ -19,6 +19,8 @@ const Wrap = styled.div`
   width: 100vw;
   display: flex;
   justify-content: center;
+  overflow-x:hidden;
+  overflow-y: hidden;
 `;
 
 const Coloring = styled.span<{ color: string }>`

@@ -10,16 +10,7 @@ interface IProps {
 
 const TitleWrap = styled.div<{ color: string; bgColor: string }>`
   width: 87vw;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin: 0 auto 0 auto;
-
-  div:nth-child(1) {
-    margin-right: 8px;
-    display: flex;
-    align-items: center;
-  }
 
   padding-top: 13px;
   padding-bottom: 13px;
@@ -27,14 +18,20 @@ const TitleWrap = styled.div<{ color: string; bgColor: string }>`
   border-radius: 0;
   background-color: ${(props) => props.bgColor};
 
-  top: 0;
-  position: sticky;
   z-index: 10;
+
+  div:nth-child(2) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 /** 과목 이름과 코드를 감싸는 div. 과목과 이름이 같은 형태라서 재사용함 */
 const SubjectTitle = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
+  word-break: keep-all;
+  margin-bottom: 3px;
 `;
 
 /** 평균 점수 표시 */
@@ -43,6 +40,7 @@ const AverageScore = styled(theme.universalComponent.DivTextContainer)<{
 }>`
   font-family: NSMedium;
   span {
+    margin-left: 4px;
     font-family: NSBold;
     color: ${(props) => props.primaryColor};
   }
@@ -57,21 +55,22 @@ export default function Title({
 }: IProps) {
   return (
     <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
+      <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
+        {subjectTitle || "ERR"}{" "}
+        {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}
+      </SubjectTitle>
       <div>
-        <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
-            {subjectTitle || "ERR"} {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}
-        </SubjectTitle>
         <SubjectTitle fontSize={15} color={theme.colors.secondaryText}>
-            {professorName || "ERR"} / {subjectCode || "ERR"}
+          {professorName || "ERR"} / {subjectCode || "ERR"}
         </SubjectTitle>
+        <AverageScore
+          primaryColor={theme.colors.primary}
+          fontSize={15}
+          color={theme.colors.secondaryText}
+        >
+          평균 <span>{avgScore || "ERR"}</span>
+        </AverageScore>
       </div>
-      <AverageScore
-        primaryColor={theme.colors.primary}
-        fontSize={15}
-        color={theme.colors.secondaryText}
-      >
-        평균 <span>{avgScore || "ERR"}</span>
-      </AverageScore>
     </TitleWrap>
   );
 }
