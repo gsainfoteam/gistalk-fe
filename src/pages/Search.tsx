@@ -99,13 +99,15 @@ const SearchBtnWrap = styled.div<{ bgColor: string }>`
 const SearchHorizontalLine = styled.hr<{
   lineColor: string;
   inlineText: string;
+  searchItemList: (JSX.Element | null)[];
 }>`
   margin: 0 7px;
   width: auto;
   border: 0px;
   border-top: 1.5px solid ${(props) => props.lineColor};
 
-  display: ${(props) => (props.inlineText === "" ? "none" : "display")};
+  display: ${(props) =>
+    props.searchItemList.every((value) => value === null) ? "none" : "flex"};
 `;
 
 const SearchSvg = styled(theme.universalComponent.SvgIcon)`
@@ -319,7 +321,7 @@ export default function Search() {
   }
 
   /**검색바 하단에 출력되는 강의명 리스트 */
-  function SearchItemList() {
+  const SearchItemList = () => {
     return TempSearchList.map((item) => {
       if (
         searchText != "" &&
@@ -342,9 +344,11 @@ export default function Search() {
             </SearchItem>
           </Link>
         );
+      } else {
+        return null;
       }
     });
-  }
+  };
 
   /**검색 아이콘 -> 검색어가 입력되면 취소 아이콘 */
   function ResponsiveSvg() {
@@ -358,7 +362,10 @@ export default function Search() {
       return (
         <SearchBtnWrap
           bgColor={theme.colors.white}
-          onClick={() => setSearchText("")}
+          onClick={() => {
+            setSearchText("");
+            setSearchTextEnter("");
+          }}
         >
           <CancelSvg size={25} src={Cancel_Svg} />
         </SearchBtnWrap>
@@ -394,6 +401,7 @@ export default function Search() {
         <SearchHorizontalLine
           lineColor={theme.colors.inputBorder}
           inlineText={searchText}
+          searchItemList={SearchItemList()}
         />
         {SearchItemList()}
       </SearchWrap>
