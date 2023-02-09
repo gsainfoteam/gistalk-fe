@@ -106,6 +106,7 @@ const SearchHorizontalLine = styled.hr<{
   border: 0px;
   border-top: 1.5px solid ${(props) => props.lineColor};
 
+  //searchItemList가 있는 경우에만 가로선이 나타나도록 설정
   display: ${(props) =>
     props.searchItemList.every((value) => value === null) ? "none" : "flex"};
 `;
