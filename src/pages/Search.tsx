@@ -132,6 +132,7 @@ const SearchItem = styled.div`
   justify-content: space-between;
   font-family: NSBold;
   padding: 4px 16px;
+  color: ${theme.colors.primaryText};
 `;
 
 const MatchingText = styled.span`
