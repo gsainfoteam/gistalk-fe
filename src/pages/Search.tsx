@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, KeyboardEvent } from "react";
 import { theme } from "../style/theme";
 
 import SearchCard from "../components/SearchCard";
@@ -8,6 +8,8 @@ import Filter_Svg from "../assets/svgs/tune.svg";
 import Order_Svg from "../assets/svgs/order.svg";
 import InfoteamLogo_Svg from "../assets/svgs/infoteamLogo.svg";
 import CatBlankList_Svg from "../assets/svgs/catBlankList.svg";
+import NorthWest_Svg from "../assets/svgs/northWest.svg";
+import Cancel_Svg from "../assets/svgs/cancel_Black.svg";
 import {
   IDepartment,
   IDepartmentGridItemWrapComponent,
@@ -50,17 +52,25 @@ const MyBtn = styled(theme.universalComponent.DivTextContainer)`
   margin: 0 10px;
 `;
 
-const SearchWrap = styled.div`
+const SearchWrap = styled.div<{ borderColor: string }>`
   width: 85vw;
   display: flex;
-  height: 40px;
+  flex-direction: column;
+  height: max-content;
   margin: 0 auto;
+
+  border-radius: 5px;
+  border: 2px solid ${(props) => props.borderColor};
+`;
+
+const SearchInputWrap = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 const SearchInput = styled.input<{
   color: string;
   bgColor: string;
-  borderColor: string;
 }>`
   width: calc(85vw - 60px);
   background-color: ${(props) => props.bgColor};
@@ -70,38 +80,63 @@ const SearchInput = styled.input<{
   border: none;
   text-align: left;
   display: block;
-  border-radius: 5px 0 0 5px;
-  border-left: 2px solid ${(props) => props.borderColor};
-  border-top: 2px solid ${(props) => props.borderColor};
-  border-bottom: 2px solid ${(props) => props.borderColor};
 
   //폰트 크기
   font-size: 16px;
   color: ${(props) => props.color};
 `;
 
-const SearchBtnWrap = styled.div<{ bgColor: string; borderColor: string }>`
+const SearchBtnWrap = styled.div<{ bgColor: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
   height: 40px;
   width: 40px;
   background-color: ${(props) => props.bgColor};
-  border-radius: 0 5px 5px 0;
+`;
 
-  border-right: 2px solid ${(props) => props.borderColor};
-  border-top: 2px solid ${(props) => props.borderColor};
-  border-bottom: 2px solid ${(props) => props.borderColor};
+/**검색어 입력시 검색창과 자동완성된 검색어를 분리하는 가로선 */
+const SearchHorizontalLine = styled.hr<{
+  lineColor: string;
+  inlineText: string;
+  searchItemList: (JSX.Element | null)[];
+}>`
+  margin: 0 7px;
+  width: auto;
+  border: 0px;
+  border-top: 1.5px solid ${(props) => props.lineColor};
+
+  //searchItemList가 있는 경우에만 가로선이 나타나도록 설정
+  display: ${(props) =>
+    props.searchItemList.every((value) => value === null) ? "none" : "flex"};
 `;
 
 const SearchSvg = styled(theme.universalComponent.SvgIcon)`
   display: block;
   cursor: pointer;
 `;
+const CancelSvg = styled(theme.universalComponent.SvgIcon)`
+  display: block;
+  cursor: pointer;
+`;
+
+const NorthWestSvg = styled(theme.universalComponent.SvgIcon)``;
 
 const FilterSvg = styled(theme.universalComponent.SvgIcon)``;
 const OrderSvg = styled(theme.universalComponent.SvgIcon)`
   transform: rotate(90deg);
+`;
+
+const SearchItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-family: NSBold;
+  padding: 4px 16px;
+  color: ${theme.colors.primaryText};
+`;
+
+const MatchingText = styled.span`
+  font-family: NSRegular;
 `;
 
 /** 검색 옵션에서 분과/정렬 선택하는 드롭다운 버튼 */
@@ -213,6 +248,15 @@ export default function Search() {
   const [sortStd, setSortStd] = useAtom(sortOptionAtom);
   const departmentOption = useAtom(departmentOptionAtom)[0];
 
+  const [searchText, setSearchText] = useState("");
+  const [searchTextEnter, setSearchTextEnter] = useState("");
+  /**검색바에 입력된 글자가 Enter를 눌러야 SearchList에 적용될 수 있도록 하는 enterSearchText*/
+  const enterSearchText = (e: KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === "Enter") {
+      setSearchTextEnter(searchText);
+    }
+  };
+
   /** 임시 아이템 리스트 */
   const TempSearchList: ISearchCard[] = tempdb
     .map((i) => {
@@ -247,11 +291,16 @@ export default function Search() {
       }
     });
 
+  /**Search 페이지의 강의 리스트 */
   function DisplayItemList() {
     return TempSearchList.map((item) => {
       if (
-        departmentOption[2].length === 0 ||
-        departmentOption[2].some((code) => item.subjectCode.includes(code))
+        (departmentOption[2].length === 0 ||
+          departmentOption[2].some((code) =>
+            item.subjectCode.includes(code)
+          )) &&
+        (item.subjectName.includes(searchTextEnter) ||
+          item.professorName.includes(searchTextEnter))
       ) {
         return (
           <Link
@@ -273,6 +322,59 @@ export default function Search() {
     });
   }
 
+  /**검색바 하단에 출력되는 강의명 리스트 */
+  const SearchItemList = () => {
+    return TempSearchList.map((item) => {
+      if (
+        searchText != "" &&
+        item.subjectName.includes(searchText) &&
+        searchTextEnter != searchText
+      ) {
+        return (
+          <Link
+            key={item.id}
+            to={`/${item.id}/evaluation`}
+            style={{ textDecoration: "none" }}
+          >
+            <SearchItem>
+              <p>
+                <span>{item.subjectName.split(searchText)[0]}</span>
+                <MatchingText>{searchText}</MatchingText>
+                <span>{item.subjectName.split(searchText)[1]}</span>
+              </p>
+              <NorthWestSvg src={NorthWest_Svg} size={20} />
+            </SearchItem>
+          </Link>
+        );
+      } else {
+        return null;
+      }
+    });
+  };
+
+  /**검색 아이콘 -> 검색어가 입력되면 취소 아이콘 */
+  function ResponsiveSvg() {
+    if (searchText === "") {
+      return (
+        <SearchBtnWrap bgColor={theme.colors.white}>
+          <SearchSvg size={25} src={Search_Svg} />
+        </SearchBtnWrap>
+      );
+    } else {
+      return (
+        <SearchBtnWrap
+          bgColor={theme.colors.white}
+          onClick={() => {
+            setSearchText("");
+            setSearchTextEnter("");
+          }}
+        >
+          <CancelSvg size={25} src={Cancel_Svg} />
+        </SearchBtnWrap>
+      );
+    }
+  }
+
   return (
     <>
       <TopWrap>
@@ -286,19 +388,24 @@ export default function Search() {
           </MyBtn>
         </Link>
       </TopWrap>
-      <SearchWrap>
-        <SearchInput
-          placeholder="강의명/교수명으로 검색"
-          color={theme.colors.primaryText}
-          borderColor={theme.colors.inputBorder}
-          bgColor={theme.colors.white}
+      <SearchWrap borderColor={theme.colors.inputBorder}>
+        <SearchInputWrap>
+          <SearchInput
+            placeholder="강의명/교수명으로 검색"
+            color={theme.colors.primaryText}
+            bgColor={theme.colors.white}
+            onChange={(e) => setSearchText(e.target.value)}
+            onKeyDown={(e) => enterSearchText(e)}
+            value={searchText}
+          />
+          {ResponsiveSvg()}
+        </SearchInputWrap>
+        <SearchHorizontalLine
+          lineColor={theme.colors.inputBorder}
+          inlineText={searchText}
+          searchItemList={SearchItemList()}
         />
-        <SearchBtnWrap
-          borderColor={theme.colors.inputBorder}
-          bgColor={theme.colors.white}
-        >
-          <SearchSvg size={25} src={Search_Svg} />
-        </SearchBtnWrap>
+        {SearchItemList()}
       </SearchWrap>
       <OptionBtnWrap color={theme.colors.secondaryText} fontSize={14}>
         <div onClick={() => setSortOpen(true)}>
