@@ -12,6 +12,7 @@ import Reply from "../components/Reply";
 import Title from "../components/Title";
 import HeaderTitle from "@/components/HeaderTitle";
 import { Link } from "react-router-dom";
+import HiddenNav from "@/components/HiddenNav";
 
 /** · 수강생들의 평가 · 를 표시하는 div */
 const EvaluationText = styled(theme.universalComponent.DivTextContainer)`
@@ -143,7 +144,7 @@ export default function ClassEvaluation() {
     <>
       <HeaderTitle
         headerText={"강의"}
-        subjectTitle={"인간의 마음과 행동"}
+        subjectTitle={"(MOOC 지정) 기계학습을 위한 수학 : 다변량 미적분학"}
         professorName={"김상호"}
         subjectCode={"EB2724"}
         avgScore={"2.35"}
@@ -271,6 +272,7 @@ export default function ClassEvaluation() {
       >
         강의평 쓰러가기
       </GoWriteBtn>
+      <HiddenNav avgScore={avgScore} professor={"김상호"} title={"거시경제학학학학학학학학학ㅁㄴㅇㄹㄴㅇㄴㄹㄴㅇㄹ"}></HiddenNav>
     </>
   );
 }

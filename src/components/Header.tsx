@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 
 import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
-import { IHeader } from "../Interfaces/interfaces";
+import { IHeader } from "@/Interfaces/interfaces";
 import { Link, useNavigate } from "react-router-dom";
 
 const Wrap = styled.div<{ bgColor: string }>`
@@ -16,7 +16,7 @@ const Wrap = styled.div<{ bgColor: string }>`
 `;
 
 const NavigationArrowSvg = styled(theme.universalComponent.SvgIcon)`
-  margin-left: 17px;
+  margin-left: 13px;
 `;
 const NavigationText = styled.div<{ color: string }>`
   font-family: NSBold;
