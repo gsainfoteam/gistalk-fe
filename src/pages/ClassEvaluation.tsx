@@ -3,9 +3,10 @@ import { theme } from "../style/theme";
 import Header from "../components/Header";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import ArrowL_Svg from "../assets/svgs/arrowL.svg";
-import { IHexData } from "../Interfaces/interfaces";
+import { IHexData, ISubjectData } from "../Interfaces/interfaces";
 import { tempdb } from "../tempdb/tempdb";
 
 import Reply from "../components/Reply";
@@ -104,9 +105,6 @@ const Upper = styled.div`
   top: -80px;
 `;
 
-/** Radar Chart에 들어갈 임시 데이터 */
-const tempData: IHexData[] = tempdb[0].hexData;
-
 /** '강의평 쓰러가기' 버튼 */
 const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
   bgColor: string;
@@ -129,9 +127,15 @@ export default function ClassEvaluation() {
     setConcreteOpen(!concreteOpen);
   };
 
+  /** Radar Chart에 들어갈 임시 데이터 */
+  const params = useParams() as { id: string };
+  /**강의별 id */
+  const id = Number(params.id);
+  const tempData = tempdb.find((value) => value.id === id) || tempdb[0]; //undefined인 경우 default 값: tempdb[0]
+
   /** 평균 점수 계산 */
   let avgScore = 0;
-  tempData.map((i) => (avgScore += i.score));
+  tempData.hexData.map((i) => (avgScore += i.score));
   avgScore /= 6;
   avgScore = Math.round((avgScore + Number.EPSILON) * 100) / 100; //소수점 둘째자리에서 반올림
 
@@ -144,16 +148,16 @@ export default function ClassEvaluation() {
     <>
       <HeaderTitle
         headerText={"강의"}
-        subjectTitle={"(MOOC 지정) 기계학습을 위한 수학 : 다변량 미적분학"}
-        professorName={"김상호"}
-        subjectCode={"EB2724"}
-        avgScore={"2.35"}
+        subjectTitle={tempData.subjectName}
+        professorName={tempData.professorName}
+        subjectCode={tempData.subjectCode}
+        avgScore={String(avgScore)}
       ></HeaderTitle>
       <EvaluationText fontSize={16} color={theme.colors.primaryText}>
-        · {41}명의 수강생들이 남긴 평가에요 ·
+        · {tempData.redundancy}명의 수강생들이 남긴 평가에요 ·
       </EvaluationText>
       <GraphWrap>
-        <Hexagon HexData={tempData}></Hexagon>
+        <Hexagon HexData={tempData.hexData}></Hexagon>
       </GraphWrap>
       <Upper>
         <SeeConcreteInfoWrap
@@ -272,7 +276,11 @@ export default function ClassEvaluation() {
       >
         강의평 쓰러가기
       </GoWriteBtn>
-      <HiddenNav avgScore={avgScore} professor={"김상호"} title={"거시경제학학학학학학학학학ㅁㄴㅇㄹㄴㅇㄴㄹㄴㅇㄹ"}></HiddenNav>
+      <HiddenNav
+        avgScore={avgScore}
+        professor={"김상호"}
+        title={"거시경제학학학학학학학학학ㅁㄴㅇㄹㄴㅇㄴㄹㄴㅇㄹ"}
+      ></HiddenNav>
     </>
   );
 }
