@@ -1,13 +1,13 @@
 import Hexagon from "../components/Hexagon";
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 import Header from "../components/Header";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import ArrowL_Svg from "../assets/svgs/arrowL.svg";
-import { IHexData, ISubjectData } from "../Interfaces/interfaces";
-import { tempdb } from "../tempdb/tempdb";
+import { IHexData, ISubjectData } from "@/Interfaces/interfaces";
+import { tempdb } from "@/tempdb/tempdb";
 
 import Reply from "../components/Reply";
 import Title from "../components/Title";
@@ -249,11 +249,11 @@ export default function ClassEvaluation() {
           </ConcreteInfoGrid>
         )}
 
-        <Link to={`/1/detail`} style={{ textDecoration: "none" }}>
-          <GotoDetailedCEBtn fontSize={16} color={theme.colors.primary}>
-            세부 강의평가 ({NumberOfDetailedCE}) →
-          </GotoDetailedCEBtn>
-        </Link>
+        {/*<Link to={`/1/detail`} style={{ textDecoration: "none" }}>*/}
+        {/*  <GotoDetailedCEBtn fontSize={16} color={theme.colors.primary}>*/}
+        {/*    세부 강의평가 ({NumberOfDetailedCE}) →*/}
+        {/*  </GotoDetailedCEBtn>*/}
+        {/*</Link>*/}
 
         <OneLineReviewText
           fontSize={18}
@@ -264,8 +264,8 @@ export default function ClassEvaluation() {
         </OneLineReviewText>
         {
           //여기서 i는 tempdb[0]이 가리키는 강의평가에 해당하는 각 한줄평을 가리킴
-          tempdb[0].oneLineReview.map((i) => (
-            <Reply key={i.id} replyData={i} isMine={true}></Reply>
+            tempData.oneLineReview.map((i) => (
+            <Reply key={i.id} replyData={i} isMine={false}></Reply>
           ))
         }
       </Upper>
@@ -278,8 +278,8 @@ export default function ClassEvaluation() {
       </GoWriteBtn>
       <HiddenNav
         avgScore={avgScore}
-        professor={"김상호"}
-        title={"거시경제학학학학학학학학학ㅁㄴㅇㄹㄴㅇㄴㄹㄴㅇㄹ"}
+        professor={tempData.professorName}
+        title={tempData.subjectName}
       ></HiddenNav>
     </>
   );

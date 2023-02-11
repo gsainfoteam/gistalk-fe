@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState, KeyboardEvent } from "react";
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 
 import SearchCard from "../components/SearchCard";
 import Search_Svg from "../assets/svgs/search.svg";
@@ -15,8 +15,8 @@ import {
   IDepartmentGridItemWrapComponent,
   ISearchCard,
   ISortOption,
-} from "../Interfaces/interfaces";
-import { tempdb } from "../tempdb/tempdb";
+} from "@/Interfaces/interfaces";
+import { tempdb } from "@/tempdb/tempdb";
 import { Link } from "react-router-dom";
 import DepartmentSelectModal from "@/components/DepartmentSelectModal";
 import { useAtom } from "jotai";

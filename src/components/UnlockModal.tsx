@@ -1,9 +1,8 @@
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 import styled from "styled-components";
 import Sheet from "react-modal-sheet";
 import React, { useState } from "react";
 
-import { tempdb } from "../tempdb/tempdb";
 import RecommendTextForm from "./RecommendTextForm";
 import LikeDislikeBtnWrap from "./LikeDislikeBtnWrap";
 
@@ -12,8 +11,8 @@ import done_Svg from "../assets/svgs/done.svg";
 import cancel_Svg from "../assets/svgs/cancel.svg";
 
 interface IProps {
-  recommend: boolean;
-  year: number;
+  recommend: string;
+  year: string;
   semester: string;
   like: number;
   dislike: number;

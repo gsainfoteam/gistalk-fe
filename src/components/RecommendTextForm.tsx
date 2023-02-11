@@ -1,11 +1,12 @@
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 import styled from "styled-components";
 
 import ThumbUp_Svg from "../assets/svgs/thumbUp.svg";
 import ThumbDown_Svg from "../assets/svgs/thumbDown.svg";
+import Neutral_Svg from "../assets/svgs/neutral.svg";
 
 interface IProps {
-  like: boolean;
+  like: string;
 }
 
 const Wrap = styled(theme.universalComponent.DivTextContainer)`
@@ -16,26 +17,39 @@ const Wrap = styled(theme.universalComponent.DivTextContainer)`
 `;
 
 const RecommendSvg = styled(theme.universalComponent.SvgIcon)<{
-  like: boolean;
+  like: number;
 }>`
   position: relative;
   margin-right: 5px;
-  bottom: ${(props) => props.like && "2px"};
-  top: ${(props) => !props.like && "2px"};
+  bottom: ${(props) => props.like == 1 && "2px"};
+  top: ${(props) => props.like == 2 && "2px"};
+  top: ${(props) => props.like == 3 && "1px"};
 `;
 
 export default function RecommendTextForm({ like }: IProps) {
+
+  const defineUsage = (like:string) : [string,string,string,number] => {
+    switch (like){
+      case "true":
+        return [theme.colors.primary, ThumbUp_Svg, "추천",1]
+      case "false":
+        return [theme.colors.reverse, ThumbDown_Svg, "비추천",2]
+      default:
+        return [theme.colors.primaryText, Neutral_Svg, "보통",3]
+    }
+  }
+
   return (
     <Wrap
       fontSize={14}
-      color={like ? theme.colors.primary : theme.colors.reverse}
+      color={defineUsage(like)[0]}
     >
       <RecommendSvg
         size={20}
-        src={like ? ThumbUp_Svg : ThumbDown_Svg}
-        like={like}
+        src={defineUsage(like)[1]}
+        like={defineUsage(like)[3]}
       ></RecommendSvg>
-      {like ? "추천" : "비추천"}
+      {defineUsage(like)[2]}
     </Wrap>
   );
 }
