@@ -76,7 +76,7 @@ export interface ISubjectData {
   /** 교수명 */
   professorName: string;
   /** 과목코드 */
-  subjectCode: string;
+  subjectCode: string[];
   /** Radar Chart에 들어갈 데이터 */
   hexData: IHexData[];
   /** 한줄평 리스트 */

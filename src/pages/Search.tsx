@@ -22,6 +22,7 @@ import DepartmentSelectModal from "@/components/DepartmentSelectModal";
 import { useAtom } from "jotai";
 import { departmentOptionAtom, sortOptionAtom } from "@/store";
 import SortSelectModal from "@/components/SortSelectModal";
+import useSubjectCode from "@/hooks/useSubjectCode";
 
 /** 페이지 최상단의 로고, 마이페이지 버튼 있는 부분 */
 const TopWrap = styled.div`
@@ -271,7 +272,7 @@ export default function Search() {
 
       return {
         id: i.id,
-        subjectCode: i.subjectCode,
+        subjectCode: useSubjectCode(i.subjectCode),
         professorName: i.professorName,
         subjectName: i.subjectName,
         subjectScore: avgScoreStr,

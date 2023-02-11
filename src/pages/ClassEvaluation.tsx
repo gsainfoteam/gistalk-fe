@@ -15,6 +15,7 @@ import HeaderTitle from "@/components/HeaderTitle";
 import { Link } from "react-router-dom";
 import HiddenNav from "@/components/HiddenNav";
 import CatBlankList_Svg from "@/assets/svgs/catBlankList.svg";
+import useSubjectCode from "@/hooks/useSubjectCode";
 
 const Wrap = styled.div`
   min-height: 100vh;
@@ -168,7 +169,7 @@ export default function ClassEvaluation() {
         headerText={"강의"}
         subjectTitle={tempData.subjectName}
         professorName={tempData.professorName}
-        subjectCode={tempData.subjectCode}
+        subjectCode={useSubjectCode(tempData.subjectCode)}
         avgScore={String(avgScore)}
       ></HeaderTitle>
       <EvaluationText fontSize={16} color={theme.colors.primaryText}>
@@ -299,6 +300,9 @@ export default function ClassEvaluation() {
         fontSize={20}
         bgColor={theme.colors.primary}
         color={theme.colors.white}
+        onClick={() => {
+            window.open("https://forms.gle/Xem6r3e9cC5D9RF76");
+        }}
       >
         강의평 쓰러가기
       </GoWriteBtn>
