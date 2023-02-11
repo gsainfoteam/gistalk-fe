@@ -269,13 +269,18 @@ export default function ClassEvaluation() {
           ))
         }
       </Upper>
-      <GoWriteBtn
-        fontSize={20}
-        bgColor={theme.colors.primary}
-        color={theme.colors.white}
+      <Link
+        to={"https://forms.gle/aDkYgA1e7WRqQt2s8"}
+        style={{ textDecoration: "none" }}
       >
-        강의평 쓰러가기
-      </GoWriteBtn>
+        <GoWriteBtn
+          fontSize={20}
+          bgColor={theme.colors.primary}
+          color={theme.colors.white}
+        >
+          강의평 쓰러가기
+        </GoWriteBtn>
+      </Link>
       <HiddenNav
         avgScore={avgScore}
         professor={"김상호"}
