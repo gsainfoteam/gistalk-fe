@@ -393,7 +393,7 @@ export default function Search() {
       <SearchWrap borderColor={theme.colors.inputBorder}>
         <SearchInputWrap>
           <SearchInput
-            placeholder="강의명/교수명으로 검색"
+            placeholder="강의명으로 검색"
             color={theme.colors.primaryText}
             bgColor={theme.colors.white}
             onChange={(e) => setSearchText(e.target.value)}
