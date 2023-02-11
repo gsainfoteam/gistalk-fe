@@ -27,23 +27,19 @@ const RecommendSvg = styled(theme.universalComponent.SvgIcon)<{
 `;
 
 export default function RecommendTextForm({ like }: IProps) {
-
-  const defineUsage = (like:string) : [string,string,string,number] => {
-    switch (like){
+  const defineUsage = (like: string): [string, string, string, number] => {
+    switch (like) {
       case "true":
-        return [theme.colors.primary, ThumbUp_Svg, "추천",1]
+        return [theme.colors.primary, ThumbUp_Svg, "추천", 1];
       case "false":
-        return [theme.colors.reverse, ThumbDown_Svg, "비추천",2]
+        return [theme.colors.reverse, ThumbDown_Svg, "비추천", 2];
       default:
-        return [theme.colors.primaryText, Neutral_Svg, "보통",3]
+        return [theme.colors.primaryText, Neutral_Svg, "보통", 3];
     }
-  }
+  };
 
   return (
-    <Wrap
-      fontSize={14}
-      color={defineUsage(like)[0]}
-    >
+    <Wrap fontSize={14} color={defineUsage(like)[0]}>
       <RecommendSvg
         size={20}
         src={defineUsage(like)[1]}

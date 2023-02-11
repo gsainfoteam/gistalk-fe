@@ -135,9 +135,9 @@ const SearchItem = styled.div`
   color: ${theme.colors.primaryText};
 `;
 
-const MatchingText = styled.span<{ color:string }>`
+const MatchingText = styled.span<{ color: string }>`
   font-family: NSBold;
-  color: ${props => props.color}
+  color: ${(props) => props.color};
 `;
 
 /** 검색 옵션에서 분과/정렬 선택하는 드롭다운 버튼 */
@@ -340,7 +340,9 @@ export default function Search() {
             <SearchItem>
               <p>
                 <span>{item.subjectName.split(searchText)[0]}</span>
-                <MatchingText color={theme.colors.primary}>{searchText}</MatchingText>
+                <MatchingText color={theme.colors.primary}>
+                  {searchText}
+                </MatchingText>
                 <span>{item.subjectName.split(searchText)[1]}</span>
                 <span>- {item.professorName}</span>
               </p>

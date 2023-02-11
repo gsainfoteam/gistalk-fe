@@ -14,10 +14,11 @@ import Title from "../components/Title";
 import HeaderTitle from "@/components/HeaderTitle";
 import { Link } from "react-router-dom";
 import HiddenNav from "@/components/HiddenNav";
+import CatBlankList_Svg from "@/assets/svgs/catBlankList.svg";
 
 const Wrap = styled.div`
-    min-height:100vh;
-`
+  min-height: 100vh;
+`;
 
 /** · 수강생들의 평가 · 를 표시하는 div */
 const EvaluationText = styled(theme.universalComponent.DivTextContainer)`
@@ -122,6 +123,19 @@ const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
   bottom: 2.5vw;
   font-family: NSBold;
   margin: 0 2.5vw;
+`;
+
+/** Search 리스트가 비었을 떄 나오는 냥이 일러스트, 문구 Wrap */
+const BlankWrap = styled.div`
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const BlankSvg = styled(theme.universalComponent.SvgIcon)``;
+const BlankText = styled(theme.universalComponent.DivTextContainer)`
+  font-family: NSBold;
 `;
 
 export default function ClassEvaluation() {
@@ -268,10 +282,18 @@ export default function ClassEvaluation() {
         </OneLineReviewText>
         {
           //여기서 i는 tempdb[0]이 가리키는 강의평가에 해당하는 각 한줄평을 가리킴
-            tempData.oneLineReview.map((i) => (
+          tempData.oneLineReview.map((i) => (
             <Reply key={i.id} replyData={i} isMine={false}></Reply>
           ))
         }
+        {tempData.oneLineReview.length === 0 && (
+          <BlankWrap>
+            <BlankSvg size={120} src={CatBlankList_Svg} />
+            <BlankText fontSize={14} color={theme.colors.secondaryText}>
+                아직 누구도 한줄평을 쓰지 않았네요 (ㅠㅠ)
+            </BlankText>
+          </BlankWrap>
+        )}
       </Upper>
       <GoWriteBtn
         fontSize={20}

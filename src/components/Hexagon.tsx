@@ -19,7 +19,7 @@ const Wrap = styled.div`
   width: 100vw;
   display: flex;
   justify-content: center;
-  overflow-x:hidden;
+  overflow-x: hidden;
   overflow-y: hidden;
 `;
 
