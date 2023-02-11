@@ -146,6 +146,10 @@ export default function ClassEvaluation() {
     setConcreteOpen(!concreteOpen);
   };
 
+  useEffect(() => {
+    checkVaildEmail();
+  });
+
   /** Radar Chart에 들어갈 임시 데이터 */
   const params = useParams() as { id: string };
   /**강의별 id */
@@ -291,7 +295,7 @@ export default function ClassEvaluation() {
           <BlankWrap>
             <BlankSvg size={120} src={CatBlankList_Svg} />
             <BlankText fontSize={14} color={theme.colors.secondaryText}>
-                아직 누구도 한줄평을 쓰지 않았네요 (ㅠㅠ)
+              아직 한줄평이 작성되지 않았네요.
             </BlankText>
           </BlankWrap>
         )}
@@ -301,7 +305,7 @@ export default function ClassEvaluation() {
         bgColor={theme.colors.primary}
         color={theme.colors.white}
         onClick={() => {
-            window.open("https://forms.gle/Xem6r3e9cC5D9RF76");
+          window.open("https://forms.gle/Xem6r3e9cC5D9RF76");
         }}
       >
         강의평 쓰러가기

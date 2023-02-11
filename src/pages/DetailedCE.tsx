@@ -17,13 +17,13 @@ const HorizontalLine = styled.div<{ borderColor: string }>`
 export default function DetailedCE() {
   return (
     <>
-        <HeaderTitle
-            headerText={"강의"}
-            subjectTitle={"인간의 마음과 행동"}
-            professorName={"김상호"}
-            subjectCode={"EB2724"}
-            avgScore={"2.35"}
-        ></HeaderTitle>
+      <HeaderTitle
+        headerText={"강의"}
+        subjectTitle={"인간의 마음과 행동"}
+        professorName={"김상호"}
+        subjectCode={"EB2724"}
+        avgScore={"2.35"}
+      ></HeaderTitle>
       {tempdb[0].detailedReview.map((i) => (
         <div key={i.id}>
           <Reply replyData={i} isMine={true} />

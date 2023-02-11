@@ -4,7 +4,7 @@ import InfoteamLogo_Svg from "../assets/svgs/infoteamLogo.svg";
 import { Link } from "react-router-dom";
 import Search_Svg from "@/assets/svgs/login.svg";
 import { useRef, useState } from "react";
-import usePassCheck from "@/hooks/usePassCheck";
+import { isValidEmail } from "@/hooks/usePassCheck";
 
 const Wrap = styled.div`
   width: 100vw;

@@ -23,6 +23,7 @@ import { useAtom } from "jotai";
 import { departmentOptionAtom, sortOptionAtom } from "@/store";
 import SortSelectModal from "@/components/SortSelectModal";
 import useSubjectCode from "@/hooks/useSubjectCode";
+import { checkVaildEmail, useCheckVaildEmail } from "@/hooks/usePassCheck";
 
 /** 페이지 최상단의 로고, 마이페이지 버튼 있는 부분 */
 const TopWrap = styled.div`
@@ -249,6 +250,10 @@ export default function Search() {
 
   const [sortStd, setSortStd] = useAtom(sortOptionAtom);
   const departmentOption = useAtom(departmentOptionAtom)[0];
+
+  useEffect(() => {
+    checkVaildEmail();
+  });
 
   const [searchText, setSearchText] = useState("");
   const [searchTextEnter, setSearchTextEnter] = useState("");
