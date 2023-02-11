@@ -103,7 +103,7 @@ const SearchHorizontalLine = styled.hr<{
 }>`
   margin: 0 7px;
   width: auto;
-  border: 0px;
+  border: 0;
   border-top: 1.5px solid ${(props) => props.lineColor};
 
   //searchItemList가 있는 경우에만 가로선이 나타나도록 설정
@@ -130,13 +130,14 @@ const OrderSvg = styled(theme.universalComponent.SvgIcon)`
 const SearchItem = styled.div`
   display: flex;
   justify-content: space-between;
-  font-family: NSBold;
+  font-family: NSRegular;
   padding: 4px 16px;
   color: ${theme.colors.primaryText};
 `;
 
-const MatchingText = styled.span`
-  font-family: NSRegular;
+const MatchingText = styled.span<{ color:string }>`
+  font-family: NSBold;
+  color: ${props => props.color}
 `;
 
 /** 검색 옵션에서 분과/정렬 선택하는 드롭다운 버튼 */
@@ -339,8 +340,9 @@ export default function Search() {
             <SearchItem>
               <p>
                 <span>{item.subjectName.split(searchText)[0]}</span>
-                <MatchingText>{searchText}</MatchingText>
+                <MatchingText color={theme.colors.primary}>{searchText}</MatchingText>
                 <span>{item.subjectName.split(searchText)[1]}</span>
+                <span>- {item.professorName}</span>
               </p>
               <NorthWestSvg src={NorthWest_Svg} size={20} />
             </SearchItem>
@@ -382,11 +384,11 @@ export default function Search() {
           <LogoSvg src={InfoteamLogo_Svg} size={35}></LogoSvg>
           GISTALK
         </LogoWrap>
-        <Link to={`/profile`} style={{ textDecoration: "none" }}>
-          <MyBtn fontSize={16} color={theme.colors.primaryText}>
-            MY
-          </MyBtn>
-        </Link>
+        {/*<Link to={`/profile`} style={{ textDecoration: "none" }}>*/}
+        {/*  <MyBtn fontSize={16} color={theme.colors.primaryText}>*/}
+        {/*    MY*/}
+        {/*  </MyBtn>*/}
+        {/*</Link>*/}
       </TopWrap>
       <SearchWrap borderColor={theme.colors.inputBorder}>
         <SearchInputWrap>
