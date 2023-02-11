@@ -122,12 +122,12 @@ export default function Reply({ replyData, isMine }: IProps) {
             </ME>
           )}
         </LeftWrap>
-        <RightWrap>
-          <LikeDislikeBtnWrap
-            like={replyData.like}
-            dislike={replyData.dislike}
-          ></LikeDislikeBtnWrap>
-        </RightWrap>
+        {/*<RightWrap>*/}
+        {/*  <LikeDislikeBtnWrap*/}
+        {/*    like={replyData.like}*/}
+        {/*    dislike={replyData.dislike}*/}
+        {/*  ></LikeDislikeBtnWrap>*/}
+        {/*</RightWrap>*/}
       </InfoWrap>
       {/** content를 배열로 받아서 배열 길이가 1이면 한줄평, 배열 길이가 3이면 세부 강의평가로 인식되도록 만듦
          수정이 필요할 듯 함. */}

@@ -14,7 +14,7 @@ export const major: IDepartment[] = [
   { subjectCode: "EV", korean: "지환공", fullKorean: "지구·환경공학부", id: 5 },
   { subjectCode: "MA", korean: "신소재", fullKorean: "신소재공학부", id: 6 },
   { subjectCode: "PS", korean: "물리", fullKorean: "물리·광과학과", id: 7 },
-  { subjectCode: "ME", korean: "기계", fullKorean: "기계공학부", id: 8 },
+  { subjectCode: "MC", korean: "기계", fullKorean: "기계공학부", id: 8 },
 ];
 
 /** 부전공 분과 선택을 위한 오브젝트 리스트 */
@@ -71,3 +71,17 @@ export const minor: IDepartment[] = [
   },
   { subjectCode: "AI", korean: "AI융합", fullKorean: "AI융합 부전공", id: 11 },
 ];
+
+export const underG:IDepartment[] = [
+  { subjectCode: "CC", korean: "공통", fullKorean: "공통과목", id: 1 },
+  { subjectCode: "MS", korean: "신소재", fullKorean: "신소재공학부", id: 2 },
+  { subjectCode: "ME", korean: "기계", fullKorean: "기계공학부", id: 3 },
+  { subjectCode: "EN", korean: "지환공", fullKorean: "지구환경공학부", id: 4 },
+  { subjectCode: "LS", korean: "생명", fullKorean: "생명과학부", id: 5 },
+  { subjectCode: "RT", korean: "융합지능", fullKorean: "융합기술 지능로봇프로그램", id: 5 },
+  { subjectCode: "FE", korean: "에너지융합", fullKorean: "에너지융합대학원", id: 5 },
+  { subjectCode: "PH", korean: "물리광과학", fullKorean: "물리광과학과", id: 5 },
+  { subjectCode: "PH", korean: "물리광과학", fullKorean: "물리·광과학과", id: 5 },
+  { subjectCode: "MI", korean: "기술혁신", fullKorean: "기술혁신 부전공", id: 5 },
+]
+

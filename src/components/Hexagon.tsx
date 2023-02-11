@@ -19,7 +19,7 @@ const Wrap = styled.div`
   width: 100vw;
   display: flex;
   justify-content: center;
-  overflow-x:hidden;
+  overflow-x: hidden;
   overflow-y: hidden;
 `;
 
@@ -59,12 +59,12 @@ export default function Hexagon({ HexData }: IProps) {
           fill={theme.colors.primary}
           fillOpacity={0.6}
         />
-        <Radar
-            name="Standard"
-            dataKey="B"
-            fill={theme.colors.reverse}
-            fillOpacity={0.4}
-        />
+        {/*<Radar*/}
+        {/*    name="Standard"*/}
+        {/*    dataKey="B"*/}
+        {/*    fill={theme.colors.reverse}*/}
+        {/*    fillOpacity={0.4}*/}
+        {/*/>*/}
       </RadarChart>
     </Wrap>
   );

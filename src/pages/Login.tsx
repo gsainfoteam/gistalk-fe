@@ -2,6 +2,9 @@ import styled from "styled-components";
 import { theme } from "@/style/theme";
 import InfoteamLogo_Svg from "../assets/svgs/infoteamLogo.svg";
 import { Link } from "react-router-dom";
+import Search_Svg from "@/assets/svgs/login.svg";
+import { useRef, useState } from "react";
+import usePassCheck from "@/hooks/usePassCheck";
 
 const Wrap = styled.div`
   width: 100vw;
@@ -47,7 +50,93 @@ const IDPBtn = styled(theme.universalComponent.DivTextContainer)<{
   }
 `;
 
+const SearchWrap = styled.div<{ borderColor: string }>`
+  width: 75vw;
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  margin: 20px auto 0 auto;
+
+  border-radius: 5px;
+  border: 2px solid ${(props) => props.borderColor};
+`;
+
+const SearchInputWrap = styled.form`
+  display: flex;
+  flex-direction: row;
+`;
+
+const SearchInput = styled.input<{
+  color: string;
+  bgColor: string;
+}>`
+  width: calc(75vw - 60px);
+  background-color: ${(props) => props.bgColor};
+  height: 40px;
+  padding-left: 15px;
+  font-family: NSRegular;
+  border: none;
+  text-align: left;
+  display: block;
+
+  //폰트 크기
+  font-size: 16px;
+  color: ${(props) => props.color};
+`;
+
+const SearchBtnWrap = styled.button<{ bgColor: string }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  border: none;
+  background-color: ${(props) => props.bgColor};
+`;
+
+const SearchSvg = styled(theme.universalComponent.SvgIcon)`
+  display: block;
+  cursor: pointer;
+`;
+
+const NotPass = styled(theme.universalComponent.DivTextContainer)`
+  text-align: center;
+  width: 100vw;
+  font-family: NSRegular;
+  position: fixed;
+  bottom: 30px;
+`;
+
+/** '강의평 쓰러가기' 버튼 */
+const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
+  bgColor: string;
+}>`
+  text-align: center;
+  width: 250px;
+  background-color: ${(props) => props.bgColor};
+  height: 40px;
+  line-height: 40px;
+  font-family: NSBold;
+  margin: 10px auto 0 auto;
+`;
+
+const PassWrap = styled(theme.universalComponent.DivTextContainer)`
+  text-align: center;
+  width: 100vw;
+  font-family: NSRegular;
+  position: fixed;
+  bottom: 30px;
+`;
+
 export default function Login() {
+  const [pass, setPass] = useState<number>(0);
+  const MailInputRef = useRef<HTMLInputElement>(null);
+  const submitHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+    const enteredText = MailInputRef.current!.value;
+    setPass(usePassCheck(enteredText) ? 1 : 2);
+  };
+
   return (
     <Wrap>
       <LogoWrap>
@@ -64,16 +153,60 @@ export default function Login() {
         </GistalkText>
       </LogoWrap>
 
-      <Link to="/search">
-        <IDPBtn
-          primaryColor={theme.colors.primary}
-          fontSize={18}
-          bgColor={theme.colors.primaryText}
-          color={theme.colors.white}
-        >
-          <span>G</span>ISTORY로 로그인하기
-        </IDPBtn>{" "}
-      </Link>
+      <SearchWrap borderColor={theme.colors.inputBorder}>
+        <SearchInputWrap onSubmit={submitHandler}>
+          <SearchInput
+            placeholder="이메일을 입력하세요"
+            color={theme.colors.primaryText}
+            bgColor={theme.colors.white}
+            ref={MailInputRef}
+          />
+          <SearchBtnWrap bgColor={theme.colors.white}>
+            <SearchSvg size={25} src={Search_Svg} />
+          </SearchBtnWrap>
+        </SearchInputWrap>
+      </SearchWrap>
+
+      {/*<Link to="/search">*/}
+      {/*  <IDPBtn*/}
+      {/*    primaryColor={theme.colors.primary}*/}
+      {/*    fontSize={18}*/}
+      {/*    bgColor={theme.colors.primaryText}*/}
+      {/*    color={theme.colors.white}*/}
+      {/*  >*/}
+      {/*    <span>G</span>ISTORY로 로그인하기*/}
+      {/*  </IDPBtn>{" "}*/}
+      {/*</Link>*/}
+
+      {pass == 2 ? (
+        <NotPass fontSize={12} color={theme.colors.primary}>
+          유효하지 않은 이메일입니다. <br />
+          아래 폼에서 강의평가 3개를 작성하고 와주세요.
+          <GoWriteBtn
+            fontSize={16}
+            bgColor={theme.colors.primary}
+            color={theme.colors.white}
+            onClick={() => {
+              window.open("https://forms.gle/Xem6r3e9cC5D9RF76");
+            }}
+          >
+            강의평가 작성하러 가기
+          </GoWriteBtn>
+        </NotPass>
+      ) : pass == 1 ? (
+        <PassWrap fontSize={12} color={"#2ecc71"}>
+          유효한 이메일입니다.
+          <Link to={"/search"} style={{ textDecoration: "none" }}>
+            <GoWriteBtn
+              fontSize={16}
+              bgColor={"#2ecc71"}
+              color={theme.colors.white}
+            >
+              강의평가 보러가기
+            </GoWriteBtn>
+          </Link>
+        </PassWrap>
+      ) : null}
     </Wrap>
   );
 }

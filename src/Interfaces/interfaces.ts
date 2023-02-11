@@ -48,9 +48,9 @@ export interface IReply {
   id: number;
 
   /** 강의를 추천하는지 여부 */
-  recommend: boolean;
+  recommend: string;
   /** 몇 학년도 수강자? */
-  year: number;
+  year: string;
   /** 몇 학기 수강자? (1/2/여름(가을)/겨울) */
   semester: string;
   /** 해당 한줄평(또는 세부평가)에 대한 좋아요 수 */
@@ -76,13 +76,15 @@ export interface ISubjectData {
   /** 교수명 */
   professorName: string;
   /** 과목코드 */
-  subjectCode: string;
+  subjectCode: string[];
   /** Radar Chart에 들어갈 데이터 */
   hexData: IHexData[];
   /** 한줄평 리스트 */
   oneLineReview: IReply[];
   /** 세부평가 리스트*/
   detailedReview: IReply[];
+  /** 중복도 */
+  redundancy: number;
 }
 
 export type ISortOption =

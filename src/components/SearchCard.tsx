@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 import TempIcon from "./TempIcon";
-import { major, minor } from "./StdSet";
+import { major, minor, underG } from "./StdSet";
 
 interface IProps {
   subjectCode: string;
@@ -10,11 +10,14 @@ interface IProps {
   subjectScore: string;
 }
 
-const SearchCardWrap = styled.div`
+const SearchCardWrap = styled.div<{ hoverColor: string }>`
   width: 100%;
   margin-bottom: 3px;
   display: flex;
   align-items: center;
+  :active {
+    background-color: ${(props) => props.hoverColor};
+  }
 `;
 
 const CardContentWrap = styled.div<{ color: string }>`
@@ -88,9 +91,11 @@ export default function SearchCard({
     ? "#FFCF23"
     : minor.map((item) => Division === item.subjectCode).includes(true)
     ? "#8CBAFF"
+    : underG.map((item) => Division === item.subjectCode).includes(true)
+    ? "#00b102"
     : "#E0E0E0";
   return (
-    <SearchCardWrap>
+    <SearchCardWrap hoverColor={theme.colors.inputBg}>
       <TempIcon text={Division} color={IconColor} isChecked={false}></TempIcon>
       <CardContentWrap color={theme.colors.primaryText}>
         <p>

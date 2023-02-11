@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState, KeyboardEvent } from "react";
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 
 import SearchCard from "../components/SearchCard";
 import Search_Svg from "../assets/svgs/search.svg";
@@ -15,13 +15,14 @@ import {
   IDepartmentGridItemWrapComponent,
   ISearchCard,
   ISortOption,
-} from "../Interfaces/interfaces";
-import { tempdb } from "../tempdb/tempdb";
+} from "@/Interfaces/interfaces";
+import { tempdb } from "@/tempdb/tempdb";
 import { Link } from "react-router-dom";
 import DepartmentSelectModal from "@/components/DepartmentSelectModal";
 import { useAtom } from "jotai";
 import { departmentOptionAtom, sortOptionAtom } from "@/store";
 import SortSelectModal from "@/components/SortSelectModal";
+import useSubjectCode from "@/hooks/useSubjectCode";
 
 /** 페이지 최상단의 로고, 마이페이지 버튼 있는 부분 */
 const TopWrap = styled.div`
@@ -103,7 +104,7 @@ const SearchHorizontalLine = styled.hr<{
 }>`
   margin: 0 7px;
   width: auto;
-  border: 0px;
+  border: 0;
   border-top: 1.5px solid ${(props) => props.lineColor};
 
   //searchItemList가 있는 경우에만 가로선이 나타나도록 설정
@@ -130,13 +131,14 @@ const OrderSvg = styled(theme.universalComponent.SvgIcon)`
 const SearchItem = styled.div`
   display: flex;
   justify-content: space-between;
-  font-family: NSBold;
+  font-family: NSRegular;
   padding: 4px 16px;
   color: ${theme.colors.primaryText};
 `;
 
-const MatchingText = styled.span`
-  font-family: NSRegular;
+const MatchingText = styled.span<{ color: string }>`
+  font-family: NSBold;
+  color: ${(props) => props.color};
 `;
 
 /** 검색 옵션에서 분과/정렬 선택하는 드롭다운 버튼 */
@@ -270,7 +272,7 @@ export default function Search() {
 
       return {
         id: i.id,
-        subjectCode: i.subjectCode,
+        subjectCode: useSubjectCode(i.subjectCode),
         professorName: i.professorName,
         subjectName: i.subjectName,
         subjectScore: avgScoreStr,
@@ -339,8 +341,11 @@ export default function Search() {
             <SearchItem>
               <p>
                 <span>{item.subjectName.split(searchText)[0]}</span>
-                <MatchingText>{searchText}</MatchingText>
+                <MatchingText color={theme.colors.primary}>
+                  {searchText}
+                </MatchingText>
                 <span>{item.subjectName.split(searchText)[1]}</span>
+                <span>- {item.professorName}</span>
               </p>
               <NorthWestSvg src={NorthWest_Svg} size={20} />
             </SearchItem>
@@ -382,16 +387,16 @@ export default function Search() {
           <LogoSvg src={InfoteamLogo_Svg} size={35}></LogoSvg>
           GISTALK
         </LogoWrap>
-        <Link to={`/profile`} style={{ textDecoration: "none" }}>
-          <MyBtn fontSize={16} color={theme.colors.primaryText}>
-            MY
-          </MyBtn>
-        </Link>
+        {/*<Link to={`/profile`} style={{ textDecoration: "none" }}>*/}
+        {/*  <MyBtn fontSize={16} color={theme.colors.primaryText}>*/}
+        {/*    MY*/}
+        {/*  </MyBtn>*/}
+        {/*</Link>*/}
       </TopWrap>
       <SearchWrap borderColor={theme.colors.inputBorder}>
         <SearchInputWrap>
           <SearchInput
-            placeholder="강의명/교수명으로 검색"
+            placeholder="강의명으로 검색"
             color={theme.colors.primaryText}
             bgColor={theme.colors.white}
             onChange={(e) => setSearchText(e.target.value)}

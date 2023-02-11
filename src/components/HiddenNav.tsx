@@ -2,11 +2,12 @@ import styled, { keyframes } from "styled-components";
 import { useEffect, useState } from "react";
 import { theme } from "@/style/theme";
 import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
+import { useNavigate } from "react-router-dom";
 
 interface IProps {
-  avgScore:number,
-  title:string,
-  professor:string
+  avgScore: number;
+  title: string;
+  professor: string;
 }
 
 const Wrap = styled.div<{
@@ -62,9 +63,9 @@ const WhiteShadowBox = styled.div<{ bgColor: string; left: boolean }>`
   align-items: center;
   justify-content: ${(props) => (props.left ? "left" : "right")};
   z-index: 200;
-  position:absolute;
+  position: absolute;
 
-  ${props => props.left ? "left : 0;" : "right : 0;"}
+  ${(props) => (props.left ? "left : 0;" : "right : 0;")}
 `;
 
 const TextLoop = keyframes`
@@ -76,16 +77,20 @@ const TextLoop = keyframes`
   }
 `;
 
-const Title = styled(theme.universalComponent.DivTextContainer)<{ animate:boolean }>`
+const Title = styled(theme.universalComponent.DivTextContainer)<{
+  animate: boolean;
+}>`
   font-family: NSBold;
   white-space: nowrap;
-  padding-left : ${props => props.animate ? "100%" : "0"};
+  padding-left: ${(props) => (props.animate ? "100%" : "0")};
   animation: ${TextLoop} 10s linear infinite;
-  ${props => !props.animate && `animation : none;`}
+  ${(props) => !props.animate && `animation : none;`}
 `;
 
-export default function HiddenNav({avgScore, title, professor}:IProps) {
+export default function HiddenNav({ avgScore, title, professor }: IProps) {
   const [scroll, setScroll] = useState(0);
+
+  const navigate = useNavigate();
   const onScroll = () => {
     setScroll(window.scrollY);
   };
@@ -98,7 +103,7 @@ export default function HiddenNav({avgScore, title, professor}:IProps) {
   }, []);
 
   let animate = false;
-  if(title.length + professor.length + 3 > 17){
+  if (title.length + professor.length + 3 > 17) {
     animate = true;
   }
 
@@ -110,6 +115,9 @@ export default function HiddenNav({avgScore, title, professor}:IProps) {
     >
       <WhiteShadowBox left={true} bgColor={theme.colors.white}>
         <NavigationArrowSvg
+          onClick={() => {
+            navigate(-1);
+          }}
           size={22}
           src={NavigationArrow_Svg}
         ></NavigationArrowSvg>
