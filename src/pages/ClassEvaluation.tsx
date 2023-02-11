@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import HiddenNav from "@/components/HiddenNav";
 import CatBlankList_Svg from "@/assets/svgs/catBlankList.svg";
 import useSubjectCode from "@/hooks/useSubjectCode";
+import { checkVaildEmail } from "@/hooks/usePassCheck";
 
 const Wrap = styled.div`
   min-height: 100vh;
