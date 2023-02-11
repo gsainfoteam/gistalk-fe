@@ -305,7 +305,7 @@ export default function ClassEvaluation() {
         bgColor={theme.colors.primary}
         color={theme.colors.white}
         onClick={() => {
-          window.open("https://forms.gle/Xem6r3e9cC5D9RF76");
+          window.open("https://forms.gle/DS4ZXU5xQ3UPbyR68");
         }}
       >
         강의평 쓰러가기
