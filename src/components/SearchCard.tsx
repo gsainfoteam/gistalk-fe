@@ -10,11 +10,14 @@ interface IProps {
   subjectScore: string;
 }
 
-const SearchCardWrap = styled.div`
+const SearchCardWrap = styled.div<{ hoverColor:string }>`
   width: 100%;
   margin-bottom: 3px;
   display: flex;
   align-items: center;
+  :active{
+    background-color: ${props => props.hoverColor};
+  }
 `;
 
 const CardContentWrap = styled.div<{ color: string }>`
@@ -90,7 +93,7 @@ export default function SearchCard({
     ? "#8CBAFF"
     : "#E0E0E0";
   return (
-    <SearchCardWrap>
+    <SearchCardWrap hoverColor={theme.colors.inputBg}>
       <TempIcon text={Division} color={IconColor} isChecked={false}></TempIcon>
       <CardContentWrap color={theme.colors.primaryText}>
         <p>
