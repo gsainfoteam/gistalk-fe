@@ -59,12 +59,12 @@ export default function Hexagon({ HexData }: IProps) {
           fill={theme.colors.primary}
           fillOpacity={0.6}
         />
-        <Radar
-            name="Standard"
-            dataKey="B"
-            fill={theme.colors.reverse}
-            fillOpacity={0.4}
-        />
+        {/*<Radar*/}
+        {/*    name="Standard"*/}
+        {/*    dataKey="B"*/}
+        {/*    fill={theme.colors.reverse}*/}
+        {/*    fillOpacity={0.4}*/}
+        {/*/>*/}
       </RadarChart>
     </Wrap>
   );
