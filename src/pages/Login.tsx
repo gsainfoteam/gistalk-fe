@@ -134,7 +134,7 @@ export default function Login() {
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
     const enteredText = MailInputRef.current!.value;
-    setPass(usePassCheck(enteredText) ? 1 : 2);
+    setPass(isValidEmail(enteredText));
   };
 
   return (
