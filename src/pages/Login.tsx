@@ -165,7 +165,7 @@ export default function Login() {
         v0.1
       </Version>
 
-      <SearchWrap borderColor={theme.colors.inputBorder}>
+      {/* <SearchWrap borderColor={theme.colors.inputBorder}>
         <SearchInputWrap onSubmit={submitHandler}>
           <SearchInput
             placeholder="이메일을 입력하세요"
@@ -177,7 +177,7 @@ export default function Login() {
             <SearchSvg size={25} src={Search_Svg} />
           </SearchBtnWrap>
         </SearchInputWrap>
-      </SearchWrap>
+      </SearchWrap> */}
 
       <form
         action={`https://gistory-idp-fe.pages.dev`}

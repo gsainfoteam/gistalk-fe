@@ -51,8 +51,18 @@ const LogoSvg = styled(theme.universalComponent.SvgIcon)`
 
 /** 마이페이지 버튼 있는 부분 */
 const MyBtn = styled.button`
-  font-family: NSBold;
-  margin: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+  font-size: 0.8rem;
+
+  background: ${theme.colors.secondary};
 `;
 
 const SearchWrap = styled.div<{ borderColor: string }>`
