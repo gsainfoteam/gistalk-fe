@@ -1,10 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAtom } from "jotai";
-import { isLoggedInAtom } from "@/store";
+import { useResetAtom } from "jotai/utils";
+import { isLoggedInAtom, userInfoAtom } from "@/store";
 
 export const useLogOut = () => {
   const [, setIsLoggedIn] = useAtom(isLoggedInAtom);
+  const resetUserInfo = useResetAtom(userInfoAtom);
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -12,6 +15,7 @@ export const useLogOut = () => {
     localStorage.removeItem("accessTokenExp");
     axios.defaults.headers.common["Authorization"] = "";
     setIsLoggedIn(false);
+    resetUserInfo();
     navigate("/");
     alert("로그아웃 되었습니다");
   };

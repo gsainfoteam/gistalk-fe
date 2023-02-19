@@ -95,3 +95,11 @@ export type ISortOption =
   | "과제량"
   | "재미/흥미"
   | "강의력";
+
+export interface UserInfo {
+  user_uuid: string;
+  user_email_id: string;
+  user_name: string;
+  user_phone_number: string;
+  student_id: string;
+}

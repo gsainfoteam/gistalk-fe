@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import { loginWithIdp } from "@/apis/authAPI";
+import { getUserInfo, loginWithIdp } from "@/apis/authAPI";
 import { useAtom } from "jotai";
-import { isLoggedInAtom } from "@/store";
+import { isLoggedInAtom, userInfoAtom } from "@/store";
 
 export const useLogin = () => {
   const [, setIsLoggedIn] = useAtom(isLoggedInAtom);
+  const [, setUserInfo] = useAtom(userInfoAtom);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -15,9 +16,15 @@ export const useLogin = () => {
       const authCode = searchParams.get("auth_code");
 
       if (authCode) {
-        await loginWithIdp(authCode);
+        const { jwtToken } = await loginWithIdp(authCode);
         searchParams.delete("auth_code");
         setSearchParams(searchParams);
+        const userInfo = await getUserInfo(jwtToken);
+
+        console.log(userInfo);
+
+        setUserInfo(userInfo);
+
         navigate("/search");
       } //TODO authCode는 일회용이므로 새로고침/뒤로가기 대응 필요
 

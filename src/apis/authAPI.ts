@@ -1,4 +1,9 @@
+import { UserInfo } from "@/Interfaces/interfaces";
 import axios from "axios";
+
+interface LoginResponse {
+  jwtToken: string;
+}
 
 export const loginWithIdp = async (
   authCode: string
@@ -16,6 +21,10 @@ export const loginWithIdp = async (
   return data;
 };
 
-interface LoginResponse {
-  jwtToken: string;
-}
+export const getUserInfo = async (jwtToken: string): Promise<UserInfo> => {
+  const { data } = await axios.get(
+    `https://api.idp.gistory.me/idp/get_user_info?jwt_token=${jwtToken}`
+  );
+
+  return data;
+};
