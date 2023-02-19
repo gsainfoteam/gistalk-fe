@@ -13,6 +13,7 @@ import DetailedCE from "./pages/DetailedCE";
 import Login from "@/pages/Login";
 import Err404 from "@/pages/Err404";
 import { Provider } from "jotai";
+import WriteEV from "@/pages/WriteEV";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <Route path="/:id/evaluation" element={<ClassEvaluation />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/:id/detail" element={<DetailedCE />} />
+            <Route path="/write" element={<WriteEV />} />
             <Route path="/" element={<Login />} />
             <Route path="/404" element={<Err404 />} />
           </Routes>

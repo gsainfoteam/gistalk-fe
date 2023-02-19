@@ -142,48 +142,6 @@ const MatchingText = styled.span<{ color: string }>`
   color: ${(props) => props.color};
 `;
 
-/** 검색 옵션에서 분과/정렬 선택하는 드롭다운 버튼 */
-const SearchDrop = styled.div<{
-  color: string;
-  afterColor: string;
-  option: number;
-}>`
-  width: 78vw;
-  margin: 18px 4vw 0 4vw;
-  transition: 0.2s;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: ${(props) => props.color};
-
-  div:nth-child(1) {
-    font-family: NSRegular;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-
-    span {
-      margin-left: 12px;
-    }
-  }
-
-  div:nth-child(2) {
-    font-family: NSBold;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-
-    span {
-      margin-right: 5px;
-      color: ${(props) => {
-        if (props.option === 0) return props.color;
-        else return props.afterColor;
-      }};
-    }
-  }
-`;
-
 const OptionBtnWrap = styled(theme.universalComponent.DivTextContainer)`
   display: flex;
   align-items: center;
