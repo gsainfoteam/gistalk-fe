@@ -34,7 +34,7 @@ const GistalkText = styled(theme.universalComponent.DivTextContainer)<{
   text-align: center;
 `;
 
-const IDPBtn = styled(theme.universalComponent.DivTextContainer)<{
+const IDPBtn = styled.button<{
   bgColor: string;
   primaryColor: string;
 }>`
@@ -132,7 +132,7 @@ const Version = styled(theme.universalComponent.DivTextContainer)`
   text-align: center;
   width: 100vw;
   font-family: NSBold;
-`
+`;
 
 export default function Login() {
   const [pass, setPass] = useState<number>(0);
@@ -159,7 +159,9 @@ export default function Login() {
         </GistalkText>
       </LogoWrap>
 
-      <Version fontSize={12} color={theme.colors.secondary}>v0.1</Version>
+      <Version fontSize={12} color={theme.colors.secondary}>
+        v0.1
+      </Version>
 
       <SearchWrap borderColor={theme.colors.inputBorder}>
         <SearchInputWrap onSubmit={submitHandler}>
@@ -175,16 +177,26 @@ export default function Login() {
         </SearchInputWrap>
       </SearchWrap>
 
-      {/*<Link to="/search">*/}
-      {/*  <IDPBtn*/}
-      {/*    primaryColor={theme.colors.primary}*/}
-      {/*    fontSize={18}*/}
-      {/*    bgColor={theme.colors.primaryText}*/}
-      {/*    color={theme.colors.white}*/}
-      {/*  >*/}
-      {/*    <span>G</span>ISTORY로 로그인하기*/}
-      {/*  </IDPBtn>{" "}*/}
-      {/*</Link>*/}
+      <form
+        action={`https://gistory-idp-fe.pages.dev`}
+        style={{
+          width: "60%",
+        }}
+      >
+        <input
+          type={"hidden"}
+          name={"redirect_uri"}
+          value={window.location.host}
+        />
+        <IDPBtn
+          primaryColor={theme.colors.primary}
+          bgColor={theme.colors.primaryText}
+          color={theme.colors.white}
+          type={"submit"}
+        >
+          <span>G</span>ISTORY로 로그인하기
+        </IDPBtn>
+      </form>
 
       {pass == 2 ? (
         <NotPass fontSize={12} color={theme.colors.primary}>
