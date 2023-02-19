@@ -2,7 +2,7 @@ import { UserInfo } from "@/Interfaces/interfaces";
 import axios from "axios";
 
 interface LoginResponse {
-  jwtToken: string;
+  jwt_token: string;
 }
 
 export const loginWithIdp = async (

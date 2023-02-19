@@ -16,11 +16,12 @@ export const useLogin = () => {
       const authCode = searchParams.get("auth_code");
 
       if (authCode) {
-        const { jwtToken } = await loginWithIdp(authCode);
+        const { jwt_token } = await loginWithIdp(authCode);
+
         searchParams.delete("auth_code");
         setSearchParams(searchParams);
-        const userInfo = await getUserInfo(jwtToken);
-
+        const userInfo = await getUserInfo(jwt_token);
+        //여기서부터 안됨
         console.log(userInfo);
 
         setUserInfo(userInfo);
