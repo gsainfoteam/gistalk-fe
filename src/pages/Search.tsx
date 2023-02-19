@@ -24,6 +24,7 @@ import { departmentOptionAtom, sortOptionAtom } from "@/store";
 import SortSelectModal from "@/components/SortSelectModal";
 import useSubjectCode from "@/hooks/useSubjectCode";
 import { checkVaildEmail } from "@/hooks/usePassCheck";
+import { useLogOut } from "@/hooks/useLogout";
 
 /** 페이지 최상단의 로고, 마이페이지 버튼 있는 부분 */
 const TopWrap = styled.div`
@@ -49,7 +50,7 @@ const LogoSvg = styled(theme.universalComponent.SvgIcon)`
 `;
 
 /** 마이페이지 버튼 있는 부분 */
-const MyBtn = styled(theme.universalComponent.DivTextContainer)`
+const MyBtn = styled.button`
   font-family: NSBold;
   margin: 0 10px;
 `;
@@ -264,6 +265,8 @@ export default function Search() {
     }
   };
 
+  const handleLogOut = useLogOut();
+
   /** 임시 아이템 리스트 */
   const TempSearchList: ISearchCard[] = tempdb
     .map((i) => {
@@ -392,11 +395,12 @@ export default function Search() {
           <LogoSvg src={InfoteamLogo_Svg} size={35}></LogoSvg>
           GISTALK
         </LogoWrap>
-        {/*<Link to={`/profile`} style={{ textDecoration: "none" }}>*/}
-        {/*  <MyBtn fontSize={16} color={theme.colors.primaryText}>*/}
-        {/*    MY*/}
-        {/*  </MyBtn>*/}
-        {/*</Link>*/}
+        <MyBtn onClick={handleLogOut}>로그아웃</MyBtn>
+        {/* <Link to={`/profile`} style={{ textDecoration: "none" }}>
+          <MyBtn fontSize={16} color={theme.colors.primaryText}>
+            MY
+          </MyBtn>
+        </Link> */}
       </TopWrap>
       <SearchWrap borderColor={theme.colors.inputBorder}>
         <SearchInputWrap>
