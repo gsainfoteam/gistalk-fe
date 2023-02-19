@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Search_Svg from "@/assets/svgs/login.svg";
 import { useRef, useState } from "react";
 import { isValidEmail } from "@/hooks/usePassCheck";
+import { useLogin } from "@/hooks/useLogin";
 
 const Wrap = styled.div`
   width: 100vw;
@@ -142,6 +143,7 @@ export default function Login() {
     const enteredText = MailInputRef.current!.value;
     setPass(isValidEmail(enteredText));
   };
+  useLogin();
 
   return (
     <Wrap>
