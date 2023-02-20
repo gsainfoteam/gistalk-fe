@@ -252,7 +252,7 @@ export default function Search() {
   const departmentOption = useAtom(departmentOptionAtom)[0];
 
   useEffect(() => {
-    checkVaildEmail();
+    // checkVaildEmail();
   });
 
   const [searchText, setSearchText] = useState("");
