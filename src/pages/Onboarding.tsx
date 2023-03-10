@@ -133,7 +133,9 @@ export default function Onboarding() {
         bgColor={theme.colors.primary}
         color={theme.colors.white}
         onClick={() => {
-          window.open("https://gistory-idp-fe-prod.pages.dev/");
+          window.open(
+            "https://gistory-idp-fe.pages.dev?client_id=gistalk2023&redirect_uri=gistalk.gistory.me"
+          );
         }}
       >
         로그인
