@@ -14,13 +14,19 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/a11y";
 
+const Wrap = styled.div`
+  width: 100vw;
+  height: 100vh;
+  overflow-y: hidden;
+`
+
 const OnboardingSvg = styled(theme.universalComponent.SvgIcon)``;
 
 const StyledSwiper = styled(Swiper)`
   --swiper-pagination-bullet-size: 12px;
   --swiper-pagination-color: ${theme.colors.primary};
-  --swiper-pagination-bullet-inactive-color: ${theme.colors.inputBg};
-  margin-top: 120px;
+  --swiper-pagination-bullet-inactive-color: ${theme.colors.secondaryText};
+  margin-top: 23vh;
 `;
 
 const StyledSwiperSlide = styled(SwiperSlide)`
@@ -31,7 +37,7 @@ const StyledSwiperSlide = styled(SwiperSlide)`
 `;
 
 const WhiteBox = styled.div`
-  height: 60px;
+  height: calc(100vh - 25vh - 440px);
 `;
 
 /** '강의평 쓰러가기' 버튼 */
@@ -39,17 +45,19 @@ const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
   bgColor: string;
 }>`
   text-align: center;
-  width: 90vw;
+  width: 340px;
   background-color: ${(props) => props.bgColor};
   height: 50px;
   line-height: 50px;
   font-family: NSBold;
-  margin: 10px auto 0 auto;
+  position: absolute;
+  bottom: 20px;
+  left: calc(50vw - 170px);
 `;
 
 export default function Onboarding() {
   return (
-    <>
+    <Wrap>
       <StyledSwiper
         modules={[Navigation, A11y, Pagination]}
         pagination={{ clickable: true }}
@@ -59,7 +67,14 @@ export default function Onboarding() {
         allowTouchMove
       >
         <StyledSwiperSlide>
-          <OnboardingSvg size={300} src={Onboarding1_Svg} />
+          <div style={{
+            "height":"300px",
+            "display":"flex",
+            "justifyContent":"center",
+            "alignItems":"center",
+          }}>
+            <OnboardingSvg size={280} src={Onboarding1_Svg} />
+          </div>
           <Content
             fontSize={16}
             color={theme.colors.primaryText}
@@ -140,6 +155,6 @@ export default function Onboarding() {
       >
         로그인
       </GoWriteBtn>
-    </>
+    </Wrap>
   );
 }
