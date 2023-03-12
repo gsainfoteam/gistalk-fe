@@ -6,7 +6,6 @@ import { ThemeProvider } from "styled-components";
 import { theme } from "./style/theme";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Onboarding from "./pages/Onboarding";
 import Search from "./pages/Search";
 import ClassEvaluation from "./pages/ClassEvaluation";
 import ProfilePage from "./pages/ProfilePage";
@@ -27,7 +26,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <Route path="/:id/evaluation" element={<ClassEvaluation />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/:id/detail" element={<DetailedCE />} />
-            <Route path="/" element={<Onboarding />} />
+            {/*<Route path="/" element={<Login />} />*/}
             <Route path="/*" element={<Err404 />} />
           </Routes>
         </ThemeProvider>

@@ -20,8 +20,7 @@
     "react-modal-sheet": "^1.9.0",
     "react-router-dom": "^6.4.1",
     "recharts": "^2.1.16",
-    "styled-components": "^5.3.6",
-    "swiper": "^9.0.5"
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
