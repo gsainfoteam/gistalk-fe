@@ -21,12 +21,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <Routes>
+            <Route path="/" element={<Search />} />
             <Route path="/search" element={<Search />} />
             <Route path="/:id/evaluation" element={<ClassEvaluation />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/:id/detail" element={<DetailedCE />} />
-            <Route path="/" element={<Login />} />
-            <Route path="/404" element={<Err404 />} />
+            {/*<Route path="/" element={<Login />} />*/}
+            <Route path="/*" element={<Err404 />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

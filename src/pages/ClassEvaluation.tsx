@@ -148,7 +148,7 @@ export default function ClassEvaluation() {
   };
 
   useEffect(() => {
-    checkVaildEmail();
+    // checkVaildEmail();
   });
 
   /** Radar Chart에 들어갈 임시 데이터 */
