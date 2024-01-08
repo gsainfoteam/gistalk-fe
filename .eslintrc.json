@@ -1,22 +1,17 @@
 {
   "root": true,
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "parser": "@typescript-eslint/parser",
-  "parserOptions": { 
-      "tsconfigRootDir": "__dirname",
+  "parserOptions": {
+    "tsconfigRootDir": "__dirname"
   },
-  "plugins": [
-    "@typescript-eslint"
-  ],
+  "plugins": ["@typescript-eslint"],
   "rules": {
     "@typescript-eslint/strict-boolean-expressions": [
       2,
       {
-        "allowString" : false,
-        "allowNumber" : false
+        "allowString": false,
+        "allowNumber": false
       }
     ]
   },

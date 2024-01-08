@@ -24,6 +24,7 @@ export default function DetailedCE() {
         subjectCode={"EB2724"}
         avgScore={"2.35"}
       ></HeaderTitle>
+
       {tempdb[0].detailedReview.map((i) => (
         <div key={i.id}>
           <Reply replyData={i} isMine={true} />
