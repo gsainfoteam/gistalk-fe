@@ -6,13 +6,13 @@ import { ThemeProvider } from "styled-components";
 import { theme } from "./style/theme";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Search from "./pages/Search";
 import ClassEvaluation from "./pages/ClassEvaluation";
 import ProfilePage from "./pages/ProfilePage";
 import DetailedCE from "./pages/DetailedCE";
 import Login from "@/pages/Login";
 import Err404 from "@/pages/Err404";
 import { Provider } from "jotai";
+import { Search } from "./pages/SearchPage";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
