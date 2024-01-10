@@ -1,4 +1,5 @@
 /** 페이지 최상단의 로고, 마이페이지 버튼 있는 부분 */
+import { ISortOption } from "@/Interfaces/interfaces";
 import { theme } from "@/style/theme";
 import styled from "styled-components";
 

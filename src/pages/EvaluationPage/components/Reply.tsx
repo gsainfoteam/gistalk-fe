@@ -1,12 +1,11 @@
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 import styled from "styled-components";
-import { IReply } from "../Interfaces/interfaces";
-import RecommendTextForm from "./RecommendTextForm";
+import { IReply } from "@/Interfaces/interfaces";
 import LikeDislikeBtnWrap from "./LikeDislikeBtnWrap";
 import React, { createContext, useContext, useState } from "react";
 
-import lock_Svg from "../assets/svgs/lock.svg";
-import UnlockModal from "./UnlockModal";
+import lock_Svg from "@/assets/svgs/lock.svg";
+import RecommendTextForm from "./RecommendTextForm";
 
 interface IProps {
   replyData: IReply;
@@ -167,17 +166,6 @@ export default function Reply({ replyData, isMine }: IProps) {
           </LockBoxInfo>
         </LockBox>
       )}
-      <UnlockModal
-        recommend={replyData.recommend}
-        year={replyData.year}
-        semester={replyData.semester}
-        like={replyData.like}
-        dislike={replyData.dislike}
-        isOpen={isOpen}
-        setOpen={setIsOpen}
-        isMine={isMine}
-        currentPoint={100}
-      />
     </Wrap>
   );
 }

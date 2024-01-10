@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 import { useState } from "react";
 
-import ThumbUp_Svg from "../assets/svgs/thumbUp.svg";
-import ThumbUpBlack_Svg from "../assets/svgs/thumbUp_Black.svg";
-import ThumbDown_Svg from "../assets/svgs/thumbDown.svg";
-import ThumbDownBlack_Svg from "../assets/svgs/thumbDown_Black.svg";
+import ThumbUp_Svg from "@/assets/svgs/thumbUp.svg";
+import ThumbUpBlack_Svg from "@/assets/svgs/thumbUp_Black.svg";
+import ThumbDown_Svg from "@/assets/svgs/thumbDown.svg";
+import ThumbDownBlack_Svg from "@/assets/svgs/thumbDown_Black.svg";
 
 interface IProps {
   like: number;

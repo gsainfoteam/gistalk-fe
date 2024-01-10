@@ -1,17 +1,16 @@
 import { useState, KeyboardEvent } from "react";
 import { theme } from "@/style/theme";
 
-import SearchCard from "@components/SearchCard";
+import SearchCard from "@/pages/SearchPage/components/SearchCard";
 import Filter_Svg from "@assets/svgs/tune.svg";
 import Order_Svg from "@assets/svgs/order.svg";
 import InfoteamLogo_Svg from "@assets/svgs/infoteamLogo.svg";
 import CatBlankList_Svg from "@assets/svgs/catBlankList.svg";
 import { ISearchCard } from "@/Interfaces/interfaces";
 import { Link } from "react-router-dom";
-import DepartmentSelectModal from "@/components/DepartmentSelectModal";
 import { useAtom } from "jotai";
 import { departmentOptionAtom, sortOptionAtom } from "@/store";
-import SortSelectModal from "@/components/SortSelectModal";
+import SortSelectModal from "@/pages/SearchPage/components/SortSelectModal";
 import {
   BlankSvg,
   BlankText,
@@ -26,7 +25,9 @@ import {
   sortList,
 } from "./Search.styled";
 import { tempClassList } from "./Search.const";
-import { SearchBar } from "./components/SearchBar/SearchBar";
+import { SearchBar } from "./components/SearchBar";
+import Header from "@components/Header";
+import DepartmentSelectModal from "./components/DepartmentSelectModal";
 
 export function Search() {
   const [sortOpen, setSortOpen] = useState(false);

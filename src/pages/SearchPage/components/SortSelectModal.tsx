@@ -1,12 +1,12 @@
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 import styled from "styled-components";
 import Sheet from "react-modal-sheet";
 import React, { useState } from "react";
 import { useAtom } from "jotai";
 import { sortOptionAtom } from "@/store";
 
-import done_Svg from "../assets/svgs/done_Black.svg";
-import {ISortOption} from "@/Interfaces/interfaces";
+import done_Svg from "@/assets/svgs/done_Black.svg";
+import { ISortOption } from "@/Interfaces/interfaces";
 
 interface IProps {
   isOpen: boolean;
@@ -24,19 +24,19 @@ const Option = styled(theme.universalComponent.DivTextContainer)<{
   font-family: NSBold;
   text-align: left;
   border-bottom: 1px solid ${(props) => props.borderColor};
-  
+
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
 const Wrap = styled.div`
-  div:last-child{
+  div:last-child {
     border-bottom: none;
   }
 `;
 
-const DoneSvg = styled(theme.universalComponent.SvgIcon)``
+const DoneSvg = styled(theme.universalComponent.SvgIcon)``;
 
 export default function SortSelectModal({ isOpen, setOpen, sortList }: IProps) {
   const [sortStd, setSortStd] = useAtom(sortOptionAtom);
@@ -50,10 +50,15 @@ export default function SortSelectModal({ isOpen, setOpen, sortList }: IProps) {
               color={theme.colors.primaryText}
               borderColor={theme.colors.inputBorder}
               fontSize={16}
-              onClick={()=>{setSortStd("평균점수"); setOpen(false);}}
+              onClick={() => {
+                setSortStd("평균점수");
+                setOpen(false);
+              }}
             >
               평균점수 순
-              {sortStd == "평균점수" ? <DoneSvg size={20} src={done_Svg}></DoneSvg> : null}
+              {sortStd == "평균점수" ? (
+                <DoneSvg size={20} src={done_Svg}></DoneSvg>
+              ) : null}
             </Option>
             {sortList.map((item) => (
               <Option
@@ -61,10 +66,15 @@ export default function SortSelectModal({ isOpen, setOpen, sortList }: IProps) {
                 color={theme.colors.primaryText}
                 borderColor={theme.colors.inputBorder}
                 fontSize={16}
-                onClick={()=>{setSortStd(item.std); setOpen(false);}}
+                onClick={() => {
+                  setSortStd(item.std);
+                  setOpen(false);
+                }}
               >
                 {item.content}
-                {sortStd == item.std ? <DoneSvg size={20} src={done_Svg}></DoneSvg> : null}
+                {sortStd == item.std ? (
+                  <DoneSvg size={20} src={done_Svg}></DoneSvg>
+                ) : null}
               </Option>
             ))}
           </Wrap>

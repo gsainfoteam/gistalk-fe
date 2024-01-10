@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "@/style/theme";
 
-import Hexagon from "@/components/Hexagon";
+import Hexagon from "@/pages/EvaluationPage/components/Hexagon";
 import Header from "@/components/Header";
 import Button from "@/components/Button";
-import DescriptionModal from "@/components/DescriptionModal";
 
 import QuestionMark_svg from "../assets/svgs/circledQuestionMark.svg";
 import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
@@ -92,13 +91,11 @@ const MyEvaluationWrap = styled.div`
 `;
 
 export default function ProfilePage() {
-  const [isOpen, setIsOpen] = useState(false);
-
   const USER_NAME = "HongGilDong";
   const POINT_VALUE = 54;
   const CLASS_LIST = [
     {
-      id:1,
+      id: 1,
       time: "2022년 1학기",
       subjects: [
         {
@@ -112,7 +109,7 @@ export default function ProfilePage() {
       ],
     },
     {
-      id:2,
+      id: 2,
       time: "2022년 2 학기",
       subjects: [
         {
@@ -135,7 +132,9 @@ export default function ProfilePage() {
             ID: <span>{USER_NAME}</span>
           </SubjectTitle>
           <Point fontSize={14} color={theme.colors.primaryText}>
-            <PointValue fontSize={14} color={theme.colors.primary}>{POINT_VALUE}</PointValue>
+            <PointValue fontSize={14} color={theme.colors.primary}>
+              {POINT_VALUE}
+            </PointValue>
             <div>P</div>
             <HelperIcon
               src={QuestionMark_svg}
@@ -176,7 +175,6 @@ export default function ProfilePage() {
           </MyEvaluationWrap>
         ))}
       </ContentWrap>
-      <DescriptionModal isOpen={isOpen} setOpen={setIsOpen} />
     </>
   );
 }

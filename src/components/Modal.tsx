@@ -26,7 +26,7 @@ const Wrap = styled.div`
 //모달 제목 부분 (GISTALK POINT)
 const Title = styled(theme.universalComponent.DivTextContainer)`
   font-family: Aharoni;
-  margin-top:15px;
+  margin-top: 15px;
 `;
 //모달 부제목 부분 (지스톡 포인트란?)
 const SubTitle = styled(theme.universalComponent.DivTextContainer)``;
@@ -135,7 +135,8 @@ const DoneSvg = styled(theme.universalComponent.SvgIcon)`
   margin: 0 3px;
 `;
 
-export default function DescriptionModal({ isOpen, setOpen }: IProps) {
+//isOpen일 경우 아래에서 모달이 위로 튀어나옴
+export default function Modal({ isOpen, setOpen }: IProps) {
   return (
     <Sheet isOpen={isOpen} onClose={() => setOpen(false)} snapPoints={[448]}>
       <Sheet.Container>

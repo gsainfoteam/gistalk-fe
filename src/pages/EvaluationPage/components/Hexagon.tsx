@@ -7,8 +7,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import styled from "styled-components";
-import { theme } from "../style/theme";
-import { IHexData } from "../Interfaces/interfaces";
+import { theme } from "@/style/theme";
+import { IHexData } from "@/Interfaces/interfaces";
 
 interface IProps {
   HexData: IHexData[];

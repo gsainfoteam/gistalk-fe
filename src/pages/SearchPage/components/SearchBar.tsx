@@ -10,10 +10,10 @@ import {
   SearchItem,
   SearchSvg,
   SearchWrap,
-} from "../../Search.styled";
+} from "../Search.styled";
 import { Link } from "react-router-dom";
 import NorthWest_Svg from "@assets/svgs/northWest.svg";
-import { tempClassList } from "../../Search.const";
+import { tempClassList } from "../Search.const";
 import { ISearchCard } from "@/Interfaces/interfaces";
 import Cancel_Svg from "@assets/svgs/cancel_Black.svg";
 import Search_Svg from "@assets/svgs/search.svg";

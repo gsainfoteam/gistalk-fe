@@ -1,22 +1,21 @@
-import Hexagon from "../components/Hexagon";
+import Hexagon from "./components/Hexagon";
 import { theme } from "@/style/theme";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import ArrowL_Svg from "../assets/svgs/arrowL.svg";
+import ArrowL_Svg from "@/assets/svgs/arrowL.svg";
 import { IHexData, ISubjectData } from "@/Interfaces/interfaces";
 import { tempdb } from "@/tempdb/tempdb";
 
-import Reply from "../components/Reply";
-import Title from "../components/Title";
-import HeaderTitle from "@/components/HeaderTitle";
-import { Link } from "react-router-dom";
+import Reply from "./components/Reply";
+
 import HiddenNav from "@/components/HiddenNav";
 import CatBlankList_Svg from "@/assets/svgs/catBlankList.svg";
 import useSubjectCode from "@/hooks/useSubjectCode";
 import { checkVaildEmail } from "@/hooks/usePassCheck";
+import Title from "./components/Title";
 
 const Wrap = styled.div`
   min-height: 100vh;
@@ -170,121 +169,95 @@ export default function ClassEvaluation() {
 
   return (
     <Wrap>
-      <HeaderTitle
-        headerText={"강의"}
+      <Header text={"강의"} />
+      <Title
         subjectTitle={tempData.subjectName}
         professorName={tempData.professorName}
         subjectCode={useSubjectCode(tempData.subjectCode)}
-        avgScore={String(avgScore)}
-      ></HeaderTitle>
+      />
       <EvaluationText fontSize={16} color={theme.colors.primaryText}>
-        · {tempData.redundancy}명의 수강생들이 남긴 평가에요 ·
+        {tempData.redundancy}명의 수강생들이 남긴 평가에요
       </EvaluationText>
       <GraphWrap>
         <Hexagon HexData={tempData.hexData}></Hexagon>
       </GraphWrap>
+
       <Upper>
-        {/*<SeeConcreteInfoWrap*/}
-        {/*  fontSize={15}*/}
-        {/*  color={theme.colors.secondaryText}*/}
-        {/*  onClick={toggleDetailedOpen}*/}
-        {/*>*/}
-        {/*  내 점수 보기*/}
-        {/*  <ArrowLSvg size={22} src={ArrowL_Svg} open={concreteOpen} />*/}
-        {/*</SeeConcreteInfoWrap>*/}
-        {/*{concreteOpen && (*/}
-        {/*  <ConcreteInfoGrid>*/}
-        {/*    <ConcreteInfo*/}
-        {/*      color={theme.colors.secondaryText}*/}
-        {/*      colorP={theme.colors.primary}*/}
-        {/*      fontSize={15}*/}
-        {/*    >*/}
-        {/*      <div>수업 난이도</div>*/}
-        {/*      <div>*/}
-        {/*        <span>{3.0}</span>명*/}
-        {/*      </div>*/}
-        {/*    </ConcreteInfo>*/}
-        {/*    <ConcreteInfo*/}
-        {/*      color={theme.colors.secondaryText}*/}
-        {/*      colorP={theme.colors.primary}*/}
-        {/*      fontSize={15}*/}
-        {/*    >*/}
-        {/*      <div>과제량</div>*/}
-        {/*      <div>*/}
-        {/*        <span>{3.4}</span>명*/}
-        {/*      </div>*/}
-        {/*    </ConcreteInfo>*/}
-        {/*    <ConcreteInfo*/}
-        {/*      color={theme.colors.secondaryText}*/}
-        {/*      colorP={theme.colors.primary}*/}
-        {/*      fontSize={15}*/}
-        {/*    >*/}
-        {/*      <div>유익함</div>*/}
-        {/*      <div>*/}
-        {/*        <span>{2}</span>명*/}
-        {/*      </div>*/}
-        {/*    </ConcreteInfo>*/}
-        {/*    <ConcreteInfo*/}
-        {/*      color={theme.colors.secondaryText}*/}
-        {/*      colorP={theme.colors.primary}*/}
-        {/*      fontSize={15}*/}
-        {/*    >*/}
-        {/*      <div>재미/흥미</div>*/}
-        {/*      <div>*/}
-        {/*        <span>{1.8}</span>명*/}
-        {/*      </div>*/}
-        {/*    </ConcreteInfo>*/}
-        {/*    <ConcreteInfo*/}
-        {/*      color={theme.colors.secondaryText}*/}
-        {/*      colorP={theme.colors.primary}*/}
-        {/*      fontSize={15}*/}
-        {/*    >*/}
-        {/*      <div>성적 만족도</div>*/}
-        {/*      <div>*/}
-        {/*        <span>{2.5}</span>명*/}
-        {/*      </div>*/}
-        {/*    </ConcreteInfo>*/}
-        {/*    <ConcreteInfo*/}
-        {/*      color={theme.colors.secondaryText}*/}
-        {/*      colorP={theme.colors.primary}*/}
-        {/*      fontSize={15}*/}
-        {/*    >*/}
-        {/*      <div>강의력</div>*/}
-        {/*      <div>*/}
-        {/*        <span>{4.1}</span>명*/}
-        {/*      </div>*/}
-        {/*    </ConcreteInfo>*/}
+        <ConcreteInfoGrid>
+          <ConcreteInfo
+            color={theme.colors.secondaryText}
+            colorP={theme.colors.primary}
+            fontSize={15}
+          >
+            <div>수업 난이도</div>
+            <div>
+              <span>{3.0}</span>명
+            </div>
+          </ConcreteInfo>
+          <ConcreteInfo
+            color={theme.colors.secondaryText}
+            colorP={theme.colors.primary}
+            fontSize={15}
+          >
+            <div>과제량</div>
+            <div>
+              <span>{3.4}</span>명
+            </div>
+          </ConcreteInfo>
+          <ConcreteInfo
+            color={theme.colors.secondaryText}
+            colorP={theme.colors.primary}
+            fontSize={15}
+          >
+            <div>유익함</div>
+            <div>
+              <span>{2}</span>명
+            </div>
+          </ConcreteInfo>
+          <ConcreteInfo
+            color={theme.colors.secondaryText}
+            colorP={theme.colors.primary}
+            fontSize={15}
+          >
+            <div>재미/흥미</div>
+            <div>
+              <span>{1.8}</span>명
+            </div>
+          </ConcreteInfo>
+          <ConcreteInfo
+            color={theme.colors.secondaryText}
+            colorP={theme.colors.primary}
+            fontSize={15}
+          >
+            <div>성적 만족도</div>
+            <div>
+              <span>{2.5}</span>명
+            </div>
+          </ConcreteInfo>
+          <ConcreteInfo
+            color={theme.colors.secondaryText}
+            colorP={theme.colors.primary}
+            fontSize={15}
+          >
+            <div>강의력</div>
+            <div>
+              <span>{4.1}</span>명
+            </div>
+          </ConcreteInfo>
 
-        {/*    <ConcreteInfo*/}
-        {/*      color={theme.colors.secondaryText}*/}
-        {/*      colorP={theme.colors.primary}*/}
-        {/*      fontSize={15}*/}
-        {/*    ></ConcreteInfo>*/}
-        {/*    <ConcreteInfo*/}
-        {/*      color={theme.colors.secondaryText}*/}
-        {/*      colorP={theme.colors.primary}*/}
-        {/*      fontSize={15}*/}
-        {/*    >*/}
-        {/*      <div>평균</div>*/}
-        {/*      <div>*/}
-        {/*        <span>{avgScore}</span>*/}
-        {/*      </div>*/}
-        {/*    </ConcreteInfo>*/}
-        {/*  </ConcreteInfoGrid>*/}
-        {/*)}*/}
-
-        {/*<Link to={`/1/detail`} style={{ textDecoration: "none" }}>*/}
-        {/*  <GotoDetailedCEBtn fontSize={16} color={theme.colors.primary}>*/}
-        {/*    세부 강의평가 ({NumberOfDetailedCE}) →*/}
-        {/*  </GotoDetailedCEBtn>*/}
-        {/*</Link>*/}
+          <ConcreteInfo
+            color={theme.colors.secondaryText}
+            colorP={theme.colors.primary}
+            fontSize={15}
+          ></ConcreteInfo>
+        </ConcreteInfoGrid>
 
         <OneLineReviewText
           fontSize={18}
           color={theme.colors.primaryText}
           borderColor={theme.colors.grayStroke}
         >
-          · 한줄평 ·
+          한줄평
         </OneLineReviewText>
         {
           //여기서 i는 tempdb[0]이 가리키는 강의평가에 해당하는 각 한줄평을 가리킴
