@@ -1,21 +1,19 @@
 import Hexagon from "./components/Hexagon";
 import { theme } from "@/style/theme";
-import Header from "../../components/Header";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import ArrowL_Svg from "@/assets/svgs/arrowL.svg";
-import { IHexData, ISubjectData } from "@/Interfaces/interfaces";
 import { tempdb } from "@/tempdb/tempdb";
 
 import Reply from "./components/Reply";
 
-import HiddenNav from "@/components/HiddenNav";
 import CatBlankList_Svg from "@/assets/svgs/catBlankList.svg";
 import useSubjectCode from "@/hooks/useSubjectCode";
-import { checkVaildEmail } from "@/hooks/usePassCheck";
 import Title from "./components/Title";
+import ScrolledHeader from "@components/ScrolledHeader";
+import NavigationHeader from "../../components/NavigationHeader";
+import EvaluationSummary from "./components/EvaluationSummary";
 
 const Wrap = styled.div`
   min-height: 100vh;
@@ -34,74 +32,15 @@ const GraphWrap = styled.div`
   top: -35px;
 `;
 
-/** '구체적인 수치 보기' 담당하는 wrap */
-const SeeConcreteInfoWrap = styled(theme.universalComponent.DivTextContainer)`
-  font-family: NSBold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ArrowLSvg = styled(theme.universalComponent.SvgIcon)<{ open: boolean }>`
-  transform: ${(props) => props.open && "rotate(-90deg)"};
-  transition: 0.1s;
-`;
-
-const ConcreteInfoGrid = styled.div`
-  width: 87vw;
-  margin: 10px auto 0 auto;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(1, 25px);
-`;
-
-/** 구체적인 수치 보기를 클릭했을 보여주는 info */
-const ConcreteInfo = styled(theme.universalComponent.DivTextContainer)<{
-  colorP: string;
-}>`
-  font-family: NSMedium;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 5px;
-
-  div:nth-child(1) {
-    margin-left: 10px;
-  }
-
-  div:nth-child(2) {
-    font-family: NSRegular;
-
-    span {
-      color: ${(props) => props.colorP};
-    }
-
-    margin-right: 10px;
-  }
-`;
-
-/** 세부 강의평가 보러 가는 버튼 */
-const GotoDetailedCEBtn = styled(theme.universalComponent.DivTextContainer)`
-  width: 200px;
-  height: 40px;
-  font-family: NSBold;
-  border: 1.5px solid ${(props) => props.color};
-  margin: 30px auto 0 auto;
-  text-align: center;
-  line-height: 40px;
-`;
-
 const OneLineReviewText = styled(theme.universalComponent.DivTextContainer)<{
   borderColor: string;
 }>`
   width: 87vw;
   height: 42px;
-  font-family: NSBold;
-  border-top: 1.5px solid ${(props) => props.borderColor};
+  font-family: NSRegular;
   border-bottom: 1.5px solid ${(props) => props.borderColor};
   border-radius: 0;
   margin: 20px auto 0 auto;
-  text-align: center;
   line-height: 42px;
 `;
 
@@ -126,7 +65,7 @@ const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
   margin: 0 2.5vw;
 `;
 
-/** Search 리스트가 비었을 떄 나오는 냥이 일러스트, 문구 Wrap */
+/** Search 리스트가 비었을 떄 나오는 고양이 일러스트, 문구 Wrap */
 const BlankWrap = styled.div`
   margin: 40px auto;
   display: flex;
@@ -140,12 +79,6 @@ const BlankText = styled(theme.universalComponent.DivTextContainer)`
 `;
 
 export default function ClassEvaluation() {
-  const [concreteOpen, setConcreteOpen] = useState(false);
-
-  const toggleDetailedOpen = () => {
-    setConcreteOpen(!concreteOpen);
-  };
-
   useEffect(() => {
     // checkVaildEmail();
   });
@@ -156,20 +89,9 @@ export default function ClassEvaluation() {
   const id = Number(params.id);
   const tempData = tempdb.find((value) => value.id === id) || tempdb[0]; //undefined인 경우 default 값: tempdb[0]
 
-  /** 평균 점수 계산 */
-  let avgScore = 0;
-  tempData.hexData.map((i) => (avgScore += i.score));
-  avgScore /= 6;
-  avgScore = Math.round((avgScore + Number.EPSILON) * 100) / 100; //소수점 둘째자리에서 반올림
-
-  /** 강의평가 응답자 수 */
-  const NumberOfResponse = 79;
-  /** 세부 강의평가 개수 */
-  const NumberOfDetailedCE = 16;
-
   return (
     <Wrap>
-      <Header text={"강의"} />
+      <NavigationHeader text={"강의"} />
       <Title
         subjectTitle={tempData.subjectName}
         professorName={tempData.professorName}
@@ -183,75 +105,7 @@ export default function ClassEvaluation() {
       </GraphWrap>
 
       <Upper>
-        <ConcreteInfoGrid>
-          <ConcreteInfo
-            color={theme.colors.secondaryText}
-            colorP={theme.colors.primary}
-            fontSize={15}
-          >
-            <div>수업 난이도</div>
-            <div>
-              <span>{3.0}</span>명
-            </div>
-          </ConcreteInfo>
-          <ConcreteInfo
-            color={theme.colors.secondaryText}
-            colorP={theme.colors.primary}
-            fontSize={15}
-          >
-            <div>과제량</div>
-            <div>
-              <span>{3.4}</span>명
-            </div>
-          </ConcreteInfo>
-          <ConcreteInfo
-            color={theme.colors.secondaryText}
-            colorP={theme.colors.primary}
-            fontSize={15}
-          >
-            <div>유익함</div>
-            <div>
-              <span>{2}</span>명
-            </div>
-          </ConcreteInfo>
-          <ConcreteInfo
-            color={theme.colors.secondaryText}
-            colorP={theme.colors.primary}
-            fontSize={15}
-          >
-            <div>재미/흥미</div>
-            <div>
-              <span>{1.8}</span>명
-            </div>
-          </ConcreteInfo>
-          <ConcreteInfo
-            color={theme.colors.secondaryText}
-            colorP={theme.colors.primary}
-            fontSize={15}
-          >
-            <div>성적 만족도</div>
-            <div>
-              <span>{2.5}</span>명
-            </div>
-          </ConcreteInfo>
-          <ConcreteInfo
-            color={theme.colors.secondaryText}
-            colorP={theme.colors.primary}
-            fontSize={15}
-          >
-            <div>강의력</div>
-            <div>
-              <span>{4.1}</span>명
-            </div>
-          </ConcreteInfo>
-
-          <ConcreteInfo
-            color={theme.colors.secondaryText}
-            colorP={theme.colors.primary}
-            fontSize={15}
-          ></ConcreteInfo>
-        </ConcreteInfoGrid>
-
+        <EvaluationSummary />
         <OneLineReviewText
           fontSize={18}
           color={theme.colors.primaryText}
@@ -284,11 +138,10 @@ export default function ClassEvaluation() {
       >
         강의평 쓰러가기
       </GoWriteBtn>
-      <HiddenNav
-        avgScore={avgScore}
+      <ScrolledHeader
         professor={tempData.professorName}
         title={tempData.subjectName}
-      ></HiddenNav>
+      ></ScrolledHeader>
     </Wrap>
   );
 }

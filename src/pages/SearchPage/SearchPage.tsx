@@ -4,7 +4,7 @@ import { theme } from "@/style/theme";
 import SearchCard from "@/pages/SearchPage/components/SearchCard";
 import Filter_Svg from "@assets/svgs/tune.svg";
 import Order_Svg from "@assets/svgs/order.svg";
-import InfoteamLogo_Svg from "@assets/svgs/infoteamLogo.svg";
+
 import CatBlankList_Svg from "@assets/svgs/catBlankList.svg";
 import { ISearchCard } from "@/Interfaces/interfaces";
 import { Link } from "react-router-dom";
@@ -17,19 +17,16 @@ import {
   BlankWrap,
   FilterSvg,
   ItemList,
-  LogoSvg,
-  LogoWrap,
   OptionBtnWrap,
   OrderSvg,
-  TopWrap,
   sortList,
-} from "./Search.styled";
-import { tempClassList } from "./Search.const";
+} from "./SearchPage.styled";
+import { tempClassList } from "./SearchPage.const";
 import { SearchBar } from "./components/SearchBar";
-import Header from "@components/Header";
 import DepartmentSelectModal from "./components/DepartmentSelectModal";
+import Header from "@components/Header";
 
-export function Search() {
+export function SearchPage() {
   const [sortOpen, setSortOpen] = useState(false);
   const [departmentOpen, setDepartmentOpen] = useState(false);
 
@@ -95,12 +92,7 @@ export function Search() {
 
   return (
     <>
-      <TopWrap>
-        <LogoWrap color={theme.colors.primary}>
-          <LogoSvg src={InfoteamLogo_Svg} size={35}></LogoSvg>
-          GISTALK
-        </LogoWrap>
-      </TopWrap>
+      <Header />
       <SearchBar
         setSearchText={setSearchText}
         searchText={searchText}

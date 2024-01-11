@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "@/style/theme";
 
-import Hexagon from "@/pages/EvaluationPage/components/Hexagon";
-import Header from "@/components/Header";
 import Button from "@/components/Button";
 
 import QuestionMark_svg from "../assets/svgs/circledQuestionMark.svg";
 import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
+import NavigationHeader from "@components/NavigationHeader";
 
 const TitleWrap = styled.div<{ color: string }>`
   width: 87vw;
@@ -125,7 +124,7 @@ export default function ProfilePage() {
   ];
   return (
     <>
-      <Header text={"MY"} />
+      <NavigationHeader text={"MY"} />
       <TitleWrap color={theme.colors.grayStroke}>
         <div>
           <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
@@ -136,11 +135,7 @@ export default function ProfilePage() {
               {POINT_VALUE}
             </PointValue>
             <div>P</div>
-            <HelperIcon
-              src={QuestionMark_svg}
-              size={16}
-              onClick={() => setIsOpen(true)}
-            />
+            <HelperIcon src={QuestionMark_svg} size={16} />
           </Point>
         </div>
 

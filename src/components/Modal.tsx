@@ -116,6 +116,7 @@ const PointRule = ({ rule, point }: { rule: string; point: number }) => {
     </PointRuleWrap>
   );
 };
+
 //모달을 닫는 버튼 (확인했어요)
 const Button = styled.div`
   display: flex;
@@ -135,7 +136,7 @@ const DoneSvg = styled(theme.universalComponent.SvgIcon)`
   margin: 0 3px;
 `;
 
-//isOpen일 경우 아래에서 모달이 위로 튀어나옴
+/* isOpen == true일 경우 아래에서 모달이 위로 올라온다, 재활용을 위해서 남겨둔 공통 props */
 export default function Modal({ isOpen, setOpen }: IProps) {
   return (
     <Sheet isOpen={isOpen} onClose={() => setOpen(false)} snapPoints={[448]}>

@@ -23,7 +23,7 @@ const Err404Text = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
 `;
 
-export default function Err404() {
+export default function EmptyErrorPage() {
   return (
     <Wrap>
       <Err404Wrap>

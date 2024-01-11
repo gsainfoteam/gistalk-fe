@@ -26,7 +26,7 @@ const RecommendSvg = styled(theme.universalComponent.SvgIcon)<{
   top: ${(props) => props.like == 3 && "1px"};
 `;
 
-export default function RecommendTextForm({ like }: IProps) {
+export default function RecommendationStatus({ like }: IProps) {
   const defineUsage = (like: string): [string, string, string, number] => {
     switch (like) {
       case "true":
