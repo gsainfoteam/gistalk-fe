@@ -5,7 +5,6 @@ interface IProps {
   subjectTitle: string;
   professorName: string;
   subjectCode: string;
-  avgScore: string;
 }
 
 const TitleWrap = styled.div<{ color: string; bgColor: string }>`
@@ -51,7 +50,6 @@ export default function Title({
   subjectTitle,
   professorName,
   subjectCode,
-  avgScore,
 }: IProps) {
   return (
     <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
@@ -63,13 +61,6 @@ export default function Title({
         <SubjectTitle fontSize={15} color={theme.colors.secondaryText}>
           {professorName || "ERR"} / {subjectCode || "ERR"}
         </SubjectTitle>
-        <AverageScore
-          primaryColor={theme.colors.primary}
-          fontSize={15}
-          color={theme.colors.secondaryText}
-        >
-          평균 <span>{avgScore || "ERR"}</span>
-        </AverageScore>
       </div>
     </TitleWrap>
   );

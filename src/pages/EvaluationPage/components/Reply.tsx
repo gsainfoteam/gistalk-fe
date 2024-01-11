@@ -1,12 +1,11 @@
-import { theme } from "../style/theme";
+import { theme } from "@/style/theme";
 import styled from "styled-components";
-import { IReply } from "../Interfaces/interfaces";
-import RecommendTextForm from "./RecommendTextForm";
-import LikeDislikeBtnWrap from "./LikeDislikeBtnWrap";
-import React, { createContext, useContext, useState } from "react";
+import { IReply } from "@/Interfaces/interfaces";
+import { useState } from "react";
 
-import lock_Svg from "../assets/svgs/lock.svg";
-import UnlockModal from "./UnlockModal";
+import lock_Svg from "@/assets/svgs/lock.svg";
+import LikeButton from "./LikeButton";
+import RecommendationStatus from "./RecommendationStatus";
 
 interface IProps {
   replyData: IReply;
@@ -112,22 +111,14 @@ export default function Reply({ replyData, isMine }: IProps) {
     <Wrap>
       <InfoWrap>
         <LeftWrap>
-          <RecommendTextForm like={replyData.recommend}></RecommendTextForm>
+          <RecommendationStatus
+            like={replyData.recommend}
+          ></RecommendationStatus>
           <SemesterText fontSize={13} color={theme.colors.secondaryText}>
             {replyData.year}년 {replyData.semester}학기
           </SemesterText>
-          {isMine && (
-            <ME fontSize={13} color={theme.colors.primary}>
-              (ME)
-            </ME>
-          )}
         </LeftWrap>
-        {/*<RightWrap>*/}
-        {/*  <LikeDislikeBtnWrap*/}
-        {/*    like={replyData.like}*/}
-        {/*    dislike={replyData.dislike}*/}
-        {/*  ></LikeDislikeBtnWrap>*/}
-        {/*</RightWrap>*/}
+        <LikeButton like={0} dislike={0} />
       </InfoWrap>
       {/** content를 배열로 받아서 배열 길이가 1이면 한줄평, 배열 길이가 3이면 세부 강의평가로 인식되도록 만듦
          수정이 필요할 듯 함. */}
@@ -173,17 +164,6 @@ export default function Reply({ replyData, isMine }: IProps) {
           </LockBoxInfo>
         </LockBox>
       )}
-      <UnlockModal
-        recommend={replyData.recommend}
-        year={replyData.year}
-        semester={replyData.semester}
-        like={replyData.like}
-        dislike={replyData.dislike}
-        isOpen={isOpen}
-        setOpen={setIsOpen}
-        isMine={isMine}
-        currentPoint={100}
-      />
     </Wrap>
   );
 }

@@ -4,11 +4,10 @@ import {
   PolarGrid,
   PolarAngleAxis,
   PolarRadiusAxis,
-  ResponsiveContainer,
 } from "recharts";
 import styled from "styled-components";
-import { theme } from "../style/theme";
-import { IHexData } from "../Interfaces/interfaces";
+import { theme } from "@/style/theme";
+import { IHexData } from "@/Interfaces/interfaces";
 
 interface IProps {
   HexData: IHexData[];
@@ -21,10 +20,6 @@ const Wrap = styled.div`
   justify-content: center;
   overflow-x: hidden;
   overflow-y: hidden;
-`;
-
-const Coloring = styled.span<{ color: string }>`
-  color: ${(props) => props.color};
 `;
 
 export default function Hexagon({ HexData }: IProps) {
@@ -59,12 +54,6 @@ export default function Hexagon({ HexData }: IProps) {
           fill={theme.colors.primary}
           fillOpacity={0.6}
         />
-        {/*<Radar*/}
-        {/*    name="Standard"*/}
-        {/*    dataKey="B"*/}
-        {/*    fill={theme.colors.reverse}*/}
-        {/*    fillOpacity={0.4}*/}
-        {/*/>*/}
       </RadarChart>
     </Wrap>
   );

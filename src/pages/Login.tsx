@@ -132,7 +132,7 @@ const Version = styled(theme.universalComponent.DivTextContainer)`
   text-align: center;
   width: 100vw;
   font-family: NSBold;
-`
+`;
 
 export default function Login() {
   const [pass, setPass] = useState<number>(0);
@@ -159,7 +159,9 @@ export default function Login() {
         </GistalkText>
       </LogoWrap>
 
-      <Version fontSize={12} color={theme.colors.secondary}>v0.1</Version>
+      <Version fontSize={12} color={theme.colors.secondary}>
+        v0.1
+      </Version>
 
       <SearchWrap borderColor={theme.colors.inputBorder}>
         <SearchInputWrap onSubmit={submitHandler}>

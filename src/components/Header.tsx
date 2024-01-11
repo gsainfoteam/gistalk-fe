@@ -1,47 +1,39 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
+import InfoteamLogo_Svg from "@assets/svgs/infoteamLogo.svg";
 
-import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
 import { IHeader } from "@/Interfaces/interfaces";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const Wrap = styled.div<{ bgColor: string }>`
+export const TopWrap = styled.div`
+  width: 87vw;
+  margin: 10px auto 0 auto;
+  padding: 22px 0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-
-  width: 100vw;
-  height: 60px;
-  background-color: ${(props) => props.bgColor};
+  justify-content: space-between;
 `;
 
-const NavigationArrowSvg = styled(theme.universalComponent.SvgIcon)`
-  margin-left: 13px;
-`;
-const NavigationText = styled.div<{ color: string }>`
-  font-family: NSBold;
+/** 지스톡 로고 (아이콘, 텍스트) 같이 있는 Wrap */
+export const LogoWrap = styled.div<{ color: string }>`
+  font-family: Aharoni;
   color: ${(props) => props.color};
-  font-size: 20px;
-  margin-right: 23px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
 `;
 
-export default function Header({ text }: IHeader) {
-  const navigate = useNavigate();
+export const LogoSvg = styled(theme.universalComponent.SvgIcon)`
+  margin-right: 7px;
+`;
 
+export default function Header() {
   return (
-    <Wrap bgColor={theme.colors.white}>
-      <div
-        onClick={() => {
-          navigate(-1);
-        }}
-      >
-        <NavigationArrowSvg
-          size={22}
-          src={NavigationArrow_Svg}
-        ></NavigationArrowSvg>
-      </div>
-
-      <NavigationText color={theme.colors.primaryText}>{text}</NavigationText>
-    </Wrap>
+    <TopWrap>
+      <LogoWrap color={theme.colors.primary}>
+        <LogoSvg src={InfoteamLogo_Svg} size={35}></LogoSvg>
+        GISTALK
+      </LogoWrap>
+    </TopWrap>
   );
 }

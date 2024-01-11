@@ -5,14 +5,12 @@ import GlobalStyle from "./fonts/global";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./style/theme";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
-import Search from "./pages/Search";
-import ClassEvaluation from "./pages/ClassEvaluation";
-import ProfilePage from "./pages/ProfilePage";
-import DetailedCE from "./pages/DetailedCE";
-import Login from "@/pages/Login";
-import Err404 from "@/pages/Err404";
 import { Provider } from "jotai";
+
+import ClassEvaluation from "./pages/EvaluationPage/ClassEvaluation";
+import ProfilePage from "./pages/ProfilePage";
+import EmptyErrorPage from "./pages/EmptyErrorPage";
+import { SearchPage } from "./pages/SearchPage";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -21,13 +19,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <Routes>
-            <Route path="/" element={<Search />} />
-            <Route path="/search" element={<Search />} />
+            <Route path="/" element={<SearchPage />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/:id/evaluation" element={<ClassEvaluation />} />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/:id/detail" element={<DetailedCE />} />
-            {/*<Route path="/" element={<Login />} />*/}
-            <Route path="/*" element={<Err404 />} />
+            <Route path="/*" element={<EmptyErrorPage />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

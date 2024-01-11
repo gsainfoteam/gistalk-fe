@@ -3,14 +3,14 @@ import styled from "styled-components";
 import Sheet from "react-modal-sheet";
 import React, { useEffect, useState } from "react";
 
-import { major, minor } from "@/components/StdSet";
+import { major, minor } from "@/constants/StdSet";
 import { IDepartmentGridItemWrapComponent } from "@/Interfaces/interfaces";
-import TempIcon from "@/components/TempIcon";
+import TempIcon from "@/pages/SearchPage/components/TempIcon";
 import School_Svg from "@/assets/svgs/school.svg";
 
-import done_Svg from "../assets/svgs/done.svg";
-import doneDisabled_Svg from "../assets/svgs/done_Disabled.svg";
-import reset_Svg from "../assets/svgs/reset.svg";
+import done_Svg from "@/assets/svgs/done.svg";
+import doneDisabled_Svg from "@/assets/svgs/done_Disabled.svg";
+import reset_Svg from "@/assets/svgs/reset.svg";
 
 import { useAtom } from "jotai";
 import { departmentOptionAtom } from "@/store";
@@ -307,7 +307,9 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
               colorAlt={theme.colors.secondaryText}
               bgColor={theme.colors.primary}
               bgColorAlt={theme.colors.inputBg}
-              onClick={()=>{setOpen(false)}}
+              onClick={() => {
+                setOpen(false);
+              }}
             >
               적용
               {departmentOption[0].length === 0 ? (

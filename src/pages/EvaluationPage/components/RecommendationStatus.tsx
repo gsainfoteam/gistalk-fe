@@ -1,9 +1,9 @@
 import { theme } from "@/style/theme";
 import styled from "styled-components";
 
-import ThumbUp_Svg from "../assets/svgs/thumbUp.svg";
-import ThumbDown_Svg from "../assets/svgs/thumbDown.svg";
-import Neutral_Svg from "../assets/svgs/neutral.svg";
+import ThumbUp_Svg from "@/assets/svgs/thumbUp.svg";
+import ThumbDown_Svg from "@/assets/svgs/thumbDown.svg";
+import Neutral_Svg from "@/assets/svgs/neutral.svg";
 
 interface IProps {
   like: string;
@@ -26,7 +26,7 @@ const RecommendSvg = styled(theme.universalComponent.SvgIcon)<{
   top: ${(props) => props.like == 3 && "1px"};
 `;
 
-export default function RecommendTextForm({ like }: IProps) {
+export default function RecommendationStatus({ like }: IProps) {
   const defineUsage = (like: string): [string, string, string, number] => {
     switch (like) {
       case "true":
