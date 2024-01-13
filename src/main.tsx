@@ -11,6 +11,7 @@ import ClassEvaluation from "./pages/EvaluationPage/ClassEvaluation";
 import ProfilePage from "./pages/ProfilePage";
 import EmptyErrorPage from "./pages/EmptyErrorPage";
 import { SearchPage } from "./pages/SearchPage";
+import MainPage from "./pages/MainPage/MainPage";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -19,7 +20,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <Routes>
-            <Route path="/" element={<SearchPage />} />
+            <Route path="/" element={<MainPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/:id/evaluation" element={<ClassEvaluation />} />
             <Route path="/profile" element={<ProfilePage />} />
