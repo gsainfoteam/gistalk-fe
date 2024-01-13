@@ -1,7 +1,8 @@
 import { zIndex } from "@/style/zIndex";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const TabBarContainer = styled.div`
+const TabBarContainer = styled.div<{ isScrolled: boolean }>`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -9,7 +10,9 @@ const TabBarContainer = styled.div`
   display: flex;
   justify-content: space-around;
   background-color: #f2f2f2;
-  z-index: ${zIndex.UNDER_NAVIGATION}; /* Ensure it appears above other elements */
+  z-index: ${zIndex.UNDER_NAVIGATION};
+  opacity: ${(props) => (props.isScrolled ? 0.7 : 1)};
+  transition: opacity 0.3s ease;
 `;
 
 const Tab = styled.div<{ active: boolean }>`
@@ -17,7 +20,7 @@ const Tab = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3%;
+  padding: 10px;
   font-size: 14px;
   color: ${(props) => (props.active ? "#333" : "#777")};
   svg {
@@ -31,8 +34,21 @@ interface TabBarProps {
 }
 
 function NavigationBar({ activeTab, onTabChange }: TabBarProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const handleScroll = () => {
+    setIsScrolled(window.scrollY > 0);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <TabBarContainer>
+    <TabBarContainer isScrolled={isScrolled}>
       <Tab active={activeTab === 0} onClick={() => onTabChange(0)}>
         강의평가
       </Tab>

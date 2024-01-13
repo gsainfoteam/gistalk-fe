@@ -1,19 +1,16 @@
-import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "@/style/theme";
 
 import Button from "@/components/Button";
 
-import QuestionMark_svg from "../assets/svgs/circledQuestionMark.svg";
 import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
-import NavigationHeader from "@components/NavigationHeader";
 
 const TitleWrap = styled.div<{ color: string }>`
   width: 87vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px auto 0 auto;
+  margin: 0 auto 0 auto;
   padding-bottom: 13px;
   border-bottom: ${(props) => props.color} 1.5px solid;
   border-radius: 0;
@@ -33,26 +30,10 @@ const MyReviewsText = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
   border-radius: 0;
   margin: 20px auto 0 auto;
-  text-align: center;
   line-height: 42px;
 `;
 
-const Point = styled(theme.universalComponent.DivTextContainer)`
-  display: flex;
-  align-items: center;
-  font-family: NSBold;
-`;
-
-const PointValue = styled(theme.universalComponent.DivTextContainer)`
-  display: flex;
-`;
-
-const HelperIcon = styled(theme.universalComponent.SvgIcon)`
-  margin-left: 4px;
-`;
-
 const Semester = styled(theme.universalComponent.DivTextContainer)`
-  border-bottom: ${(props) => props.color} 1.5px solid;
   display: flex;
   font-family: NSBold;
   width: 40vw;
@@ -91,7 +72,6 @@ const MyEvaluationWrap = styled.div`
 
 export default function ProfilePage() {
   const USER_NAME = "HongGilDong";
-  const POINT_VALUE = 54;
   const CLASS_LIST = [
     {
       id: 1,
@@ -124,21 +104,12 @@ export default function ProfilePage() {
   ];
   return (
     <>
-      <NavigationHeader text={"MY"} />
       <TitleWrap color={theme.colors.grayStroke}>
         <div>
           <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
             ID: <span>{USER_NAME}</span>
           </SubjectTitle>
-          <Point fontSize={14} color={theme.colors.primaryText}>
-            <PointValue fontSize={14} color={theme.colors.primary}>
-              {POINT_VALUE}
-            </PointValue>
-            <div>P</div>
-            <HelperIcon src={QuestionMark_svg} size={16} />
-          </Point>
         </div>
-
         <Button
           text="프로필 관리"
           onClick={() => {}}
@@ -148,7 +119,7 @@ export default function ProfilePage() {
       </TitleWrap>
       <ContentWrap>
         <MyReviewsText fontSize={16} color={theme.colors.primaryText}>
-          · 내가 쓴 강의평 ·
+          내가 쓴 강의평
         </MyReviewsText>
 
         {CLASS_LIST.map((list) => (
