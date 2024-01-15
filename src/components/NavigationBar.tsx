@@ -5,8 +5,9 @@ import styled from "styled-components";
 const TabBarContainer = styled.div<{ isScrolled: boolean }>`
   position: fixed;
   bottom: 0;
-  left: 0;
   width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-around;
   background-color: #f2f2f2;

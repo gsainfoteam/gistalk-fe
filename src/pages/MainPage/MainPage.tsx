@@ -1,31 +1,15 @@
-import Header from "@components/Header";
-import NavigationBar from "@components/NavigationBar";
-import { useState } from "react";
-import styled from "styled-components";
-import ProfilePage from "../ProfilePage";
+import { Link } from "react-router-dom";
+import { SearchBar } from "../SearchPage/components/SearchBar";
 
-const ContentContainer = styled.div`
-  padding: 20px;
-`;
-
-function MainPage() {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const handleTabChange = (tabIndex: number) => {
-    setActiveTab(tabIndex);
-  };
-
+export default function MainPage() {
   return (
-    <div>
-      <Header />
-      <ContentContainer>
-        {activeTab === 0 && <div>Content for Tab 1</div>}
-        {activeTab === 1 && <div>Content for Tab 2</div>}
-        {activeTab === 2 && <ProfilePage />}
-      </ContentContainer>
-      <NavigationBar activeTab={activeTab} onTabChange={handleTabChange} />
-    </div>
+    <>
+      <div> 강의 평가 검색</div>
+      <div> 기초과목부터 버클리까지 검색해보세요</div>
+
+      <Link to="/">
+        <div>이번학기 어떻게 보내셨나요? 강의 등록하러 가기</div>
+      </Link>
+    </>
   );
 }
-
-export default MainPage;

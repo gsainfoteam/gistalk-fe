@@ -6,7 +6,6 @@ import Button from "@/components/Button";
 import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
 
 const TitleWrap = styled.div<{ color: string }>`
-  width: 87vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
