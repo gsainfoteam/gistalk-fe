@@ -1,10 +1,11 @@
+import { theme } from "@/style/theme";
 import { ReactNode } from "react";
 import styled from "styled-components";
 
 // Styles for the container
 const CardContainer = styled.div`
   border-radius: 10px;
-  background: #f7f7f7;
+  background: ${theme.colors.cardBackGround};
   padding: 20px;
   margin-bottom: 5%;
 `;

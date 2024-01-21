@@ -6,7 +6,7 @@ import ProfilePage from "./ProfilePage";
 import MainPage from "./MainPage/MainPage";
 
 const ContentContainer = styled.div`
-  padding: 20px;
+  padding: 10px 8% 20px 8%;
 `;
 
 function MainRouterPage() {

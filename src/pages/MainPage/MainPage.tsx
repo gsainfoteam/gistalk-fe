@@ -5,6 +5,7 @@ import { SearchBar } from "../SearchPage/components/SearchBar";
 
 import LectureInformation from "./components/LectureInformation";
 import LectureReview from "./components/LectureReview";
+import WriteReview from "./components/WriteReview";
 
 export default function MainPage() {
   return (
@@ -18,8 +19,10 @@ export default function MainPage() {
 
       <StyledLink to="/">
         <Card>
-          <div> 이번 학기 어떻게 보내셨나요? </div>
-          <div> 강의평가 등록하러 가기 </div>
+          <WriteReview>
+            <div className="question"> 이번 학기 어떻게 보내셨나요? </div>
+            <div className="guide"> 강의평가 등록하러 가기 </div>
+          </WriteReview>
         </Card>
       </StyledLink>
 

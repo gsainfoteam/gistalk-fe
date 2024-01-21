@@ -11,6 +11,7 @@ const colors = {
 
   primaryText: "#4C4C4C",
   secondaryText: "#959595",
+  cardBackGround: "#F7F9FB",
 
   black: "#000000",
   white: "#ffffff",
