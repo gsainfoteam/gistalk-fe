@@ -15,7 +15,6 @@ interface IProps {
 
 const Wrap = styled.div`
   font-family: NSRegular;
-  width: 100vw;
   display: flex;
   justify-content: center;
   overflow-x: hidden;

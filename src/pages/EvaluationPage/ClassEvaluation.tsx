@@ -16,10 +16,13 @@ import NavigationHeader from "../../components/NavigationHeader";
 import EvaluationSummary from "./components/EvaluationSummary";
 
 const Wrap = styled.div`
-  min-height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
 `;
 
-/** · 수강생들의 평가 · 를 표시하는 div */
+/** · 수강생들의 평가를 표시하는 div */
 const EvaluationText = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
   margin: 30px auto 0 auto;
@@ -29,13 +32,12 @@ const EvaluationText = styled(theme.universalComponent.DivTextContainer)`
 /** 방사형 그래프인 Hexagon component를 감싸는 div */
 const GraphWrap = styled.div`
   position: relative;
-  top: -35px;
+  top: -30px;
 `;
 
 const OneLineReviewText = styled(theme.universalComponent.DivTextContainer)<{
   borderColor: string;
 }>`
-  width: 87vw;
   height: 42px;
   font-family: NSRegular;
   border-bottom: 1.5px solid ${(props) => props.borderColor};
@@ -47,7 +49,7 @@ const OneLineReviewText = styled(theme.universalComponent.DivTextContainer)<{
 /** Hexagon position 처리 때문에 밀려난 부분들 싹 다 위로 올리는 컴포넌트 */
 const Upper = styled.div`
   position: relative;
-  top: -80px;
+  top: -70px;
 `;
 
 /** '강의평 쓰러가기' 버튼 */
@@ -80,6 +82,7 @@ const BlankText = styled(theme.universalComponent.DivTextContainer)`
 
 export default function ClassEvaluation() {
   useEffect(() => {
+    window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
     // checkVaildEmail();
   });
 
@@ -90,44 +93,48 @@ export default function ClassEvaluation() {
   const tempData = tempdb.find((value) => value.id === id) || tempdb[0]; //undefined인 경우 default 값: tempdb[0]
 
   return (
-    <Wrap>
-      <NavigationHeader text={"강의"} />
-      <Title
-        subjectTitle={tempData.subjectName}
-        professorName={tempData.professorName}
-        subjectCode={useSubjectCode(tempData.subjectCode)}
-      />
-      <EvaluationText fontSize={16} color={theme.colors.primaryText}>
-        {tempData.redundancy}명의 수강생들이 남긴 평가에요
-      </EvaluationText>
-      <GraphWrap>
-        <Hexagon HexData={tempData.hexData}></Hexagon>
-      </GraphWrap>
+    <>
+      <NavigationHeader text={"강의평"} />
+      <Wrap>
+        <Title
+          subjectTitle={tempData.subjectName}
+          professorName={tempData.professorName}
+          subjectCode={useSubjectCode(tempData.subjectCode)}
+        />
+        <EvaluationText fontSize={16} color={theme.colors.primaryText}>
+          {tempData.redundancy}명의 수강생들이 남긴 평가에요
+        </EvaluationText>
+        <GraphWrap>
+          <Hexagon HexData={tempData.hexData}></Hexagon>
+        </GraphWrap>
 
-      <Upper>
-        <EvaluationSummary />
-        <OneLineReviewText
-          fontSize={18}
-          color={theme.colors.primaryText}
-          borderColor={theme.colors.grayStroke}
-        >
-          한줄평
-        </OneLineReviewText>
-        {
-          //여기서 i는 tempdb[0]이 가리키는 강의평가에 해당하는 각 한줄평을 가리킴
-          tempData.oneLineReview.map((i) => (
-            <Reply key={i.id} replyData={i} isMine={false}></Reply>
-          ))
-        }
-        {tempData.oneLineReview.length === 0 && (
-          <BlankWrap>
-            <BlankSvg size={120} src={CatBlankList_Svg} />
-            <BlankText fontSize={14} color={theme.colors.secondaryText}>
-              아직 한줄평이 작성되지 않았네요.
-            </BlankText>
-          </BlankWrap>
-        )}
-      </Upper>
+        <Upper>
+          <EvaluationSummary />
+          <OneLineReviewText
+            fontSize={18}
+            color={theme.colors.primaryText}
+            borderColor={theme.colors.grayStroke}
+          >
+            한줄평
+          </OneLineReviewText>
+          {
+            //여기서 i는 tempdb[0]이 가리키는 강의평가에 해당하는 각 한줄평을 가리킴
+            tempData.oneLineReview.map((i) => (
+              <Reply key={i.id} replyData={i} isMine={false}></Reply>
+            ))
+          }
+
+          {tempData.oneLineReview.length === 0 && (
+            <BlankWrap>
+              <BlankSvg size={120} src={CatBlankList_Svg} />
+              <BlankText fontSize={14} color={theme.colors.secondaryText}>
+                아직 한줄평이 작성되지 않았네요.
+              </BlankText>
+            </BlankWrap>
+          )}
+        </Upper>
+      </Wrap>
+
       <GoWriteBtn
         fontSize={20}
         bgColor={theme.colors.primary}
@@ -142,6 +149,6 @@ export default function ClassEvaluation() {
         professor={tempData.professorName}
         title={tempData.subjectName}
       ></ScrolledHeader>
-    </Wrap>
+    </>
   );
 }
