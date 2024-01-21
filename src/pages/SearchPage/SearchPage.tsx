@@ -19,9 +19,8 @@ import {
   ItemList,
   OptionBtnWrap,
   OrderSvg,
-  sortList,
 } from "./SearchPage.styled";
-import { tempClassList } from "./SearchPage.const";
+import { sortList, tempClassList } from "./SearchPage.const";
 import { SearchBar } from "./components/SearchBar";
 import DepartmentSelectModal from "./components/DepartmentSelectModal";
 import Header from "@components/Header";

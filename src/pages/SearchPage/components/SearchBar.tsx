@@ -1,27 +1,85 @@
 import { theme } from "@/style/theme";
-import {
-  CancelSvg,
-  MatchingText,
-  NorthWestSvg,
-  SearchBtnWrap,
-  SearchHorizontalLine,
-  SearchInput,
-  SearchInputWrap,
-  SearchItem,
-  SearchSvg,
-  SearchWrap,
-} from "../SearchPage.styled";
+import { MatchingText, NorthWestSvg, SearchItem } from "../SearchPage.styled";
 import { Link } from "react-router-dom";
 import NorthWest_Svg from "@assets/svgs/northWest.svg";
 import { tempClassList } from "../SearchPage.const";
 import { ISearchCard } from "@/Interfaces/interfaces";
 import Cancel_Svg from "@assets/svgs/cancel_Black.svg";
 import Search_Svg from "@assets/svgs/search.svg";
+import styled from "styled-components";
 
 /** 임시 아이템 리스트 */
 const TempSearchList: ISearchCard[] = tempClassList.sort(
   (a, b) => b.subjectScoreNum - a.subjectScoreNum
 );
+
+export const SearchSvg = styled(theme.universalComponent.SvgIcon)`
+  display: block;
+  cursor: pointer;
+`;
+export const CancelSvg = styled(theme.universalComponent.SvgIcon)`
+  display: block;
+  cursor: pointer;
+`;
+
+export const SearchBtnWrap = styled.div<{ bgColor: string }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  background-color: ${(props) => props.bgColor};
+`;
+
+/**검색어 입력시 검색창과 자동완성된 검색어를 분리하는 가로선 */
+export const SearchHorizontalLine = styled.hr<{
+  lineColor: string;
+  inlineText: string;
+  searchItemList: (JSX.Element | null)[];
+}>`
+  margin: 0 7px;
+  width: auto;
+  border: 0;
+  border-top: 1.5px solid ${(props) => props.lineColor};
+
+  //searchItemList가 있는 경우에만 가로선이 나타나도록 설정
+  display: ${(props) =>
+    props.searchItemList.every((value) => value === null) ? "none" : "flex"};
+`;
+
+export const SearchWrap = styled.div<{ borderColor: string }>`
+  width: 85vw;
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  margin: 0 auto;
+
+  border-radius: 5px;
+  border: 2px solid ${(props) => props.borderColor};
+`;
+
+export const SearchInputWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const SearchInput = styled.input<{
+  color: string;
+  bgColor: string;
+}>`
+  width: calc(85vw - 60px);
+  background-color: ${(props) => props.bgColor};
+  height: 40px;
+  padding-left: 15px;
+  font-family: NSRegular;
+  border: none;
+  text-align: left;
+  display: block;
+
+  //폰트 크기
+  font-size: 16px;
+  color: ${(props) => props.color};
+`;
 
 export function SearchBar({
   setSearchText,

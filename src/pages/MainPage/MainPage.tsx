@@ -6,6 +6,7 @@ import { SearchBar } from "../SearchPage/components/SearchBar";
 import LectureInformation from "./components/LectureInformation";
 import LectureReview from "./components/LectureReview";
 import WriteReview from "./components/WriteReview";
+import { MockSearchBar } from "./components/MockSearchBar";
 
 export default function MainPage() {
   return (
@@ -14,7 +15,7 @@ export default function MainPage() {
         title={"강의 평가 검색"}
         description={"기초과목부터 버클리까지 검색해보세요"}
       >
-        <SearchBar />
+        <MockSearchBar />
       </WithTitleAndDescription>
 
       <StyledLink to="/">
