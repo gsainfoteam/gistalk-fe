@@ -9,15 +9,13 @@ const TitleWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 auto 0 auto;
+  margin: 0 auto 10% auto;
 `;
 
 /** 과목 이름과 코드를 감싸는 div. 과목과 이름이 같은 형태라서 재사용함 */
 const SubjectTitle = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSRegular;
-  span {
-    font-family: NSBold;
-  }
+  font-size: 20px;
 `;
 
 const MyReviewsText = styled(theme.universalComponent.DivTextContainer)`
@@ -40,7 +38,7 @@ const Subject = styled.div`
 `;
 
 const SubjectName = styled(theme.universalComponent.DivTextContainer)`
-  font-family: NSBold;
+  font-family: NSRegular;
 `;
 const ProfessorName = styled(theme.universalComponent.DivTextContainer)`
   margin-left: 1em;
@@ -62,6 +60,15 @@ const MyEvaluationContainer = styled.div`
   background-color: ${theme.colors.cardBackGround};
   padding: 4%;
   border-radius: 10px;
+`;
+
+const InfoList = styled.div`
+  margin: 0 auto 0 auto;
+  padding: 4%;
+`;
+
+const Info = styled.div`
+  padding: 4% 0;
 `;
 
 export default function ProfilePage() {
@@ -96,14 +103,15 @@ export default function ProfilePage() {
       ],
     },
   ];
+
+  const MENU_TEXT = ["FAQ", "인포팀에 대해서...", "로그아웃"];
   return (
     <>
       <TitleWrap>
-        <div>
-          <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
-            <span>{USER_NAME}</span> 님
-          </SubjectTitle>
-        </div>
+        <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
+          <span>{USER_NAME}</span> 님
+        </SubjectTitle>
+
         <Button
           text="프로필 관리"
           onClick={() => {}}
@@ -136,6 +144,11 @@ export default function ProfilePage() {
             </SemesterEvaluationWrap>
           ))}
         </MyEvaluationContainer>
+        <InfoList>
+          {MENU_TEXT.map((text) => (
+            <Info>{text}</Info>
+          ))}
+        </InfoList>
       </ContentWrap>
     </>
   );
