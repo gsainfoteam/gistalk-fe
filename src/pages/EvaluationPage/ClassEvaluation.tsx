@@ -22,13 +22,6 @@ const Wrap = styled.div`
   padding: 0 20px;
 `;
 
-/** · 수강생들의 평가를 표시하는 div */
-const EvaluationText = styled(theme.universalComponent.DivTextContainer)`
-  font-family: NSBold;
-  margin: 30px auto 0 auto;
-  text-align: center;
-`;
-
 /** 방사형 그래프인 Hexagon component를 감싸는 div */
 const GraphWrap = styled.div`
   position: relative;
@@ -44,6 +37,11 @@ const OneLineReviewText = styled(theme.universalComponent.DivTextContainer)<{
   border-radius: 0;
   margin: 20px auto 0 auto;
   line-height: 42px;
+
+  span {
+    font-size: 14px;
+    color: ${theme.colors.secondaryText};
+  }
 `;
 
 /** Hexagon position 처리 때문에 밀려난 부분들 싹 다 위로 올리는 컴포넌트 */
@@ -102,22 +100,21 @@ export default function ClassEvaluation() {
           professorName={tempData.professorName}
           subjectCode={useSubjectCode(tempData.subjectCode)}
         />
-        <EvaluationText fontSize={16} color={theme.colors.primaryText}>
-          {tempData.redundancy}명의 수강생들이 남긴 평가에요
-        </EvaluationText>
+
         <GraphWrap>
           <Hexagon HexData={tempData.hexData}></Hexagon>
         </GraphWrap>
 
         <Upper>
-          <EvaluationSummary />
+          <EvaluationSummary evaluationData={tempData.hexData} />
           <OneLineReviewText
             fontSize={18}
             color={theme.colors.primaryText}
             borderColor={theme.colors.grayStroke}
           >
-            한줄평
+            한줄평 <span> 이 강의는 {tempData.redundancy}명이 수강했어요</span>
           </OneLineReviewText>
+
           {
             //여기서 i는 tempdb[0]이 가리키는 강의평가에 해당하는 각 한줄평을 가리킴
             tempData.oneLineReview.map((i) => (

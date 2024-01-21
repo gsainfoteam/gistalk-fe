@@ -35,7 +35,7 @@ const LeftWrap = styled.div`
 /** 몇 년도 몇 학기인지 표시하는 컴포넌트 */
 const SemesterText = styled(theme.universalComponent.DivTextContainer)`
   margin-left: 7px;
-  font-family: NSBold;
+  font-family: NSRegular;
 `;
 
 /** 댓글 내용 Wrap */
