@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
+import ProfessorNameCheckbox from "./ProfessorNameCheckbox";
+import { useState } from "react";
 
 interface IProps {
   subjectTitle: string;
@@ -39,12 +41,26 @@ const SubjectTitle = styled(theme.universalComponent.DivTextContainer)`
   }
 `;
 
+const CheckboxContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
 /** 이 title 부분이 detailedCE에도 똑같이 들어가므로 function으로 묶어 export 함 */
 export default function Title({
   subjectTitle,
   professorName,
   subjectCode,
 }: IProps) {
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const handleCheckboxChange = (id: number) => {
+    setSelectedId(id === selectedId ? null : id);
+  };
+
+  const PROF_NAMES = ["김길동", "박길동", professorName];
+
   return (
     <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
       <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
@@ -52,9 +68,21 @@ export default function Title({
         {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}
       </SubjectTitle>
       <div>
-        <SubjectTitle fontSize={15} color={theme.colors.secondaryText}>
-          {professorName || "ERR"}
-        </SubjectTitle>
+        <CheckboxContainer>
+          <SubjectTitle fontSize={14} color={theme.colors.secondaryText}>
+            교수자
+          </SubjectTitle>
+
+          {PROF_NAMES.map((text: string, index: number) => (
+            <ProfessorNameCheckbox
+              key={index}
+              text={text}
+              id={index}
+              selectedId={selectedId}
+              onCheckboxChange={handleCheckboxChange}
+            />
+          ))}
+        </CheckboxContainer>
       </div>
     </TitleWrap>
   );
