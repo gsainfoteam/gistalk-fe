@@ -9,7 +9,7 @@ const TitleWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 auto 10% auto;
+  margin: 0 0 10% 0;
 `;
 
 /** 과목 이름과 코드를 감싸는 div. 과목과 이름이 같은 형태라서 재사용함 */

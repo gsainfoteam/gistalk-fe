@@ -8,6 +8,8 @@ const CardContainer = styled.div`
   background: ${theme.colors.cardBackGround};
   padding: 20px;
   margin-bottom: 5%;
+  flex-shrink: 0;
+  flex-grow: 1;
 `;
 
 function Card({ children }: { children?: ReactNode }) {
