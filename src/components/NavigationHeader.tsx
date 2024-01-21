@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 const Wrap = styled.div<{ bgColor: string }>`
   display: flex;
   align-items: center;
-  width: 100vw;
   height: 60px;
   background-color: ${(props) => props.bgColor};
 `;

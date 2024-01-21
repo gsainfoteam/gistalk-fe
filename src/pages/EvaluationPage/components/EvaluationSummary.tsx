@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
+import { EvaluationToText } from "@/constants/EvaluationToText";
 
 const ConcreteInfoGrid = styled.div`
-  width: 87vw;
   margin: 10px auto 0 auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -34,75 +34,71 @@ const ConcreteInfo = styled(theme.universalComponent.DivTextContainer)<{
   }
 `;
 
-export default function EvaluationSummary() {
+type SubjectScore = {
+  subject: string;
+  score: number;
+};
+
+const data = [3, 4, 5, 2, 1, 2];
+const EVALUATION_TEXT = [
+  "수업 난이도",
+  "과제량",
+  "유익함",
+  "재미/흥미",
+  "성적 만족도",
+  "강의력",
+];
+
+function sortScoresBySubject(scores: SubjectScore[]): number[] {
+  const subjectsOrder = [
+    "수업 난이도",
+    "과제량",
+    "유익함",
+    "재미 / 흥미",
+    "성적 만족도",
+    "강의력",
+  ];
+
+  const sortedScores = subjectsOrder.map((subject) => {
+    const scoreObject = scores.find((score) => score.subject === subject);
+    return scoreObject ? scoreObject.score : 0;
+  });
+
+  return sortedScores;
+}
+
+const LOW = 0;
+const MIDDLE = 1;
+const height = 2;
+
+export default function EvaluationSummary({ evaluationData }: any) {
+  const data = sortScoresBySubject(evaluationData);
+
+  const indexData = data.map((item: number) => {
+    if (item <= 2) {
+      return LOW;
+    } else if (item == 3) {
+      return MIDDLE;
+    } else {
+      return height;
+    }
+  });
+
   return (
     <ConcreteInfoGrid>
-      <ConcreteInfo
-        color={theme.colors.secondaryText}
-        colorP={theme.colors.primary}
-        fontSize={15}
-      >
-        <div>수업 난이도</div>
-        <div>
-          <span>{3.0}</span>명
-        </div>
-      </ConcreteInfo>
-      <ConcreteInfo
-        color={theme.colors.secondaryText}
-        colorP={theme.colors.primary}
-        fontSize={15}
-      >
-        <div>과제량</div>
-        <div>
-          <span>{3.4}</span>명
-        </div>
-      </ConcreteInfo>
-      <ConcreteInfo
-        color={theme.colors.secondaryText}
-        colorP={theme.colors.primary}
-        fontSize={15}
-      >
-        <div>유익함</div>
-        <div>
-          <span>{2}</span>명
-        </div>
-      </ConcreteInfo>
-      <ConcreteInfo
-        color={theme.colors.secondaryText}
-        colorP={theme.colors.primary}
-        fontSize={15}
-      >
-        <div>재미/흥미</div>
-        <div>
-          <span>{1.8}</span>명
-        </div>
-      </ConcreteInfo>
-      <ConcreteInfo
-        color={theme.colors.secondaryText}
-        colorP={theme.colors.primary}
-        fontSize={15}
-      >
-        <div>성적 만족도</div>
-        <div>
-          <span>{2.5}</span>명
-        </div>
-      </ConcreteInfo>
-      <ConcreteInfo
-        color={theme.colors.secondaryText}
-        colorP={theme.colors.primary}
-        fontSize={15}
-      >
-        <div>강의력</div>
-        <div>
-          <span>{4.1}</span>명
-        </div>
-      </ConcreteInfo>
-
-      <ConcreteInfo
-        color={theme.colors.secondaryText}
-        colorP={theme.colors.primary}
-        fontSize={15}
-      ></ConcreteInfo>
+      {indexData.map((item: number, index: number) => (
+        <ConcreteInfo
+          key={index}
+          color={theme.colors.secondaryText}
+          colorP={theme.colors.primary}
+          fontSize={15}
+        >
+          <div>{EVALUATION_TEXT[index]}</div>
+          <div>
+            <span>{EvaluationToText[index][item]}</span>
+          </div>
+        </ConcreteInfo>
+      ))}
     </ConcreteInfoGrid>
   );
 }

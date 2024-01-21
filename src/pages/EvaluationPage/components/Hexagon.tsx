@@ -15,7 +15,6 @@ interface IProps {
 
 const Wrap = styled.div`
   font-family: NSRegular;
-  width: 100vw;
   display: flex;
   justify-content: center;
   overflow-x: hidden;
@@ -27,7 +26,6 @@ export default function Hexagon({ HexData }: IProps) {
     return {
       subject: i.subject + " (" + i.score.toString() + ")",
       A: i.score,
-      B: 2.5,
       fullMark: 5.0,
     };
   });

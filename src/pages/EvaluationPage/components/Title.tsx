@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
+import ProfessorNameCheckbox from "./ProfessorNameCheckbox";
+import { useState } from "react";
 
 interface IProps {
   subjectTitle: string;
@@ -8,7 +10,7 @@ interface IProps {
 }
 
 const TitleWrap = styled.div<{ color: string; bgColor: string }>`
-  width: 87vw;
+  width: 100%;
   margin: 0 auto 0 auto;
 
   padding-top: 13px;
@@ -31,18 +33,18 @@ const SubjectTitle = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
   word-break: keep-all;
   margin-bottom: 3px;
+
+  span {
+    font-size: 14px;
+    font-family: NSRegular;
+    color: ${theme.colors.secondaryText};
+  }
 `;
 
-/** 평균 점수 표시 */
-const AverageScore = styled(theme.universalComponent.DivTextContainer)<{
-  primaryColor: string;
-}>`
-  font-family: NSMedium;
-  span {
-    margin-left: 4px;
-    font-family: NSBold;
-    color: ${(props) => props.primaryColor};
-  }
+const CheckboxContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 /** 이 title 부분이 detailedCE에도 똑같이 들어가므로 function으로 묶어 export 함 */
@@ -51,16 +53,36 @@ export default function Title({
   professorName,
   subjectCode,
 }: IProps) {
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const handleCheckboxChange = (id: number) => {
+    setSelectedId(id === selectedId ? null : id);
+  };
+
+  const PROF_NAMES = ["김길동", "박길동", professorName];
+
   return (
     <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
       <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
-        {subjectTitle || "ERR"}{" "}
+        {subjectTitle || "ERR"} <span> {subjectCode || "ERR"}</span>
         {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}
       </SubjectTitle>
       <div>
-        <SubjectTitle fontSize={15} color={theme.colors.secondaryText}>
-          {professorName || "ERR"} / {subjectCode || "ERR"}
-        </SubjectTitle>
+        <CheckboxContainer>
+          <SubjectTitle fontSize={14} color={theme.colors.secondaryText}>
+            교수자
+          </SubjectTitle>
+
+          {PROF_NAMES.map((text: string, index: number) => (
+            <ProfessorNameCheckbox
+              key={index}
+              text={text}
+              id={index}
+              selectedId={selectedId}
+              onCheckboxChange={handleCheckboxChange}
+            />
+          ))}
+        </CheckboxContainer>
       </div>
     </TitleWrap>
   );
