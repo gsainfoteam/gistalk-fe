@@ -8,7 +8,7 @@ interface IProps {
 }
 
 const TitleWrap = styled.div<{ color: string; bgColor: string }>`
-  width: 87vw;
+  width: 100%;
   margin: 0 auto 0 auto;
 
   padding-top: 13px;

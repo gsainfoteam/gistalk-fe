@@ -19,7 +19,7 @@ const Wrap = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 0 10px;
+  padding: 0 20px;
 `;
 
 /** · 수강생들의 평가를 표시하는 div */
@@ -58,6 +58,7 @@ const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
 }>`
   text-align: center;
   width: 95vw;
+  max-width: 480px;
   background-color: ${(props) => props.bgColor};
   height: 50px;
   line-height: 50px;

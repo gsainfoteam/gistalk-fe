@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { theme } from "@/style/theme";
 
 const ConcreteInfoGrid = styled.div`
-  width: 87vw;
   margin: 10px auto 0 auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);

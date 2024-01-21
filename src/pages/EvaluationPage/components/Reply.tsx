@@ -14,7 +14,6 @@ interface IProps {
 
 /** 전체 Wrap */
 const Wrap = styled.div`
-  width: 87vw;
   margin: 20px auto 0 auto;
 `;
 
@@ -23,6 +22,7 @@ const InfoWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 4px;
 `;
 
 /** InfoWrap 안에 들어가는 왼쪽 부분(추천 or 비추천, 몇 학기 수강자인지) */
