@@ -1,7 +1,6 @@
 import Card from "@components/Card";
 import { StyledLink } from "@components/StyledLink";
 import WithTitleAndDescription from "@components/TitleWithDescription";
-import { SearchBar } from "../SearchPage/components/SearchBar";
 
 import LectureInformation from "./components/LectureInformation";
 import LectureReview from "./components/LectureReview";

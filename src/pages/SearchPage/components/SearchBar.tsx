@@ -48,7 +48,6 @@ export const SearchHorizontalLine = styled.hr<{
 `;
 
 export const SearchWrap = styled.div<{ borderColor: string }>`
-  width: 85vw;
   display: flex;
   flex-direction: column;
   height: max-content;
@@ -67,7 +66,7 @@ export const SearchInput = styled.input<{
   color: string;
   bgColor: string;
 }>`
-  width: calc(85vw - 60px);
+  width: 90%;
   background-color: ${(props) => props.bgColor};
   height: 40px;
   padding-left: 15px;

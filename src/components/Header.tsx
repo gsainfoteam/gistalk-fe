@@ -4,6 +4,7 @@ import InfoteamLogo_Svg from "@assets/svgs/infoteamLogo.svg";
 
 import { IHeader } from "@/Interfaces/interfaces";
 import { useNavigate } from "react-router-dom";
+import { StyledLink } from "./StyledLink";
 
 export const TopWrap = styled.div`
   width: 87vw;
@@ -30,10 +31,12 @@ export const LogoSvg = styled(theme.universalComponent.SvgIcon)`
 export default function Header() {
   return (
     <TopWrap>
-      <LogoWrap color={theme.colors.primary}>
-        <LogoSvg src={InfoteamLogo_Svg} size={35}></LogoSvg>
-        GISTALK
-      </LogoWrap>
+      <StyledLink to="/">
+        <LogoWrap color={theme.colors.primary}>
+          <LogoSvg src={InfoteamLogo_Svg} size={35}></LogoSvg>
+          GISTALK
+        </LogoWrap>
+      </StyledLink>
     </TopWrap>
   );
 }
