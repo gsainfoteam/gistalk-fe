@@ -1,6 +1,11 @@
+import RecommendationStatus from "@components/RecommendationStatus";
 import styled from "styled-components";
 
-const LectureInformationWrapper = styled.div``;
+const LectureInformationWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 const LectureNameText = styled.span`
   font-size: 16px;
@@ -35,11 +40,15 @@ function LectureInformation({
 }: LectureInformationProps) {
   return (
     <LectureInformationWrapper>
-      <LectureNameText>{LectureName}</LectureNameText>
-      <ProfessorNameText>{ProfessorName}</ProfessorNameText>
-      <CourseTakenTimeText>
-        {CourseTakenYear}년 {CourseTakenSemester}학기
-      </CourseTakenTimeText>
+      <div>
+        <LectureNameText>{LectureName}</LectureNameText>
+        <ProfessorNameText>{ProfessorName}</ProfessorNameText>
+        <CourseTakenTimeText>
+          {CourseTakenYear}년 {CourseTakenSemester}학기
+        </CourseTakenTimeText>
+      </div>
+
+      <RecommendationStatus like={`${CourseRecommendation}`} />
     </LectureInformationWrapper>
   );
 }
