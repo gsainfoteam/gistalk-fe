@@ -10,10 +10,9 @@ interface IProps {
 }
 
 const Wrap = styled(theme.universalComponent.DivTextContainer)`
-  font-family: NSBold;
+  font-family: NSRegular;
   display: flex;
   align-items: center;
-  height: 30px;
 `;
 
 const RecommendSvg = styled(theme.universalComponent.SvgIcon)<{
@@ -26,6 +25,7 @@ const RecommendSvg = styled(theme.universalComponent.SvgIcon)<{
   top: ${(props) => props.like == 3 && "1px"};
 `;
 
+/** like에 string으로 true, false, 다른 값을 넣으면 그에 따른 상태가 렌더링됨*/
 export default function RecommendationStatus({ like }: IProps) {
   const defineUsage = (like: string): [string, string, string, number] => {
     switch (like) {
@@ -44,7 +44,7 @@ export default function RecommendationStatus({ like }: IProps) {
         size={20}
         src={defineUsage(like)[1]}
         like={defineUsage(like)[3]}
-      ></RecommendSvg>
+      />
       {defineUsage(like)[2]}
     </Wrap>
   );

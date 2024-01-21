@@ -4,13 +4,9 @@ import "./index.css";
 import GlobalStyle from "./fonts/global";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./style/theme";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "jotai";
-
-import ClassEvaluation from "./pages/EvaluationPage/ClassEvaluation";
-import ProfilePage from "./pages/ProfilePage";
-import EmptyErrorPage from "./pages/EmptyErrorPage";
-import { SearchPage } from "./pages/SearchPage";
+import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -18,13 +14,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
-          <Routes>
-            <Route path="/" element={<SearchPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/:id/evaluation" element={<ClassEvaluation />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/*" element={<EmptyErrorPage />} />
-          </Routes>
+          <App />
         </ThemeProvider>
       </BrowserRouter>
     </Provider>

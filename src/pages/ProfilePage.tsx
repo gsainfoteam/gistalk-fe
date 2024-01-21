@@ -1,63 +1,32 @@
-import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "@/style/theme";
 
 import Button from "@/components/Button";
 
-import QuestionMark_svg from "../assets/svgs/circledQuestionMark.svg";
 import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
-import NavigationHeader from "@components/NavigationHeader";
 
-const TitleWrap = styled.div<{ color: string }>`
-  width: 87vw;
+const TitleWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px auto 0 auto;
-  padding-bottom: 13px;
-  border-bottom: ${(props) => props.color} 1.5px solid;
-  border-radius: 0;
+  margin: 0 0 10% 0;
 `;
 
 /** 과목 이름과 코드를 감싸는 div. 과목과 이름이 같은 형태라서 재사용함 */
 const SubjectTitle = styled(theme.universalComponent.DivTextContainer)`
-  font-family: NSMedium;
-  span {
-    font-family: NSBold;
-  }
+  font-family: NSRegular;
+  font-size: 20px;
 `;
 
 const MyReviewsText = styled(theme.universalComponent.DivTextContainer)`
-  width: 87vw;
-  height: 42px;
   font-family: NSBold;
-  border-radius: 0;
-  margin: 20px auto 0 auto;
-  text-align: center;
-  line-height: 42px;
-`;
-
-const Point = styled(theme.universalComponent.DivTextContainer)`
-  display: flex;
-  align-items: center;
-  font-family: NSBold;
-`;
-
-const PointValue = styled(theme.universalComponent.DivTextContainer)`
-  display: flex;
-`;
-
-const HelperIcon = styled(theme.universalComponent.SvgIcon)`
-  margin-left: 4px;
 `;
 
 const Semester = styled(theme.universalComponent.DivTextContainer)`
-  border-bottom: ${(props) => props.color} 1.5px solid;
   display: flex;
   font-family: NSBold;
   width: 40vw;
   border-radius: 0;
-  padding-bottom: 0.5em;
   margin-bottom: 0.5em;
 `;
 
@@ -69,7 +38,7 @@ const Subject = styled.div`
 `;
 
 const SubjectName = styled(theme.universalComponent.DivTextContainer)`
-  font-family: NSBold;
+  font-family: NSRegular;
 `;
 const ProfessorName = styled(theme.universalComponent.DivTextContainer)`
   margin-left: 1em;
@@ -80,18 +49,30 @@ const ArrowIcon = styled(theme.universalComponent.SvgIcon)`
   margin-left: auto;
 `;
 
-const ContentWrap = styled.div`
-  width: 87vw;
-  margin: 10px auto 0 auto;
+const ContentWrap = styled.div``;
+
+const SemesterEvaluationWrap = styled.div`
+  margin-top: 1em;
 `;
 
-const MyEvaluationWrap = styled.div`
-  margin-top: 1em;
+const MyEvaluationContainer = styled.div`
+  margin: 0 auto 0 auto;
+  background-color: ${theme.colors.cardBackGround};
+  padding: 4%;
+  border-radius: 10px;
+`;
+
+const InfoList = styled.div`
+  margin: 0 auto 0 auto;
+  padding: 4%;
+`;
+
+const Info = styled.div`
+  padding: 4% 0;
 `;
 
 export default function ProfilePage() {
   const USER_NAME = "HongGilDong";
-  const POINT_VALUE = 54;
   const CLASS_LIST = [
     {
       id: 1,
@@ -109,7 +90,7 @@ export default function ProfilePage() {
     },
     {
       id: 2,
-      time: "2022년 2 학기",
+      time: "2022년 2학기",
       subjects: [
         {
           className: "컴퓨터 프로그래밍",
@@ -122,22 +103,14 @@ export default function ProfilePage() {
       ],
     },
   ];
+
+  const MENU_TEXT = ["FAQ", "인포팀에 대해서...", "로그아웃"];
   return (
     <>
-      <NavigationHeader text={"MY"} />
-      <TitleWrap color={theme.colors.grayStroke}>
-        <div>
-          <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
-            ID: <span>{USER_NAME}</span>
-          </SubjectTitle>
-          <Point fontSize={14} color={theme.colors.primaryText}>
-            <PointValue fontSize={14} color={theme.colors.primary}>
-              {POINT_VALUE}
-            </PointValue>
-            <div>P</div>
-            <HelperIcon src={QuestionMark_svg} size={16} />
-          </Point>
-        </div>
+      <TitleWrap>
+        <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
+          <span>{USER_NAME}</span> 님
+        </SubjectTitle>
 
         <Button
           text="프로필 관리"
@@ -147,28 +120,35 @@ export default function ProfilePage() {
         />
       </TitleWrap>
       <ContentWrap>
-        <MyReviewsText fontSize={16} color={theme.colors.primaryText}>
-          · 내가 쓴 강의평 ·
-        </MyReviewsText>
+        <MyEvaluationContainer>
+          <MyReviewsText fontSize={16} color={theme.colors.primaryText}>
+            작성한 강의평
+          </MyReviewsText>
 
-        {CLASS_LIST.map((list) => (
-          <MyEvaluationWrap key={list.id}>
-            <Semester fontSize={14} color={theme.colors.primary}>
-              {list.time}
-            </Semester>
-            {list.subjects.map((subject) => (
-              <Subject>
-                <SubjectName fontSize={16} color={theme.colors.primaryText}>
-                  {subject.className}
-                </SubjectName>
-                <ProfessorName fontSize={14} color={theme.colors.grayStroke}>
-                  {subject.professor}
-                </ProfessorName>
-                <ArrowIcon size={12} src={NavigationArrow_Svg} />
-              </Subject>
-            ))}
-          </MyEvaluationWrap>
-        ))}
+          {CLASS_LIST.map((list) => (
+            <SemesterEvaluationWrap key={list.id}>
+              <Semester fontSize={14} color={theme.colors.primary}>
+                {list.time}
+              </Semester>
+              {list.subjects.map((subject) => (
+                <Subject>
+                  <SubjectName fontSize={16} color={theme.colors.primaryText}>
+                    {subject.className}
+                  </SubjectName>
+                  <ProfessorName fontSize={14} color={theme.colors.grayStroke}>
+                    {subject.professor}
+                  </ProfessorName>
+                  <ArrowIcon size={12} src={NavigationArrow_Svg} />
+                </Subject>
+              ))}
+            </SemesterEvaluationWrap>
+          ))}
+        </MyEvaluationContainer>
+        <InfoList>
+          {MENU_TEXT.map((text) => (
+            <Info>{text}</Info>
+          ))}
+        </InfoList>
       </ContentWrap>
     </>
   );

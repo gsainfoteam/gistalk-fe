@@ -29,7 +29,13 @@ export function SearchBar({
   setSearchTextEnter,
   enterSearchText,
   searchTextEnter,
-}: any) {
+}: {
+  setSearchText: any;
+  searchText: string;
+  setSearchTextEnter: any;
+  enterSearchText: any;
+  searchTextEnter: string;
+}) {
   /**검색 아이콘 -> 검색어가 입력되면 취소 아이콘 */
   function ResponsiveSvg() {
     if (searchText === "") {
