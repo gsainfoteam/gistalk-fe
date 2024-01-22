@@ -7,9 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { StyledLink } from "./StyledLink";
 
 export const TopWrap = styled.div`
-  width: 87vw;
   margin: 10px auto 0 auto;
-  padding: 22px 0;
+  padding: 22px 5%;
   display: flex;
   align-items: center;
   justify-content: space-between;
