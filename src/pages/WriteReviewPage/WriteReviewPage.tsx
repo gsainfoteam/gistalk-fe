@@ -1,11 +1,11 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
+
 import { theme } from "@/style/theme";
 import { tempdb } from "@/tempdb/tempdb";
 import NavigationHeader from "@components/NavigationHeader";
 import Title from "@components/Title";
-import TitleWithDescription from "@components/TitleWithDescription";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
 
 const Wrapper = styled.div`
   margin: 0 20px;
@@ -87,6 +87,44 @@ const TextArea = styled.textarea`
   height: 100px;
 `;
 
+const RadioCheckText = styled.span`
+  font-size: 14px;
+  width: 110px;
+  height: 35px;
+  border-radius: 50px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: ${theme.colors.secondaryText};
+  background: ${theme.colors.inputBg};
+`;
+
+const RadioButton = styled.input.attrs({ type: "radio" })`
+  &:checked {
+    display: inline-block;
+    background: none;
+    padding: 0px 10px;
+    text-align: center;
+    height: 35px;
+    line-height: 33px;
+    font-weight: 500;
+    display: none;
+  }
+  &:checked + ${RadioCheckText} {
+    background: ${theme.colors.primary};
+    color: #fff;
+  }
+  display: none;
+`;
+
+const RadioContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const COURSE_TAKEN_YEAR = [
   "2023",
   "2022",
@@ -117,6 +155,11 @@ const RATING_QUESTIONS = [
   },
 ];
 
+const RECOMMEND_TEXT = {
+  question: "이 강의를 추천하시겠어요?",
+  options: ["추천", "보통", "추천하지 않음"],
+};
+
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = null;
   return acc;
@@ -127,6 +170,7 @@ const FILLED_STAR = "★";
 
 export default function WriteReviewPage() {
   const [ratings, setRatings] = useState(initialRatings);
+  const [recommendation, setRecommendation] = useState(1); // 0 비추천, 1 보통, 2 추천
   const params = useParams() as { id: string };
   const id = Number(params.id);
 
@@ -194,6 +238,23 @@ export default function WriteReviewPage() {
               </StarRating>
             </FormField>
           ))}
+
+          <FormField>
+            <Label>{RECOMMEND_TEXT.question}</Label>
+            <RadioContainer>
+              {RECOMMEND_TEXT.options.map((option, index) => (
+                <label key={option}>
+                  <RadioButton
+                    type="radio"
+                    value={option}
+                    checked={index === recommendation}
+                    onChange={() => setRecommendation(() => index)}
+                  />
+                  <RadioCheckText> {option}</RadioCheckText>
+                </label>
+              ))}
+            </RadioContainer>
+          </FormField>
 
           <FormField>
             <Label>총평을 적어주세요</Label>
