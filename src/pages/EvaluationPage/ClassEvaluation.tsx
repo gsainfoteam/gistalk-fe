@@ -10,10 +10,11 @@ import Reply from "./components/Reply";
 
 import CatBlankList_Svg from "@/assets/svgs/catBlankList.svg";
 import useSubjectCode from "@/hooks/useSubjectCode";
-import Title from "./components/Title";
+import Title from "../../components/Title";
 import ScrolledHeader from "@components/ScrolledHeader";
 import NavigationHeader from "../../components/NavigationHeader";
 import EvaluationSummary from "./components/EvaluationSummary";
+import { StyledLink } from "@components/StyledLink";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -62,7 +63,6 @@ const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
   line-height: 50px;
   position: fixed;
   bottom: 2.5vw;
-  font-family: NSBold;
   margin: 0 2.5vw;
 `;
 
@@ -98,7 +98,7 @@ export default function ClassEvaluation() {
         <Title
           subjectTitle={tempData.subjectName}
           professorName={tempData.professorName}
-          subjectCode={useSubjectCode(tempData.subjectCode)}
+          subjectCode={tempData.subjectCode}
         />
 
         <GraphWrap>
@@ -133,16 +133,16 @@ export default function ClassEvaluation() {
         </Upper>
       </Wrap>
 
-      <GoWriteBtn
-        fontSize={20}
-        bgColor={theme.colors.primary}
-        color={theme.colors.white}
-        onClick={() => {
-          window.open("https://forms.gle/DS4ZXU5xQ3UPbyR68");
-        }}
-      >
-        강의평 쓰러가기
-      </GoWriteBtn>
+      <StyledLink to={`/${params.id}/write`}>
+        <GoWriteBtn
+          fontSize={20}
+          bgColor={theme.colors.primary}
+          color={theme.colors.white}
+        >
+          강의평 쓰러가기
+        </GoWriteBtn>
+      </StyledLink>
+
       <ScrolledHeader
         professor={tempData.professorName}
         title={tempData.subjectName}

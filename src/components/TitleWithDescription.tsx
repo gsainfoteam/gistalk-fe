@@ -14,6 +14,8 @@ const Description = styled.div`
 
 const Wrapper = styled.div`
   margin-bottom: 5%;
+  display: flex;
+  flex-direction: column;
 `;
 
 interface TitleWithDescriptionProps {

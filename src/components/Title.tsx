@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import ProfessorNameCheckbox from "./ProfessorNameCheckbox";
+import ProfessorNameCheckbox from "../pages/EvaluationPage/components/ProfessorNameCheckbox";
 import { useState } from "react";
+import useSubjectCode from "@/hooks/useSubjectCode";
 
 interface IProps {
   subjectTitle: string;
   professorName: string;
-  subjectCode: string;
+  subjectCode: string[];
 }
 
 const TitleWrap = styled.div<{ color: string; bgColor: string }>`
@@ -47,13 +48,18 @@ const CheckboxContainer = styled.div`
   align-items: center;
 `;
 
-/** 이 title 부분이 detailedCE에도 똑같이 들어가므로 function으로 묶어 export 함 */
+/** 강의평가가 표시되는 title
+ * @param subjectTitle 과목 이름
+ * @param professorName 교수 이름
+ * @param subjectCode 과목 코드
+ */
 export default function Title({
   subjectTitle,
   professorName,
   subjectCode,
 }: IProps) {
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const extractedSubjectCode = useSubjectCode(subjectCode);
 
   const handleCheckboxChange = (id: number) => {
     setSelectedId(id === selectedId ? null : id);
