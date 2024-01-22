@@ -6,7 +6,7 @@ import EmptyErrorPage from "./pages/EmptyErrorPage";
 import { SearchPage } from "./pages/SearchPage";
 import MainRouterPage from "./pages/MainRouterPage";
 import styled from "styled-components";
-import WriteReviewPage from "./pages/WriteReviewPage/WriteReviewPage";
+import { WriteReviewPage } from "./pages/WriteReviewPage";
 
 //web-app style, max-width
 const DefaultStyle = styled.div`
