@@ -9,26 +9,6 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   margin: 0 20px;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-`;
-
-const Select = styled.select`
-  padding: 8px;
-`;
-
-const StarRating = styled.div`
-  font-size: 24px;
-  cursor: pointer;
-`;
-
-const TextArea = styled.textarea`
-  flex: 1;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  border: 1px solid ${theme.colors.grayStroke};
-  padding: 10px;
 `;
 
 const Button = styled.button`
@@ -36,36 +16,136 @@ const Button = styled.button`
   background-color: ${theme.colors.primary};
   color: white;
   border: none;
-  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 `;
 
-export default function WriteReviewPage() {
-  const [professor, setProfessor] = useState<string>("");
-  const [year, setYear] = useState<string>("");
-  const [semester, setSemester] = useState<string>("");
-  const [rating, setRating] = useState<number | null>(null);
-  const [comment, setComment] = useState<string>("");
+const Form = styled.form`
+  margin-top: 6%;
+  background-color: white;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+`;
 
-  /** Radar Chart에 들어갈 임시 데이터 */
+const FormField = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+`;
+
+const Label = styled.label`
+  font-size: 16px;
+  margin-bottom: 5px;
+  font-family: NSBold;
+`;
+
+const Description = styled.p`
+  margin-bottom: 10px;
+  font-size: 14px;
+`;
+
+const Select = styled.select`
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+`;
+
+const LeftLabel = styled.span`
+  margin-right: 10px;
+  font-size: 14px;
+  color: ${theme.colors.secondaryText};
+`;
+
+const RightLabel = styled.span`
+  margin-left: 10px;
+  font-size: 14px;
+  color: ${theme.colors.secondaryText};
+`;
+
+const StarRating = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Star = styled.span`
+  cursor: pointer;
+  color: gold;
+  margin: 0 8px;
+  font-size: 32px;
+`;
+
+const TextArea = styled.textarea`
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  height: 100px;
+`;
+
+const COURSE_TAKEN_YEAR = [
+  "2023",
+  "2022",
+  "2021",
+  "2020",
+  "2019",
+  "2018",
+  "2017",
+  "2016",
+  "2015",
+];
+const COURSE_TAKEN_SEMESTER = ["봄학기", "여름학기", "가을학기", "겨울학기"];
+
+const RATING_QUESTIONS = [
+  {
+    id: 1,
+    question: "수업 난이도는 어땠나요?",
+    description: "과제, 시험 등 강의의 모든 부분을 고려하여 선택해주세요.",
+    leftText: "쉬움",
+    rightText: "어려움",
+  },
+  {
+    id: 2,
+    question: "수업 난이도는 어땠나요?",
+    description: "과제, 시험 등 강의의 모든 부분을 고려하여 선택해주세요.",
+    leftText: "쉬움",
+    rightText: "어려움",
+  },
+];
+
+const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
+  acc[question.id] = null;
+  return acc;
+}, {} as { [key: number]: number | null });
+
+const EMPTY_STAR = "☆";
+const FILLED_STAR = "★";
+
+export default function WriteReviewPage() {
+  const [ratings, setRatings] = useState(initialRatings);
   const params = useParams() as { id: string };
-  /**강의별 id */
   const id = Number(params.id);
+
   const tempData = tempdb.find((value) => value.id === id) || tempdb[0]; //undefined인 경우 default 값: tempdb[0]
 
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
   });
 
-  const handleRatingChange = (newRating: number) => {
-    setRating(newRating);
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    alert(`Rating: ${ratings}`);
   };
 
-  const handleSubmit = () => {
-    // TODO: 평가 제출 로직 추가
-    console.log("평가 제출:", { professor, year, semester, rating, comment });
+  const handleRatingChange = (questionId: number, newRating: number) => {
+    setRatings((prevRatings) => ({ ...prevRatings, [questionId]: newRating }));
   };
+
+  //TODO: 추천/비추 UI
 
   return (
     <>
@@ -76,47 +156,52 @@ export default function WriteReviewPage() {
           professorName={tempData.professorName}
           subjectCode={tempData.subjectCode}
         />
-        <div>
-          <Select
-            onChange={(e) => setYear(e.target.value)}
-            placeholder="수강 년도 선택"
-          >
-            <option value="2022">2022</option>
-            <option value="2023">2023</option>
-            {/* 추가 년도 옵션들 */}
-          </Select>
+        <Form onSubmit={handleSubmit}>
+          <FormField>
+            <Label>수강 년도</Label>
+            <Select>
+              {COURSE_TAKEN_YEAR.map((year) => (
+                <option key={year}>{year}</option>
+              ))}
+            </Select>
+          </FormField>
 
-          <Select
-            onChange={(e) => setSemester(e.target.value)}
-            placeholder="수강 학기 선택"
-          >
-            <option value="Spring">봄학기</option>
-            <option value="Fall">가을학기</option>
-            {/* 추가 학기 옵션들 */}
-          </Select>
-        </div>
+          <FormField>
+            <Label>수강 학기</Label>
+            <Select>
+              {COURSE_TAKEN_SEMESTER.map((semester) => (
+                <option key={semester}>{semester}</option>
+              ))}
+            </Select>
+          </FormField>
+          {RATING_QUESTIONS.map((question, index) => (
+            <FormField key={index}>
+              <Label>{question.question}</Label>
+              <Description>{question.description}</Description>
+              <StarRating>
+                <LeftLabel>{question.leftText}</LeftLabel>
+                {[1, 2, 3, 4, 5].map((num) => (
+                  <Star
+                    key={num}
+                    onClick={() => handleRatingChange(question.id, num)}
+                  >
+                    {num <= (ratings[question.id] ?? 0)
+                      ? FILLED_STAR
+                      : EMPTY_STAR}
+                  </Star>
+                ))}
+                <RightLabel>{question.rightText}</RightLabel>
+              </StarRating>
+            </FormField>
+          ))}
 
-        <div>
-          <span>수업 난이도는 어떠나요?</span>
-          <StarRating onClick={() => handleRatingChange(1)}>★</StarRating>
-          <StarRating onClick={() => handleRatingChange(2)}>★★</StarRating>
-          <StarRating onClick={() => handleRatingChange(3)}>★★★</StarRating>
-          <StarRating onClick={() => handleRatingChange(4)}>★★★★</StarRating>
-          <StarRating onClick={() => handleRatingChange(5)}>★★★★★</StarRating>
-        </div>
+          <FormField>
+            <Label>총평을 적어주세요</Label>
+            <TextArea placeholder="강의에 대해 사람들이 꼭 알았으면 하는 것들을 적어주세요" />
+          </FormField>
 
-        <TitleWithDescription
-          title="총평을 적어주세요"
-          description="강의에 대해 알리고 싶은 내용을 적어주세요"
-        >
-          <TextArea
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="총평을 적어주세요"
-            value={comment}
-          />
-        </TitleWithDescription>
-
-        <Button onClick={handleSubmit}>강의평가 제출</Button>
+          <Button type="submit">강의평가 제출</Button>
+        </Form>
       </Wrapper>
     </>
   );

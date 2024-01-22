@@ -1,5 +1,5 @@
 import { theme } from "@/style/theme";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface CheckboxProps {
@@ -51,7 +51,7 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
 
   return (
     <CheckboxContainer onClick={toggleCheckbox}>
-      <CheckboxInput type="checkbox" checked={isChecked} />
+      <CheckboxInput type="checkbox" checked={isChecked} readOnly />
       <CheckboxText>{text}</CheckboxText>
     </CheckboxContainer>
   );
