@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { theme } from "../style/theme";
-import Checked_Svg from "../assets/svgs/doneBold.svg";
+import { theme } from "@/style/theme";
+import Checked_Svg from "@/assets/svgs/doneBold.svg";
 
 interface IProps {
   text: string;
@@ -37,7 +37,7 @@ const CheckMark = styled.div`
 
 const CheckedSvg = styled(theme.universalComponent.SvgIcon)`
   position: relative;
-  top:-1px;
+  top: -1px;
 `;
 
 /** 임시 분과 아이콘 (text는 아이콘 안에 들어갈 텍스트 두 글자, color은 아이콘 색깔) */

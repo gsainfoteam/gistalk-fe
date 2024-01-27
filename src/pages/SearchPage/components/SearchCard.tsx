@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import TempIcon from "./TempIcon";
-import { major, minor, underG } from "./StdSet";
+import TempIcon from "@/pages/SearchPage/components/TempIcon";
+import { major, minor, underG } from "@/constants/StdSet";
 
 interface IProps {
   subjectCode: string;

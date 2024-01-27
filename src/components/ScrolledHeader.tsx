@@ -5,7 +5,6 @@ import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
 import { useNavigate } from "react-router-dom";
 
 interface IProps {
-  avgScore: number;
   title: string;
   professor: string;
 }
@@ -31,23 +30,6 @@ const Wrap = styled.div<{
 
 const NavigationArrowSvg = styled(theme.universalComponent.SvgIcon)`
   margin-left: 13px;
-`;
-
-const AvgScoreWrap = styled.div`
-  text-align: center;
-  height: min-content;
-  margin-right: 13px;
-`;
-
-const AvgScoreText = styled(theme.universalComponent.DivTextContainer)`
-  font-family: NSMedium;
-  position: relative;
-  top: 2px;
-`;
-const AvgScoreNumber = styled(theme.universalComponent.DivTextContainer)`
-  font-family: NSBold;
-  position: relative;
-  top: -1px;
 `;
 
 const WhiteShadowBox = styled.div<{ bgColor: string; left: boolean }>`
@@ -87,7 +69,8 @@ const Title = styled(theme.universalComponent.DivTextContainer)<{
   ${(props) => !props.animate && `animation : none;`}
 `;
 
-export default function HiddenNav({ avgScore, title, professor }: IProps) {
+/** 아래로 스크롤했을때 상단에 고정된 sticky한 헤더 */
+export default function ScrolledHeader({ title, professor }: IProps) {
   const [scroll, setScroll] = useState(0);
 
   const navigate = useNavigate();
@@ -125,16 +108,6 @@ export default function HiddenNav({ avgScore, title, professor }: IProps) {
       <Title fontSize={16} color={theme.colors.primaryText} animate={animate}>
         {title} - {professor}
       </Title>
-      <WhiteShadowBox left={false} bgColor={theme.colors.white}>
-        <AvgScoreWrap>
-          <AvgScoreText fontSize={12} color={theme.colors.secondaryText}>
-            평균
-          </AvgScoreText>
-          <AvgScoreNumber fontSize={14} color={theme.colors.primary}>
-            {avgScore}
-          </AvgScoreNumber>
-        </AvgScoreWrap>
-      </WhiteShadowBox>
     </Wrap>
   );
 }
