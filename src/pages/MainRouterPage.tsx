@@ -7,7 +7,7 @@ import MainPage from "./MainPage/MainPage";
 import ComparePage from "./ComparePage";
 
 const ContentContainer = styled.div`
-  padding: 10px 5% 20px 5%;
+  padding: 10px 2em 20px 2em;
 `;
 
 function MainRouterPage() {

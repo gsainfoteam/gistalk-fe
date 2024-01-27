@@ -9,7 +9,7 @@ const TitleWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 0 10% 0;
+  margin: 0 0 1rem 0;
 `;
 
 /** 과목 이름과 코드를 감싸는 div. 과목과 이름이 같은 형태라서 재사용함 */
@@ -58,17 +58,17 @@ const SemesterEvaluationWrap = styled.div`
 const MyEvaluationContainer = styled.div`
   margin: 0 auto 0 auto;
   background-color: ${theme.colors.cardBackGround};
-  padding: 4%;
+  padding: 1em;
   border-radius: 10px;
 `;
 
 const InfoList = styled.div`
   margin: 0 auto 0 auto;
-  padding: 4%;
+  padding: 0.5rem;
 `;
 
 const Info = styled.div`
-  padding: 4% 0;
+  padding: 1em 0;
 `;
 
 export default function ProfilePage() {

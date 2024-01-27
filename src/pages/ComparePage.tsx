@@ -1,6 +1,5 @@
 import { theme } from "@/style/theme";
 import Card from "@components/Card";
-import { StyledLink } from "@components/StyledLink";
 import WithTitleAndDescription from "@components/TitleWithDescription";
 import styled from "styled-components";
 
@@ -8,7 +7,7 @@ const Percentage = styled.div`
   border-radius: 10px;
   background: ${theme.colors.cardBackGround};
   padding: 20px;
-  margin-bottom: 5%;
+  margin-bottom: 1em;
 `;
 const CompareContainer = styled.div`
   display: flex;

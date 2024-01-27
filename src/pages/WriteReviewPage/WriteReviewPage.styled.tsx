@@ -19,7 +19,7 @@ export const Button = styled.button`
 `;
 
 export const Form = styled.form`
-  margin-top: 6%;
+  margin-top: 1rem;
   background-color: white;
   display: flex;
   flex: 1;

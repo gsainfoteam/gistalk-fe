@@ -13,7 +13,7 @@ const Description = styled.div`
 `;
 
 const Wrapper = styled.div`
-  margin-bottom: 5%;
+  margin-bottom: 1em;
   display: flex;
   flex-direction: column;
 `;
