@@ -27,8 +27,6 @@ export const SearchWrap = styled.div<{ borderColor: string }>`
   display: flex;
   flex-direction: column;
   height: max-content;
-  margin: 0 auto;
-
   border-radius: 5px;
   border: 2px solid ${(props) => props.borderColor};
 `;

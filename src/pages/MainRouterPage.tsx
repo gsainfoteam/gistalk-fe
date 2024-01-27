@@ -7,7 +7,7 @@ import MainPage from "./MainPage/MainPage";
 import ComparePage from "./ComparePage";
 
 const ContentContainer = styled.div`
-  padding: 10px 5% 20px 5%;
+  padding: 10px 1rem 20px 1rem;
 `;
 
 function MainRouterPage() {
@@ -18,7 +18,7 @@ function MainRouterPage() {
   };
 
   return (
-    <div>
+    <>
       <Header />
       <ContentContainer>
         {activeTab === 0 && <MainPage />}
@@ -26,7 +26,7 @@ function MainRouterPage() {
         {activeTab === 2 && <ProfilePage />}
       </ContentContainer>
       <NavigationBar activeTab={activeTab} onTabChange={handleTabChange} />
-    </div>
+    </>
   );
 }
 
