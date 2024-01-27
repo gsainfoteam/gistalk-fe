@@ -21,4 +21,8 @@ export default createGlobalStyle`
       font-family: "Aharoni";
       src: url(${Aharoni}) format('woff2');
     }
+    body {
+    font-family: "NSRegular", "Helvetica", "Arial", sans-serif;
+    line-height: 1.5;
+  }
 `;

@@ -7,7 +7,7 @@ import { StyledLink } from "./StyledLink";
 
 export const TopWrap = styled.div`
   margin: 10px auto 0 auto;
-  padding: 22px 2em;
+  padding: 22px 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;

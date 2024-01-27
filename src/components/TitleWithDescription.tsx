@@ -8,7 +8,7 @@ const Title = styled.div`
   margin-bottom: 8px;
 `;
 
-const Description = styled.div`
+const Description = styled.p`
   margin-bottom: 8px;
 `;
 
