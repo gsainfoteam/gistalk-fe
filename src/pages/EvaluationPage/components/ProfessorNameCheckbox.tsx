@@ -9,7 +9,7 @@ interface CheckboxProps {
   onCheckboxChange: (id: number) => void;
 }
 
-const CheckboxContainer = styled.div`
+const CheckboxContainer = styled.label`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -50,8 +50,12 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
   };
 
   return (
-    <CheckboxContainer onClick={toggleCheckbox}>
-      <CheckboxInput type="checkbox" checked={isChecked} readOnly />
+    <CheckboxContainer>
+      <CheckboxInput
+        type="checkbox"
+        checked={isChecked}
+        onChange={toggleCheckbox}
+      />
       <CheckboxText>{text}</CheckboxText>
     </CheckboxContainer>
   );

@@ -20,7 +20,7 @@ const Wrap = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 0 20px;
+  margin: 0 20px;
 `;
 
 /** 방사형 그래프인 Hexagon component를 감싸는 div */
@@ -51,19 +51,19 @@ const Upper = styled.div`
   top: -70px;
 `;
 
-/** '강의평 쓰러가기' 버튼 */
+/** '강의평 쓰러가기' 버튼, 가로로 꽉 차야 함 */
 const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
   bgColor: string;
 }>`
+  position: fixed;
+
   text-align: center;
-  width: 95vw;
   max-width: 480px;
   background-color: ${(props) => props.bgColor};
-  height: 50px;
   line-height: 50px;
-  position: fixed;
-  bottom: 2.5vw;
-  margin: 0 2.5vw;
+  bottom: 0;
+  height: 50px;
+  width: 100%;
 `;
 
 /** Search 리스트가 비었을 떄 나오는 고양이 일러스트, 문구 Wrap */
@@ -83,7 +83,7 @@ export default function ClassEvaluation() {
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
     // checkVaildEmail();
-  });
+  }, []);
 
   /** Radar Chart에 들어갈 임시 데이터 */
   const params = useParams() as { id: string };

@@ -5,6 +5,7 @@ const colors = {
   secondary: "#FF8282",
   grayStroke: "#B6B6B6",
   reverse: "#5D5FEF",
+  primaryHover: "#FF8282",
 
   inputBg: "#F3F3F3",
   inputBorder: "#E4E4E4",

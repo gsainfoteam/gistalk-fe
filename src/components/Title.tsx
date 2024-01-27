@@ -70,7 +70,7 @@ export default function Title({
   return (
     <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
       <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
-        {subjectTitle || "ERR"} <span> {subjectCode || "ERR"}</span>
+        {subjectTitle || "ERR"} <span> {extractedSubjectCode || "ERR"}</span>
         {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}
       </SubjectTitle>
       <div>
