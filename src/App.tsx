@@ -7,6 +7,7 @@ import { SearchPage } from "./pages/SearchPage";
 import MainRouterPage from "./pages/MainRouterPage";
 import styled from "styled-components";
 import { WriteReviewPage } from "./pages/WriteReviewPage";
+import LoginPage from "./pages/LoginPage";
 
 //web-app style, max-width
 const DefaultStyle = styled.div`
@@ -24,6 +25,7 @@ function App() {
         <Route path="/:id/evaluation" element={<ClassEvaluation />} />
         <Route path="/:id/write" element={<WriteReviewPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/*" element={<EmptyErrorPage />} />
       </Routes>
     </DefaultStyle>

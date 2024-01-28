@@ -51,55 +51,6 @@ const IDPBtn = styled.button<{
   }
 `;
 
-const SearchWrap = styled.div<{ borderColor: string }>`
-  width: 75vw;
-  display: flex;
-  flex-direction: column;
-  height: max-content;
-  margin: 20px auto 0 auto;
-
-  border-radius: 5px;
-  border: 2px solid ${(props) => props.borderColor};
-`;
-
-const SearchInputWrap = styled.form`
-  display: flex;
-  flex-direction: row;
-`;
-
-const SearchInput = styled.input<{
-  color: string;
-  bgColor: string;
-}>`
-  width: calc(75vw - 60px);
-  background-color: ${(props) => props.bgColor};
-  height: 40px;
-  padding-left: 15px;
-  font-family: NSRegular;
-  border: none;
-  text-align: left;
-  display: block;
-
-  //폰트 크기
-  font-size: 16px;
-  color: ${(props) => props.color};
-`;
-
-const SearchBtnWrap = styled.button<{ bgColor: string }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  width: 40px;
-  border: none;
-  background-color: ${(props) => props.bgColor};
-`;
-
-const SearchSvg = styled(theme.universalComponent.SvgIcon)`
-  display: block;
-  cursor: pointer;
-`;
-
 const NotPass = styled(theme.universalComponent.DivTextContainer)`
   text-align: center;
   width: 100vw;
@@ -135,14 +86,16 @@ const Version = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
 `;
 
-export default function Login() {
+export default function LoginPage() {
   const [pass, setPass] = useState<number>(0);
   const MailInputRef = useRef<HTMLInputElement>(null);
+
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
     const enteredText = MailInputRef.current!.value;
     setPass(isValidEmail(enteredText));
   };
+
   useLogin();
 
   return (
@@ -164,20 +117,6 @@ export default function Login() {
       <Version fontSize={12} color={theme.colors.secondary}>
         v0.1
       </Version>
-
-      {/* <SearchWrap borderColor={theme.colors.inputBorder}>
-        <SearchInputWrap onSubmit={submitHandler}>
-          <SearchInput
-            placeholder="이메일을 입력하세요"
-            color={theme.colors.primaryText}
-            bgColor={theme.colors.white}
-            ref={MailInputRef}
-          />
-          <SearchBtnWrap bgColor={theme.colors.white}>
-            <SearchSvg size={25} src={Search_Svg} />
-          </SearchBtnWrap>
-        </SearchInputWrap>
-      </SearchWrap> */}
 
       <form
         action={`https://gistory-idp-fe.pages.dev`}
