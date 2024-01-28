@@ -44,7 +44,7 @@ export const useLogin = () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("accessTokenExp");
         setIsLoggedIn(false);
-        navigate("/");
+        navigate("/login");
       }
     };
 
