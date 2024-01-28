@@ -7,7 +7,7 @@ const CardContainer = styled.div`
   border-radius: 10px;
   background: ${theme.colors.cardBackGround};
   padding: 20px;
-  margin-bottom: 5%;
+  margin-bottom: 1em;
   flex-shrink: 0;
   flex-grow: 1;
 `;

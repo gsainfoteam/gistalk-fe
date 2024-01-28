@@ -1,5 +1,5 @@
 import { theme } from "@/style/theme";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface CheckboxProps {
@@ -9,7 +9,7 @@ interface CheckboxProps {
   onCheckboxChange: (id: number) => void;
 }
 
-const CheckboxContainer = styled.div`
+const CheckboxContainer = styled.label`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -23,7 +23,7 @@ const CheckboxInput = styled.input`
   border: 2px solid
     ${(props) =>
       props.checked ? theme.colors.primary : theme.colors.grayStroke};
-  border-radius: 30%;
+  border-radius: 0.3rem;
   outline: none;
   margin-right: 3px;
   cursor: pointer;
@@ -50,8 +50,12 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
   };
 
   return (
-    <CheckboxContainer onClick={toggleCheckbox}>
-      <CheckboxInput type="checkbox" checked={isChecked} />
+    <CheckboxContainer>
+      <CheckboxInput
+        type="checkbox"
+        checked={isChecked}
+        onChange={toggleCheckbox}
+      />
       <CheckboxText>{text}</CheckboxText>
     </CheckboxContainer>
   );

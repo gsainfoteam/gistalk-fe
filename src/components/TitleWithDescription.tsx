@@ -8,12 +8,14 @@ const Title = styled.div`
   margin-bottom: 8px;
 `;
 
-const Description = styled.div`
+const Description = styled.p`
   margin-bottom: 8px;
 `;
 
 const Wrapper = styled.div`
-  margin-bottom: 5%;
+  margin-bottom: 1em;
+  display: flex;
+  flex-direction: column;
 `;
 
 interface TitleWithDescriptionProps {

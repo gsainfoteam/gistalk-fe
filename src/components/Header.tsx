@@ -2,13 +2,12 @@ import styled from "styled-components";
 import { theme } from "@/style/theme";
 import InfoteamLogo_Svg from "@assets/svgs/infoteamLogo.svg";
 
-import { IHeader } from "@/Interfaces/interfaces";
 import { useNavigate } from "react-router-dom";
 import { StyledLink } from "./StyledLink";
 
 export const TopWrap = styled.div`
   margin: 10px auto 0 auto;
-  padding: 22px 5%;
+  padding: 22px 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
