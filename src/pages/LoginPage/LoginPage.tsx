@@ -2,14 +2,11 @@ import styled from "styled-components";
 import { theme } from "@/style/theme";
 import InfoteamLogo_Svg from "@/assets/svgs/infoteamLogo.svg";
 
-import { useRef, useState } from "react";
-import { isValidEmail } from "@/hooks/usePassCheck";
 import { useLogin } from "@/hooks/useLogin";
 import { SCOPES } from "./LoginPage.const";
 import { StyledLink } from "@components/StyledLink";
 
 const Wrap = styled.div`
-  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -26,6 +23,7 @@ const LogoSvg = styled(theme.universalComponent.SvgIcon)``;
 const InfoteamText = styled(theme.universalComponent.DivTextContainer)`
   font-family: Aharoni;
 `;
+
 const GistalkText = styled(theme.universalComponent.DivTextContainer)<{
   bgColor: string;
 }>`
@@ -79,9 +77,6 @@ export default function LoginPage() {
 
       <form
         action={`https://idp.gistory.me/authorize?client_id=gistalk2023&scope=openid%20profile%20email%20student_id%20offline_access&response_type=code`}
-        style={{
-          width: "60%",
-        }}
       >
         {SCOPES.map((scope) => {
           return (
@@ -101,13 +96,8 @@ export default function LoginPage() {
           GSA 통합 계정으로 로그인
         </IDPBtn>
       </form>
-      <StyledLink to="/evaluation">
-        <WithoutLoginButton
-          bgColor={theme.colors.grayStroke}
-          color={theme.colors.white}
-        >
-          로그인 없이 이용하기
-        </WithoutLoginButton>
+      <StyledLink to="/">
+        <WithoutLoginButton>로그인 없이 이용하기</WithoutLoginButton>
       </StyledLink>
     </Wrap>
   );
