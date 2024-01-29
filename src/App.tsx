@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
+import styled from "styled-components";
 
 import ClassEvaluation from "./pages/EvaluationPage/ClassEvaluation";
 import ProfilePage from "./pages/ProfilePage";
 import EmptyErrorPage from "./pages/EmptyErrorPage";
-import { SearchPage } from "./pages/SearchPage";
 import MainRouterPage from "./pages/MainRouterPage";
-import styled from "styled-components";
 import { WriteReviewPage } from "./pages/WriteReviewPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
 //web-app style, max-width
 const DefaultStyle = styled.div`
@@ -20,7 +20,7 @@ function App() {
     <DefaultStyle>
       <Routes>
         <Route path="/" element={<MainRouterPage />} />
-        <Route path="/search" element={<SearchPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/:id/evaluation" element={<ClassEvaluation />} />
         <Route path="/:id/write" element={<WriteReviewPage />} />
         <Route path="/profile" element={<ProfilePage />} />
