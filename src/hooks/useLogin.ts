@@ -13,20 +13,18 @@ export const useLogin = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const authCode = searchParams.get("auth_code");
+      const authCode = searchParams.get("code");
 
       if (authCode) {
-        const { jwt_token } = await loginWithIdp(authCode);
+        const { access_token: accessToken } = await loginWithIdp(authCode);
 
-        searchParams.delete("auth_code");
+        searchParams.delete("code");
         setSearchParams(searchParams);
-        const userInfo = await getUserInfo(jwt_token);
+        const userInfo = await getUserInfo(accessToken);
         //여기서부터 안됨
         console.log(userInfo);
 
         setUserInfo(userInfo);
-
-        navigate("/search");
       } //TODO authCode는 일회용이므로 새로고침/뒤로가기 대응 필요
 
       //check if token is expired
