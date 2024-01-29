@@ -1,16 +1,17 @@
 import { useState, KeyboardEvent } from "react";
-import { theme } from "@/style/theme";
+import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
+import { useAtom } from "jotai";
 
+import { departmentOptionAtom, sortOptionAtom } from "@/store";
+import { theme } from "@/style/theme";
 import SearchCard from "@/pages/SearchPage/components/SearchCard";
 import Filter_Svg from "@assets/svgs/tune.svg";
 import Order_Svg from "@assets/svgs/order.svg";
-
 import CatBlankList_Svg from "@assets/svgs/catBlankList.svg";
 import { ISearchCard } from "@/Interfaces/interfaces";
-import { Link } from "react-router-dom";
-import { useAtom } from "jotai";
-import { departmentOptionAtom, sortOptionAtom } from "@/store";
 import SortSelectModal from "@/pages/SearchPage/components/SortSelectModal";
+import Header from "@components/Header";
 import {
   BlankSvg,
   BlankText,
@@ -23,7 +24,7 @@ import {
 import { sortList, tempClassList } from "./SearchPage.const";
 import { SearchBar } from "./components/SearchBar";
 import DepartmentSelectModal from "./components/DepartmentSelectModal";
-import Header from "@components/Header";
+import { getLectureList } from "@/apis/lectures";
 
 export function SearchPage() {
   const [sortOpen, setSortOpen] = useState(false);
@@ -34,6 +35,11 @@ export function SearchPage() {
 
   const [searchText, setSearchText] = useState("");
   const [searchTextEnter, setSearchTextEnter] = useState("");
+
+  const { isLoading, data, isError, error } = useQuery(
+    ["getEvaluationList"],
+    getLectureList
+  );
 
   /**검색바에 입력된 글자가 Enter를 눌러야 SearchList에 적용될 수 있도록 하는 enterSearchText*/
   const enterSearchText = (e: KeyboardEvent<HTMLInputElement>): void => {
