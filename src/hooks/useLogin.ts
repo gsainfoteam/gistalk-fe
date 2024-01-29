@@ -1,9 +1,13 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import { getUserInfo, loginWithIdp } from "@/apis/authAPI";
+import { getToken, getUserInfo } from "@/apis/authAPI";
 import { useAtom } from "jotai";
 import { isLoggedInAtom, userInfoAtom } from "@/store";
+import {
+  ACCESS_TOKEN,
+  ACCESS_TOKEN_EXPIRED_TIME,
+} from "@/constants/localStorageKeys";
 
 export const useLogin = () => {
   const [, setIsLoggedIn] = useAtom(isLoggedInAtom);
@@ -15,32 +19,35 @@ export const useLogin = () => {
     const fetchData = async () => {
       const authCode = searchParams.get("code");
 
+      console.log("get authcode", authCode);
+
       if (authCode) {
-        const { access_token: accessToken } = await loginWithIdp(authCode);
+        const { access_token: accessToken } = await getToken(authCode);
 
         searchParams.delete("code");
         setSearchParams(searchParams);
-        const userInfo = await getUserInfo(accessToken);
-        //여기서부터 안됨
-        console.log(userInfo);
-
-        setUserInfo(userInfo);
-      } //TODO authCode는 일회용이므로 새로고침/뒤로가기 대응 필요
+        //TODO: 유저 정보 로드
+        // const userInfo = await getUserInfo(accessToken);
+        // console.log(userInfo);
+        // setUserInfo(userInfo);
+      }
 
       //check if token is expired
       if (
-        localStorage.getItem("accessTokenExp") &&
-        localStorage.getItem("accessToken") &&
-        Date.now() < parseInt(localStorage.getItem("accessTokenExp") || "0")
+        localStorage.getItem(ACCESS_TOKEN_EXPIRED_TIME) &&
+        localStorage.getItem(ACCESS_TOKEN) &&
+        Date.now() <
+          parseInt(localStorage.getItem(ACCESS_TOKEN_EXPIRED_TIME) || "0")
       ) {
         axios.defaults.headers.common[
           "Authorization"
-        ] = `Bearer ${localStorage.getItem("accessToken")}`;
+        ] = `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`;
 
         setIsLoggedIn(true);
+        navigate("/");
       } else {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("accessTokenExp");
+        localStorage.removeItem(ACCESS_TOKEN);
+        localStorage.removeItem(ACCESS_TOKEN_EXPIRED_TIME);
         setIsLoggedIn(false);
         navigate("/login");
       }

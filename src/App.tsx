@@ -1,14 +1,11 @@
 import { Route, Routes } from "react-router-dom";
+import styled from "styled-components";
 
 import ClassEvaluation from "./pages/EvaluationPage/ClassEvaluation";
 import ProfilePage from "./pages/ProfilePage";
 import EmptyErrorPage from "./pages/EmptyErrorPage";
-
 import MainRouterPage from "./pages/MainRouterPage";
-import styled from "styled-components";
 import { WriteReviewPage } from "./pages/WriteReviewPage";
-import { useAtom } from "jotai";
-import { isLoggedInAtom } from "./store";
 import LoginPage from "./pages/LoginPage/LoginPage";
 
 //web-app style, max-width
@@ -19,8 +16,6 @@ const DefaultStyle = styled.div`
 `;
 
 function App() {
-  const [isLoggedIn] = useAtom(isLoggedInAtom);
-
   return (
     <DefaultStyle>
       <Routes>

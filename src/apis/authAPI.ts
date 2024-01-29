@@ -1,4 +1,8 @@
 import { UserInfo } from "@/Interfaces/interfaces";
+import {
+  ACCESS_TOKEN,
+  ACCESS_TOKEN_EXPIRED_TIME,
+} from "@/constants/localStorageKeys";
 import axios from "axios";
 
 interface LoginResponse {
@@ -9,36 +13,27 @@ interface LoginResponse {
   scope: string;
 }
 
-const CLIENT_ID = "gistalk2024";
-const CLIENT_SECRET = "Jok9Mv3N5khLbcRYSnWbC9MXHnIo7QG0";
-const REDIRECT_URI = "http://127.0.0.1:5173/login";
+const DEVELOPMENT = "dev";
+const STAGING = "stg";
 
-export const loginWithIdp = async (
-  authCode: string
-): Promise<LoginResponse> => {
+export const getToken = async (authCode: string): Promise<LoginResponse> => {
   const params = {
     code: authCode,
-    type: import.meta.env.DEV ? "dev" : "stg",
-  };
-
-  const headers = {
-    "Content-Type": "application/x-www-form-urlencoded",
+    type: import.meta.env.DEV ? DEVELOPMENT : STAGING,
   };
 
   const { data } = await axios.get(
     `https://api.stg.gistalk.gistory.me/user/join`,
     {
-      headers: headers,
       params: params,
     }
   );
+  const { access_token: accessToken, expires_in: expiredTime } = data;
 
-  if (data.access_token) {
-    localStorage.setItem("accessToken", data.access_token);
-    localStorage.setItem("accessTokenExpiredTime", data.expires_in);
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${data.access_token}`;
+  if (accessToken) {
+    localStorage.setItem(ACCESS_TOKEN, accessToken);
+    localStorage.setItem(ACCESS_TOKEN_EXPIRED_TIME, Date.now() + expiredTime);
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
   }
 
   return data;
