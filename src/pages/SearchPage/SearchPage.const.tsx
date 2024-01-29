@@ -2,6 +2,18 @@ import { ISortOption } from "@/Interfaces/interfaces";
 import useSubjectCode from "@/hooks/useSubjectCode";
 import { tempdb } from "@/tempdb/tempdb";
 
+export interface lectureInfo {
+  id: number;
+  lecture_code: string;
+  lecture_name: string;
+  prof: professor[];
+}
+
+interface professor {
+  id: number;
+  prof_name: string;
+}
+
 export const tempClassList = tempdb.map((i) => {
   /** 평균 점수 계산 */
   let avgScore: number = 0;

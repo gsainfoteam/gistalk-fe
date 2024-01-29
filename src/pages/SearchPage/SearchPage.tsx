@@ -1,6 +1,5 @@
 import { useState, KeyboardEvent } from "react";
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
 import { useAtom } from "jotai";
 
 import { departmentOptionAtom, sortOptionAtom } from "@/store";
@@ -21,10 +20,11 @@ import {
   OptionBtnWrap,
   OrderSvg,
 } from "./SearchPage.styled";
-import { sortList, tempClassList } from "./SearchPage.const";
+import { lectureInfo, sortList } from "./SearchPage.const";
 import { SearchBar } from "./components/SearchBar";
 import DepartmentSelectModal from "./components/DepartmentSelectModal";
 import { getLectureList } from "@/apis/lectures";
+import { StyledLink } from "@components/StyledLink";
 
 export function SearchPage() {
   const [sortOpen, setSortOpen] = useState(false);
@@ -41,6 +41,8 @@ export function SearchPage() {
     getLectureList
   );
 
+  const { data: lectureList } = { ...data };
+
   /**검색바에 입력된 글자가 Enter를 눌러야 SearchList에 적용될 수 있도록 하는 enterSearchText*/
   const enterSearchText = (e: KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === "Enter") {
@@ -48,50 +50,55 @@ export function SearchPage() {
     }
   };
 
-  /** 임시 아이템 리스트 */
-  const TempSearchList: ISearchCard[] =
-    tempClassList /** 내림차순 정렬: hexData의 subject가 정렬 토글 선택값에 따른 sortStd의 score에 값에 따라 정렬됨 */
-      .sort((a, b) => {
-        if (sortStd === "평균점수") {
-          return (
-            b.subjectScoreNum - a.subjectScoreNum // 평균점수순 정렬을 위해 따로 만듦
-          );
-        } else {
-          return (
-            b.stdData.filter((hex) => hex.subject === sortStd)[0].score -
-            a.stdData.filter((hex) => hex.subject === sortStd)[0].score
-          );
-        }
-      });
-
   /**Search 페이지의 강의 리스트 */
   function DisplayItemList() {
-    return TempSearchList.map((item) => {
+    if (lectureList == null || lectureList == undefined || isLoading) {
+      return null;
+    }
+
+    const filteredLectureList = lectureList.filter((item: lectureInfo) => {
+      //professor list에 있는 professor name을 모두 꺼내서 merge
+      const professorNames = item.prof.map((prof) => prof.prof_name).join(", ");
+
+      //검색어가 존재하는 경우 해당되는 강의만 display함
+      const isNoDepartmentSelected = departmentOption[2].length === 0;
+      const isDepartmentSelected = departmentOption[2].some((code) =>
+        item.lecture_code.includes(code)
+      );
+      const isProfessorNameMatched = professorNames.includes(searchTextEnter);
+      const isLectureNameMatched = item.lecture_name.includes(searchTextEnter);
+
       if (
-        (departmentOption[2].length === 0 ||
-          departmentOption[2].some((code) =>
-            item.subjectCode.includes(code)
-          )) &&
-        (item.subjectName.includes(searchTextEnter) ||
-          item.professorName.includes(searchTextEnter))
+        (isNoDepartmentSelected || isDepartmentSelected) &&
+        (isProfessorNameMatched || isLectureNameMatched)
       ) {
-        return (
-          <Link
-            key={item.id}
-            to={`/${item.id}/evaluation`}
-            style={{ textDecoration: "none" }}
-          >
-            <SearchCard
-              subjectCode={item.subjectCode}
-              professorName={item.professorName}
-              subjectName={item.subjectName}
-              subjectScore={item.subjectScore}
-            />
-          </Link>
-        );
+        return true;
       } else {
-        return null;
+        return false;
       }
+    });
+
+    if (filteredLectureList.length === 0) {
+      return null;
+    }
+
+    return filteredLectureList.map((item: lectureInfo) => {
+      const lectureCodeList = item.lecture_code //lecture_code가 string list로 되어있어서 배열로 변경
+        .replace(/[\[\]']+/g, "")
+        .split(", ");
+      const professorNames = item.prof.map((prof) => prof.prof_name).join(", ");
+
+      return lectureCodeList.map((code) => {
+        return (
+          <StyledLink key={item.id} to={`/${item.id}/evaluation`}>
+            <SearchCard
+              subjectCode={code}
+              professorName={professorNames}
+              subjectName={item.lecture_name}
+            />
+          </StyledLink>
+        );
+      });
     });
   }
 
@@ -118,15 +125,8 @@ export function SearchPage() {
       </OptionBtnWrap>
       {/**case 1: 아무것도 선택되지 않은 경우, 전체 출력/ case 2: 선택된 것이 있는 경우 includes로 필터링하여 출력*/}
       <ItemList>
-        {DisplayItemList()}
-        {DisplayItemList().filter(
-          // DisplayItemList 함수는 존재하는 리스트에서 필터링될 경우 null을 출력하는데,
-          // 아무것도 검색되지 않는 경우 null로만 이루어진 배열이 된다.
-          // 이를 위해 filter로 null들을 다 걸렀을 때 DisplayItemList의 length가 0이 되면 검색 결과 없다고 출력.
-          (item) => {
-            if (item !== null) return item;
-          }
-        ).length === 0 ? (
+        {!isLoading && DisplayItemList()}
+        {DisplayItemList() === null ? (
           <BlankWrap>
             <BlankSvg size={160} src={CatBlankList_Svg} />
             <BlankText fontSize={16} color={theme.colors.secondaryText}>

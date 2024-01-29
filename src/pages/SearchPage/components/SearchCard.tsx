@@ -7,7 +7,6 @@ interface IProps {
   subjectCode: string;
   professorName: string;
   subjectName: string;
-  subjectScore: string;
 }
 
 const SearchCardWrap = styled.div<{ hoverColor: string }>`
@@ -81,7 +80,6 @@ export default function SearchCard({
   subjectCode,
   professorName,
   subjectName,
-  subjectScore,
 }: IProps) {
   const Division = subjectCode.slice(0, 2);
   /**major, minor 강의 코드와 대조해서 일치하면 전공/부전공/공통 과목 색상 부여 */
@@ -108,8 +106,7 @@ export default function SearchCard({
       <AverageScoreWrap color={theme.colors.primaryText}>
         <p>평균점수</p>
         <div>
-          {subjectScore}
-          <span>/5</span>
+          5<span>/5</span>
         </div>
       </AverageScoreWrap>
     </SearchCardWrap>
