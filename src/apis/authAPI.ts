@@ -18,15 +18,15 @@ export const loginWithIdp = async (
 ): Promise<LoginResponse> => {
   const params = {
     code: authCode,
+    type: import.meta.env.DEV ? "dev" : "stg",
   };
 
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded",
   };
 
-  const { data } = await axios.post(
+  const { data } = await axios.get(
     `https://api.stg.gistalk.gistory.me/user/join`,
-    null,
     {
       headers: headers,
       params: params,
