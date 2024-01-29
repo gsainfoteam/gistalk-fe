@@ -3,6 +3,7 @@ import styled from "styled-components";
 const colors = {
   primary: "#FF6565",
   secondary: "#FF8282",
+  primaryLight: "#FFECEC",
   grayStroke: "#B6B6B6",
   reverse: "#5D5FEF",
   primaryHover: "#FF8282",
