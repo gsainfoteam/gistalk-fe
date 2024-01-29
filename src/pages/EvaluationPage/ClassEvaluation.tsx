@@ -3,6 +3,7 @@ import { theme } from "@/style/theme";
 import styled from "styled-components";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
 
 import { tempdb } from "@/tempdb/tempdb";
 
@@ -15,6 +16,7 @@ import ScrolledHeader from "@components/ScrolledHeader";
 import NavigationHeader from "../../components/NavigationHeader";
 import EvaluationSummary from "./components/EvaluationSummary";
 import { StyledLink } from "@components/StyledLink";
+import { getLectureEvaluation } from "@/apis/lectures";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -90,6 +92,12 @@ export default function ClassEvaluation() {
   /**강의별 id */
   const id = Number(params.id);
   const tempData = tempdb.find((value) => value.id === id) || tempdb[0]; //undefined인 경우 default 값: tempdb[0]
+
+  const { isLoading, data, isError, error } = useQuery(["getEvaluation"], () =>
+    getLectureEvaluation(id)
+  );
+
+  console.log(data);
 
   return (
     <>
