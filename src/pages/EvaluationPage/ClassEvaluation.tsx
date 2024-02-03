@@ -10,13 +10,26 @@ import { tempdb } from "@/tempdb/tempdb";
 import Reply from "./components/Reply";
 
 import CatBlankList_Svg from "@/assets/svgs/catBlankList.svg";
-import useSubjectCode from "@/hooks/useSubjectCode";
 import Title from "../../components/Title";
 import ScrolledHeader from "@components/ScrolledHeader";
 import NavigationHeader from "../../components/NavigationHeader";
 import EvaluationSummary from "./components/EvaluationSummary";
 import { StyledLink } from "@components/StyledLink";
-import { getLectureEvaluation } from "@/apis/lectures";
+import { getLectureEachEvaluation } from "@/apis/lectures";
+
+interface evaluationData {
+  difficulty: number;
+  evaluation: number;
+  helpful: number;
+  interest: number;
+  lots: number;
+  review: string;
+  satisfy: number;
+  semester: number;
+  strength: number;
+  writer_id: number;
+  year: string;
+}
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -94,10 +107,14 @@ export default function ClassEvaluation() {
   const tempData = tempdb.find((value) => value.id === id) || tempdb[0]; //undefined인 경우 default 값: tempdb[0]
 
   const { isLoading, data, isError, error } = useQuery(["getEvaluation"], () =>
-    getLectureEvaluation(id)
+    getLectureEachEvaluation(id)
   );
 
-  console.log(data);
+  const { data: evaluationData } = { ...data };
+
+  const reviewList = (evaluationData ?? []).map(
+    (i: evaluationData) => i.review
+  );
 
   return (
     <>

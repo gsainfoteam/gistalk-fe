@@ -1,9 +1,14 @@
-import axiosInstance from "./axiosInstance";
+import axios from "axios";
 
+//auth 정보를 사용하지 않으므로 axiosInstance를 사용하지 않음
 export const getLectureList = () => {
-  return axiosInstance.get(`/lectures/all`);
+  return axios.get(`${import.meta.env.VITE_API_URL}/lectures/all`);
 };
 
-export const getLectureEvaluation = (lectureId: number) => {
-  return axiosInstance.get(`/lectures/get/${lectureId}`);
+export const getLectureEachEvaluation = (lectureId: number) => {
+  return axios.get(`${import.meta.env.VITE_API_URL}/lectures/get/${lectureId}`);
+};
+
+export const getLectureTotalEvaluation = (lectureId: number) => {
+  return axios.get(`${import.meta.env.VITE_API_URL}/scoring/get/${lectureId}`);
 };

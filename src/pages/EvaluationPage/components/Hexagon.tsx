@@ -21,6 +21,15 @@ const Wrap = styled.div`
   overflow-y: hidden;
 `;
 
+const labels = [
+  { key: "interest", label: "재미/흥미" },
+  { key: "lots", label: "과제량" },
+  { key: "difficulty", label: "난이도" },
+  { key: "helpful", label: "유익함" },
+  { key: "strength", label: "강의력" },
+  { key: "satisfy", label: "만족도" },
+];
+
 export default function Hexagon({ HexData }: IProps) {
   const formattedData = HexData.map((i) => {
     return {
