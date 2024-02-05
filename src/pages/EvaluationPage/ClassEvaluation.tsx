@@ -15,7 +15,10 @@ import ScrolledHeader from "@components/ScrolledHeader";
 import NavigationHeader from "../../components/NavigationHeader";
 import EvaluationSummary from "./components/EvaluationSummary";
 import { StyledLink } from "@components/StyledLink";
-import { getLectureEachEvaluation } from "@/apis/lectures";
+import {
+  getLectureEachEvaluation,
+  getLectureTotalEvaluation,
+} from "@/apis/lectures";
 
 interface evaluationData {
   difficulty: number;
@@ -106,13 +109,17 @@ export default function ClassEvaluation() {
   const id = Number(params.id);
   const tempData = tempdb.find((value) => value.id === id) || tempdb[0]; //undefined인 경우 default 값: tempdb[0]
 
-  const { isLoading, data, isError, error } = useQuery(["getEvaluation"], () =>
-    getLectureEachEvaluation(id)
+  const { isLoading: evaluationLoading, data: evaluationData } = useQuery(
+    [`getEvaluation/${id}`],
+    () => getLectureEachEvaluation(id)
   );
 
-  const { data: evaluationData } = { ...data };
+  const { isLoading, data: totalEvaluationScore } = useQuery(
+    [`getEvaluationScore/${id}`],
+    () => getLectureTotalEvaluation(id)
+  );
 
-  const reviewList = (evaluationData ?? []).map(
+  const reviewList = (evaluationData?.data ?? []).map(
     (i: evaluationData) => i.review
   );
 
@@ -127,11 +134,13 @@ export default function ClassEvaluation() {
         />
 
         <GraphWrap>
-          <Hexagon HexData={tempData.hexData}></Hexagon>
+          <Hexagon HexData={totalEvaluationScore?.data ?? null} />
         </GraphWrap>
 
         <Upper>
-          <EvaluationSummary evaluationData={tempData.hexData} />
+          <EvaluationSummary
+            evaluationData={totalEvaluationScore?.data ?? null}
+          />
           <OneLineReviewText
             fontSize={18}
             color={theme.colors.primaryText}

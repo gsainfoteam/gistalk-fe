@@ -9,8 +9,21 @@ import styled from "styled-components";
 import { theme } from "@/style/theme";
 import { IHexData } from "@/Interfaces/interfaces";
 
-interface IProps {
-  HexData: IHexData[];
+interface HexagonData {
+  id: number;
+  lecture_id: number;
+  people: number;
+  diff_aver: number;
+  stren_aver: number;
+  help_aver: number;
+  inter_aver: number;
+  lots_aver: number;
+  sati_aver: number;
+  [key: string]: number; // Add index signature
+}
+
+interface HexagonProps {
+  HexData: HexagonData;
 }
 
 const Wrap = styled.div`
@@ -30,14 +43,35 @@ const labels = [
   { key: "satisfy", label: "만족도" },
 ];
 
-export default function Hexagon({ HexData }: IProps) {
-  const formattedData = HexData.map((i) => {
-    return {
-      subject: i.subject + " (" + i.score.toString() + ")",
-      A: i.score,
-      fullMark: 5.0,
-    };
-  });
+const HexLabels = [
+  { key: "diff_aver", subject: "난이도" },
+  { key: "stren_aver", subject: "강의력" },
+  { key: "help_aver", subject: "유익함" },
+  { key: "inter_aver", subject: "흥미" },
+  { key: "lots_aver", subject: "과제량" },
+  { key: "sati_aver", subject: "만족도" },
+];
+export default function Hexagon({ HexData }: HexagonProps) {
+  const emptyData = [
+    {
+      score: 0,
+      subject: "평가 데이터가 없습니다.",
+    },
+  ];
+
+  const formattedData =
+    HexData == null
+      ? emptyData
+      : HexLabels.map((i) => {
+          const score = HexData[i.key];
+          const subject = i.subject;
+
+          return {
+            subject: `${subject} (${score})`,
+            A: score,
+            fullMark: 5.0,
+          };
+        });
 
   return (
     <Wrap>
