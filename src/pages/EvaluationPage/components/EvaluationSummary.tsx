@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
 import { EvaluationToText } from "@/constants/EvaluationToText";
+import {
+  EVALUATION_TEXT,
+  HexagonData,
+  SUBJECT_SHOW_ORDER,
+} from "../EvaluationPage.const";
 
 const ConcreteInfoGrid = styled.div`
   margin: 10px auto 0 auto;
@@ -34,48 +39,12 @@ const ConcreteInfo = styled(theme.universalComponent.DivTextContainer)<{
   }
 `;
 
-type SubjectScore = {
-  subject: string;
-  score: number;
-};
-
-interface HexagonData {
-  id: number;
-  lecture_id: number;
-  people: number;
-  diff_aver: number;
-  stren_aver: number;
-  help_aver: number;
-  inter_aver: number;
-  lots_aver: number;
-  sati_aver: number;
-  [key: string]: number; // Add index signature
-}
-
 interface SummaryProps {
   evaluationData: HexagonData;
 }
 
-const EVALUATION_TEXT = [
-  "수업 난이도",
-  "과제량",
-  "유익함",
-  "재미/흥미",
-  "성적 만족도",
-  "강의력",
-];
-
 function sortScoresBySubject(scores: HexagonData): number[] {
-  const subjectsOrder = [
-    "diff_aver",
-    "lots_aver",
-    "help_aver",
-    "inter_aver",
-    "sati_aver",
-    "stren_aver",
-  ];
-
-  const sortedScores = subjectsOrder.map((subject) => {
+  const sortedScores = SUBJECT_SHOW_ORDER.map((subject) => {
     const subjectScore = scores[subject];
     return subjectScore;
   });

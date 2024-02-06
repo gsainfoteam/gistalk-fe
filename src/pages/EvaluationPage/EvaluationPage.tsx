@@ -19,20 +19,7 @@ import {
   getLectureEachEvaluation,
   getLectureTotalEvaluation,
 } from "@/apis/lectures";
-
-interface evaluationData {
-  difficulty: number;
-  evaluation: number;
-  helpful: number;
-  interest: number;
-  lots: number;
-  review: string;
-  satisfy: number;
-  semester: number;
-  strength: number;
-  writer_id: number;
-  year: string;
-}
+import { evaluationData } from "./EvaluationPage.const";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -97,7 +84,7 @@ const BlankText = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
 `;
 
-export default function ClassEvaluation() {
+export function EvaluationPage() {
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
     // checkVaildEmail();

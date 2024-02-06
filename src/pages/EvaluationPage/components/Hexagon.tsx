@@ -7,20 +7,8 @@ import {
 } from "recharts";
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import { IHexData } from "@/Interfaces/interfaces";
 
-interface HexagonData {
-  id: number;
-  lecture_id: number;
-  people: number;
-  diff_aver: number;
-  stren_aver: number;
-  help_aver: number;
-  inter_aver: number;
-  lots_aver: number;
-  sati_aver: number;
-  [key: string]: number; // Add index signature
-}
+import { HexLabels, HexagonData } from "../EvaluationPage.const";
 
 interface HexagonProps {
   HexData: HexagonData;
@@ -34,23 +22,6 @@ const Wrap = styled.div`
   overflow-y: hidden;
 `;
 
-const labels = [
-  { key: "interest", label: "재미/흥미" },
-  { key: "lots", label: "과제량" },
-  { key: "difficulty", label: "난이도" },
-  { key: "helpful", label: "유익함" },
-  { key: "strength", label: "강의력" },
-  { key: "satisfy", label: "만족도" },
-];
-
-const HexLabels = [
-  { key: "diff_aver", subject: "난이도" },
-  { key: "stren_aver", subject: "강의력" },
-  { key: "help_aver", subject: "유익함" },
-  { key: "inter_aver", subject: "흥미" },
-  { key: "lots_aver", subject: "과제량" },
-  { key: "sati_aver", subject: "만족도" },
-];
 export default function Hexagon({ HexData }: HexagonProps) {
   const emptyData = [
     {
