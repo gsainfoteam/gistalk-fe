@@ -3,7 +3,6 @@ import { theme } from "@/style/theme";
 import styled from "styled-components";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useQuery } from "react-query";
 
 import { tempdb } from "@/tempdb/tempdb";
 
@@ -20,6 +19,7 @@ import {
   getLectureTotalEvaluation,
 } from "@/apis/lectures";
 import { evaluationData } from "./EvaluationPage.const";
+import { useQuery } from "@tanstack/react-query";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -96,15 +96,15 @@ export function EvaluationPage() {
   const id = Number(params.id);
   const tempData = tempdb.find((value) => value.id === id) || tempdb[0]; //undefined인 경우 default 값: tempdb[0]
 
-  const { isLoading: evaluationLoading, data: evaluationData } = useQuery(
-    [`getEvaluation/${id}`],
-    () => getLectureEachEvaluation(id)
-  );
+  const { isLoading: evaluationLoading, data: evaluationData } = useQuery({
+    queryKey: [`getEvaluation/${id}`],
+    queryFn: () => getLectureEachEvaluation(id),
+  });
 
-  const { isLoading, data: totalEvaluationScore } = useQuery(
-    [`getEvaluationScore/${id}`],
-    () => getLectureTotalEvaluation(id)
-  );
+  const { isLoading, data: totalEvaluationScore } = useQuery({
+    queryKey: [`getEvaluationScore/${id}`],
+    queryFn: () => getLectureTotalEvaluation(id),
+  });
 
   const reviewList = (evaluationData?.data ?? []).map(
     (i: evaluationData) => i.review

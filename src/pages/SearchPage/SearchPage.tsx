@@ -1,5 +1,5 @@
 import { useState, KeyboardEvent } from "react";
-import { useQuery } from "react-query";
+
 import { useAtom } from "jotai";
 
 import { departmentOptionAtom, sortOptionAtom } from "@/store";
@@ -25,6 +25,7 @@ import { SearchBar } from "./components/SearchBar";
 import DepartmentSelectModal from "./components/DepartmentSelectModal";
 import { getLectureList } from "@/apis/lectures";
 import { StyledLink } from "@components/StyledLink";
+import { useQuery } from "@tanstack/react-query";
 
 export function SearchPage() {
   const [sortOpen, setSortOpen] = useState(false);
@@ -36,10 +37,10 @@ export function SearchPage() {
   const [searchText, setSearchText] = useState("");
   const [searchTextEnter, setSearchTextEnter] = useState("");
 
-  const { isLoading, data, isError, error } = useQuery(
-    ["getEvaluationList"],
-    getLectureList
-  );
+  const { isLoading, data, isError, error } = useQuery({
+    queryKey: ["getEvaluationList"],
+    queryFn: getLectureList,
+  });
 
   const { data: lectureList } = { ...data };
 
