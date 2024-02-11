@@ -16,11 +16,15 @@ import EvaluationSummary from "./components/EvaluationSummary";
 import { StyledLink } from "@components/StyledLink";
 import {
   getLectureEachEvaluation,
+  getLectureList,
   getLectureTotalEvaluation,
 } from "@/apis/lectures";
 import { evaluationData } from "./EvaluationPage.const";
 import { useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
+import { lectureInfoWithProf } from "@/Interfaces/interfaces";
+import { convertLectureCodeToList } from "@/utils";
+import { useGetLectureInfo } from "@/hooks/useGetLectureInfo";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -111,6 +115,8 @@ export function EvaluationPage() {
     retry: 0,
   });
 
+  const { isLectureInfoLoading, lectureInfo, isError } = useGetLectureInfo(id);
+
   const reviewList = (evaluationData?.data ?? []).map(
     (i: evaluationData) => i.review
   );
@@ -119,11 +125,13 @@ export function EvaluationPage() {
     <>
       <NavigationHeader prevUrl={"/search"} text={"강의평"} />
       <Wrap>
-        <Title
-          subjectTitle={tempData.subjectName}
-          professorName={tempData.professorName}
-          subjectCode={tempData.subjectCode}
-        />
+        {!isLectureInfoLoading && (
+          <Title
+            subjectTitle={lectureInfo.lecture_name}
+            professorName={lectureInfo.prof}
+            subjectCode={convertLectureCodeToList(lectureInfo.lecture_code)}
+          />
+        )}
 
         <GraphWrap>
           <Hexagon HexData={totalEvaluationScore?.data ?? null} />
@@ -144,7 +152,7 @@ export function EvaluationPage() {
           {
             //여기서 i는 tempdb[0]이 가리키는 강의평가에 해당하는 각 한줄평을 가리킴
             tempData.oneLineReview.map((i) => (
-              <Reply key={i.id} replyData={i} isMine={false}></Reply>
+              <Reply key={i.id} replyData={i} isMine={false} />
             ))
           }
 

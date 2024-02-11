@@ -3,10 +3,11 @@ import { theme } from "@/style/theme";
 import ProfessorNameCheckbox from "../pages/EvaluationPage/components/ProfessorNameCheckbox";
 import { useState } from "react";
 import useSubjectCode from "@/hooks/useSubjectCode";
+import { professorInfo } from "@/Interfaces/interfaces";
 
 interface IProps {
   subjectTitle: string;
-  professorName: string;
+  professorName: professorInfo[];
   subjectCode: string[];
 }
 
@@ -65,7 +66,7 @@ export default function Title({
     setSelectedId(id === selectedId ? null : id);
   };
 
-  const PROF_NAMES = ["김길동", "박길동", professorName];
+  const PROF_NAMES = professorName.map((prof) => prof.prof_name);
 
   return (
     <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>

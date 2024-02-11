@@ -63,9 +63,6 @@ export interface IReply {
    * 세부평가 글이면, 첫번째에는 시험 문제 유형, 두번째에는 과제 유형, 세번째에는 학점 잘 받는 팁 문단이 들어감*/
   content: string[];
   /** 좋아요/싫어요 중에 사용자가 누른 거 있는지, 있으면 뭐 눌렀는지 */
-
-  /** 해당 수강평이 사용자에게 잠겼는지 여부*/
-  isLocked: boolean;
 }
 
 /** 받아야 할 과목 데이터 형식 */
@@ -115,9 +112,13 @@ export interface lectureInfo {
 }
 
 export interface lectureInfoWithProf extends lectureInfo {
-  prof: { id: number; prof_name: string }[];
+  prof: professorInfo[];
 }
 
+export interface professorInfo {
+  id: number;
+  prof_name: string;
+}
 export interface reviewInfo {
   id: number;
   difficulty: number;
@@ -129,5 +130,5 @@ export interface reviewInfo {
   review: string;
   evaluation: number;
   lecture: lectureInfo;
-  prof: { id: number; prof_name: string };
+  prof: professorInfo;
 }

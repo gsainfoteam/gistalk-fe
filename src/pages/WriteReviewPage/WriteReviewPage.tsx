@@ -30,6 +30,8 @@ import {
   Form,
 } from "./WriteReviewPage.styled";
 import ReactSelect from "react-select";
+import { useGetLectureInfo } from "@/hooks/useGetLectureInfo";
+import { convertLectureCodeToList } from "@/utils";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -64,15 +66,19 @@ export function WriteReviewPage() {
     setRatings((prevRatings) => ({ ...prevRatings, [questionId]: newRating }));
   };
 
+  const { isLectureInfoLoading, lectureInfo, isError } = useGetLectureInfo(id);
+
   return (
     <>
       <NavigationHeader prevUrl={`/${id}/evaluation`} text={"강의평 작성"} />
       <Wrapper>
-        <Title
-          subjectTitle={tempData.subjectName}
-          professorName={tempData.professorName}
-          subjectCode={tempData.subjectCode}
-        />
+        {!isLectureInfoLoading && (
+          <Title
+            subjectTitle={lectureInfo.lecture_name}
+            professorName={lectureInfo.prof}
+            subjectCode={convertLectureCodeToList(lectureInfo.lecture_code)}
+          />
+        )}
         <Form onSubmit={handleSubmit}>
           <FormField>
             <Label>수강 년도</Label>

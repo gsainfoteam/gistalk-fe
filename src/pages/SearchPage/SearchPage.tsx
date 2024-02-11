@@ -1,6 +1,6 @@
 import { useState, KeyboardEvent } from "react";
-
 import { useAtom } from "jotai";
+import { useQuery } from "@tanstack/react-query";
 
 import { departmentOptionAtom, sortOptionAtom } from "@/store";
 import { theme } from "@/style/theme";
@@ -8,7 +8,7 @@ import SearchCard from "@/pages/SearchPage/components/SearchCard";
 import Filter_Svg from "@assets/svgs/tune.svg";
 import Order_Svg from "@assets/svgs/order.svg";
 import CatBlankList_Svg from "@assets/svgs/catBlankList.svg";
-import { ISearchCard, lectureInfoWithProf } from "@/Interfaces/interfaces";
+import { lectureInfoWithProf } from "@/Interfaces/interfaces";
 import SortSelectModal from "@/pages/SearchPage/components/SortSelectModal";
 import Header from "@components/Header";
 import {
@@ -25,7 +25,7 @@ import { SearchBar } from "./components/SearchBar";
 import DepartmentSelectModal from "./components/DepartmentSelectModal";
 import { getLectureList } from "@/apis/lectures";
 import { StyledLink } from "@components/StyledLink";
-import { useQuery } from "@tanstack/react-query";
+import { convertLectureCodeToList } from "@/utils";
 
 export function SearchPage() {
   const [sortOpen, setSortOpen] = useState(false);
@@ -67,9 +67,8 @@ export function SearchPage() {
     }
 
     return filteredLectureList.map((item: lectureInfoWithProf) => {
-      const lectureCodeList = item.lecture_code //lecture_code가 string list로 되어있어서 배열로 변경
-        .replace(/[\[\]']+/g, "")
-        .split(", ");
+      const lectureCodeList = convertLectureCodeToList(item.lecture_code); //lecture_code가 string list로 되어있어서 배열로 변경
+
       const professorNames = item.prof.map((prof) => prof.prof_name).join(", ");
 
       return lectureCodeList.map((code) => {

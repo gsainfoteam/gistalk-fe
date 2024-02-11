@@ -19,15 +19,15 @@ export default function MainPage() {
 
   const { data: recentEvaluation } = { ...data };
 
-  console.log(recentEvaluation);
-
   return (
     <>
       <WithTitleAndDescription
         title={"강의 평가 검색"}
         description={"기초과목부터 버클리까지 검색해보세요"}
       >
-        <MockSearchBar />
+        <StyledLink to="/search">
+          <MockSearchBar />
+        </StyledLink>
       </WithTitleAndDescription>
 
       <StyledLink to="/">
