@@ -26,7 +26,27 @@ export default function Hexagon({ HexData }: HexagonProps) {
   const emptyData = [
     {
       score: 0,
+      subject: "",
+    },
+    {
+      score: 0,
+      subject: "",
+    },
+    {
+      score: 0,
+      subject: "",
+    },
+    {
+      score: 0,
       subject: "평가 데이터가 없습니다.",
+    },
+    {
+      score: 0,
+      subject: "",
+    },
+    {
+      score: 0,
+      subject: "",
     },
   ];
 

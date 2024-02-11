@@ -99,11 +99,13 @@ export function EvaluationPage() {
   const { isLoading: evaluationLoading, data: evaluationData } = useQuery({
     queryKey: [`getEvaluation/${id}`],
     queryFn: () => getLectureEachEvaluation(id),
+    retry: 0,
   });
 
   const { isLoading, data: totalEvaluationScore } = useQuery({
     queryKey: [`getEvaluationScore/${id}`],
     queryFn: () => getLectureTotalEvaluation(id),
+    retry: 0,
   });
 
   const reviewList = (evaluationData?.data ?? []).map(
