@@ -7,6 +7,7 @@ import { getToken } from "@/apis/auth";
 import {
   ACCESS_TOKEN,
   ACCESS_TOKEN_EXPIRED_TIME,
+  REDIRECT_PATH,
 } from "@/constants/localStorageKeys";
 
 interface LoginResponse {
@@ -17,7 +18,11 @@ interface LoginResponse {
   scope: string;
 }
 
-export const useLogin = () => {
+/**
+ *
+ * @param redirectPath 로그인 후 리다이렉트할 경로, null일 경우 메인 페이지로 리다이렉트한다.
+ */
+export const useLogin = (redirectPath: string | null) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const authCode = searchParams.get("code");
@@ -41,15 +46,12 @@ export const useLogin = () => {
       ACCESS_TOKEN_EXPIRED_TIME,
       `${Date.now() + expiredTime * 1000}` // expiredTime이 초 단위로 오기 때문에 1000을 곱해준다.
     );
-    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`;
-    window.location.href = "/";
+    // localStorage.removeItem(REDIRECT_PATH); //리다이렉션 처리를 해주므로 localstorage에 저장된 값을 제거한다. strict mode에서는 에러가 발생한다.
+    navigate(redirectPath ?? "/");
   }
 
   useEffect(() => {
+    //토큰이 존재하며 토큰이 만료되지 않은 경우에는 메인 페이지로 리다이렉트한다.
     if (
       localStorage.getItem(ACCESS_TOKEN_EXPIRED_TIME) &&
       localStorage.getItem(ACCESS_TOKEN) &&

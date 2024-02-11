@@ -20,6 +20,7 @@ import {
 } from "@/apis/lectures";
 import { evaluationData } from "./EvaluationPage.const";
 import { useQuery } from "@tanstack/react-query";
+import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -85,6 +86,8 @@ const BlankText = styled(theme.universalComponent.DivTextContainer)`
 `;
 
 export function EvaluationPage() {
+  const isValidToken = useCheckValidToken();
+
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
     // checkVaildEmail();
@@ -114,7 +117,7 @@ export function EvaluationPage() {
 
   return (
     <>
-      <NavigationHeader text={"강의평"} />
+      <NavigationHeader prevUrl={"/search"} text={"강의평"} />
       <Wrap>
         <Title
           subjectTitle={tempData.subjectName}
@@ -156,15 +159,27 @@ export function EvaluationPage() {
         </Upper>
       </Wrap>
 
-      <StyledLink to={`/${params.id}/write`}>
-        <GoWriteBtn
-          fontSize={20}
-          bgColor={theme.colors.primary}
-          color={theme.colors.white}
-        >
-          강의평 쓰러가기
-        </GoWriteBtn>
-      </StyledLink>
+      {isValidToken ? (
+        <StyledLink to={`/${params.id}/write`}>
+          <GoWriteBtn
+            fontSize={20}
+            bgColor={theme.colors.primary}
+            color={theme.colors.white}
+          >
+            강의평 작성하기
+          </GoWriteBtn>
+        </StyledLink>
+      ) : (
+        <StyledLink to="/login" state={{ prevPath: `/${params.id}/write` }}>
+          <GoWriteBtn
+            fontSize={20}
+            bgColor={theme.colors.primary}
+            color={theme.colors.white}
+          >
+            로그인 하고 강의평 작성하기
+          </GoWriteBtn>
+        </StyledLink>
+      )}
 
       <ScrolledHeader
         professor={tempData.professorName}

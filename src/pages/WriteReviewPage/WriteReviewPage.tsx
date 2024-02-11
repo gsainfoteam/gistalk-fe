@@ -66,7 +66,7 @@ export function WriteReviewPage() {
 
   return (
     <>
-      <NavigationHeader text={"강의평 작성"} />
+      <NavigationHeader prevUrl={`/${id}/evaluation`} text={"강의평 작성"} />
       <Wrapper>
         <Title
           subjectTitle={tempData.subjectName}

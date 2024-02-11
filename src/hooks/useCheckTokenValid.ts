@@ -16,12 +16,10 @@ export const useCheckValidToken = () => {
     Date.now() >
     parseInt(localStorage.getItem(ACCESS_TOKEN_EXPIRED_TIME) || "0");
 
+  const isValidToken = isTokenExist && isTokenTimeExist && !isTokenExpired;
+
   useEffect(() => {
-    if (
-      !isTokenExist || //token time이 없거나
-      !isTokenTimeExist || // token이 없거나
-      isTokenExpired
-    ) {
+    if (!isValidToken) {
       localStorage.removeItem(ACCESS_TOKEN);
       localStorage.removeItem(ACCESS_TOKEN_EXPIRED_TIME);
       // 로그인을 강제하는 경우 로그인 페이지로 이동
@@ -29,4 +27,6 @@ export const useCheckValidToken = () => {
       // navigate("/login");
     }
   }, [location.pathname]);
+
+  return isValidToken;
 };

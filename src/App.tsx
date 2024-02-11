@@ -8,7 +8,6 @@ import { WriteReviewPage } from "./pages/WriteReviewPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import { SearchPage } from "./pages/SearchPage";
 import { EvaluationPage } from "./pages/EvaluationPage";
-import { useCheckValidToken } from "./hooks/useCheckTokenValid";
 
 //web-app style, max-width
 const DefaultStyle = styled.div`
@@ -18,8 +17,6 @@ const DefaultStyle = styled.div`
 `;
 
 function App() {
-  useCheckValidToken();
-
   return (
     <DefaultStyle>
       <Routes>

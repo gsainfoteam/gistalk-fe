@@ -30,6 +30,7 @@ export interface IHexData {
 }
 
 export interface IHeader {
+  prevUrl?: string;
   text: string;
 }
 

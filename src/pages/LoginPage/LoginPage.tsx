@@ -5,6 +5,8 @@ import InfoteamLogo_Svg from "@/assets/svgs/infoteamLogo.svg";
 import { useLogin } from "@/hooks/useLogin";
 import { SCOPES } from "./LoginPage.const";
 import { StyledLink } from "@components/StyledLink";
+import { useLocation } from "react-router-dom";
+import { useRedirect } from "@/hooks/useRedirect";
 
 const Wrap = styled.div`
   height: 100vh;
@@ -59,7 +61,8 @@ const WithoutLoginButton = styled.div`
 `;
 
 export default function LoginPage() {
-  useLogin();
+  const redirectPath = useRedirect();
+  useLogin(redirectPath);
 
   return (
     <Wrap>
