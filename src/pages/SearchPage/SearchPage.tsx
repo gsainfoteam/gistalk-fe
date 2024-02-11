@@ -90,6 +90,7 @@ export function SearchPage() {
     <>
       <Header />
       <SearchBar
+        data={lectureList}
         setSearchText={setSearchText}
         searchText={searchText}
         setSearchTextEnter={setSearchTextEnter}

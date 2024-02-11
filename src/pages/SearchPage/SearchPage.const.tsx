@@ -1,6 +1,4 @@
 import { ISortOption } from "@/Interfaces/interfaces";
-import useSubjectCode from "@/hooks/useSubjectCode";
-import { tempdb } from "@/tempdb/tempdb";
 
 export interface lectureInfo {
   id: number;
@@ -13,26 +11,6 @@ interface professor {
   id: number;
   prof_name: string;
 }
-
-export const tempClassList = tempdb.map((i) => {
-  /** 평균 점수 계산 */
-  let avgScore: number = 0;
-  i.hexData.map((j) => (avgScore += j.score));
-  avgScore /= 6;
-  let avgScoreStr: string = (
-    Math.round((avgScore + Number.EPSILON) * 100) / 100
-  ).toFixed(1); //소수점 둘째자리에서 반올림, 소수점 고정
-
-  return {
-    id: i.id,
-    subjectCode: useSubjectCode(i.subjectCode),
-    professorName: i.professorName,
-    subjectName: i.subjectName,
-    subjectScore: avgScoreStr,
-    subjectScoreNum: avgScore, //평균점수
-    stdData: i.hexData,
-  };
-});
 
 /** 정렬을 어떻게 할지 선택할 수 있는 리스트: std 기준으로 sort*/
 export const sortList: { id: number; content: string; std: ISortOption }[] = [

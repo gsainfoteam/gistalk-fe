@@ -103,3 +103,14 @@ export interface UserInfo {
   user_phone_number: string;
   student_id: string;
 }
+
+export interface lectureInfo {
+  /** 강의 id */
+  id: number;
+  /** 강의 코드, "['GS0000']" 형식이기 때문에 다시 필요한 경우 array로 분리해서 써야 함 */
+  lecture_code: string;
+  /** 강의 이름 */
+  lecture_name: string;
+  /** 교수 정보 */
+  prof: { id: number; prof_name: string }[];
+}
