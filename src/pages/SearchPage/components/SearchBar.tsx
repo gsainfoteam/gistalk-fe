@@ -2,10 +2,10 @@ import { theme } from "@/style/theme";
 import { MatchingText, NorthWestSvg, SearchItem } from "../SearchPage.styled";
 import { Link } from "react-router-dom";
 import NorthWest_Svg from "@assets/svgs/northWest.svg";
-import { lectureInfo } from "@/Interfaces/interfaces";
 import Cancel_Svg from "@assets/svgs/cancel_Black.svg";
 import Search_Svg from "@assets/svgs/search.svg";
 import styled from "styled-components";
+import { lectureInfoWithProf } from "@/Interfaces/interfaces";
 
 export const SearchSvg = styled(theme.universalComponent.SvgIcon)`
   display: block;
@@ -82,7 +82,7 @@ export function SearchBar({
   enterSearchText,
   searchTextEnter,
 }: {
-  data: lectureInfo[];
+  data: lectureInfoWithProf[];
   setSearchText: any;
   searchText: string;
   setSearchTextEnter: any;

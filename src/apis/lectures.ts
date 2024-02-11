@@ -12,3 +12,7 @@ export const getLectureEachEvaluation = (lectureId: number) => {
 export const getLectureTotalEvaluation = (lectureId: number) => {
   return axios.get(`${import.meta.env.VITE_API_URL}/scoring/get/${lectureId}`);
 };
+
+export const getRecentEvaluation = () => {
+  return axios.get(`${import.meta.env.VITE_API_URL}/records/latest/2`);
+};

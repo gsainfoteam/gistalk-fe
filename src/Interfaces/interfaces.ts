@@ -112,6 +112,22 @@ export interface lectureInfo {
   lecture_code: string;
   /** 강의 이름 */
   lecture_name: string;
-  /** 교수 정보 */
+}
+
+export interface lectureInfoWithProf extends lectureInfo {
   prof: { id: number; prof_name: string }[];
+}
+
+export interface reviewInfo {
+  id: number;
+  difficulty: number;
+  strength: number;
+  helpful: number;
+  interest: number;
+  lots: number;
+  satisfy: number;
+  review: string;
+  evaluation: number;
+  lecture: lectureInfo;
+  prof: { id: number; prof_name: string };
 }

@@ -8,7 +8,7 @@ import SearchCard from "@/pages/SearchPage/components/SearchCard";
 import Filter_Svg from "@assets/svgs/tune.svg";
 import Order_Svg from "@assets/svgs/order.svg";
 import CatBlankList_Svg from "@assets/svgs/catBlankList.svg";
-import { ISearchCard } from "@/Interfaces/interfaces";
+import { ISearchCard, lectureInfoWithProf } from "@/Interfaces/interfaces";
 import SortSelectModal from "@/pages/SearchPage/components/SortSelectModal";
 import Header from "@components/Header";
 import {
@@ -20,7 +20,7 @@ import {
   OptionBtnWrap,
   OrderSvg,
 } from "./SearchPage.styled";
-import { filterLectureList, lectureInfo, sortList } from "./SearchPage.const";
+import { filterLectureList, sortList } from "./SearchPage.const";
 import { SearchBar } from "./components/SearchBar";
 import DepartmentSelectModal from "./components/DepartmentSelectModal";
 import { getLectureList } from "@/apis/lectures";
@@ -66,7 +66,7 @@ export function SearchPage() {
       return null;
     }
 
-    return filteredLectureList.map((item: lectureInfo) => {
+    return filteredLectureList.map((item: lectureInfoWithProf) => {
       const lectureCodeList = item.lecture_code //lecture_code가 string list로 되어있어서 배열로 변경
         .replace(/[\[\]']+/g, "")
         .split(", ");

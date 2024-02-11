@@ -6,8 +6,21 @@ import LectureInformation from "./components/LectureInformation";
 import LectureReview from "./components/LectureReview";
 import WriteReview from "./components/WriteReview";
 import { MockSearchBar } from "./components/MockSearchBar";
+import { useQuery } from "@tanstack/react-query";
+import { getRecentEvaluation } from "@/apis/lectures";
+import { reviewInfo } from "@/Interfaces/interfaces";
 
 export default function MainPage() {
+  const { isLoading, data } = useQuery({
+    queryKey: [`recentEvaluation`],
+    queryFn: getRecentEvaluation,
+    retry: 0,
+  });
+
+  const { data: recentEvaluation } = { ...data };
+
+  console.log(recentEvaluation);
+
   return (
     <>
       <WithTitleAndDescription
@@ -25,37 +38,25 @@ export default function MainPage() {
           </WriteReview>
         </Card>
       </StyledLink>
-
       <WithTitleAndDescription title={"최근 올라온 강의평가"}>
-        <Card>
-          <LectureInformation
-            LectureName={"거시경제학원론"}
-            ProfessorName={"홍길동"}
-            CourseTakenYear={2021}
-            CourseTakenSemester={1}
-            CourseRecommendation={true}
-          />
-          <LectureReview>
-            여름학기를 즐길 생각이라면 로드가 많아서 비추천, 하지만 수업 자체로
-            놓고 본다면 지스트에서 하는 것보다 환경이 잘 정리되어 있고 신기술
-            adoption이 빨라 많은 도움이 됨
-          </LectureReview>
-        </Card>
-
-        <Card>
-          <LectureInformation
-            LectureName={"거시경제학원론"}
-            ProfessorName={"홍길동"}
-            CourseTakenYear={2021}
-            CourseTakenSemester={1}
-            CourseRecommendation={true}
-          />
-          <LectureReview>
-            여름학기를 즐길 생각이라면 로드가 많아서 비추천, 하지만 수업 자체로
-            놓고 본다면 지스트에서 하는 것보다 환경이 잘 정리되어 있고 신기술
-            adoption이 빨라 많은 도움이 됨
-          </LectureReview>
-        </Card>
+        {!isLoading &&
+          data &&
+          recentEvaluation.map((evaluation: reviewInfo) => (
+            <Card>
+              <LectureInformation
+                LectureName={evaluation.lecture.lecture_name}
+                ProfessorName={evaluation.prof.prof_name}
+                CourseTakenYear={2021}
+                CourseTakenSemester={1}
+                CourseRecommendation={true}
+              />
+              <LectureReview>
+                여름학기를 즐길 생각이라면 로드가 많아서 비추천, 하지만 수업
+                자체로 놓고 본다면 지스트에서 하는 것보다 환경이 잘 정리되어
+                있고 신기술 adoption이 빨라 많은 도움이 됨
+              </LectureReview>
+            </Card>
+          ))}
       </WithTitleAndDescription>
     </>
   );
