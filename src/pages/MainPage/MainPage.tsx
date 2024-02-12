@@ -44,17 +44,15 @@ export default function MainPage() {
           recentEvaluation.map((evaluation: reviewInfo) => (
             <Card>
               <LectureInformation
-                LectureName={evaluation.lecture.lecture_name}
-                ProfessorName={evaluation.prof.prof_name}
-                CourseTakenYear={2021}
-                CourseTakenSemester={1}
+                LectureName={evaluation.lecture_name}
+                ProfessorName={evaluation.prof_name}
+                CourseTakenYear={parseInt(
+                  evaluation.semesterId.toString().substring(0, 4)
+                )}
+                CourseTakenSemester={evaluation.semesterId}
                 CourseRecommendation={true}
               />
-              <LectureReview>
-                여름학기를 즐길 생각이라면 로드가 많아서 비추천, 하지만 수업
-                자체로 놓고 본다면 지스트에서 하는 것보다 환경이 잘 정리되어
-                있고 신기술 adoption이 빨라 많은 도움이 됨
-              </LectureReview>
+              <LectureReview>{evaluation.review}</LectureReview>
             </Card>
           ))}
       </WithTitleAndDescription>

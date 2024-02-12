@@ -124,6 +124,14 @@ export interface reviewInfo {
   satisfy: number;
   review: string;
   evaluation: number;
-  lecture: lectureInfo;
-  prof: professorInfo;
+
+  lecture_id: number;
+  lecture_name: string;
+  lecture_code: string;
+  prof_id: number;
+  prof_name: string;
+
+  recommend: number;
+  semesterId: number;
+  year: string;
 }
