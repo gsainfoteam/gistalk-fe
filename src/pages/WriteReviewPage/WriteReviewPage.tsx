@@ -45,6 +45,11 @@ export function WriteReviewPage() {
   const [ratings, setRatings] = useState(initialRatings);
   const [recommendation, setRecommendation] = useState(Recommendation.Normal); // 0 비추천, 1 보통, 2 추천
   const params = useParams() as { id: string };
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const handleCheckboxChange = (id: number) => {
+    setSelectedId(id === selectedId ? null : id);
+  };
 
   const id = Number(params.id);
   const tempData = tempdb.find((value) => value.id === id) ?? tempdb[0]; //undefined인 경우 default 값: tempdb[0]
@@ -85,9 +90,11 @@ export function WriteReviewPage() {
       <Wrapper>
         {!isLectureInfoLoading && lectureInfo && (
           <Title
+            handleCheckboxChange={handleCheckboxChange}
             subjectTitle={lectureInfo[0].lecture_name}
-            professorName={lectureInfo[0].prof}
+            professorInfo={lectureInfo[0].prof}
             subjectCode={convertLectureCodeToList(lectureInfo[0].lecture_code)}
+            selectedId={selectedId}
           />
         )}
         <Form onSubmit={handleSubmit}>

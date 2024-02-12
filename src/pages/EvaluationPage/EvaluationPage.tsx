@@ -1,7 +1,7 @@
 import Hexagon from "./components/Hexagon";
 import { theme } from "@/style/theme";
 import styled from "styled-components";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { tempdb } from "@/tempdb/tempdb";
@@ -16,7 +16,6 @@ import EvaluationSummary from "./components/EvaluationSummary";
 import { StyledLink } from "@components/StyledLink";
 import {
   getLectureEachEvaluation,
-  getLectureList,
   getLectureSingleInfo,
   getLectureTotalEvaluation,
 } from "@/apis/lectures";
@@ -90,6 +89,11 @@ const BlankText = styled(theme.universalComponent.DivTextContainer)`
 
 export function EvaluationPage() {
   const isValidToken = useCheckValidToken();
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const handleCheckboxChange = (id: number) => {
+    setSelectedId(id === selectedId ? null : id);
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
@@ -103,14 +107,14 @@ export function EvaluationPage() {
   const tempData = tempdb.find((value) => value.id === id) || tempdb[0]; //undefined인 경우 default 값: tempdb[0]
 
   const { isLoading: evaluationLoading, data: evaluationData } = useQuery({
-    queryKey: [`getEvaluation/${id}`],
-    queryFn: () => getLectureEachEvaluation(id),
+    queryKey: [`getEvaluation/${id}/${selectedId}`],
+    queryFn: () => getLectureEachEvaluation(id, selectedId),
     retry: 0,
   });
 
   const { isLoading, data: totalEvaluationScore } = useQuery({
-    queryKey: [`getEvaluationScore/${id}`],
-    queryFn: () => getLectureTotalEvaluation(id),
+    queryKey: [`getEvaluationScore/${id}/${selectedId}`],
+    queryFn: () => getLectureTotalEvaluation(id, selectedId),
     retry: 0,
   });
 
@@ -136,9 +140,11 @@ export function EvaluationPage() {
       <Wrap>
         {!isLectureInfoLoading && lectureInfo && (
           <Title
+            handleCheckboxChange={handleCheckboxChange}
             subjectTitle={lectureInfo[0].lecture_name}
-            professorName={lectureInfo[0].prof}
+            professorInfo={lectureInfo[0].prof}
             subjectCode={convertLectureCodeToList(lectureInfo[0].lecture_code)}
+            selectedId={selectedId}
           />
         )}
 

@@ -5,12 +5,27 @@ export const getLectureList = () => {
   return axios.get(`${import.meta.env.VITE_API_URL}/lectures/all`);
 };
 
-export const getLectureEachEvaluation = (lectureId: number) => {
-  return axios.get(`${import.meta.env.VITE_API_URL}/lectures/get/${lectureId}`);
+export const getLectureEachEvaluation = (
+  lectureId: number,
+  professorId: number | null
+) => {
+  const params = {
+    lecture_id: lectureId,
+    prof_id: professorId,
+  };
+
+  return axios.get(`${import.meta.env.VITE_API_URL}/lectures/get`, {
+    params: params,
+  });
 };
 
-export const getLectureTotalEvaluation = (lectureId: number) => {
-  return axios.get(`${import.meta.env.VITE_API_URL}/scoring/get/${lectureId}`);
+export const getLectureTotalEvaluation = (
+  lectureId: number,
+  professorId: number | null
+) => {
+  return axios.get(
+    `${import.meta.env.VITE_API_URL}/scoring/get/${lectureId}/${professorId}`
+  );
 };
 
 /**
