@@ -30,8 +30,9 @@ import {
   Form,
 } from "./WriteReviewPage.styled";
 import ReactSelect from "react-select";
-import { useGetLectureInfo } from "@/hooks/useGetLectureInfo";
 import { convertLectureCodeToList } from "@/utils";
+import { useQuery } from "@tanstack/react-query";
+import { getLectureSingleInfo } from "@/apis/lectures";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -66,17 +67,27 @@ export function WriteReviewPage() {
     setRatings((prevRatings) => ({ ...prevRatings, [questionId]: newRating }));
   };
 
-  const { isLectureInfoLoading, lectureInfo, isError } = useGetLectureInfo(id);
+  const {
+    isLoading: isLectureInfoLoading,
+    data: lectureInfoData,
+    isError,
+  } = useQuery({
+    queryKey: [`getLectureSingleInfo/${id}`],
+    queryFn: () => getLectureSingleInfo(id),
+    retry: 0,
+  });
+
+  const { data: lectureInfo } = { ...lectureInfoData };
 
   return (
     <>
       <NavigationHeader prevUrl={`/${id}/evaluation`} text={"강의평 작성"} />
       <Wrapper>
-        {!isLectureInfoLoading && (
+        {!isLectureInfoLoading && lectureInfo && (
           <Title
-            subjectTitle={lectureInfo.lecture_name}
-            professorName={lectureInfo.prof}
-            subjectCode={convertLectureCodeToList(lectureInfo.lecture_code)}
+            subjectTitle={lectureInfo[0].lecture_name}
+            professorName={lectureInfo[0].prof}
+            subjectCode={convertLectureCodeToList(lectureInfo[0].lecture_code)}
           />
         )}
         <Form onSubmit={handleSubmit}>

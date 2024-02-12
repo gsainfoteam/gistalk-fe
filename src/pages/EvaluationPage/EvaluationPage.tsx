@@ -17,14 +17,13 @@ import { StyledLink } from "@components/StyledLink";
 import {
   getLectureEachEvaluation,
   getLectureList,
+  getLectureSingleInfo,
   getLectureTotalEvaluation,
 } from "@/apis/lectures";
 import { evaluationData } from "./EvaluationPage.const";
 import { useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
-import { lectureInfoWithProf } from "@/Interfaces/interfaces";
 import { convertLectureCodeToList } from "@/utils";
-import { useGetLectureInfo } from "@/hooks/useGetLectureInfo";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -115,7 +114,17 @@ export function EvaluationPage() {
     retry: 0,
   });
 
-  const { isLectureInfoLoading, lectureInfo, isError } = useGetLectureInfo(id);
+  const {
+    isLoading: isLectureInfoLoading,
+    data: lectureInfoData,
+    isError,
+  } = useQuery({
+    queryKey: [`getLectureSingleInfo/${id}`],
+    queryFn: () => getLectureSingleInfo(id),
+    retry: 0,
+  });
+
+  const { data: lectureInfo } = { ...lectureInfoData };
 
   const reviewList = (evaluationData?.data ?? []).map(
     (i: evaluationData) => i.review
@@ -125,11 +134,11 @@ export function EvaluationPage() {
     <>
       <NavigationHeader prevUrl={"/search"} text={"강의평"} />
       <Wrap>
-        {!isLectureInfoLoading && (
+        {!isLectureInfoLoading && lectureInfo && (
           <Title
-            subjectTitle={lectureInfo.lecture_name}
-            professorName={lectureInfo.prof}
-            subjectCode={convertLectureCodeToList(lectureInfo.lecture_code)}
+            subjectTitle={lectureInfo[0].lecture_name}
+            professorName={lectureInfo[0].prof}
+            subjectCode={convertLectureCodeToList(lectureInfo[0].lecture_code)}
           />
         )}
 

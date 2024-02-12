@@ -1,15 +1,11 @@
 import styled from "styled-components";
+
 import { theme } from "@/style/theme";
 import InfoteamLogo_Svg from "@/assets/svgs/infoteamLogo.svg";
-
 import { useLogin } from "@/hooks/useLogin";
 import { SCOPES } from "./LoginPage.const";
 import { StyledLink } from "@components/StyledLink";
-<<<<<<< HEAD
-import { useLocation } from "react-router-dom";
 import { useRedirect } from "@/hooks/useRedirect";
-=======
->>>>>>> 1a99ec30c356f94555999ba23f8153a481344092
 
 const Wrap = styled.div`
   height: 100vh;

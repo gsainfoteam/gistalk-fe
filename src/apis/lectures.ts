@@ -13,6 +13,19 @@ export const getLectureTotalEvaluation = (lectureId: number) => {
   return axios.get(`${import.meta.env.VITE_API_URL}/scoring/get/${lectureId}`);
 };
 
+/**
+ * 최근 2개의 강의평을 로드합니다.
+ */
 export const getRecentEvaluation = () => {
   return axios.get(`${import.meta.env.VITE_API_URL}/records/latest/2`);
+};
+
+export const getLectureSingleInfo = (lectureId: number) => {
+  const params = {
+    lecture_id: lectureId,
+  };
+
+  return axios.get(`${import.meta.env.VITE_API_URL}/lectures/info/id`, {
+    params: params,
+  });
 };
