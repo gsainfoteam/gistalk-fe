@@ -80,26 +80,6 @@ export interface IReply {
   recommend?: number;
 }
 
-/** 받아야 할 과목 데이터 형식 */
-export interface ISubjectData {
-  id: number;
-
-  /** 과목 이름 */
-  subjectName: string;
-  /** 교수명 */
-  professorName: string;
-  /** 과목코드 */
-  subjectCode: string[];
-  /** Radar Chart에 들어갈 데이터 */
-  hexData: IHexData[];
-  /** 한줄평 리스트 */
-  oneLineReview: IReply[];
-  /** 세부평가 리스트*/
-  detailedReview: IReply[];
-  /** 중복도 */
-  redundancy: number;
-}
-
 export type ISortOption =
   | "평균점수"
   | "수업 난이도"

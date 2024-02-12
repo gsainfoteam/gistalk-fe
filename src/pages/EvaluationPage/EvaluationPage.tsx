@@ -4,8 +4,6 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { tempdb } from "@/tempdb/tempdb";
-
 import Reply from "./components/Reply";
 
 import CatBlankList_Svg from "@/assets/svgs/catBlankList.svg";
@@ -19,11 +17,10 @@ import {
   getLectureSingleInfo,
   getLectureTotalEvaluation,
 } from "@/apis/lectures";
-import { evaluationData } from "./EvaluationPage.const";
 import { useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import { convertLectureCodeToList } from "@/utils";
-import { IReply } from "@/Interfaces/interfaces";
+import { IReply, professorInfo } from "@/Interfaces/interfaces";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -105,7 +102,6 @@ export function EvaluationPage() {
   const params = useParams() as { id: string };
   /**강의별 id */
   const id = Number(params.id);
-  const tempData = tempdb.find((value) => value.id === id) || tempdb[0]; //undefined인 경우 default 값: tempdb[0]
 
   const { isLoading: evaluationLoading, data: evaluationData } = useQuery({
     queryKey: [`getEvaluation/${id}/${selectedId}`],
@@ -207,10 +203,14 @@ export function EvaluationPage() {
         </StyledLink>
       )}
 
-      <ScrolledHeader
-        professor={tempData.professorName}
-        title={tempData.subjectName}
-      ></ScrolledHeader>
+      {!isLectureInfoLoading && lectureInfo && (
+        <ScrolledHeader
+          professor={lectureInfo[0].prof
+            .map((prof: professorInfo) => prof.prof_name)
+            .join(", ")}
+          title={lectureInfo[0].lecture_name}
+        />
+      )}
     </>
   );
 }

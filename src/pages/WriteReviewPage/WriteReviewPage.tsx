@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { tempdb } from "@/tempdb/tempdb";
 import NavigationHeader from "@components/NavigationHeader";
 import Title from "@components/Title";
 import {
@@ -40,8 +39,6 @@ const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
 }, {} as { [key: number]: number | null });
 
 export function WriteReviewPage() {
-  const navigate = useNavigate();
-
   const [ratings, setRatings] = useState(initialRatings);
   const [recommendation, setRecommendation] = useState(Recommendation.Normal); // 0 비추천, 1 보통, 2 추천
   const params = useParams() as { id: string };
@@ -52,11 +49,6 @@ export function WriteReviewPage() {
   };
 
   const id = Number(params.id);
-  const tempData = tempdb.find((value) => value.id === id) ?? tempdb[0]; //undefined인 경우 default 값: tempdb[0]
-
-  if (!tempData) {
-    navigate("/error");
-  }
 
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
