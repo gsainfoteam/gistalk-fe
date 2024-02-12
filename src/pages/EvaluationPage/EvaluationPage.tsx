@@ -23,6 +23,7 @@ import { evaluationData } from "./EvaluationPage.const";
 import { useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import { convertLectureCodeToList } from "@/utils";
+import { IReply } from "@/Interfaces/interfaces";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -129,10 +130,8 @@ export function EvaluationPage() {
   });
 
   const { data: lectureInfo } = { ...lectureInfoData };
-
-  const reviewList = (evaluationData?.data ?? []).map(
-    (i: evaluationData) => i.review
-  );
+  const { data: reviewList } = { ...evaluationData };
+  console.log(reviewList);
 
   return (
     <>
@@ -156,29 +155,33 @@ export function EvaluationPage() {
           <EvaluationSummary
             evaluationData={totalEvaluationScore?.data ?? null}
           />
+
           <OneLineReviewText
             fontSize={18}
             color={theme.colors.primaryText}
             borderColor={theme.colors.grayStroke}
           >
-            한줄평 <span> 이 강의는 {tempData.redundancy}명이 수강했어요</span>
+            한줄평
+            {!evaluationLoading && (
+              <span> 이 강의는 {reviewList.length ?? 0}명이 수강했어요</span>
+            )}
           </OneLineReviewText>
 
-          {
-            //여기서 i는 tempdb[0]이 가리키는 강의평가에 해당하는 각 한줄평을 가리킴
-            tempData.oneLineReview.map((i) => (
-              <Reply key={i.id} replyData={i} isMine={false} />
-            ))
-          }
-
-          {tempData.oneLineReview.length === 0 && (
-            <BlankWrap>
-              <BlankSvg size={120} src={CatBlankList_Svg} />
-              <BlankText fontSize={14} color={theme.colors.secondaryText}>
-                아직 한줄평이 작성되지 않았네요.
-              </BlankText>
-            </BlankWrap>
-          )}
+          {!evaluationLoading && //로딩이 완료되고 나서 강의평이 존재하지 않는 경우를 핸들링
+            ((reviewList ?? []).length === 0 ? (
+              <BlankWrap>
+                <BlankSvg size={120} src={CatBlankList_Svg} />
+                <BlankText fontSize={14} color={theme.colors.secondaryText}>
+                  아직 한줄평이 작성되지 않았네요.
+                </BlankText>
+              </BlankWrap>
+            ) : (
+              <>
+                {reviewList.map((review: IReply) => (
+                  <Reply key={review.record_id} replyData={review} />
+                ))}
+              </>
+            ))}
         </Upper>
       </Wrap>
 
