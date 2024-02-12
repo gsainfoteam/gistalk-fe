@@ -1,10 +1,11 @@
 import styled from "styled-components";
+
 import { theme } from "@/style/theme";
 import InfoteamLogo_Svg from "@/assets/svgs/infoteamLogo.svg";
-
 import { useLogin } from "@/hooks/useLogin";
 import { SCOPES } from "./LoginPage.const";
 import { StyledLink } from "@components/StyledLink";
+import { useRedirect } from "@/hooks/useRedirect";
 
 const Wrap = styled.div`
   height: 100vh;
@@ -54,10 +55,13 @@ const WithoutLoginButton = styled.div`
   font-weight: regular;
   font-family: NSRegular;
   color: ${theme.colors.secondaryText};
+  margin-top: 14px;
+  text-decoration: underline;
 `;
 
 export default function LoginPage() {
-  useLogin();
+  const redirectPath = useRedirect();
+  useLogin(redirectPath);
 
   return (
     <Wrap>

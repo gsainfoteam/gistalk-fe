@@ -30,6 +30,7 @@ export interface IHexData {
 }
 
 export interface IHeader {
+  prevUrl?: string;
   text: string;
 }
 
@@ -43,48 +44,40 @@ export interface IButton {
 /** like : 좋아요 누름 / dislike : 싫어요 누름 / none : 둘 다 안 누름 */
 export type pushedLike = "like" | "dislike" | "none";
 
-/** 한줄평 또는 세부 강의평가 */
+/**
+ * 
+ *     "difficulty" : 1,
+    "strength" : 1,
+    "helpful" : 1,
+    "interest" : 1,
+    "lots" : 1,
+    "satisfy" : 1,
+    "review" : "한줄평1",
+    "lecture_id" : 1,
+    "prof_id" : 3,
+    "semester_id" : 1,
+    "year" : "2022",
+    "recommend" : 1,
+
+ */
+
 export interface IReply {
-  id: number;
-
-  /** 강의를 추천하는지 여부 */
-  recommend: string;
-  /** 몇 학년도 수강자? */
+  record_id: number;
+  prof_id: number;
+  user_id: number;
+  writer_id: number;
+  /** 봄: 1, 여름: 2, 가을: 3, 가을:4 */
+  semester: number;
   year: string;
-  /** 몇 학기 수강자? (1/2/여름(가을)/겨울) */
-  semester: string;
-  /** 해당 한줄평(또는 세부평가)에 대한 좋아요 수 */
-  like: number;
-  /** 해당 한줄평(또는 세부평가)에 대한 싫어요 수 */
-  dislike: number;
-  /** 한줄평(또는 세부평가) 내용
-   * 이 string array의 length가 1이면 한줄평, 3이면 세부평가 글 (1도 3도 아니면 에러 뜨게)
-   * 세부평가 글이면, 첫번째에는 시험 문제 유형, 두번째에는 과제 유형, 세번째에는 학점 잘 받는 팁 문단이 들어감*/
-  content: string[];
-  /** 좋아요/싫어요 중에 사용자가 누른 거 있는지, 있으면 뭐 눌렀는지 */
-
-  /** 해당 수강평이 사용자에게 잠겼는지 여부*/
-  isLocked: boolean;
-}
-
-/** 받아야 할 과목 데이터 형식 */
-export interface ISubjectData {
-  id: number;
-
-  /** 과목 이름 */
-  subjectName: string;
-  /** 교수명 */
-  professorName: string;
-  /** 과목코드 */
-  subjectCode: string[];
-  /** Radar Chart에 들어갈 데이터 */
-  hexData: IHexData[];
-  /** 한줄평 리스트 */
-  oneLineReview: IReply[];
-  /** 세부평가 리스트*/
-  detailedReview: IReply[];
-  /** 중복도 */
-  redundancy: number;
+  difficulty: number;
+  strength: number;
+  helpful: number;
+  interest: number;
+  lots: number;
+  satisfy: number;
+  review: string;
+  /** 강의를 추천하는지 여부, 1: 추천, 0: 비추천, 2:보통 */
+  recommend?: number;
 }
 
 export type ISortOption =
@@ -102,4 +95,43 @@ export interface UserInfo {
   user_name: string;
   user_phone_number: string;
   student_id: string;
+}
+
+export interface lectureInfo {
+  /** 강의 id */
+  id: number;
+  /** 강의 코드, "['GS0000']" 형식이기 때문에 다시 필요한 경우 array로 분리해서 써야 함 */
+  lecture_code: string;
+  /** 강의 이름 */
+  lecture_name: string;
+}
+
+export interface lectureInfoWithProf extends lectureInfo {
+  prof: professorInfo[];
+}
+
+export interface professorInfo {
+  id: number;
+  prof_name: string;
+}
+export interface reviewInfo {
+  id: number;
+  difficulty: number;
+  strength: number;
+  helpful: number;
+  interest: number;
+  lots: number;
+  satisfy: number;
+  review: string;
+  evaluation: number;
+
+  lecture_id: number;
+  lecture_name: string;
+  lecture_code: string;
+  prof_id: number;
+  prof_name: string;
+
+  recommend: number;
+  semesterId: number;
+  year: string;
 }

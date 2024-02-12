@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
 import { EvaluationToText } from "@/constants/EvaluationToText";
+import {
+  EVALUATION_TEXT,
+  HexagonData,
+  SUBJECT_SHOW_ORDER,
+} from "../EvaluationPage.const";
 
 const ConcreteInfoGrid = styled.div`
   margin: 10px auto 0 auto;
@@ -34,34 +39,14 @@ const ConcreteInfo = styled(theme.universalComponent.DivTextContainer)<{
   }
 `;
 
-type SubjectScore = {
-  subject: string;
-  score: number;
-};
+interface SummaryProps {
+  evaluationData: HexagonData;
+}
 
-const data = [3, 4, 5, 2, 1, 2];
-const EVALUATION_TEXT = [
-  "수업 난이도",
-  "과제량",
-  "유익함",
-  "재미/흥미",
-  "성적 만족도",
-  "강의력",
-];
-
-function sortScoresBySubject(scores: SubjectScore[]): number[] {
-  const subjectsOrder = [
-    "수업 난이도",
-    "과제량",
-    "유익함",
-    "재미 / 흥미",
-    "성적 만족도",
-    "강의력",
-  ];
-
-  const sortedScores = subjectsOrder.map((subject) => {
-    const scoreObject = scores.find((score) => score.subject === subject);
-    return scoreObject ? scoreObject.score : 0;
+function sortScoresBySubject(scores: HexagonData): number[] {
+  const sortedScores = SUBJECT_SHOW_ORDER.map((subject) => {
+    const subjectScore = scores[subject];
+    return subjectScore;
   });
 
   return sortedScores;
@@ -71,7 +56,11 @@ const LOW = 0;
 const MIDDLE = 1;
 const height = 2;
 
-export default function EvaluationSummary({ evaluationData }: any) {
+export default function EvaluationSummary({ evaluationData }: SummaryProps) {
+  if (evaluationData == null) {
+    return null;
+  }
+
   const data = sortScoresBySubject(evaluationData);
 
   const indexData = data.map((item: number) => {

@@ -24,14 +24,14 @@ const NavigationText = styled.div<{ color: string }>`
   text-align: center;
 `;
 
-export default function NavigationHeader({ text }: IHeader) {
+export default function NavigationHeader({ prevUrl, text }: IHeader) {
   const navigate = useNavigate();
 
   return (
     <Wrap bgColor={theme.colors.white}>
       <div
         onClick={() => {
-          navigate(-1);
+          prevUrl ? navigate(prevUrl) : navigate(-1);
         }}
       >
         <NavigationArrowSvg

@@ -2,16 +2,10 @@ import { theme } from "@/style/theme";
 import { MatchingText, NorthWestSvg, SearchItem } from "../SearchPage.styled";
 import { Link } from "react-router-dom";
 import NorthWest_Svg from "@assets/svgs/northWest.svg";
-import { tempClassList } from "../SearchPage.const";
-import { ISearchCard } from "@/Interfaces/interfaces";
 import Cancel_Svg from "@assets/svgs/cancel_Black.svg";
 import Search_Svg from "@assets/svgs/search.svg";
 import styled from "styled-components";
-
-/** 임시 아이템 리스트 */
-const TempSearchList: ISearchCard[] = tempClassList.sort(
-  (a, b) => b.subjectScoreNum - a.subjectScoreNum
-);
+import { lectureInfoWithProf } from "@/Interfaces/interfaces";
 
 export const SearchSvg = styled(theme.universalComponent.SvgIcon)`
   display: block;
@@ -81,12 +75,14 @@ export const SearchInput = styled.input<{
 `;
 
 export function SearchBar({
+  data,
   setSearchText,
   searchText,
   setSearchTextEnter,
   enterSearchText,
   searchTextEnter,
 }: {
+  data: lectureInfoWithProf[];
   setSearchText: any;
   searchText: string;
   setSearchTextEnter: any;
@@ -118,12 +114,21 @@ export function SearchBar({
 
   /**검색바 하단에 출력되는 강의명 리스트 */
   const SearchItemList = () => {
-    return TempSearchList.map((item) => {
+    if (data === null || data === undefined) {
+      //TODO: 위에 styled-component의 every 구문 떄문에 null array로 리턴함... 에러처리 나중에 한번에 고쳐야 함(현재 배열의 모든 요소가 null인 경우를 예외로 처리하는 코드가 다수 있음)
+      return [null];
+    }
+    return data.map((item) => {
       if (
         searchText != "" &&
-        item.subjectName.includes(searchText) &&
+        item.lecture_name.includes(searchText) &&
         searchTextEnter != searchText
       ) {
+        //TODO: 원래는 prof 별로 강의를 하나씩 할당하려고 했는데, 현재 prof별로 강의 id가 다르게 배정되지 않아 한 번에 병함
+        const professorNames = item.prof
+          .map((prof) => prof.prof_name)
+          .join(", ");
+
         return (
           <Link
             key={item.id}
@@ -132,12 +137,12 @@ export function SearchBar({
           >
             <SearchItem>
               <p>
-                <span>{item.subjectName.split(searchText)[0]}</span>
+                <span>{item.lecture_name.split(searchText)[0]}</span>
                 <MatchingText color={theme.colors.primary}>
                   {searchText}
                 </MatchingText>
-                <span>{item.subjectName.split(searchText)[1]}</span>
-                <span>- {item.professorName}</span>
+                <span>{item.lecture_name.split(searchText)[1]}</span>
+                <span>- {professorNames}</span>
               </p>
               <NorthWestSvg src={NorthWest_Svg} size={20} />
             </SearchItem>

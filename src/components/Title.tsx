@@ -1,13 +1,17 @@
 import styled from "styled-components";
-import { theme } from "@/style/theme";
-import ProfessorNameCheckbox from "../pages/EvaluationPage/components/ProfessorNameCheckbox";
 import { useState } from "react";
+
+import { theme } from "@/style/theme";
 import useSubjectCode from "@/hooks/useSubjectCode";
+import { professorInfo } from "@/Interfaces/interfaces";
+import ProfessorNameCheckbox from "./ProfessorNameCheckbox";
 
 interface IProps {
   subjectTitle: string;
-  professorName: string;
+  professorInfo: professorInfo[];
   subjectCode: string[];
+  selectedId: number | null;
+  handleCheckboxChange: (id: number) => void;
 }
 
 const TitleWrap = styled.div<{ color: string; bgColor: string }>`
@@ -55,17 +59,12 @@ const CheckboxContainer = styled.div`
  */
 export default function Title({
   subjectTitle,
-  professorName,
+  professorInfo,
   subjectCode,
+  selectedId,
+  handleCheckboxChange,
 }: IProps) {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
   const extractedSubjectCode = useSubjectCode(subjectCode);
-
-  const handleCheckboxChange = (id: number) => {
-    setSelectedId(id === selectedId ? null : id);
-  };
-
-  const PROF_NAMES = ["김길동", "박길동", professorName];
 
   return (
     <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
@@ -79,11 +78,11 @@ export default function Title({
             교수자
           </SubjectTitle>
 
-          {PROF_NAMES.map((text: string, index: number) => (
+          {professorInfo.map((professor: professorInfo, index: number) => (
             <ProfessorNameCheckbox
               key={index}
-              text={text}
-              id={index}
+              text={professor.prof_name}
+              id={professor.id}
               selectedId={selectedId}
               onCheckboxChange={handleCheckboxChange}
             />

@@ -7,10 +7,11 @@ import {
 } from "recharts";
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import { IHexData } from "@/Interfaces/interfaces";
 
-interface IProps {
-  HexData: IHexData[];
+import { HexLabels, HexagonData } from "../EvaluationPage.const";
+
+interface HexagonProps {
+  HexData: HexagonData;
 }
 
 const Wrap = styled.div`
@@ -21,14 +22,47 @@ const Wrap = styled.div`
   overflow-y: hidden;
 `;
 
-export default function Hexagon({ HexData }: IProps) {
-  const formattedData = HexData.map((i) => {
-    return {
-      subject: i.subject + " (" + i.score.toString() + ")",
-      A: i.score,
-      fullMark: 5.0,
-    };
-  });
+export default function Hexagon({ HexData }: HexagonProps) {
+  const emptyData = [
+    {
+      score: 0,
+      subject: "",
+    },
+    {
+      score: 0,
+      subject: "",
+    },
+    {
+      score: 0,
+      subject: "",
+    },
+    {
+      score: 0,
+      subject: "평가 데이터가 없습니다.",
+    },
+    {
+      score: 0,
+      subject: "",
+    },
+    {
+      score: 0,
+      subject: "",
+    },
+  ];
+
+  const formattedData =
+    HexData == null
+      ? emptyData
+      : HexLabels.map((i) => {
+          const score = HexData[i.key];
+          const subject = i.subject;
+
+          return {
+            subject: `${subject} (${score})`,
+            A: score,
+            fullMark: 5.0,
+          };
+        });
 
   return (
     <Wrap>

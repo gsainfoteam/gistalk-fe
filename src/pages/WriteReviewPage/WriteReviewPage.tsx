@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { tempdb } from "@/tempdb/tempdb";
 import NavigationHeader from "@components/NavigationHeader";
 import Title from "@components/Title";
 import {
@@ -30,6 +29,9 @@ import {
   Form,
 } from "./WriteReviewPage.styled";
 import ReactSelect from "react-select";
+import { convertLectureCodeToList } from "@/utils";
+import { useQuery } from "@tanstack/react-query";
+import { getLectureSingleInfo } from "@/apis/lectures";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -37,18 +39,16 @@ const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
 }, {} as { [key: number]: number | null });
 
 export function WriteReviewPage() {
-  const navigate = useNavigate();
-
   const [ratings, setRatings] = useState(initialRatings);
   const [recommendation, setRecommendation] = useState(Recommendation.Normal); // 0 비추천, 1 보통, 2 추천
   const params = useParams() as { id: string };
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const handleCheckboxChange = (id: number) => {
+    setSelectedId(id === selectedId ? null : id);
+  };
 
   const id = Number(params.id);
-  const tempData = tempdb.find((value) => value.id === id) ?? tempdb[0]; //undefined인 경우 default 값: tempdb[0]
-
-  if (!tempData) {
-    navigate("/error");
-  }
 
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
@@ -64,15 +64,31 @@ export function WriteReviewPage() {
     setRatings((prevRatings) => ({ ...prevRatings, [questionId]: newRating }));
   };
 
+  const {
+    isLoading: isLectureInfoLoading,
+    data: lectureInfoData,
+    isError,
+  } = useQuery({
+    queryKey: [`getLectureSingleInfo/${id}`],
+    queryFn: () => getLectureSingleInfo(id),
+    retry: 0,
+  });
+
+  const { data: lectureInfo } = { ...lectureInfoData };
+
   return (
     <>
-      <NavigationHeader text={"강의평 작성"} />
+      <NavigationHeader prevUrl={`/${id}/evaluation`} text={"강의평 작성"} />
       <Wrapper>
-        <Title
-          subjectTitle={tempData.subjectName}
-          professorName={tempData.professorName}
-          subjectCode={tempData.subjectCode}
-        />
+        {!isLectureInfoLoading && lectureInfo && (
+          <Title
+            handleCheckboxChange={handleCheckboxChange}
+            subjectTitle={lectureInfo[0].lecture_name}
+            professorInfo={lectureInfo[0].prof}
+            subjectCode={convertLectureCodeToList(lectureInfo[0].lecture_code)}
+            selectedId={selectedId}
+          />
+        )}
         <Form onSubmit={handleSubmit}>
           <FormField>
             <Label>수강 년도</Label>
