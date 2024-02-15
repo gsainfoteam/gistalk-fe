@@ -141,11 +141,10 @@ export default function ProfilePage() {
     queryKey: [`getUserInfo`],
     queryFn: getUserInfo,
     retry: 0,
+    enabled: !!isValidToken,
   });
 
   const { data: userInfo } = { ...data };
-
-  console.log(userInfo);
 
   const logoutHandler = () => {
     localStorage.removeItem(ACCESS_TOKEN);
@@ -160,15 +159,12 @@ export default function ProfilePage() {
         <>
           <TitleWrap>
             <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
-              <span>{USER_NAME}</span> 님
+              {!isUserInfoLoading && data && (
+                <>
+                  <span>{userInfo.user_name}</span> 님, 안녕하세요
+                </>
+              )}
             </SubjectTitle>
-
-            <Button
-              text="프로필 관리"
-              onClick={() => {}}
-              color={"white"}
-              background={theme.colors.primary}
-            />
           </TitleWrap>
           <ContentWrap>
             <MyEvaluationContainer>

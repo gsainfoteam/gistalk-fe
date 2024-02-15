@@ -30,6 +30,7 @@ export const useLogin = (redirectPath: string | null) => {
     queryKey: [`getToken`],
     queryFn: () => getToken(authCode),
     retry: 0,
+    enabled: !!authCode,
   });
 
   if (error) {

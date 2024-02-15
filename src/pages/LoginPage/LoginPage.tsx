@@ -51,14 +51,6 @@ const IDPBtn = styled.button<{
   border: none;
 `;
 
-const WithoutLoginButton = styled.div`
-  font-weight: regular;
-  font-family: NSRegular;
-  color: ${theme.colors.secondaryText};
-  margin-top: 14px;
-  text-decoration: underline;
-`;
-
 export default function LoginPage() {
   const redirectPath = useRedirect();
   useLogin(redirectPath);
