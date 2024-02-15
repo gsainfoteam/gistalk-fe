@@ -7,7 +7,6 @@ import { getToken } from "@/apis/auth";
 import {
   ACCESS_TOKEN,
   ACCESS_TOKEN_EXPIRED_TIME,
-  REDIRECT_PATH,
 } from "@/constants/localStorageKeys";
 
 interface LoginResponse {

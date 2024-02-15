@@ -5,6 +5,8 @@ import styled from "styled-components";
 import ProfilePage from "./ProfilePage";
 import MainPage from "./MainPage/MainPage";
 import ComparePage from "./ComparePage";
+import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
+import LoginPage from "./LoginPage/LoginPage";
 
 const ContentContainer = styled.div`
   padding: 10px 1rem 20px 1rem;
@@ -12,10 +14,11 @@ const ContentContainer = styled.div`
 
 function MainRouterPage() {
   const [activeTab, setActiveTab] = useState(0);
-
   const handleTabChange = (tabIndex: number) => {
     setActiveTab(tabIndex);
   };
+
+  const isValidToken = useCheckValidToken(); //토큰 유효성 검사
 
   return (
     <>

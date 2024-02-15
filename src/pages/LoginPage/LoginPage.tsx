@@ -100,9 +100,6 @@ export default function LoginPage() {
           GSA 통합 계정으로 로그인
         </IDPBtn>
       </form>
-      <StyledLink to="/">
-        <WithoutLoginButton>로그인 없이 이용하기</WithoutLoginButton>
-      </StyledLink>
     </Wrap>
   );
 }

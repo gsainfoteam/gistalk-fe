@@ -4,6 +4,16 @@ import { theme } from "@/style/theme";
 import Button from "@/components/Button";
 
 import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
+import { useQuery } from "@tanstack/react-query";
+import { getUserInfo } from "@/apis/auth";
+import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
+import { FaArrowRightLong } from "react-icons/fa6";
+import {
+  ACCESS_TOKEN,
+  ACCESS_TOKEN_EXPIRED_TIME,
+} from "@/constants/localStorageKeys";
+import { StyledLink } from "@components/StyledLink";
+import Card from "@components/Card";
 
 const TitleWrap = styled.div`
   display: flex;
@@ -16,6 +26,7 @@ const TitleWrap = styled.div`
 const SubjectTitle = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSRegular;
   font-size: 20px;
+  margin-bottom: 1rem;
 `;
 
 const MyReviewsText = styled(theme.universalComponent.DivTextContainer)`
@@ -71,6 +82,20 @@ const Info = styled.div`
   padding: 1em 0;
 `;
 
+const LoginGuideText = styled.div`
+  font-family: NSRegular;
+  font-size: 16px;
+  color: ${theme.colors.primary};
+  text-decoration: underline;
+  cursor: pointer;
+`;
+
+const GuideToLogin = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 export default function ProfilePage() {
   const USER_NAME = "HongGilDong";
   const CLASS_LIST = [
@@ -104,50 +129,103 @@ export default function ProfilePage() {
     },
   ];
 
-  const MENU_TEXT = ["FAQ", "인포팀에 대해서...", "로그아웃"];
+  const MENU_TEXT = ["FAQ", "인포팀 소개"];
+
+  const isValidToken = useCheckValidToken(); //토큰 유효성 검사
+
+  const {
+    isLoading: isUserInfoLoading,
+    data,
+    isError,
+  } = useQuery({
+    queryKey: [`getUserInfo`],
+    queryFn: getUserInfo,
+    retry: 0,
+  });
+
+  const { data: userInfo } = { ...data };
+
+  console.log(userInfo);
+
+  const logoutHandler = () => {
+    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(ACCESS_TOKEN_EXPIRED_TIME);
+    alert("로그아웃 되었습니다");
+    window.location.href = "/";
+  };
+
   return (
     <>
-      <TitleWrap>
-        <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
-          <span>{USER_NAME}</span> 님
-        </SubjectTitle>
+      {isValidToken ? (
+        <>
+          <TitleWrap>
+            <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
+              <span>{USER_NAME}</span> 님
+            </SubjectTitle>
 
-        <Button
-          text="프로필 관리"
-          onClick={() => {}}
-          color={"white"}
-          background={theme.colors.primary}
-        />
-      </TitleWrap>
-      <ContentWrap>
-        <MyEvaluationContainer>
-          <MyReviewsText fontSize={16} color={theme.colors.primaryText}>
-            작성한 강의평
-          </MyReviewsText>
+            <Button
+              text="프로필 관리"
+              onClick={() => {}}
+              color={"white"}
+              background={theme.colors.primary}
+            />
+          </TitleWrap>
+          <ContentWrap>
+            <MyEvaluationContainer>
+              <MyReviewsText fontSize={16} color={theme.colors.primaryText}>
+                작성한 강의평
+              </MyReviewsText>
 
-          {CLASS_LIST.map((list) => (
-            <SemesterEvaluationWrap key={list.id}>
-              <Semester fontSize={14} color={theme.colors.primary}>
-                {list.time}
-              </Semester>
-              {list.subjects.map((subject) => (
-                <Subject>
-                  <SubjectName fontSize={16} color={theme.colors.primaryText}>
-                    {subject.className}
-                  </SubjectName>
-                  <ProfessorName fontSize={14} color={theme.colors.grayStroke}>
-                    {subject.professor}
-                  </ProfessorName>
-                  <ArrowIcon size={12} src={NavigationArrow_Svg} />
-                </Subject>
+              {CLASS_LIST.map((list) => (
+                <SemesterEvaluationWrap key={list.id}>
+                  <Semester fontSize={14} color={theme.colors.primary}>
+                    {list.time}
+                  </Semester>
+                  {list.subjects.map((subject, index) => (
+                    <Subject key={index}>
+                      <SubjectName
+                        fontSize={16}
+                        color={theme.colors.primaryText}
+                      >
+                        {subject.className}
+                      </SubjectName>
+                      <ProfessorName
+                        fontSize={14}
+                        color={theme.colors.grayStroke}
+                      >
+                        {subject.professor}
+                      </ProfessorName>
+                      <ArrowIcon size={12} src={NavigationArrow_Svg} />
+                    </Subject>
+                  ))}
+                </SemesterEvaluationWrap>
               ))}
-            </SemesterEvaluationWrap>
-          ))}
-        </MyEvaluationContainer>
+            </MyEvaluationContainer>
+          </ContentWrap>
+        </>
+      ) : (
+        <>
+          <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
+            로그인하고 작성한 후기를 확인해보세요!
+          </SubjectTitle>
+
+          <StyledLink to="/login">
+            <Card>
+              <GuideToLogin>
+                <LoginGuideText>바로 로그인하러 가기</LoginGuideText>
+
+                <FaArrowRightLong />
+              </GuideToLogin>
+            </Card>
+          </StyledLink>
+        </>
+      )}
+      <ContentWrap>
         <InfoList>
-          {MENU_TEXT.map((text) => (
-            <Info>{text}</Info>
+          {MENU_TEXT.map((text, index) => (
+            <Info key={index}>{text}</Info>
           ))}
+          {isValidToken && <Info onClick={logoutHandler}>로그아웃</Info>}
         </InfoList>
       </ContentWrap>
     </>
