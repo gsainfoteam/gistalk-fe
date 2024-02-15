@@ -32,6 +32,7 @@ import ReactSelect from "react-select";
 import { convertLectureCodeToList } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import { getLectureSingleInfo } from "@/apis/lectures";
+import { REDIRECT_PATH } from "@/constants/localStorageKeys";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -47,6 +48,8 @@ export function WriteReviewPage() {
   const handleCheckboxChange = (id: number) => {
     setSelectedId(id === selectedId ? null : id);
   };
+
+  localStorage.removeItem(REDIRECT_PATH); // 로그인 페이지에서 리다이렉션 링크가 걸려 들어온 경우 제거
 
   const id = Number(params.id);
 

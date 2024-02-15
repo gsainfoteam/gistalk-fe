@@ -1,13 +1,11 @@
 import styled from "styled-components";
-import { theme } from "@/style/theme";
-
-import Button from "@/components/Button";
-
-import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
 import { useQuery } from "@tanstack/react-query";
+import { FaArrowRightLong } from "react-icons/fa6";
+
+import { theme } from "@/style/theme";
+import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
 import { getUserInfo } from "@/apis/auth";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
-import { FaArrowRightLong } from "react-icons/fa6";
 import {
   ACCESS_TOKEN,
   ACCESS_TOKEN_EXPIRED_TIME,
@@ -75,11 +73,14 @@ const MyEvaluationContainer = styled.div`
 
 const InfoList = styled.div`
   margin: 0 auto 0 auto;
-  padding: 0.5rem;
 `;
 
 const Info = styled.div`
-  padding: 1em 0;
+  padding: 1em 0.5rem;
+  //hover시 색상 변경
+  &:hover {
+    background-color: ${theme.colors.cardBackGround};
+  }
 `;
 
 const LoginGuideText = styled.div`
