@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import NavigationHeader from "@components/NavigationHeader";
 import Title from "@components/Title";
@@ -17,9 +17,6 @@ import {
   Description,
   FormField,
   LeftLabel,
-  RadioButton,
-  RadioCheckText,
-  RadioContainer,
   RightLabel,
   Star,
   StarRating,
@@ -27,11 +24,14 @@ import {
   Wrapper,
   Label,
   Form,
+  RadioContainer,
+  RadioButton,
+  RadioCheckText,
 } from "./WriteReviewPage.styled";
 import ReactSelect from "react-select";
 import { convertLectureCodeToList } from "@/utils";
-import { useQuery } from "@tanstack/react-query";
-import { getLectureSingleInfo } from "@/apis/lectures";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getLectureSingleInfo, postLectureEvaluation } from "@/apis/lectures";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
@@ -39,11 +39,28 @@ const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   return acc;
 }, {} as { [key: number]: number | null });
 
+interface Option {
+  value: number;
+  label: string;
+}
+
+interface SelectedValues {
+  year: Option | null;
+  semester: Option | null;
+}
+
 export function WriteReviewPage() {
   const [ratings, setRatings] = useState(initialRatings);
-  const [recommendation, setRecommendation] = useState(Recommendation.Normal); // 0 비추천, 1 보통, 2 추천
-  const params = useParams() as { id: string };
+  const [selectedValues, setSelectedValues] = useState({
+    year: null,
+    semester: null,
+  });
+  const [recommendation, setRecommendation] = useState(-1); // 0 비추천, 1 추천, 2 보통 (왜 반대지?)
+  const [text, setText] = useState("");
+
   const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const params = useParams() as { id: string };
 
   const handleCheckboxChange = (id: number) => {
     setSelectedId(id === selectedId ? null : id);
@@ -57,20 +74,27 @@ export function WriteReviewPage() {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
   }, []);
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    console.log(event);
-    alert(`Rating: ${ratings[0]}`);
-  };
-
   const handleRatingChange = (questionId: number, newRating: number) => {
     setRatings((prevRatings) => ({ ...prevRatings, [questionId]: newRating }));
   };
 
+  const handleSelectChange = (
+    fieldName: keyof SelectedValues,
+    selectedOption: Option | null
+  ) => {
+    setSelectedValues((prevValues) => ({
+      ...prevValues,
+      [fieldName]: selectedOption,
+    }));
+  };
+
+  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setText(event.target.value);
+
   const {
     isLoading: isLectureInfoLoading,
     data: lectureInfoData,
-    isError,
+    isError: isErrorLoadingLectureInfo,
   } = useQuery({
     queryKey: [`getLectureSingleInfo/${id}`],
     queryFn: () => getLectureSingleInfo(id),
@@ -78,6 +102,58 @@ export function WriteReviewPage() {
   });
 
   const { data: lectureInfo } = { ...lectureInfoData };
+
+  const checkValidation = () => {
+    if (selectedId === null) {
+      alert("교수자를 선택해주세요");
+      return false;
+    }
+    if (selectedValues.year === null) {
+      alert("수강 년도를 선택해주세요");
+      return false;
+    }
+    if (selectedValues.semester === null) {
+      alert("수강 학기를 선택해주세요");
+      return false;
+    }
+    if (Object.values(ratings).some((rating) => rating === 0)) {
+      alert("모든 평가 항목에 대해 평가를 해주세요");
+      return false;
+    }
+    if (recommendation === -1) {
+      alert("강의를 추천하시는지 선택해주세요");
+      return false;
+    }
+    if (text === "") {
+      alert("총평을 작성해주세요");
+      return false;
+    }
+    return true;
+  };
+
+  //TODO: 토큰 만료 상황 대비해서 로그인 페이지로 리다이렉트
+
+  const addEvaluationMutate = useMutation({
+    mutationFn: () =>
+      postLectureEvaluation(
+        text,
+        id,
+        selectedId,
+        selectedValues.semester ? (selectedValues.semester as Option).value : 0,
+        selectedValues.year ? (selectedValues.year as Option).label : "2000",
+        recommendation
+      ),
+  });
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log(selectedId, ratings, selectedValues, text, recommendation);
+    const isValid = checkValidation();
+
+    if (isValid) {
+      addEvaluationMutate.mutate();
+    }
+  };
 
   return (
     <>
@@ -98,6 +174,10 @@ export function WriteReviewPage() {
             <ReactSelect
               options={COURSE_TAKEN_YEAR}
               placeholder={"수강 년도를 선택해주세요"}
+              value={selectedValues.year}
+              onChange={(selectedOption) =>
+                handleSelectChange("year", selectedOption)
+              }
             />
           </FormField>
 
@@ -106,6 +186,10 @@ export function WriteReviewPage() {
             <ReactSelect
               options={COURSE_TAKEN_SEMESTER}
               placeholder={"수강 학기를 선택해주세요"}
+              value={selectedValues.semester}
+              onChange={(selectedOption) =>
+                handleSelectChange("semester", selectedOption)
+              }
             />
           </FormField>
           {RATING_QUESTIONS.map((question, index) => (
@@ -148,7 +232,12 @@ export function WriteReviewPage() {
 
           <FormField>
             <Label>총평을 적어주세요</Label>
-            <TextArea placeholder="강의에 대해 사람들이 꼭 알았으면 하는 것들을 적어주세요" />
+
+            <TextArea
+              minRows={10}
+              onChange={handleTextChange}
+              placeholder="강의에 대해 사람들이 꼭 알았으면 하는 것들을 적어주세요"
+            />
           </FormField>
 
           <Button type="submit">강의평가 제출</Button>
