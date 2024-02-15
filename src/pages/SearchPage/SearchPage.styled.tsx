@@ -78,7 +78,7 @@ export const OptionBtnWrap = styled(theme.universalComponent.DivTextContainer)`
   }
 
   margin-top: 10px;
-  margin-right: 7.5vw;
+  margin-right: 5%;
   justify-content: right;
   font-family: NSRegular;
 

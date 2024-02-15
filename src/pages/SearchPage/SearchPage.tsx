@@ -6,7 +6,6 @@ import { departmentOptionAtom, sortOptionAtom } from "@/store";
 import { theme } from "@/style/theme";
 import SearchCard from "@/pages/SearchPage/components/SearchCard";
 import Filter_Svg from "@assets/svgs/tune.svg";
-import Order_Svg from "@assets/svgs/order.svg";
 import CatBlankList_Svg from "@assets/svgs/catBlankList.svg";
 import { lectureInfoWithProf } from "@/Interfaces/interfaces";
 import SortSelectModal from "@/pages/SearchPage/components/SortSelectModal";
@@ -18,7 +17,6 @@ import {
   FilterSvg,
   ItemList,
   OptionBtnWrap,
-  OrderSvg,
 } from "./SearchPage.styled";
 import { filterLectureList, sortList } from "./SearchPage.const";
 import { SearchBar } from "./components/SearchBar";
@@ -97,11 +95,11 @@ export function SearchPage() {
         searchTextEnter={searchTextEnter}
       />
       <OptionBtnWrap color={theme.colors.secondaryText} fontSize={14}>
-        <div onClick={() => setSortOpen(true)}>
+        {/* <div onClick={() => setSortOpen(true)}>
           <p>{sortStd}</p>
           <OrderSvg size={20} src={Order_Svg}></OrderSvg>
         </div>
-        <div></div>
+        <div></div> */}
         <div onClick={() => setDepartmentOpen(true)}>
           <p>분과 필터</p>
           <FilterSvg size={20} src={Filter_Svg}></FilterSvg>

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { theme } from "@/style/theme";
 import TempIcon from "@/pages/SearchPage/components/TempIcon";
 import { major, minor, underG } from "@/constants/StdSet";
+import { departmentColors } from "@/constants/departmentColors";
 
 interface IProps {
   subjectCode: string;
@@ -64,11 +65,11 @@ export default function SearchCard({
   const IconColor: string = major
     .map((item) => Division === item.subjectCode)
     .includes(true)
-    ? "#FFCF23"
+    ? departmentColors.major
     : minor.map((item) => Division === item.subjectCode).includes(true)
-    ? "#8CBAFF"
+    ? departmentColors.minor
     : underG.map((item) => Division === item.subjectCode).includes(true)
-    ? "#00b102"
+    ? departmentColors.underGraduate
     : "#E0E0E0";
   return (
     <SearchCardWrap hoverColor={theme.colors.inputBg}>
