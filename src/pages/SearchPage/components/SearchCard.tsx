@@ -20,7 +20,7 @@ const SearchCardWrap = styled.div<{ hoverColor: string }>`
 `;
 
 const CardContentWrap = styled.div<{ color: string }>`
-  padding-left: 10px;
+  padding: 0.4rem 0.6rem;
   color: ${(props) => props.color};
   text-align: left;
   text-overflow: ellipsis;
@@ -29,6 +29,7 @@ const CardContentWrap = styled.div<{ color: string }>`
   width: calc(
     100% - 50px - 65px
   ); //100%에서 TempIcon width, AverageScoreWrap width 뺀 값
+
   p {
     font-family: NSRegular;
     font-size: 13px;
@@ -49,29 +50,6 @@ const CardContentWrap = styled.div<{ color: string }>`
     white-space: nowrap; // 개행 방지
     overflow: hidden; // 넘치는 문자열 숨김
     text-overflow: ellipsis;
-  }
-`;
-
-const AverageScoreWrap = styled.div<{ color: string }>`
-  text-align: center;
-  width: 55px;
-  color: ${(props) => props.color};
-  font-family: NSBold;
-
-  p {
-    font-size: 12px;
-    position: relative;
-    top: 4px;
-  }
-
-  span {
-    font-size: 13px;
-  }
-
-  div {
-    font-size: 24px;
-    position: relative;
-    top: -4px;
   }
 `;
 
@@ -103,12 +81,6 @@ export default function SearchCard({
         <div>{subjectName}</div>
         {/* 과목 이름 */}
       </CardContentWrap>
-      <AverageScoreWrap color={theme.colors.primaryText}>
-        <p>평균점수</p>
-        <div>
-          5<span>/5</span>
-        </div>
-      </AverageScoreWrap>
     </SearchCardWrap>
   );
 }
