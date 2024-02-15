@@ -41,6 +41,8 @@ const ContentWrap = styled(theme.universalComponent.DivTextContainer)`
   word-break: break-all;
 `;
 
+const semester = ["봄", "여름", "가을", "겨울"];
+
 export default function Reply({ replyData }: IProps) {
   const isRecommend =
     replyData.recommend == 0
@@ -54,7 +56,7 @@ export default function Reply({ replyData }: IProps) {
         <LeftWrap>
           <RecommendationStatus like={isRecommend} />
           <SemesterText fontSize={13} color={theme.colors.secondaryText}>
-            {replyData.year}년 {replyData.semester}학기
+            {replyData.year}년 {semester[replyData.semester - 1]}학기
           </SemesterText>
         </LeftWrap>
         <LikeButton like={0} dislike={0} />

@@ -127,7 +127,6 @@ export function EvaluationPage() {
 
   const { data: lectureInfo } = { ...lectureInfoData };
   const { data: reviewList } = { ...evaluationData };
-  console.log(reviewList);
 
   return (
     <>
@@ -159,7 +158,10 @@ export function EvaluationPage() {
           >
             한줄평
             {!evaluationLoading && (
-              <span> 이 강의는 {reviewList.length ?? 0}명이 수강했어요</span>
+              <span>
+                {" "}
+                이 강의에 {reviewList.length ?? 0}명이 평가를 남겼어요
+              </span>
             )}
           </OneLineReviewText>
 
