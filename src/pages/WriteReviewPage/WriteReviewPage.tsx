@@ -143,6 +143,14 @@ export function WriteReviewPage() {
         selectedValues.year ? (selectedValues.year as Option).label : "2000",
         recommendation
       ),
+
+    onSuccess: (data, variables, context) => {
+      alert("강의평가가 성공적으로 등록되었습니다");
+      window.location.href = `/${id}/evaluation`;
+    },
+    onError: (error, variables, context) => {
+      alert(`강의평가 등록에 실패했습니다 ${error.message}`);
+    },
   });
 
   const handleSubmit = (event: React.FormEvent) => {
