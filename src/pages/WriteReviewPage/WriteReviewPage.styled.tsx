@@ -80,6 +80,12 @@ export const TextArea = styled(TextareaAutosize)`
   border: 1px solid #ddd;
   border-radius: 4px;
   height: 100px;
+
+  //placehoder 스타일링
+  &::placeholder {
+    font-size: 14px;
+    color: #ddd;
+  }
 `;
 
 export const RadioCheckText = styled.span`

@@ -21,6 +21,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import { convertLectureCodeToList } from "@/utils";
 import { IReply, professorInfo } from "@/Interfaces/interfaces";
+import Card from "@components/Card";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -141,6 +142,8 @@ export function EvaluationPage() {
             selectedId={selectedId}
           />
         )}
+
+        {selectedId === null && <Card>교수자를 선택해주세요</Card>}
 
         <GraphWrap>
           <Hexagon HexData={totalEvaluationScore?.data ?? null} />

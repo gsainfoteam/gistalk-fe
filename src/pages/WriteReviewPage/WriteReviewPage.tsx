@@ -57,18 +57,12 @@ export function WriteReviewPage() {
   });
   const [recommendation, setRecommendation] = useState(-1); // 0 비추천, 1 추천, 2 보통 (왜 반대지?)
   const [text, setText] = useState("");
-
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
   const params = useParams() as { id: string };
-
-  const handleCheckboxChange = (id: number) => {
-    setSelectedId(id === selectedId ? null : id);
-  };
+  const id = Number(params.id);
 
   localStorage.removeItem(REDIRECT_PATH); // 로그인 페이지에서 리다이렉션 링크가 걸려 들어온 경우 제거
-
-  const id = Number(params.id);
 
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
@@ -90,6 +84,10 @@ export function WriteReviewPage() {
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
     setText(event.target.value);
+
+  const handleCheckboxChange = (id: number) => {
+    setSelectedId(id === selectedId ? null : id);
+  };
 
   const {
     isLoading: isLectureInfoLoading,
@@ -180,6 +178,7 @@ export function WriteReviewPage() {
             selectedId={selectedId}
           />
         )}
+
         <Form onSubmit={handleSubmit}>
           <FormField>
             <Label>수강 년도</Label>
