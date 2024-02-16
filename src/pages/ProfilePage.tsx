@@ -12,6 +12,7 @@ import {
 } from "@/constants/localStorageKeys";
 import { StyledLink } from "@components/StyledLink";
 import Card from "@components/Card";
+import { recordInfo, reviewInfo } from "@/Interfaces/interfaces";
 
 const TitleWrap = styled.div`
   display: flex;
@@ -97,40 +98,9 @@ const GuideToLogin = styled.div`
   justify-content: space-between;
 `;
 
+const MENU_TEXT = ["FAQ", "인포팀 소개"];
+
 export default function ProfilePage() {
-  const CLASS_LIST = [
-    {
-      id: 1,
-      time: "2022년 1학기",
-      subjects: [
-        {
-          className: "컴퓨터 프로그래밍",
-          professor: "Suman Pandey",
-        },
-        {
-          className: "일반물리학 및 연습",
-          professor: "박찬용  ",
-        },
-      ],
-    },
-    {
-      id: 2,
-      time: "2022년 2학기",
-      subjects: [
-        {
-          className: "컴퓨터 프로그래밍",
-          professor: "Suman Pandey",
-        },
-        {
-          className: "일반물리학 및 연습",
-          professor: "박찬용  ",
-        },
-      ],
-    },
-  ];
-
-  const MENU_TEXT = ["FAQ", "인포팀 소개"];
-
   const isValidToken = useCheckValidToken(); //토큰 유효성 검사
 
   const { isLoading: isUserInfoLoading, data } = useQuery({
@@ -151,12 +121,40 @@ export default function ProfilePage() {
   const { data: userInfo } = { ...data };
   const { data: userEvaluations } = { ...userEvaluationData };
 
+  function groupByYearAndSemester( //0000년 00학기 형태로 나타내기 위해 년도, 학기로 묶어주는 함수
+    data: recordInfo[]
+  ): Record<string, Record<string, recordInfo[]>> {
+    if (!data) return {};
+    const groupedData: Record<string, Record<string, recordInfo[]>> = {};
+
+    data.forEach((item) => {
+      const yearKey = item.year;
+      const semesterKey = item.semester.toString();
+
+      if (!groupedData[yearKey]) {
+        groupedData[yearKey] = {};
+      }
+
+      if (!groupedData[yearKey][semesterKey]) {
+        groupedData[yearKey][semesterKey] = [];
+      }
+
+      groupedData[yearKey][semesterKey].push(item);
+    });
+
+    return groupedData;
+  }
+
+  const groupedData = groupByYearAndSemester(userEvaluations);
+
   const logoutHandler = () => {
     localStorage.removeItem(ACCESS_TOKEN);
     localStorage.removeItem(ACCESS_TOKEN_EXPIRED_TIME);
     alert("로그아웃 되었습니다");
     window.location.href = "/";
   };
+
+  const semesterArray = ["봄", "여름", "가을", "겨울"];
 
   return (
     <>
@@ -178,29 +176,35 @@ export default function ProfilePage() {
               </MyReviewsText>
 
               {!isUserEvaluationLoading &&
-                CLASS_LIST.map((list) => (
-                  <SemesterEvaluationWrap key={list.id}>
-                    <Semester fontSize={14} color={theme.colors.primary}>
-                      {list.time}
-                    </Semester>
-                    {list.subjects.map((subject, index) => (
-                      <Subject key={index}>
-                        <SubjectName
-                          fontSize={16}
-                          color={theme.colors.primaryText}
-                        >
-                          {subject.className}
-                        </SubjectName>
-                        <ProfessorName
-                          fontSize={14}
-                          color={theme.colors.grayStroke}
-                        >
-                          {subject.professor}
-                        </ProfessorName>
-                        <ArrowIcon size={12} src={NavigationArrow_Svg} />
-                      </Subject>
+                Object.entries(groupedData).map(([year, semesters]) => (
+                  <div key={year}>
+                    {Object.entries(semesters).map(([semester, subjects]) => (
+                      <SemesterEvaluationWrap key={`${year}-${semester}`}>
+                        <Semester fontSize={14} color={theme.colors.primary}>
+                          {year}년 {semesterArray[Number(semester) - 1]}학기
+                        </Semester>
+                        {subjects.map((subject, index) => (
+                          <StyledLink to={`/${subject.lecture_id}/evaluation`}>
+                            <Subject key={index}>
+                              <SubjectName
+                                fontSize={16}
+                                color={theme.colors.primaryText}
+                              >
+                                {subject.lecture_name}
+                              </SubjectName>
+                              <ProfessorName
+                                fontSize={14}
+                                color={theme.colors.grayStroke}
+                              >
+                                {subject.prof_name}
+                              </ProfessorName>
+                              <ArrowIcon size={12} src={NavigationArrow_Svg} />
+                            </Subject>
+                          </StyledLink>
+                        ))}
+                      </SemesterEvaluationWrap>
                     ))}
-                  </SemesterEvaluationWrap>
+                  </div>
                 ))}
             </MyEvaluationContainer>
           </ContentWrap>

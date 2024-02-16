@@ -79,7 +79,7 @@ export const RATING_QUESTIONS = [
 
 export const RECOMMEND_TEXT = {
   question: "이 강의를 추천하시겠어요?",
-  options: ["추천", "보통", "추천하지 않음"],
+  options: ["추천하지 않음", "보통", "추천"],
 };
 
 export const EMPTY_STAR = "☆";
