@@ -1,6 +1,13 @@
 import axios from "axios";
 import axiosInstance from "./axiosInstance";
 import { RatingQuestionId } from "@/pages/WriteReviewPage/WriteReviewPage.const";
+import {
+  CLIENT_NOT_RECOMMEND,
+  CLIENT_RECOMMEND,
+  NORMAL,
+  NOT_RECOMMEND,
+  RECOMMEND,
+} from "@/constants/recommand";
 
 //auth 정보를 사용하지 않으므로 axiosInstance를 사용하지 않음
 export const getLectureList = () => {
@@ -57,13 +64,6 @@ export const postLectureEvaluation = (
   ratings: { [key: number]: number | null }
 ) => {
   // 현재 추천이 1, 비추천이 0, 보통이 2로 서버에 저장되나, 비추천 0, 보통 1, 추천 2로 저장되어 있음. 따라서 보통과 추천을 바꿔줘야 함
-
-  const RECOMMEND = 1;
-  const NOT_RECOMMEND = 0;
-  const NORMAL = 2;
-
-  const CLIENT_RECOMMEND = 2;
-  const CLIENT_NOT_RECOMMEND = 0;
 
   const fixedRecommend =
     recommend === CLIENT_NOT_RECOMMEND
