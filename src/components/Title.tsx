@@ -50,6 +50,7 @@ const CheckboxContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 /** 강의평가가 표시되는 title
