@@ -55,6 +55,22 @@ export const postLectureEvaluation = (
   year: string,
   recommend: number | null
 ) => {
+  // 현재 추천이 1, 비추천이 0, 보통이 2로 서버에 저장되나, 비추천 0, 보통 1, 추천 2로 저장되어 있음. 따라서 보통과 추천을 바꿔줘야 함
+
+  const RECOMMEND = 1;
+  const NOT_RECOMMEND = 0;
+  const NORMAL = 2;
+
+  const CLIENT_RECOMMEND = 2;
+  const CLIENT_NOT_RECOMMEND = 0;
+
+  const fixedRecommend =
+    recommend === CLIENT_NOT_RECOMMEND
+      ? NOT_RECOMMEND
+      : recommend === CLIENT_RECOMMEND
+      ? RECOMMEND
+      : NORMAL;
+
   const payload = {
     difficulty: 1,
     strength: 1,
@@ -67,7 +83,7 @@ export const postLectureEvaluation = (
     prof_id: professorId,
     semester_id: semesterId,
     year: year,
-    recommend: recommend,
+    recommend: fixedRecommend,
   };
 
   return axiosInstance.post(
