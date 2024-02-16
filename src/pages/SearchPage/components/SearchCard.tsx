@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { theme } from "@/style/theme";
 import TempIcon from "@/pages/SearchPage/components/TempIcon";
 import { major, minor, underG } from "@/constants/StdSet";
+import { departmentColors } from "@/constants/departmentColors";
 
 interface IProps {
   subjectCode: string;
@@ -20,7 +21,7 @@ const SearchCardWrap = styled.div<{ hoverColor: string }>`
 `;
 
 const CardContentWrap = styled.div<{ color: string }>`
-  padding-left: 10px;
+  padding: 0.4rem 0.6rem;
   color: ${(props) => props.color};
   text-align: left;
   text-overflow: ellipsis;
@@ -29,6 +30,7 @@ const CardContentWrap = styled.div<{ color: string }>`
   width: calc(
     100% - 50px - 65px
   ); //100%에서 TempIcon width, AverageScoreWrap width 뺀 값
+
   p {
     font-family: NSRegular;
     font-size: 13px;
@@ -52,29 +54,6 @@ const CardContentWrap = styled.div<{ color: string }>`
   }
 `;
 
-const AverageScoreWrap = styled.div<{ color: string }>`
-  text-align: center;
-  width: 55px;
-  color: ${(props) => props.color};
-  font-family: NSBold;
-
-  p {
-    font-size: 12px;
-    position: relative;
-    top: 4px;
-  }
-
-  span {
-    font-size: 13px;
-  }
-
-  div {
-    font-size: 24px;
-    position: relative;
-    top: -4px;
-  }
-`;
-
 /** 검색했을 때 뜨는 강의평가를 표시하는 카드 */
 export default function SearchCard({
   subjectCode,
@@ -86,11 +65,11 @@ export default function SearchCard({
   const IconColor: string = major
     .map((item) => Division === item.subjectCode)
     .includes(true)
-    ? "#FFCF23"
+    ? departmentColors.major
     : minor.map((item) => Division === item.subjectCode).includes(true)
-    ? "#8CBAFF"
+    ? departmentColors.minor
     : underG.map((item) => Division === item.subjectCode).includes(true)
-    ? "#00b102"
+    ? departmentColors.underGraduate
     : "#E0E0E0";
   return (
     <SearchCardWrap hoverColor={theme.colors.inputBg}>
@@ -103,12 +82,6 @@ export default function SearchCard({
         <div>{subjectName}</div>
         {/* 과목 이름 */}
       </CardContentWrap>
-      <AverageScoreWrap color={theme.colors.primaryText}>
-        <p>평균점수</p>
-        <div>
-          5<span>/5</span>
-        </div>
-      </AverageScoreWrap>
     </SearchCardWrap>
   );
 }

@@ -7,7 +7,6 @@ import { getToken } from "@/apis/auth";
 import {
   ACCESS_TOKEN,
   ACCESS_TOKEN_EXPIRED_TIME,
-  REDIRECT_PATH,
 } from "@/constants/localStorageKeys";
 
 interface LoginResponse {
@@ -31,6 +30,7 @@ export const useLogin = (redirectPath: string | null) => {
     queryKey: [`getToken`],
     queryFn: () => getToken(authCode),
     retry: 0,
+    enabled: !!authCode,
   });
 
   if (error) {

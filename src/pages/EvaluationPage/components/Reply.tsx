@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { IReply } from "@/Interfaces/interfaces";
 
 import LikeButton from "./LikeButton";
-import RecommendationStatus from "../../../components/RecommendationStatus";
+import RecommendationStatus from "@components/RecommendationStatus";
+import { NOT_RECOMMEND, RECOMMEND } from "@/constants/recommand";
 
 interface IProps {
   replyData: IReply;
@@ -41,23 +42,26 @@ const ContentWrap = styled(theme.universalComponent.DivTextContainer)`
   word-break: break-all;
 `;
 
+const semester = ["봄", "여름", "가을", "겨울"];
+
 export default function Reply({ replyData }: IProps) {
   const isRecommend =
-    replyData.recommend == 0
+    replyData.recommend == NOT_RECOMMEND
       ? "false"
-      : replyData.recommend == 1
+      : replyData.recommend == RECOMMEND
       ? "true"
       : "none"; // "true" or "false" or "none
+
   return (
     <Wrap>
       <InfoWrap>
         <LeftWrap>
           <RecommendationStatus like={isRecommend} />
           <SemesterText fontSize={13} color={theme.colors.secondaryText}>
-            {replyData.year}년 {replyData.semester}학기
+            {replyData.year}년 {semester[replyData.semester - 1]}학기
           </SemesterText>
         </LeftWrap>
-        <LikeButton like={0} dislike={0} />
+        {/* <LikeButton like={0} dislike={0} /> */}
       </InfoWrap>
 
       <ContentWrap fontSize={13} color={theme.colors.primaryText}>

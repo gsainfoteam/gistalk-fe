@@ -21,6 +21,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import { convertLectureCodeToList } from "@/utils";
 import { IReply, professorInfo } from "@/Interfaces/interfaces";
+import Card from "@components/Card";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -113,6 +114,7 @@ export function EvaluationPage() {
     queryKey: [`getEvaluationScore/${id}/${selectedId}`],
     queryFn: () => getLectureTotalEvaluation(id, selectedId),
     retry: 0,
+    enabled: !!selectedId, //교수를 아무도 선택하지 않을때, 즉 null일때는 쿼리를 보내지 않음
   });
 
   const {
@@ -127,7 +129,6 @@ export function EvaluationPage() {
 
   const { data: lectureInfo } = { ...lectureInfoData };
   const { data: reviewList } = { ...evaluationData };
-  console.log(reviewList);
 
   return (
     <>
@@ -142,6 +143,8 @@ export function EvaluationPage() {
             selectedId={selectedId}
           />
         )}
+
+        {selectedId === null && <Card>교수자를 선택해주세요</Card>}
 
         <GraphWrap>
           <Hexagon HexData={totalEvaluationScore?.data ?? null} />
@@ -159,7 +162,10 @@ export function EvaluationPage() {
           >
             한줄평
             {!evaluationLoading && (
-              <span> 이 강의는 {reviewList.length ?? 0}명이 수강했어요</span>
+              <span>
+                {" "}
+                이 강의에 {reviewList.length ?? 0}명이 평가를 남겼어요
+              </span>
             )}
           </OneLineReviewText>
 

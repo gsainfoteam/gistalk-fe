@@ -13,6 +13,7 @@ const Wrap = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSRegular;
   display: flex;
   align-items: center;
+  min-width: 56px;
 `;
 
 const RecommendSvg = styled(theme.universalComponent.SvgIcon)<{

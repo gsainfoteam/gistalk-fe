@@ -42,12 +42,12 @@ export default function MainPage() {
         {!isLoading &&
           data &&
           recentEvaluation.map((evaluation: reviewInfo) => (
-            <Card>
+            <Card key={evaluation.id}>
               <LectureInformation
                 LectureName={evaluation.lecture_name}
                 ProfessorName={evaluation.prof_name}
                 CourseTakenYear={parseInt(
-                  evaluation.semesterId.toString().substring(0, 4)
+                  evaluation.year.toString().substring(0, 4)
                 )}
                 CourseTakenSemester={evaluation.semesterId}
                 CourseRecommendation={true}

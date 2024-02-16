@@ -42,7 +42,10 @@ export const SearchHorizontalLine = styled.hr<{
 `;
 
 export const SearchWrap = styled.div<{ borderColor: string }>`
-  width: 90%;
+  //미디어쿼리 적용
+  @media (max-width: 480px) {
+    width: 90%; // 480px 이하일 때 가로선 길이 조정
+  }
   display: flex;
   flex-direction: column;
   height: max-content;

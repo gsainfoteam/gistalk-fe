@@ -1,5 +1,6 @@
 import { theme } from "@/style/theme";
 import styled from "styled-components";
+import TextareaAutosize from "react-textarea-autosize";
 
 export const Wrapper = styled.div`
   margin: 0 20px;
@@ -74,11 +75,18 @@ export const Star = styled.span`
   font-size: 32px;
 `;
 
-export const TextArea = styled.textarea`
+export const TextArea = styled(TextareaAutosize)`
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
   height: 100px;
+
+  //placehoder 스타일링
+  &::placeholder {
+    font-size: 14px;
+    color: #ddd;
+    font-family: NSRegular;
+  }
 `;
 
 export const RadioCheckText = styled.span`

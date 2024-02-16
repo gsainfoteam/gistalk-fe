@@ -1,9 +1,18 @@
 import styled from "styled-components";
+import { useQuery } from "@tanstack/react-query";
+import { FaArrowRightLong } from "react-icons/fa6";
+
 import { theme } from "@/style/theme";
-
-import Button from "@/components/Button";
-
 import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
+import { getUserEvaluations, getUserInfo } from "@/apis/auth";
+import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
+import {
+  ACCESS_TOKEN,
+  ACCESS_TOKEN_EXPIRED_TIME,
+} from "@/constants/localStorageKeys";
+import { StyledLink } from "@components/StyledLink";
+import Card from "@components/Card";
+import { recordInfo, reviewInfo } from "@/Interfaces/interfaces";
 
 const TitleWrap = styled.div`
   display: flex;
@@ -16,6 +25,7 @@ const TitleWrap = styled.div`
 const SubjectTitle = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSRegular;
   font-size: 20px;
+  margin-bottom: 1rem;
 `;
 
 const MyReviewsText = styled(theme.universalComponent.DivTextContainer)`
@@ -64,90 +74,164 @@ const MyEvaluationContainer = styled.div`
 
 const InfoList = styled.div`
   margin: 0 auto 0 auto;
-  padding: 0.5rem;
 `;
 
 const Info = styled.div`
-  padding: 1em 0;
+  padding: 1em 0.5rem;
+  //hover시 색상 변경
+  &:hover {
+    background-color: ${theme.colors.cardBackGround};
+  }
 `;
 
-export default function ProfilePage() {
-  const USER_NAME = "HongGilDong";
-  const CLASS_LIST = [
-    {
-      id: 1,
-      time: "2022년 1학기",
-      subjects: [
-        {
-          className: "컴퓨터 프로그래밍",
-          professor: "Suman Pandey",
-        },
-        {
-          className: "일반물리학 및 연습",
-          professor: "박찬용  ",
-        },
-      ],
-    },
-    {
-      id: 2,
-      time: "2022년 2학기",
-      subjects: [
-        {
-          className: "컴퓨터 프로그래밍",
-          professor: "Suman Pandey",
-        },
-        {
-          className: "일반물리학 및 연습",
-          professor: "박찬용  ",
-        },
-      ],
-    },
-  ];
+const LoginGuideText = styled.div`
+  font-family: NSRegular;
+  font-size: 16px;
+  color: ${theme.colors.primary};
+  text-decoration: underline;
+  cursor: pointer;
+`;
 
-  const MENU_TEXT = ["FAQ", "인포팀에 대해서...", "로그아웃"];
+const GuideToLogin = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const MENU_TEXT = ["FAQ", "인포팀 소개"];
+
+export default function ProfilePage() {
+  const isValidToken = useCheckValidToken(); //토큰 유효성 검사
+
+  const { isLoading: isUserInfoLoading, data } = useQuery({
+    queryKey: [`getUserInfo`],
+    queryFn: getUserInfo,
+    retry: 0,
+    enabled: !!isValidToken,
+  });
+
+  const { isLoading: isUserEvaluationLoading, data: userEvaluationData } =
+    useQuery({
+      queryKey: [`userEvaluation`],
+      queryFn: getUserEvaluations,
+      retry: 0,
+      enabled: !!isValidToken,
+    });
+
+  const { data: userInfo } = { ...data };
+  const { data: userEvaluations } = { ...userEvaluationData };
+
+  function groupByYearAndSemester( //0000년 00학기 형태로 나타내기 위해 년도, 학기로 묶어주는 함수
+    data: recordInfo[]
+  ): Record<string, Record<string, recordInfo[]>> {
+    if (!data) return {};
+    const groupedData: Record<string, Record<string, recordInfo[]>> = {};
+
+    data.forEach((item) => {
+      const yearKey = item.year;
+      const semesterKey = item.semester.toString();
+
+      if (!groupedData[yearKey]) {
+        groupedData[yearKey] = {};
+      }
+
+      if (!groupedData[yearKey][semesterKey]) {
+        groupedData[yearKey][semesterKey] = [];
+      }
+
+      groupedData[yearKey][semesterKey].push(item);
+    });
+
+    return groupedData;
+  }
+
+  const groupedData = groupByYearAndSemester(userEvaluations);
+
+  const logoutHandler = () => {
+    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(ACCESS_TOKEN_EXPIRED_TIME);
+    alert("로그아웃 되었습니다");
+    window.location.href = "/";
+  };
+
+  const semesterArray = ["봄", "여름", "가을", "겨울"];
+
   return (
     <>
-      <TitleWrap>
-        <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
-          <span>{USER_NAME}</span> 님
-        </SubjectTitle>
+      {isValidToken ? (
+        <>
+          <TitleWrap>
+            <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
+              {!isUserInfoLoading && data && (
+                <>
+                  <span>{userInfo.user_name}</span> 님, 안녕하세요
+                </>
+              )}
+            </SubjectTitle>
+          </TitleWrap>
+          <ContentWrap>
+            <MyEvaluationContainer>
+              <MyReviewsText fontSize={16} color={theme.colors.primaryText}>
+                작성한 강의평
+              </MyReviewsText>
 
-        <Button
-          text="프로필 관리"
-          onClick={() => {}}
-          color={"white"}
-          background={theme.colors.primary}
-        />
-      </TitleWrap>
+              {!isUserEvaluationLoading &&
+                Object.entries(groupedData).map(([year, semesters]) => (
+                  <div key={year}>
+                    {Object.entries(semesters).map(([semester, subjects]) => (
+                      <SemesterEvaluationWrap key={`${year}-${semester}`}>
+                        <Semester fontSize={14} color={theme.colors.primary}>
+                          {year}년 {semesterArray[Number(semester) - 1]}학기
+                        </Semester>
+                        {subjects.map((subject, index) => (
+                          <StyledLink to={`/${subject.lecture_id}/evaluation`}>
+                            <Subject key={index}>
+                              <SubjectName
+                                fontSize={16}
+                                color={theme.colors.primaryText}
+                              >
+                                {subject.lecture_name}
+                              </SubjectName>
+                              <ProfessorName
+                                fontSize={14}
+                                color={theme.colors.grayStroke}
+                              >
+                                {subject.prof_name}
+                              </ProfessorName>
+                              <ArrowIcon size={12} src={NavigationArrow_Svg} />
+                            </Subject>
+                          </StyledLink>
+                        ))}
+                      </SemesterEvaluationWrap>
+                    ))}
+                  </div>
+                ))}
+            </MyEvaluationContainer>
+          </ContentWrap>
+        </>
+      ) : (
+        <>
+          <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
+            로그인하고 작성한 후기를 확인해보세요!
+          </SubjectTitle>
+
+          <StyledLink to="/login">
+            <Card>
+              <GuideToLogin>
+                <LoginGuideText>바로 로그인하러 가기</LoginGuideText>
+
+                <FaArrowRightLong />
+              </GuideToLogin>
+            </Card>
+          </StyledLink>
+        </>
+      )}
       <ContentWrap>
-        <MyEvaluationContainer>
-          <MyReviewsText fontSize={16} color={theme.colors.primaryText}>
-            작성한 강의평
-          </MyReviewsText>
-
-          {CLASS_LIST.map((list) => (
-            <SemesterEvaluationWrap key={list.id}>
-              <Semester fontSize={14} color={theme.colors.primary}>
-                {list.time}
-              </Semester>
-              {list.subjects.map((subject) => (
-                <Subject>
-                  <SubjectName fontSize={16} color={theme.colors.primaryText}>
-                    {subject.className}
-                  </SubjectName>
-                  <ProfessorName fontSize={14} color={theme.colors.grayStroke}>
-                    {subject.professor}
-                  </ProfessorName>
-                  <ArrowIcon size={12} src={NavigationArrow_Svg} />
-                </Subject>
-              ))}
-            </SemesterEvaluationWrap>
-          ))}
-        </MyEvaluationContainer>
         <InfoList>
-          {MENU_TEXT.map((text) => (
-            <Info>{text}</Info>
+          {MENU_TEXT.map((text, index) => (
+            <Info key={index}>{text}</Info>
           ))}
+          {isValidToken && <Info onClick={logoutHandler}>로그아웃</Info>}
         </InfoList>
       </ContentWrap>
     </>
