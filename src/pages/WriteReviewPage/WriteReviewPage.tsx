@@ -250,7 +250,7 @@ export function WriteReviewPage() {
             <TextArea
               minRows={10}
               onChange={handleTextChange}
-              placeholder="강의에 대해 사람들이 꼭 알았으면 하는 것들을 적어주세요"
+              placeholder="과제, 시험, 출석 등 강의에 대해 사람들이 꼭 알았으면 하는 점을 적어주세요"
             />
           </FormField>
 

@@ -85,6 +85,7 @@ export const TextArea = styled(TextareaAutosize)`
   &::placeholder {
     font-size: 14px;
     color: #ddd;
+    font-family: NSRegular;
   }
 `;
 
