@@ -135,3 +135,25 @@ export interface reviewInfo {
   semesterId: number;
   year: string;
 }
+
+export interface recordInfo {
+  id: number;
+  difficulty: number;
+  strength: number;
+  helpful: number;
+  interest: number;
+  lots: number;
+  satisfy: number;
+  review: string;
+  evaluation: number;
+
+  lecture_id: number;
+  lecture_name: string;
+  lecture_code: string;
+  prof_id: number;
+  prof_name: string;
+
+  recommend: number;
+  semester: number; //위는 semesterID인데 여기는 semester임
+  year: string;
+}
