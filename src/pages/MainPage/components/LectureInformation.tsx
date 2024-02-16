@@ -29,7 +29,7 @@ interface LectureInformationProps {
   ProfessorName: string;
   CourseTakenYear: number;
   CourseTakenSemester: number;
-  CourseRecommendation: boolean;
+  CourseRecommendation: boolean | null;
 }
 
 const semester = ["봄", "여름", "가을", "겨울"];
