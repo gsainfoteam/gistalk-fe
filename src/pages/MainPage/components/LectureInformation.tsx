@@ -16,6 +16,7 @@ const LectureNameText = styled.span`
 const ProfessorNameText = styled.span`
   font-size: 16px;
   margin-right: 5px;
+  color: #959595;
 `;
 
 const CourseTakenTimeText = styled.span`
@@ -31,6 +32,8 @@ interface LectureInformationProps {
   CourseRecommendation: boolean;
 }
 
+const semester = ["봄", "여름", "가을", "겨울"];
+
 function LectureInformation({
   LectureName,
   ProfessorName,
@@ -44,7 +47,7 @@ function LectureInformation({
         <LectureNameText>{LectureName}</LectureNameText>
         <ProfessorNameText>{ProfessorName}</ProfessorNameText>
         <CourseTakenTimeText>
-          {CourseTakenYear}년 {CourseTakenSemester}학기
+          {CourseTakenYear}년 {semester[CourseTakenSemester]}학기
         </CourseTakenTimeText>
       </div>
 

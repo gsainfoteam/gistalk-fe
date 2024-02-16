@@ -18,7 +18,6 @@ export default function MainPage() {
   });
 
   const { data: recentEvaluation } = { ...data };
-
   return (
     <>
       <WithTitleAndDescription
