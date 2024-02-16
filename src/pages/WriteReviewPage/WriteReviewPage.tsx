@@ -128,6 +128,11 @@ export function WriteReviewPage() {
       alert("총평을 작성해주세요");
       return false;
     }
+    // 15자 이상으로 작성해야 함
+    if (text.length < 15) {
+      alert("총평을 15자 이상으로 작성해주세요");
+      return false;
+    }
     return true;
   };
 
@@ -155,7 +160,6 @@ export function WriteReviewPage() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(selectedId, ratings, selectedValues, text, recommendation);
     const isValid = checkValidation();
 
     if (isValid) {
@@ -240,6 +244,9 @@ export function WriteReviewPage() {
 
           <FormField>
             <Label>총평을 적어주세요</Label>
+            <Description>
+              {text.length}자 작성 (최소 15자 이상으로 작성해주세요)
+            </Description>
 
             <TextArea
               minRows={10}

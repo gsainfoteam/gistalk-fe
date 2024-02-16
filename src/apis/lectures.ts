@@ -46,6 +46,7 @@ export const getLectureSingleInfo = (lectureId: number) => {
   });
 };
 
+// TODO: 추천, 비추 변환해야 함, 그리고 rating을 추가해야 함
 export const postLectureEvaluation = (
   review: string,
   lectureId: number,
