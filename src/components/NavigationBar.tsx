@@ -53,9 +53,9 @@ function NavigationBar({ activeTab, onTabChange }: TabBarProps) {
       <Tab active={activeTab === 0} onClick={() => onTabChange(0)}>
         강의평가
       </Tab>
-      <Tab active={activeTab === 1} onClick={() => onTabChange(1)}>
+      {/* <Tab active={activeTab === 1} onClick={() => onTabChange(1)}>
         강의비교
-      </Tab>
+      </Tab> */}
       <Tab active={activeTab === 2} onClick={() => onTabChange(2)}>
         개인설정
       </Tab>
