@@ -98,7 +98,10 @@ const GuideToLogin = styled.div`
   justify-content: space-between;
 `;
 
-const MENU_TEXT = ["FAQ", "인포팀 소개"];
+const MENU_TEXT = [
+  { text: "인포팀 소개", url: "https://introduce.gistory.me/" },
+  { text: "문의하기", url: "https://cs.gistory.me/" },
+];
 
 export default function ProfilePage() {
   const isValidToken = useCheckValidToken(); //토큰 유효성 검사
@@ -228,8 +231,10 @@ export default function ProfilePage() {
       )}
       <ContentWrap>
         <InfoList>
-          {MENU_TEXT.map((text, index) => (
-            <Info key={index}>{text}</Info>
+          {MENU_TEXT.map((menu, index) => (
+            <StyledLink key={index} to={menu.url}>
+              <Info>{menu.text}</Info>
+            </StyledLink>
           ))}
           {isValidToken && <Info onClick={logoutHandler}>로그아웃</Info>}
         </InfoList>
