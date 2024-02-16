@@ -18,3 +18,7 @@ export const getToken = (authCode: string | null) => {
 export const getUserInfo = () => {
   return axiosInstance.get(`${import.meta.env.VITE_API_URL}/user/info`);
 };
+
+export const getUserEvaluations = () => {
+  return axiosInstance.get(`${import.meta.env.VITE_API_URL}/user/record`);
+};

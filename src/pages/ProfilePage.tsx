@@ -4,7 +4,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 
 import { theme } from "@/style/theme";
 import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
-import { getUserInfo } from "@/apis/auth";
+import { getUserEvaluations, getUserInfo } from "@/apis/auth";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import {
   ACCESS_TOKEN,
@@ -98,7 +98,6 @@ const GuideToLogin = styled.div`
 `;
 
 export default function ProfilePage() {
-  const USER_NAME = "HongGilDong";
   const CLASS_LIST = [
     {
       id: 1,
@@ -134,18 +133,23 @@ export default function ProfilePage() {
 
   const isValidToken = useCheckValidToken(); //토큰 유효성 검사
 
-  const {
-    isLoading: isUserInfoLoading,
-    data,
-    isError,
-  } = useQuery({
+  const { isLoading: isUserInfoLoading, data } = useQuery({
     queryKey: [`getUserInfo`],
     queryFn: getUserInfo,
     retry: 0,
     enabled: !!isValidToken,
   });
 
+  const { isLoading: isUserEvaluationLoading, data: userEvaluationData } =
+    useQuery({
+      queryKey: [`userEvaluation`],
+      queryFn: getUserEvaluations,
+      retry: 0,
+      enabled: !!isValidToken,
+    });
+
   const { data: userInfo } = { ...data };
+  const { data: userEvaluations } = { ...userEvaluationData };
 
   const logoutHandler = () => {
     localStorage.removeItem(ACCESS_TOKEN);
@@ -173,30 +177,31 @@ export default function ProfilePage() {
                 작성한 강의평
               </MyReviewsText>
 
-              {CLASS_LIST.map((list) => (
-                <SemesterEvaluationWrap key={list.id}>
-                  <Semester fontSize={14} color={theme.colors.primary}>
-                    {list.time}
-                  </Semester>
-                  {list.subjects.map((subject, index) => (
-                    <Subject key={index}>
-                      <SubjectName
-                        fontSize={16}
-                        color={theme.colors.primaryText}
-                      >
-                        {subject.className}
-                      </SubjectName>
-                      <ProfessorName
-                        fontSize={14}
-                        color={theme.colors.grayStroke}
-                      >
-                        {subject.professor}
-                      </ProfessorName>
-                      <ArrowIcon size={12} src={NavigationArrow_Svg} />
-                    </Subject>
-                  ))}
-                </SemesterEvaluationWrap>
-              ))}
+              {!isUserEvaluationLoading &&
+                CLASS_LIST.map((list) => (
+                  <SemesterEvaluationWrap key={list.id}>
+                    <Semester fontSize={14} color={theme.colors.primary}>
+                      {list.time}
+                    </Semester>
+                    {list.subjects.map((subject, index) => (
+                      <Subject key={index}>
+                        <SubjectName
+                          fontSize={16}
+                          color={theme.colors.primaryText}
+                        >
+                          {subject.className}
+                        </SubjectName>
+                        <ProfessorName
+                          fontSize={14}
+                          color={theme.colors.grayStroke}
+                        >
+                          {subject.professor}
+                        </ProfessorName>
+                        <ArrowIcon size={12} src={NavigationArrow_Svg} />
+                      </Subject>
+                    ))}
+                  </SemesterEvaluationWrap>
+                ))}
             </MyEvaluationContainer>
           </ContentWrap>
         </>

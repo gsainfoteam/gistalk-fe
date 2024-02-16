@@ -135,3 +135,22 @@ export interface reviewInfo {
   semesterId: number;
   year: string;
 }
+
+export interface recordInfo {
+  id: number;
+  difficulty: number;
+  strength: number;
+  helpful: number;
+  interest: number;
+  lots: number;
+  satisfy: number;
+  review: string;
+  evaluation: number;
+
+  lecture: lectureInfo;
+  prof: professorInfo;
+
+  recommend: number;
+  semesterId: number;
+  year: string;
+}

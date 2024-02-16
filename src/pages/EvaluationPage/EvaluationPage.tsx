@@ -114,6 +114,7 @@ export function EvaluationPage() {
     queryKey: [`getEvaluationScore/${id}/${selectedId}`],
     queryFn: () => getLectureTotalEvaluation(id, selectedId),
     retry: 0,
+    enabled: !!selectedId, //교수를 아무도 선택하지 않을때, 즉 null일때는 쿼리를 보내지 않음
   });
 
   const {
