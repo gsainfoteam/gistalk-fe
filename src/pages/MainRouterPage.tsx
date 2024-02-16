@@ -6,10 +6,9 @@ import ProfilePage from "./ProfilePage";
 import MainPage from "./MainPage/MainPage";
 import ComparePage from "./ComparePage";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
-import LoginPage from "./LoginPage/LoginPage";
 
 const ContentContainer = styled.div`
-  padding: 10px 1rem 20px 1rem;
+  padding: 10px 1rem 4rem 1rem;
 `;
 
 function MainRouterPage() {
