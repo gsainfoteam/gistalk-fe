@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { IReply } from "@/Interfaces/interfaces";
 
 import LikeButton from "./LikeButton";
-import RecommendationStatus from "../../../components/RecommendationStatus";
+import RecommendationStatus from "@components/RecommendationStatus";
 
 interface IProps {
   replyData: IReply;
@@ -59,7 +59,7 @@ export default function Reply({ replyData }: IProps) {
             {replyData.year}년 {semester[replyData.semester - 1]}학기
           </SemesterText>
         </LeftWrap>
-        <LikeButton like={0} dislike={0} />
+        {/* <LikeButton like={0} dislike={0} /> */}
       </InfoWrap>
 
       <ContentWrap fontSize={13} color={theme.colors.primaryText}>
