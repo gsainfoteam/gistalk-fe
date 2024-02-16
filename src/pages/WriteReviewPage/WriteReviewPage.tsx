@@ -144,7 +144,8 @@ export function WriteReviewPage() {
         selectedId,
         selectedValues.semester ? (selectedValues.semester as Option).value : 0,
         selectedValues.year ? (selectedValues.year as Option).label : "2000",
-        recommendation
+        recommendation,
+        ratings
       ),
 
     onSuccess: (data, variables, context) => {

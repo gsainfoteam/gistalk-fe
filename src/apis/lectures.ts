@@ -1,5 +1,6 @@
 import axios from "axios";
 import axiosInstance from "./axiosInstance";
+import { RatingQuestionId } from "@/pages/WriteReviewPage/WriteReviewPage.const";
 
 //auth 정보를 사용하지 않으므로 axiosInstance를 사용하지 않음
 export const getLectureList = () => {
@@ -53,7 +54,8 @@ export const postLectureEvaluation = (
   professorId: number | null,
   semesterId: number,
   year: string,
-  recommend: number | null
+  recommend: number | null,
+  ratings: { [key: number]: number | null }
 ) => {
   // 현재 추천이 1, 비추천이 0, 보통이 2로 서버에 저장되나, 비추천 0, 보통 1, 추천 2로 저장되어 있음. 따라서 보통과 추천을 바꿔줘야 함
 
@@ -72,12 +74,12 @@ export const postLectureEvaluation = (
       : NORMAL;
 
   const payload = {
-    difficulty: 1,
-    strength: 1,
-    helpful: 1,
-    interest: 1,
-    lots: 1,
-    satisfy: 1,
+    difficulty: ratings[RatingQuestionId.Difficulty],
+    strength: ratings[RatingQuestionId.TeachingSkills],
+    helpful: ratings[RatingQuestionId.ContentUsefulness],
+    interest: ratings[RatingQuestionId.LectureEnjoyment],
+    lots: ratings[RatingQuestionId.AssignmentAmount],
+    satisfy: ratings[RatingQuestionId.GradeSatisfaction],
     review: review,
     lecture_id: lectureId,
     prof_id: professorId,
