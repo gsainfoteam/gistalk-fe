@@ -111,7 +111,7 @@ export function EvaluationPage() {
     retry: 0,
   });
 
-  const { isLoading, data: profEvaluationScore } = useQuery({
+  const { isLoading, data: profEvaluationData } = useQuery({
     queryKey: [`getEvaluationScore/${id}/${selectedId}`],
     queryFn: () => getLectureTotalEvaluationForProf(id, selectedId),
     retry: 0,
@@ -136,6 +136,7 @@ export function EvaluationPage() {
 
   const { data: lectureInfo } = { ...lectureInfoData };
   const { data: reviewList } = { ...evaluationData };
+  const { data: profEvaluation } = { ...profEvaluationData };
   const { data: totalEvaluation } = { ...totalEvaluationData };
 
   return (
@@ -152,15 +153,13 @@ export function EvaluationPage() {
           />
         )}
 
-        {selectedId === null && <Card>교수자를 선택해주세요</Card>}
-
         <GraphWrap>
-          <Hexagon HexData={profEvaluationScore?.data ?? null} />
+          <Hexagon HexData={profEvaluation ?? totalEvaluation ?? null} />
         </GraphWrap>
 
         <Upper>
           <EvaluationSummary
-            evaluationData={profEvaluationScore?.data ?? null}
+            evaluationData={profEvaluation ?? totalEvaluation ?? null}
           />
 
           <OneLineReviewText
