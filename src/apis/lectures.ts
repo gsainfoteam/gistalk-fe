@@ -28,13 +28,24 @@ export const getLectureEachEvaluation = (
   });
 };
 
-export const getLectureTotalEvaluation = (
+export const getLectureTotalEvaluationForProf = (
   lectureId: number,
   professorId: number | null
 ) => {
   return axios.get(
     `${import.meta.env.VITE_API_URL}/scoring/get/${lectureId}/${professorId}`
   );
+};
+
+/** 강의의 총합 강의평가를 로드합니다. */
+export const getLectureTotalEvaluation = (lectureId: number) => {
+  const params = {
+    lecture_id: lectureId,
+  };
+
+  return axios.get(`${import.meta.env.VITE_API_URL}/scoring/get/total`, {
+    params: params,
+  });
 };
 
 /**

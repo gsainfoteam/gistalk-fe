@@ -16,6 +16,7 @@ import {
   getLectureEachEvaluation,
   getLectureSingleInfo,
   getLectureTotalEvaluation,
+  getLectureTotalEvaluationForProf,
 } from "@/apis/lectures";
 import { useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
@@ -110,11 +111,17 @@ export function EvaluationPage() {
     retry: 0,
   });
 
-  const { isLoading, data: totalEvaluationScore } = useQuery({
+  const { isLoading, data: profEvaluationScore } = useQuery({
     queryKey: [`getEvaluationScore/${id}/${selectedId}`],
-    queryFn: () => getLectureTotalEvaluation(id, selectedId),
+    queryFn: () => getLectureTotalEvaluationForProf(id, selectedId),
     retry: 0,
     enabled: !!selectedId, //교수를 아무도 선택하지 않을때, 즉 null일때는 쿼리를 보내지 않음
+  });
+
+  const { isLoading: totalLoading, data: totalEvaluationData } = useQuery({
+    queryKey: [`getEvaluationScore/${id}`],
+    queryFn: () => getLectureTotalEvaluation(id),
+    retry: 0,
   });
 
   const {
@@ -129,6 +136,7 @@ export function EvaluationPage() {
 
   const { data: lectureInfo } = { ...lectureInfoData };
   const { data: reviewList } = { ...evaluationData };
+  const { data: totalEvaluation } = { ...totalEvaluationData };
 
   return (
     <>
@@ -147,12 +155,12 @@ export function EvaluationPage() {
         {selectedId === null && <Card>교수자를 선택해주세요</Card>}
 
         <GraphWrap>
-          <Hexagon HexData={totalEvaluationScore?.data ?? null} />
+          <Hexagon HexData={profEvaluationScore?.data ?? null} />
         </GraphWrap>
 
         <Upper>
           <EvaluationSummary
-            evaluationData={totalEvaluationScore?.data ?? null}
+            evaluationData={profEvaluationScore?.data ?? null}
           />
 
           <OneLineReviewText
