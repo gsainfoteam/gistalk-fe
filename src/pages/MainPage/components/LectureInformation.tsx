@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 const LectureInformationWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
 `;
 
@@ -24,6 +23,10 @@ const CourseTakenTimeText = styled.span`
   color: #959595;
 `;
 
+const RecommendWrapper = styled.div`
+  margin-top: 5px;
+`;
+
 interface LectureInformationProps {
   LectureName: string;
   ProfessorName: string;
@@ -42,17 +45,19 @@ function LectureInformation({
   CourseRecommendation,
 }: LectureInformationProps) {
   return (
-    <LectureInformationWrapper>
-      <div>
+    <>
+      <LectureInformationWrapper>
         <LectureNameText>{LectureName}</LectureNameText>
         <ProfessorNameText>{ProfessorName}</ProfessorNameText>
         <CourseTakenTimeText>
           {CourseTakenYear}년 {semester[CourseTakenSemester]}학기
         </CourseTakenTimeText>
-      </div>
+      </LectureInformationWrapper>
 
-      <RecommendationStatus like={`${CourseRecommendation}`} />
-    </LectureInformationWrapper>
+      <RecommendWrapper>
+        <RecommendationStatus like={`${CourseRecommendation}`} />
+      </RecommendWrapper>
+    </>
   );
 }
 export default LectureInformation;
