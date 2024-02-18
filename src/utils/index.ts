@@ -4,5 +4,5 @@
  * @returns 배열로 변환
  */
 export const convertLectureCodeToList = (lectureCode: string) => {
-  return lectureCode.replace(/[\[\]']+/g, "").split(", ");
+  return JSON.parse(lectureCode);
 };
