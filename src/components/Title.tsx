@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import { useState } from "react";
 
 import { theme } from "@/style/theme";
-import useSubjectCode from "@/hooks/useSubjectCode";
 import { professorInfo } from "@/Interfaces/interfaces";
 import ProfessorNameCheckbox from "./ProfessorNameCheckbox";
 
@@ -65,12 +63,10 @@ export default function Title({
   selectedId,
   handleCheckboxChange,
 }: IProps) {
-  const extractedSubjectCode = useSubjectCode(subjectCode);
-
   return (
     <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
       <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
-        {subjectTitle || "ERR"} <span> {extractedSubjectCode || "ERR"}</span>
+        {subjectTitle || "ERR"} <span> {subjectCode.join(", ") || "ERR"}</span>
         {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}
       </SubjectTitle>
       <div>
