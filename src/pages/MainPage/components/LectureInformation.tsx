@@ -4,6 +4,7 @@ import styled from "styled-components";
 const LectureInformationWrapper = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 const LectureNameText = styled.span`
