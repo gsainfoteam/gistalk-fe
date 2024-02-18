@@ -139,6 +139,9 @@ export function EvaluationPage() {
   const { data: profEvaluation } = { ...profEvaluationData };
   const { data: totalEvaluation } = { ...totalEvaluationData };
 
+  const selectedEvaluation =
+    selectedId == null ? totalEvaluation : profEvaluation; //선택한 교수가 없는 경우 전체를 보여주고, 선택한 교수가 있는 경우 그 교수의 평가만 보여줌. 만약에 데이터가 모두 없는 경우 null을 로드
+
   return (
     <>
       <NavigationHeader prevUrl={"/search"} text={"강의평"} />
@@ -154,14 +157,11 @@ export function EvaluationPage() {
         )}
 
         <GraphWrap>
-          <Hexagon HexData={profEvaluation ?? totalEvaluation ?? null} />
+          <Hexagon HexData={selectedEvaluation ?? null} />
         </GraphWrap>
 
         <Upper>
-          <EvaluationSummary
-            evaluationData={profEvaluation ?? totalEvaluation ?? null}
-          />
-
+          <EvaluationSummary evaluationData={selectedEvaluation ?? null} />
           <OneLineReviewText
             fontSize={18}
             color={theme.colors.primaryText}

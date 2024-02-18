@@ -3,6 +3,8 @@ import { theme } from "@/style/theme";
 import TempIcon from "@/pages/SearchPage/components/TempIcon";
 import { major, minor, underG } from "@/constants/StdSet";
 import { departmentColors } from "@/constants/departmentColors";
+import { convertLectureCodeToList } from "@/utils";
+import useSubjectCode from "@/hooks/useSubjectCode";
 
 interface IProps {
   subjectCode: string;
@@ -60,7 +62,10 @@ export default function SearchCard({
   professorName,
   subjectName,
 }: IProps) {
-  const Division = subjectCode.slice(0, 2);
+  const lectureCodeList = convertLectureCodeToList(subjectCode); //lecture_code가 string list로 되어있어서 배열로 변경
+  const targetLectureCode = useSubjectCode(lectureCodeList);
+  const Division = targetLectureCode.slice(0, 2);
+
   /**major, minor 강의 코드와 대조해서 일치하면 전공/부전공/공통 과목 색상 부여 */
   const IconColor: string = major
     .map((item) => Division === item.subjectCode)
@@ -76,7 +81,7 @@ export default function SearchCard({
       <TempIcon text={Division} color={IconColor} isChecked={false}></TempIcon>
       <CardContentWrap color={theme.colors.primaryText}>
         <p>
-          {subjectCode}&nbsp;&nbsp;|&nbsp; {/* 과목 코드 */}
+          {lectureCodeList.join(", ")}&nbsp;&nbsp;|&nbsp; {/* 과목 코드 */}
           <span>{professorName}</span> {/* 교수 이름 */}
         </p>
         <div>{subjectName}</div>

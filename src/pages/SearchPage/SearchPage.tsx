@@ -65,21 +65,17 @@ export function SearchPage() {
     }
 
     return filteredLectureList.map((item: lectureInfoWithProf) => {
-      const lectureCodeList = convertLectureCodeToList(item.lecture_code); //lecture_code가 string list로 되어있어서 배열로 변경
-
       const professorNames = item.prof.map((prof) => prof.prof_name).join(", ");
 
-      return lectureCodeList.map((code) => {
-        return (
-          <StyledLink key={item.id} to={`/${item.id}/evaluation`}>
-            <SearchCard
-              subjectCode={code}
-              professorName={professorNames}
-              subjectName={item.lecture_name}
-            />
-          </StyledLink>
-        );
-      });
+      return (
+        <StyledLink key={item.id} to={`/${item.id}/evaluation`}>
+          <SearchCard
+            subjectCode={item.lecture_code}
+            professorName={professorNames}
+            subjectName={item.lecture_name}
+          />
+        </StyledLink>
+      );
     });
   }
 
