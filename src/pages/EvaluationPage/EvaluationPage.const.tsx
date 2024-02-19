@@ -39,7 +39,7 @@ const LOTS_LABEL = "과제량";
 const DIFFICULTY_LABEL = "난이도";
 const HELPFUL_LABEL = "유익함";
 const STRENGTH_LABEL = "강의력";
-const SATISFY_LABEL = "만족도";
+const SATISFY_LABEL = "성적 만족도";
 
 const INTEREST_KEY = "interest";
 const LOTS_KEY = "lots";
