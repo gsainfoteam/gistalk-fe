@@ -6,6 +6,8 @@ const colors = {
   primaryLight: "#FFECEC",
   grayStroke: "#B6B6B6",
   reverse: "#5D5FEF",
+  //reverse보다 진하면서 명도와 채도가 primary랑 비슷한 색
+  reverseDark: "#3A3AEF",
   primaryHover: "#FF8282",
 
   inputBg: "#F3F3F3",
@@ -14,6 +16,8 @@ const colors = {
   primaryText: "#4C4C4C",
   secondaryText: "#959595",
   cardBackGround: "#F7F9FB",
+
+  active: "#26D681",
 
   black: "#000000",
   white: "#ffffff",

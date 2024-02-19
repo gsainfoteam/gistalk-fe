@@ -2,6 +2,11 @@ import { theme } from "@/style/theme";
 import styled from "styled-components";
 import TextareaAutosize from "react-textarea-autosize";
 
+interface CircleProps {
+  rating: number;
+  isSelected: boolean;
+}
+
 export const Wrapper = styled.div`
   margin: 0 20px;
 `;
@@ -30,7 +35,7 @@ export const Form = styled.form`
 export const FormField = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 `;
 
 export const Label = styled.label`
@@ -68,11 +73,31 @@ export const StarRating = styled.div`
   justify-content: center;
 `;
 
-export const Star = styled.span`
+export const Circle = styled.div<CircleProps>`
   cursor: pointer;
-  color: gold;
+  -webkit-tap-highlight-color: transparent;
+  width: ${(props) =>
+    props.rating === 1 || props.rating === 5
+      ? "20px"
+      : props.rating === 2 || props.rating === 4
+      ? "24px"
+      : "28px"};
+  height: ${(props) =>
+    props.rating === 1 || props.rating === 5
+      ? "20px"
+      : props.rating === 2 || props.rating === 4
+      ? "24px"
+      : "28px"};
+  border-radius: 50%;
   margin: 0 8px;
-  font-size: 32px;
+  border: 2px solid;
+  border-color: ${theme.colors.grayStroke};
+  transition: background-color 0.2s, transform 0.2s;
+
+  ${(props) =>
+    props.isSelected &&
+    `background-color: ${theme.colors.primary} 
+  `};
 `;
 
 export const TextArea = styled(TextareaAutosize)`
@@ -117,6 +142,7 @@ export const RadioButton = styled.input.attrs({ type: "radio" })`
   &:checked + ${RadioCheckText} {
     background: ${theme.colors.primary};
     color: #fff;
+    -webkit-tap-highlight-color: transparent;
   }
   display: none;
 `;
