@@ -30,6 +30,7 @@ import { convertLectureCodeToList } from "@/utils";
 import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 import { getLectureSingleInfo, postLectureEvaluation } from "@/apis/lectures";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
+import { AxiosError, isAxiosError } from "axios";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -113,7 +114,7 @@ export function WriteReviewPage() {
       return false;
     }
     if (Object.values(ratings).some((rating) => rating === 0)) {
-      alert("모든 항목을 평가해주세요.");
+      alert("평가하지 않은 항목이 있습니다. 모든 항목을 평가해주세요.");
       return false;
     }
     if (recommendation === -1) {
@@ -151,8 +152,15 @@ export function WriteReviewPage() {
 
       window.location.replace(`/${id}/evaluation`);
     },
-    onError: (error, variables, context) => {
-      alert(`강의평가 등록에 실패했습니다 ${error.message}`);
+    onError: (error: unknown, variables, context) => {
+      if (isAxiosError(error)) {
+        const errorMessage = error.response?.data.message;
+        if (errorMessage === "Unauthorized") {
+          alert(`토큰이 만료됐습니다. 다시 로그인 후 이용 부탁드립니다.`);
+        } else {
+          alert(`강의평가 등록에 실패했습니다 ${errorMessage}`);
+        }
+      }
     },
   });
 
