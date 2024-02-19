@@ -6,11 +6,8 @@ import Title from "@components/Title";
 import {
   COURSE_TAKEN_SEMESTER,
   COURSE_TAKEN_YEAR,
-  EMPTY_STAR,
-  FILLED_STAR,
   RATING_QUESTIONS,
   RECOMMEND_TEXT,
-  Recommendation,
 } from "./WriteReviewPage.const";
 import {
   Button,
@@ -18,7 +15,6 @@ import {
   FormField,
   LeftLabel,
   RightLabel,
-  Star,
   StarRating,
   TextArea,
   Wrapper,
@@ -27,10 +23,11 @@ import {
   RadioContainer,
   RadioButton,
   RadioCheckText,
+  Circle,
 } from "./WriteReviewPage.styled";
 import ReactSelect from "react-select";
 import { convertLectureCodeToList } from "@/utils";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 import { getLectureSingleInfo, postLectureEvaluation } from "@/apis/lectures";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
 
@@ -61,6 +58,7 @@ export function WriteReviewPage() {
 
   const params = useParams() as { id: string };
   const id = Number(params.id);
+  const isMutating = useIsMutating();
 
   localStorage.removeItem(REDIRECT_PATH); // 로그인 페이지에서 리다이렉션 링크가 걸려 들어온 경우 제거
 
@@ -115,7 +113,7 @@ export function WriteReviewPage() {
       return false;
     }
     if (Object.values(ratings).some((rating) => rating === 0)) {
-      alert("모든 평가 항목에 대해 평가를 해주세요");
+      alert("모든 항목을 평가해주세요.");
       return false;
     }
     if (recommendation === -1) {
@@ -211,15 +209,14 @@ export function WriteReviewPage() {
               <Description>{question.description}</Description>
               <StarRating>
                 <LeftLabel>{question.leftText}</LeftLabel>
+
                 {[1, 2, 3, 4, 5].map((num) => (
-                  <Star
+                  <Circle
                     key={num}
+                    rating={num}
                     onClick={() => handleRatingChange(question.id, num)}
-                  >
-                    {num <= (ratings[question.id] ?? 0)
-                      ? FILLED_STAR
-                      : EMPTY_STAR}
-                  </Star>
+                    isSelected={ratings[question.id] === num}
+                  />
                 ))}
                 <RightLabel>{question.rightText}</RightLabel>
               </StarRating>
@@ -256,7 +253,9 @@ export function WriteReviewPage() {
             />
           </FormField>
 
-          <Button type="submit">강의평가 제출</Button>
+          <Button disabled={isMutating > 0} type="submit">
+            강의평가 제출
+          </Button>
         </Form>
       </Wrapper>
     </>
