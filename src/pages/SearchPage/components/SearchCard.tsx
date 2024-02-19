@@ -30,14 +30,13 @@ const CardContentWrap = styled.div<{ color: string }>`
   white-space: nowrap; // 개행 방지
   overflow: hidden; // 넘치는 문자열 숨김
   width: calc(
-    100% - 50px - 65px
+    100% - 50px
   ); //100%에서 TempIcon width, AverageScoreWrap width 뺀 값
 
   p {
     font-family: NSRegular;
     font-size: 13px;
     position: relative;
-    top: 1px;
   }
 
   span {
@@ -49,7 +48,6 @@ const CardContentWrap = styled.div<{ color: string }>`
     font-family: NSBold;
     font-size: 16px;
     position: relative;
-    top: -1px;
     white-space: nowrap; // 개행 방지
     overflow: hidden; // 넘치는 문자열 숨김
     text-overflow: ellipsis;
@@ -78,14 +76,15 @@ export default function SearchCard({
     : "#E0E0E0";
   return (
     <SearchCardWrap hoverColor={theme.colors.inputBg}>
-      <TempIcon text={Division} color={IconColor} isChecked={false}></TempIcon>
+      <TempIcon text={Division} color={IconColor} isChecked={false} />
       <CardContentWrap color={theme.colors.primaryText}>
-        <p>
-          {lectureCodeList.join(", ")}&nbsp;&nbsp;|&nbsp; {/* 과목 코드 */}
-          <span>{professorName}</span> {/* 교수 이름 */}
-        </p>
         <div>{subjectName}</div>
         {/* 과목 이름 */}
+
+        <p>
+          <span>{professorName}</span> {/* 교수 이름 */}&nbsp; |&nbsp; &nbsp;
+          {lectureCodeList.join(", ")} {/* 과목 코드 */}
+        </p>
       </CardContentWrap>
     </SearchCardWrap>
   );

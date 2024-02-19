@@ -6,11 +6,8 @@ import Title from "@components/Title";
 import {
   COURSE_TAKEN_SEMESTER,
   COURSE_TAKEN_YEAR,
-  EMPTY_STAR,
-  FILLED_STAR,
   RATING_QUESTIONS,
   RECOMMEND_TEXT,
-  Recommendation,
 } from "./WriteReviewPage.const";
 import {
   Button,
@@ -18,7 +15,6 @@ import {
   FormField,
   LeftLabel,
   RightLabel,
-  Star,
   StarRating,
   TextArea,
   Wrapper,
@@ -27,12 +23,14 @@ import {
   RadioContainer,
   RadioButton,
   RadioCheckText,
+  Circle,
 } from "./WriteReviewPage.styled";
 import ReactSelect from "react-select";
 import { convertLectureCodeToList } from "@/utils";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 import { getLectureSingleInfo, postLectureEvaluation } from "@/apis/lectures";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
+import { AxiosError, isAxiosError } from "axios";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -61,6 +59,7 @@ export function WriteReviewPage() {
 
   const params = useParams() as { id: string };
   const id = Number(params.id);
+  const isMutating = useIsMutating();
 
   localStorage.removeItem(REDIRECT_PATH); // 로그인 페이지에서 리다이렉션 링크가 걸려 들어온 경우 제거
 
@@ -115,7 +114,7 @@ export function WriteReviewPage() {
       return false;
     }
     if (Object.values(ratings).some((rating) => rating === 0)) {
-      alert("모든 평가 항목에 대해 평가를 해주세요");
+      alert("평가하지 않은 항목이 있습니다. 모든 항목을 평가해주세요.");
       return false;
     }
     if (recommendation === -1) {
@@ -153,8 +152,15 @@ export function WriteReviewPage() {
 
       window.location.replace(`/${id}/evaluation`);
     },
-    onError: (error, variables, context) => {
-      alert(`강의평가 등록에 실패했습니다 ${error.message}`);
+    onError: (error: unknown, variables, context) => {
+      if (isAxiosError(error)) {
+        const errorMessage = error.response?.data.message;
+        if (errorMessage === "Unauthorized") {
+          alert(`토큰이 만료됐습니다. 다시 로그인 후 이용 부탁드립니다.`);
+        } else {
+          alert(`강의평가 등록에 실패했습니다 ${errorMessage}`);
+        }
+      }
     },
   });
 
@@ -211,15 +217,14 @@ export function WriteReviewPage() {
               <Description>{question.description}</Description>
               <StarRating>
                 <LeftLabel>{question.leftText}</LeftLabel>
+
                 {[1, 2, 3, 4, 5].map((num) => (
-                  <Star
+                  <Circle
                     key={num}
+                    rating={num}
                     onClick={() => handleRatingChange(question.id, num)}
-                  >
-                    {num <= (ratings[question.id] ?? 0)
-                      ? FILLED_STAR
-                      : EMPTY_STAR}
-                  </Star>
+                    isSelected={ratings[question.id] === num}
+                  />
                 ))}
                 <RightLabel>{question.rightText}</RightLabel>
               </StarRating>
@@ -256,7 +261,9 @@ export function WriteReviewPage() {
             />
           </FormField>
 
-          <Button type="submit">강의평가 제출</Button>
+          <Button disabled={isMutating > 0} type="submit">
+            강의평가 제출
+          </Button>
         </Form>
       </Wrapper>
     </>

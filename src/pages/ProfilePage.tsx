@@ -100,7 +100,7 @@ const GuideToLogin = styled.div`
 
 const MENU_TEXT = [
   { text: "인포팀 소개", url: "https://introduce.gistory.me/" },
-  { text: "문의하기", url: "https://cs.gistory.me/" },
+  { text: "문의하기", url: "https://cs.gistory.me?service=gistalk" },
 ];
 
 export default function ProfilePage() {
