@@ -141,7 +141,6 @@ const DoneSvg = styled(theme.universalComponent.SvgIcon)`
 `;
 
 export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
   /** 검색 옵션-전공에서 분과 선택 시 보이는 부분(선택하세요 / 전공(부전공) 이름) */
   const [displayedDepartmentOption, setDisplayedDepartmentOption] =
     useState<string>("선택하세요");
@@ -171,9 +170,6 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
         `${departmentOption[1][0]} 외 ${departmentOption[0].length - 1}개`
       );
     }
-
-    searchParams.set("filter", departmentOption[2].join(","));
-    setSearchParams(searchParams);
   }, [departmentOption]);
 
   /** 검색 옵션 State를 바꿔주는 함수 */
@@ -211,7 +207,7 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
   }: IDepartmentGridItemWrapComponent) {
     /** departmentOption[0] 안에 item.fullKorean이 있는지 검사하는 함수 */
     const findItem = (i: string) => {
-      return departmentOption[0].find((j) => j === i) !== undefined;
+      return departmentOption[2].find((j) => j === i) !== undefined;
     };
 
     return (
@@ -224,7 +220,7 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
         <TempIcon
           text={item.subjectCode}
           color={iconColor}
-          isChecked={findItem(item.fullKorean)}
+          isChecked={findItem(item.subjectCode)}
         />
         <DepartmentGridItemName color={textColor} fontSize={14}>
           {item.korean}
