@@ -23,17 +23,20 @@ import { SearchBar } from "./components/SearchBar";
 import DepartmentSelectModal from "./components/DepartmentSelectModal";
 import { getLectureList } from "@/apis/lectures";
 import { StyledLink } from "@components/StyledLink";
-import { convertLectureCodeToList } from "@/utils";
+import { useSearchParams } from "react-router-dom";
 
 export function SearchPage() {
+  const [searchTextParams, setSearchTextParams] = useSearchParams();
+  const query = searchTextParams.get("keyword") ?? ""; // test
+
   const [sortOpen, setSortOpen] = useState(false);
   const [departmentOpen, setDepartmentOpen] = useState(false);
 
   const [sortStd, setSortStd] = useAtom(sortOptionAtom);
   const departmentOption = useAtom(departmentOptionAtom)[0];
 
-  const [searchText, setSearchText] = useState("");
-  const [searchTextEnter, setSearchTextEnter] = useState("");
+  const [searchText, setSearchText] = useState(query); //search bar에 들어가는 단어
+  const [searchTextEnter, setSearchTextEnter] = useState(query); // 엔터를 눌러서 검색 기준이 되는 단어
 
   const { isLoading, data, isError, error } = useQuery({
     queryKey: ["getEvaluationList"],
@@ -117,12 +120,12 @@ export function SearchPage() {
       <DepartmentSelectModal
         isOpen={departmentOpen}
         setOpen={setDepartmentOpen}
-      ></DepartmentSelectModal>
+      />
       <SortSelectModal
         isOpen={sortOpen}
         setOpen={setSortOpen}
         sortList={sortList}
-      ></SortSelectModal>
+      />
     </>
   );
 }
