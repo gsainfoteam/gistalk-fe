@@ -14,6 +14,7 @@ import reset_Svg from "@/assets/svgs/reset.svg";
 
 import { useAtom } from "jotai";
 import { departmentOptionAtom } from "@/store";
+import { useSearchParams } from "react-router-dom";
 
 interface IProps {
   isOpen: boolean;
@@ -140,6 +141,7 @@ const DoneSvg = styled(theme.universalComponent.SvgIcon)`
 `;
 
 export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
   /** 검색 옵션-전공에서 분과 선택 시 보이는 부분(선택하세요 / 전공(부전공) 이름) */
   const [displayedDepartmentOption, setDisplayedDepartmentOption] =
     useState<string>("선택하세요");
@@ -169,6 +171,9 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
         `${departmentOption[1][0]} 외 ${departmentOption[0].length - 1}개`
       );
     }
+
+    searchParams.set("filter", departmentOption[2].join(","));
+    setSearchParams(searchParams);
   }, [departmentOption]);
 
   /** 검색 옵션 State를 바꿔주는 함수 */
@@ -196,7 +201,6 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
         [...departmentOption[2], subjectCode],
       ]);
     }
-    console.log(departmentOption);
   };
 
   /** 분과 선택하는 아이콘 + 밑에 한글까지 감싸는 Wrap (이걸 DepartmentGrid가 감싸는 구조) */
@@ -221,7 +225,7 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
           text={item.subjectCode}
           color={iconColor}
           isChecked={findItem(item.fullKorean)}
-        ></TempIcon>
+        />
         <DepartmentGridItemName color={textColor} fontSize={14}>
           {item.korean}
         </DepartmentGridItemName>
