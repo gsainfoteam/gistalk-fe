@@ -1,6 +1,6 @@
 import { theme } from "@/style/theme";
 import { MatchingText, NorthWestSvg, SearchItem } from "../SearchPage.styled";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import NorthWest_Svg from "@assets/svgs/northWest.svg";
 import Cancel_Svg from "@assets/svgs/cancel_Black.svg";
 import Search_Svg from "@assets/svgs/search.svg";
@@ -92,6 +92,8 @@ export function SearchBar({
   enterSearchText: any;
   searchTextEnter: string;
 }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   /**검색 아이콘 -> 검색어가 입력되면 취소 아이콘 */
   function ResponsiveSvg() {
     if (searchText === "") {
@@ -157,6 +159,14 @@ export function SearchBar({
     });
   };
 
+  const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchText = (e.target as HTMLInputElement).value;
+    searchParams.set("keyword", searchText);
+
+    setSearchText(searchText);
+    setSearchParams(searchParams);
+  };
+
   return (
     <SearchWrap borderColor={theme.colors.inputBorder}>
       <SearchInputWrap>
@@ -164,7 +174,7 @@ export function SearchBar({
           placeholder="강의명으로 검색"
           color={theme.colors.primaryText}
           bgColor={theme.colors.white}
-          onChange={(e) => setSearchText(e.target.value)}
+          onChange={handleSearchText}
           onKeyDown={(e) => enterSearchText(e)}
           value={searchText}
         />
