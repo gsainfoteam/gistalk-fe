@@ -89,6 +89,7 @@ const BlankText = styled(theme.universalComponent.DivTextContainer)`
 
 const NO_DATA_MESSAGE = "데이터가 없습니다.";
 const PLEASE_SELECT_PROFESSOR_MESSAGE = "교수자를 선택해주세요.";
+
 export function EvaluationPage() {
   const isValidToken = useCheckValidToken();
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -160,7 +161,7 @@ export function EvaluationPage() {
           />
         )}
 
-        {selectedEvaluation === undefined && !isLoading && (
+        {selectedEvaluation === undefined && !totalLoading && !isLoading && (
           <Card> {NO_DATA_MESSAGE}</Card>
         )}
 
