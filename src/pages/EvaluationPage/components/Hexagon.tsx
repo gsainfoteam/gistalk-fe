@@ -41,8 +41,8 @@ export default function Hexagon({ HexData }: HexagonProps) {
       ? emptyData
       : HexLabels.map((i) => {
           const subject = i.subject;
-          const isDifficulty = subject === "난이도";
-          const score = isDifficulty ? 6 - HexData[i.key] : HexData[i.key];
+          const isNegative = subject === "난이도" || subject === "과제량";
+          const score = isNegative ? 6 - HexData[i.key] : HexData[i.key];
 
           return {
             subject: `${subject} (${score})`,
