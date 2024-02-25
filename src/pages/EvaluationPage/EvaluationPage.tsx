@@ -2,7 +2,7 @@ import Hexagon from "./components/Hexagon";
 import { theme } from "@/style/theme";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Reply from "./components/Reply";
 
@@ -22,7 +22,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import { convertLectureCodeToList } from "@/utils";
 import { IReply, professorInfo } from "@/Interfaces/interfaces";
-import Card from "@components/Card";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -91,6 +90,8 @@ export function EvaluationPage() {
   const isValidToken = useCheckValidToken();
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
+  const navigate = useNavigate();
+
   const handleCheckboxChange = (id: number) => {
     setSelectedId(id === selectedId ? null : id);
   };
@@ -144,7 +145,7 @@ export function EvaluationPage() {
 
   return (
     <>
-      <NavigationHeader prevUrl={"/search"} text={"강의평"} />
+      <NavigationHeader text={"강의평"} />
       <Wrap>
         {!isLectureInfoLoading && lectureInfo && (
           <Title
