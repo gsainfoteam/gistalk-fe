@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import { convertLectureCodeToList } from "@/utils";
 import { IReply, professorInfo } from "@/Interfaces/interfaces";
+import Card from "@components/Card";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -86,6 +87,8 @@ const BlankText = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
 `;
 
+const NO_DATA_MESSAGE = "데이터가 없습니다.";
+const PLEASE_SELECT_PROFESSOR_MESSAGE = "교수자를 선택해주세요.";
 export function EvaluationPage() {
   const isValidToken = useCheckValidToken();
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -155,6 +158,10 @@ export function EvaluationPage() {
             subjectCode={convertLectureCodeToList(lectureInfo[0].lecture_code)}
             selectedId={selectedId}
           />
+        )}
+
+        {selectedEvaluation === undefined && !isLoading && (
+          <Card> {NO_DATA_MESSAGE}</Card>
         )}
 
         <GraphWrap>
