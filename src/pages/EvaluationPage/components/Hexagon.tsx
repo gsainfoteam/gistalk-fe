@@ -44,9 +44,12 @@ export default function Hexagon({ HexData }: HexagonProps) {
           const isNegative = subject === "난이도" || subject === "과제량";
           const score = isNegative ? 6 - HexData[i.key] : HexData[i.key];
 
+          //score을 소수점 두 번쨰 자리에서 반올림한다
+          const adjustedScore = Math.round(score);
+
           return {
             subject: `${subject} (${score})`,
-            A: score,
+            A: adjustedScore,
             fullMark: 5.0,
           };
         });
