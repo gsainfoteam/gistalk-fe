@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { theme } from "@/style/theme";
 
 import { HexLabels, HexagonData } from "../EvaluationPage.const";
+import Card from "@components/Card";
 
 interface HexagonProps {
   HexData: HexagonData;
@@ -35,12 +36,6 @@ export default function Hexagon({ HexData }: HexagonProps) {
     };
   });
 
-  //4번째만 수정한다
-  emptyData[3] = {
-    score: 0,
-    subject: "평가 데이터가 없습니다.",
-  };
-
   const formattedData =
     HexData == null
       ? emptyData
@@ -57,30 +52,32 @@ export default function Hexagon({ HexData }: HexagonProps) {
         });
 
   return (
-    <Wrap>
-      <RadarChart
-        width={400}
-        height={300}
-        cx="50%"
-        cy="50%"
-        outerRadius="50%"
-        data={formattedData}
-        startAngle={0}
-        endAngle={360}
-      >
-        <PolarGrid polarRadius={[23.34, 48.67, 73]} />
-        <PolarAngleAxis
-          dataKey="subject"
-          tick={{ fill: theme.colors.secondaryText, fontSize: 13 }}
-        />
-        <PolarRadiusAxis domain={[0, 5]} angle={90} />
-        <Radar
-          name="Standard"
-          dataKey="A"
-          fill={theme.colors.primary}
-          fillOpacity={0.6}
-        />
-      </RadarChart>
-    </Wrap>
+    <>
+      <Wrap>
+        <RadarChart
+          width={400}
+          height={300}
+          cx="50%"
+          cy="50%"
+          outerRadius="50%"
+          data={formattedData}
+          startAngle={180}
+          endAngle={-180}
+        >
+          <PolarGrid polarRadius={[15, 29, 43, 59, 73]} />
+          <PolarAngleAxis
+            dataKey="subject"
+            tick={{ fill: theme.colors.secondaryText, fontSize: 13 }}
+          />
+          <PolarRadiusAxis domain={[0, 5]} angle={90} />
+          <Radar
+            name="Standard"
+            dataKey="A"
+            fill={theme.colors.primary}
+            fillOpacity={0.6}
+          />
+        </RadarChart>
+      </Wrap>
+    </>
   );
 }
