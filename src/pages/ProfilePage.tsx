@@ -178,6 +178,10 @@ export default function ProfilePage() {
                 작성한 강의평
               </MyReviewsText>
 
+              {!isUserEvaluationLoading && userEvaluations.length === 0 && (
+                <div>작성한 강의평이 없습니다.</div>
+              )}
+
               {!isUserEvaluationLoading &&
                 Object.entries(groupedData).map(([year, semesters]) => (
                   <div key={year}>

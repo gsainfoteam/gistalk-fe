@@ -175,7 +175,7 @@ export function WriteReviewPage() {
 
   return (
     <>
-      <NavigationHeader prevUrl={`/${id}/evaluation`} text={"강의평 작성"} />
+      <NavigationHeader text={"강의평 작성"} />
       <Wrapper>
         {!isLectureInfoLoading && lectureInfo && (
           <Title
