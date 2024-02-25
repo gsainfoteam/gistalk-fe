@@ -58,7 +58,9 @@ export default function Reply({ replyData }: IProps) {
         <LeftWrap>
           <RecommendationStatus like={isRecommend} />
           <SemesterText fontSize={13} color={theme.colors.secondaryText}>
-            {replyData.year}년 {semester[replyData.semester - 1]}학기
+            {replyData.year}년{" "}
+            {replyData.semester !== 5 &&
+              `${semester[replyData.semester - 1]} 학기`}
           </SemesterText>
         </LeftWrap>
         {/* <LikeButton like={0} dislike={0} /> */}
