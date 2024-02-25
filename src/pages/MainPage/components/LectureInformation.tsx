@@ -51,7 +51,9 @@ function LectureInformation({
         <LectureNameText>{LectureName}</LectureNameText>
         <ProfessorNameText>{ProfessorName}</ProfessorNameText>
         <CourseTakenTimeText>
-          {CourseTakenYear}년 {semester[CourseTakenSemester]}학기
+          {CourseTakenYear}년
+          {CourseTakenSemester !== 5 &&
+            `${semester[CourseTakenSemester - 1]} 학기`}
         </CourseTakenTimeText>
       </LectureInformationWrapper>
 
