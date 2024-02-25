@@ -22,40 +22,32 @@ const Wrap = styled.div`
   overflow-y: hidden;
 `;
 
+const EMPTY_DATA = {
+  score: 0,
+  subject: "",
+};
+
 export default function Hexagon({ HexData }: HexagonProps) {
-  const emptyData = [
-    {
-      score: 0,
-      subject: "",
-    },
-    {
-      score: 0,
-      subject: "",
-    },
-    {
-      score: 0,
-      subject: "",
-    },
-    {
-      score: 0,
-      subject: "평가 데이터가 없습니다.",
-    },
-    {
-      score: 0,
-      subject: "",
-    },
-    {
-      score: 0,
-      subject: "",
-    },
-  ];
+  // empty_data로 채워진 길이 6의 배열을 반복문으로 구현한다
+  const emptyData = Array.from({ length: 6 }, (_, i) => {
+    return {
+      ...EMPTY_DATA,
+    };
+  });
+
+  //4번째만 수정한다
+  emptyData[3] = {
+    score: 0,
+    subject: "평가 데이터가 없습니다.",
+  };
 
   const formattedData =
     HexData == null
       ? emptyData
       : HexLabels.map((i) => {
-          const score = HexData[i.key];
           const subject = i.subject;
+          const isDifficulty = subject === "난이도";
+          const score = isDifficulty ? 6 - HexData[i.key] : HexData[i.key];
 
           return {
             subject: `${subject} (${score})`,
@@ -73,13 +65,15 @@ export default function Hexagon({ HexData }: HexagonProps) {
         cy="50%"
         outerRadius="50%"
         data={formattedData}
+        startAngle={0}
+        endAngle={360}
       >
         <PolarGrid polarRadius={[23.34, 48.67, 73]} />
         <PolarAngleAxis
           dataKey="subject"
           tick={{ fill: theme.colors.secondaryText, fontSize: 13 }}
         />
-        <PolarRadiusAxis domain={[0, 5]} />
+        <PolarRadiusAxis domain={[0, 5]} angle={90} />
         <Radar
           name="Standard"
           dataKey="A"
