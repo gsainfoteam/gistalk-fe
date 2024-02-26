@@ -48,7 +48,7 @@ export default function Hexagon({ HexData }: HexagonProps) {
           const adjustedScore = Math.round(score);
 
           return {
-            subject: `${subject} (${score})`,
+            subject: `${subject} (${adjustedScore})`,
             A: adjustedScore,
             fullMark: 5.0,
           };
