@@ -60,7 +60,7 @@ export default function Reply({ replyData }: IProps) {
           <SemesterText fontSize={13} color={theme.colors.secondaryText}>
             {replyData.year}년{" "}
             {replyData.semester !== 5 &&
-              `${semester[replyData.semester - 1]} 학기`}
+              `${semester[replyData.semester - 1]}학기`}
           </SemesterText>
         </LeftWrap>
         {/* <LikeButton like={0} dislike={0} /> */}

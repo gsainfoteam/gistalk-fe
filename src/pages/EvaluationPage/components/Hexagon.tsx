@@ -45,7 +45,7 @@ export default function Hexagon({ HexData }: HexagonProps) {
           const score = isNegative ? 6 - HexData[i.key] : HexData[i.key];
 
           //score을 소수점 두 번쨰 자리에서 반올림한다
-          const adjustedScore = Math.round(score);
+          const adjustedScore = Math.round(score * 10) / 10;
 
           return {
             subject: `${subject} (${adjustedScore})`,
