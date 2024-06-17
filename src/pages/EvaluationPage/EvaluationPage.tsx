@@ -180,7 +180,7 @@ export function EvaluationPage() {
             {!evaluationLoading && (
               <span>
                 {" "}
-                이 강의에 {reviewList.length ?? 0}명이 평가를 남겼어요
+                이 강의에 {(reviewList ?? []).length ?? 0}명이 평가를 남겼어요
               </span>
             )}
           </OneLineReviewText>
