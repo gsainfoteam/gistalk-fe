@@ -16,16 +16,19 @@ const Wrap = styled.div<{
 }>`
   position: fixed;
   top: 0;
-  width: 100vw;
+  width: 100%;
+  max-width: 480px;
   height: 50px;
+  margin: 0 auto;
+  display: flex;
   background-color: ${(props) => props.bgColor};
   border-bottom: 2px solid ${(props) => props.borderColor};
   border-radius: 0;
   z-index: 100;
-
-  display: ${(props) => (props.scroll > 200 ? "flex" : "none")};
+  opacity: ${(props) => (props.scroll > 200 ? 1 : 0)};
+  transition: opacity 0.3s ease;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
 `;
 
 const NavigationArrowSvg = styled(theme.universalComponent.SvgIcon)`
@@ -33,40 +36,14 @@ const NavigationArrowSvg = styled(theme.universalComponent.SvgIcon)`
 `;
 
 const WhiteShadowBox = styled.div<{ bgColor: string; left: boolean }>`
-  height: 50px;
-  min-width: 60px;
-  background-color: ${(props) => props.bgColor};
-  border-radius: 0;
-  box-shadow: ${(props) =>
-    props.left
-      ? `14px 0 8px -5px ${props.bgColor}`
-      : `-14px 0 8px -5px ${props.bgColor}`};
-  display: flex;
-  align-items: center;
-  justify-content: ${(props) => (props.left ? "left" : "right")};
-  z-index: 200;
   position: absolute;
-
-  ${(props) => (props.left ? "left : 0;" : "right : 0;")}
-`;
-
-const TextLoop = keyframes`
-  0% {
-    transform: translateX(-70%);
-  }
-  100% {
-    transform: translateX(70%);
-  }
+  left: 0;
 `;
 
 const Title = styled(theme.universalComponent.DivTextContainer)<{
   animate: boolean;
 }>`
   font-family: NSBold;
-  white-space: nowrap;
-  padding-left: ${(props) => (props.animate ? "100%" : "0")};
-  animation: ${TextLoop} 10s linear infinite;
-  ${(props) => !props.animate && `animation : none;`}
 `;
 
 /** 아래로 스크롤했을때 상단에 고정된 sticky한 헤더 */
@@ -103,10 +80,10 @@ export default function ScrolledHeader({ title, professor }: IProps) {
           }}
           size={22}
           src={NavigationArrow_Svg}
-        ></NavigationArrowSvg>
+        />
       </WhiteShadowBox>
       <Title fontSize={16} color={theme.colors.primaryText} animate={animate}>
-        {title} - {professor}
+        {title}
       </Title>
     </Wrap>
   );
