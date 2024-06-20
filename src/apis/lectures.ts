@@ -19,11 +19,12 @@ export const getLectureEachEvaluation = (
   professorId: number | null
 ) => {
   const params = {
-    lecture_id: lectureId,
-    prof_id: professorId,
+    lectureId: lectureId,
+    professorId: professorId,
+    type: "evaluation",
   };
 
-  return axios.get(`/api/lectures/get`, {
+  return axios.get(`/api/record`, {
     params: params,
   });
 };
@@ -32,16 +33,21 @@ export const getLectureTotalEvaluationForProf = (
   lectureId: number,
   professorId: number | null
 ) => {
-  return axios.get(`/api/scoring/get/${lectureId}/${professorId}`);
+  const params = {
+    lectureId: lectureId,
+    professorId: professorId,
+  };
+
+  return axios.get(`/api/lecture/evaluation`, { params: params });
 };
 
 /** 강의의 총합 강의평가를 로드합니다. */
 export const getLectureTotalEvaluation = (lectureId: number) => {
   const params = {
-    lecture_id: lectureId,
+    lectureId: lectureId,
   };
 
-  return axios.get(`/api/scoring/get/total`, {
+  return axios.get(`/api/lecture/evaluation`, {
     params: params,
   });
 };
@@ -54,13 +60,7 @@ export const getRecentEvaluation = () => {
 };
 
 export const getLectureSingleInfo = (lectureId: number) => {
-  const params = {
-    lecture_id: lectureId,
-  };
-
-  return axios.get(`/api/lectures/info/id`, {
-    params: params,
-  });
+  return axios.get(`/api/lecture/${lectureId}`);
 };
 
 export const postLectureEvaluation = (
