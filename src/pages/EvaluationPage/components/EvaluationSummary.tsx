@@ -54,7 +54,7 @@ function sortScoresBySubject(scores: HexagonData): number[] {
 
 const LOW = 0;
 const MIDDLE = 1;
-const height = 2;
+const HIGH = 2;
 
 export default function EvaluationSummary({ evaluationData }: SummaryProps) {
   if (evaluationData == null) {
@@ -69,7 +69,7 @@ export default function EvaluationSummary({ evaluationData }: SummaryProps) {
     } else if (item == 3) {
       return MIDDLE;
     } else {
-      return height;
+      return HIGH;
     }
   });
 
