@@ -97,22 +97,31 @@ export interface UserInfo {
   student_id: string;
 }
 
+export interface LectureCode {
+  code: string;
+  lectureId: number;
+}
+
 export interface lectureInfo {
   /** 강의 id */
   id: number;
   /** 강의 코드, "['GS0000']" 형식이기 때문에 다시 필요한 경우 array로 분리해서 써야 함 */
-  lecture_code: string;
+  LectureCode: LectureCode[];
   /** 강의 이름 */
-  lecture_name: string;
+  lectureName: string;
 }
 
 export interface lectureInfoWithProf extends lectureInfo {
-  prof: professorInfo[];
+  LectureProfessor: professorInfo[];
 }
 
 export interface professorInfo {
-  id: number;
-  prof_name: string;
+  lectureId: number;
+  professorId: number;
+  professor: {
+    id: number;
+    name: string;
+  };
 }
 
 export interface reviewInfo {
