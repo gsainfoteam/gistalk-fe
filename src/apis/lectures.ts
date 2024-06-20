@@ -49,10 +49,10 @@ export const getLectureTotalEvaluation = (lectureId: number) => {
 };
 
 /**
- * 최근 2개의 강의평을 로드합니다.
+ * 최근 4개의 강의평을 로드합니다.
  */
 export const getRecentEvaluation = () => {
-  return axios.get(`${import.meta.env.VITE_API_URL}/records/latest/4`);
+  return axios.get(`/api/record?take=4&type=recent`);
 };
 
 export const getLectureSingleInfo = (lectureId: number) => {

@@ -20,8 +20,9 @@
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
       "@/*": ["src/*"]
-    }
+    },
+    "types": ["vite/client"]
   },
-  "include": [".eslintrc.cjs", "src"],
+  "include": [".eslintrc.cjs", "src", "./env.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
