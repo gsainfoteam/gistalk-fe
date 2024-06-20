@@ -147,6 +147,7 @@ export function EvaluationPage() {
   const selectedEvaluation =
     selectedId == null ? totalEvaluation : profEvaluation; //선택한 교수가 없는 경우 전체를 보여주고, 선택한 교수가 있는 경우 그 교수의 평가만 보여줌. 만약에 데이터가 모두 없는 경우 null을 로드
 
+  console.log(selectedEvaluation, "??");
   return (
     <>
       <NavigationHeader text={"강의평"} />
@@ -228,7 +229,7 @@ export function EvaluationPage() {
       {!isLectureInfoLoading && lectureInfo && (
         <ScrolledHeader
           professor={lectureInfo[0].prof
-            .map((prof: professorInfo) => prof.prof_name)
+            .map((prof: professorInfo) => prof.professor.name)
             .join(", ")}
           title={lectureInfo[0].lecture_name}
         />
