@@ -44,40 +44,22 @@ export interface IButton {
 /** like : 좋아요 누름 / dislike : 싫어요 누름 / none : 둘 다 안 누름 */
 export type pushedLike = "like" | "dislike" | "none";
 
-/**
- * 
- *     "difficulty" : 1,
-    "strength" : 1,
-    "helpful" : 1,
-    "interest" : 1,
-    "lots" : 1,
-    "satisfy" : 1,
-    "review" : "한줄평1",
-    "lecture_id" : 1,
-    "prof_id" : 3,
-    "semester_id" : 1,
-    "year" : "2022",
-    "recommend" : 1,
-
- */
-
 export interface IReply {
-  record_id: number;
-  prof_id: number;
-  user_id: number;
-  writer_id: number;
-  /** 봄: 1, 여름: 2, 가을: 3, 가을:4 */
-  semester: number;
-  year: string;
+  id: number;
   difficulty: number;
-  strength: number;
-  helpful: number;
+  skill: number;
+  helpfulness: number;
   interest: number;
-  lots: number;
-  satisfy: number;
+  load: number;
+  generosity: number;
   review: string;
-  /** 강의를 추천하는지 여부, 1: 추천, 0: 비추천, 2:보통 */
-  recommend?: number;
+  recommendation: string;
+  semester: string;
+  year: number;
+  createdAt: string;
+  userUuid: string;
+  lectureId: number;
+  professorId: number;
 }
 
 export type ISortOption =

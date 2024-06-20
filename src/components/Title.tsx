@@ -78,8 +78,8 @@ export default function Title({
           {professorInfo.map((professor: professorInfo, index: number) => (
             <ProfessorNameCheckbox
               key={index}
-              text={professor.prof_name}
-              id={professor.id}
+              text={professor.professor.name}
+              id={professor.professorId}
               selectedId={selectedId}
               onCheckboxChange={handleCheckboxChange}
             />
