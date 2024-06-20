@@ -11,7 +11,7 @@ import {
 
 //auth 정보를 사용하지 않으므로 axiosInstance를 사용하지 않음
 export const getLectureList = () => {
-  return axios.get(`${import.meta.env.VITE_API_URL}/lectures/all`);
+  return axios.get(`/api/lecture`);
 };
 
 export const getLectureEachEvaluation = (
@@ -23,7 +23,7 @@ export const getLectureEachEvaluation = (
     prof_id: professorId,
   };
 
-  return axios.get(`${import.meta.env.VITE_API_URL}/lectures/get`, {
+  return axios.get(`/api/lectures/get`, {
     params: params,
   });
 };
@@ -32,9 +32,7 @@ export const getLectureTotalEvaluationForProf = (
   lectureId: number,
   professorId: number | null
 ) => {
-  return axios.get(
-    `${import.meta.env.VITE_API_URL}/scoring/get/${lectureId}/${professorId}`
-  );
+  return axios.get(`/api/scoring/get/${lectureId}/${professorId}`);
 };
 
 /** 강의의 총합 강의평가를 로드합니다. */
@@ -43,7 +41,7 @@ export const getLectureTotalEvaluation = (lectureId: number) => {
     lecture_id: lectureId,
   };
 
-  return axios.get(`${import.meta.env.VITE_API_URL}/scoring/get/total`, {
+  return axios.get(`/api/scoring/get/total`, {
     params: params,
   });
 };
@@ -60,7 +58,7 @@ export const getLectureSingleInfo = (lectureId: number) => {
     lecture_id: lectureId,
   };
 
-  return axios.get(`${import.meta.env.VITE_API_URL}/lectures/info/id`, {
+  return axios.get(`/api/lectures/info/id`, {
     params: params,
   });
 };
@@ -98,8 +96,5 @@ export const postLectureEvaluation = (
     recommend: fixedRecommend,
   };
 
-  return axiosInstance.post(
-    `${import.meta.env.VITE_API_URL}/records/add`,
-    payload
-  );
+  return axiosInstance.post(`api/records/add`, payload);
 };

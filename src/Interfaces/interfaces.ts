@@ -114,26 +114,23 @@ export interface professorInfo {
   id: number;
   prof_name: string;
 }
+
 export interface reviewInfo {
+  createdAt: string;
+  difficulty: number /*난이도*/;
+  generosity: number /* 성적 후한 정도 */;
+  helpfulness: number /*유익함 */;
   id: number;
-  difficulty: number;
-  strength: number;
-  helpful: number;
-  interest: number;
-  lots: number;
-  satisfy: number;
+  interest: number /*흥미도 */;
+  lectureId: number;
+  load: number;
+  professorId: number;
+  recommendation: string /*추천*/;
   review: string;
-  evaluation: number;
-
-  lecture_id: number;
-  lecture_name: string;
-  lecture_code: string;
-  prof_id: number;
-  prof_name: string;
-
-  recommend: number;
-  semesterId: number;
-  year: string;
+  semester: string;
+  skill: number /*강의력 */;
+  userUuid: string;
+  year: number;
 }
 
 export interface recordInfo {

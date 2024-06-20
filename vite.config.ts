@@ -8,7 +8,6 @@ export default ({ mode }) => {
   return defineConfig({
     server: {
       open: true, //개발 서버를 실행할 때 브라우저를 자동으로 엽니다.
-      port: 3000, //3000번 포트로 개발 서버를 실행합니다.
       proxy: {
         "/api": {
           target: `${env.VITE_API_URL}`, // 실제 백엔드 서버 URL로 변경
