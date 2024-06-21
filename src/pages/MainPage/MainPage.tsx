@@ -40,8 +40,8 @@ export default function MainPage() {
             >
               <Card>
                 <LectureInformation
-                  LectureName={"강의 이름"}
-                  ProfessorName={"교수 이름"}
+                  LectureName={evaluation.lectureProfessor.lecture.lectureName}
+                  ProfessorName={evaluation.lectureProfessor.professor.name}
                   CourseTakenYear={parseInt(
                     evaluation.year.toString().substring(0, 4)
                   )}

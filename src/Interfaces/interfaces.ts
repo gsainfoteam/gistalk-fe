@@ -99,6 +99,13 @@ export interface professorInfo {
     name: string;
   };
 }
+interface lecture {
+  id: number;
+  lectureName: string;
+}
+interface lectureProfessorInfo extends professorInfo {
+  lecture: lecture;
+}
 
 interface evaluationData {
   difficulty: number /*난이도*/;
@@ -119,6 +126,7 @@ export interface reviewInfo extends evaluationData {
   semester: string;
   userUuid: string;
   year: number;
+  lectureProfessor: lectureProfessorInfo;
 }
 
 export interface recordInfo extends evaluationData {
