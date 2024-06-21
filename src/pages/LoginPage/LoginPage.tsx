@@ -72,7 +72,7 @@ export default function LoginPage() {
       </LogoWrap>
 
       <form
-        action={`https://idp.gistory.me/authorize?client_id=gistalk2023&scope=openid%20profile%20email%20student_id%20offline_access&response_type=code`}
+        action={`https://idp.gistory.me/authorize?client_id=gistalk&scope=openid%20profile%20email%20student_id%20offline_access&response_type=code`}
       >
         {SCOPES.map((scope) => {
           return (

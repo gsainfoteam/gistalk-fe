@@ -44,14 +44,8 @@ export interface IButton {
 /** like : 좋아요 누름 / dislike : 싫어요 누름 / none : 둘 다 안 누름 */
 export type pushedLike = "like" | "dislike" | "none";
 
-export interface IReply {
+export interface IReply extends lectureInfo {
   id: number;
-  difficulty: number;
-  skill: number;
-  helpfulness: number;
-  interest: number;
-  load: number;
-  generosity: number;
   review: string;
   recommendation: string;
   semester: string;
@@ -106,32 +100,29 @@ export interface professorInfo {
   };
 }
 
-export interface reviewInfo {
-  createdAt: string;
+interface evaluationData {
   difficulty: number /*난이도*/;
-  generosity: number /* 성적 후한 정도 */;
+  skill: number /*강의력 */;
   helpfulness: number /*유익함 */;
-  id: number;
   interest: number /*흥미도 */;
+  load: number /*과제량 */;
+  generosity: number /* 성적 후한 정도 */;
+}
+
+export interface reviewInfo extends evaluationData {
+  createdAt: string;
+  id: number;
   lectureId: number;
-  load: number;
   professorId: number;
   recommendation: string /*추천*/;
   review: string;
   semester: string;
-  skill: number /*강의력 */;
   userUuid: string;
   year: number;
 }
 
-export interface recordInfo {
+export interface recordInfo extends evaluationData {
   id: number;
-  difficulty: number;
-  strength: number;
-  helpful: number;
-  interest: number;
-  lots: number;
-  satisfy: number;
   review: string;
   evaluation: number;
 

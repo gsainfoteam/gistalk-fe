@@ -196,7 +196,7 @@ export function EvaluationPage() {
             ) : (
               <>
                 {reviewList.map((review: IReply) => (
-                  <Reply key={review.record_id} replyData={review} />
+                  <Reply key={review.id} replyData={review} />
                 ))}
               </>
             ))}
