@@ -23,7 +23,7 @@ const CheckboxInput = styled.input`
   border: 2px solid
     ${(props) =>
       props.checked ? theme.colors.primary : theme.colors.grayStroke};
-  border-radius: 0.3rem;
+  border-radius: 10px;
   outline: none;
   margin-right: 3px;
   cursor: pointer;

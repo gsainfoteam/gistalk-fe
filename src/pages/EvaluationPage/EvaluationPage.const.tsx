@@ -1,38 +1,32 @@
-import { ISortOption } from "@/Interfaces/interfaces";
-
-export interface evaluationData {
+export interface EvaluationData {
   difficulty: number;
-  evaluation: number;
-  helpful: number;
+  generosity: number;
+  helpfulness: number;
   interest: number;
-  lots: number;
+  load: number;
+  skill: number;
+}
+export interface evaluationData extends EvaluationData {
+  evaluation: number;
   review: string;
-  satisfy: number;
   semester: number;
-  strength: number;
   writer_id: number;
   year: string;
 }
 
-export interface HexagonData {
+export interface HexagonData extends EvaluationData {
   id: number;
   lecture_id: number;
   people: number;
-  diff_aver: number;
-  stren_aver: number;
-  help_aver: number;
-  inter_aver: number;
-  lots_aver: number;
-  sati_aver: number;
   [key: string]: number; // Add index signature
 }
 
-const AVERAGE_DIFFICULTY = "diff_aver";
-const AVERAGE_STRENGTH = "stren_aver";
-const AVERAGE_HELPFUL = "help_aver";
-const AVERAGE_INTEREST = "inter_aver";
-const AVERAGE_LOTS = "lots_aver";
-const AVERAGE_SATISFY = "sati_aver";
+const AVERAGE_DIFFICULTY = "difficulty";
+const AVERAGE_STRENGTH = "skill";
+const AVERAGE_HELPFUL = "helpfulness";
+const AVERAGE_INTEREST = "interest";
+const AVERAGE_LOTS = "load";
+const AVERAGE_SATISFY = "generosity";
 
 const INTEREST_LABEL = "재미/흥미";
 const LOTS_LABEL = "과제량";
@@ -42,11 +36,11 @@ const STRENGTH_LABEL = "강의력";
 const SATISFY_LABEL = "성적 만족도";
 
 const INTEREST_KEY = "interest";
-const LOTS_KEY = "lots";
+const LOTS_KEY = "load";
 const DIFFICULTY_KEY = "difficulty";
-const HELPFUL_KEY = "helpful";
-const STRENGTH_KEY = "strength";
-const SATISFY_KEY = "satisfy";
+const HELPFUL_KEY = "helpfulness";
+const STRENGTH_KEY = "skill";
+const SATISFY_KEY = "generosity";
 
 export const labels = [
   { key: INTEREST_KEY, label: INTEREST_LABEL },

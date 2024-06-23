@@ -146,6 +146,9 @@ export function EvaluationPage() {
 
   const selectedEvaluation =
     selectedId == null ? totalEvaluation : profEvaluation; //선택한 교수가 없는 경우 전체를 보여주고, 선택한 교수가 있는 경우 그 교수의 평가만 보여줌. 만약에 데이터가 모두 없는 경우 null을 로드
+  const isEvaluationEmpty =
+    selectedEvaluation !== undefined &&
+    Object.values(selectedEvaluation).every((value) => value === null);
 
   return (
     <>
@@ -154,14 +157,14 @@ export function EvaluationPage() {
         {!isLectureInfoLoading && lectureInfo && (
           <Title
             handleCheckboxChange={handleCheckboxChange}
-            subjectTitle={lectureInfo[0].lecture_name}
-            professorInfo={lectureInfo[0].prof}
-            subjectCode={convertLectureCodeToList(lectureInfo[0].lecture_code)}
+            subjectTitle={lectureInfo.lectureName}
+            professorInfo={lectureInfo.LectureProfessor}
+            subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
             selectedId={selectedId}
           />
         )}
 
-        {selectedEvaluation === undefined && !totalLoading && !isLoading && (
+        {!isLoading && !totalLoading && isEvaluationEmpty && (
           <Card> {NO_DATA_MESSAGE}</Card>
         )}
 
@@ -190,13 +193,13 @@ export function EvaluationPage() {
               <BlankWrap>
                 <BlankSvg size={120} src={CatBlankList_Svg} />
                 <BlankText fontSize={14} color={theme.colors.secondaryText}>
-                  아직 한줄평이 작성되지 않았네요.
+                  아직 한줄평이 없습니다. 첫 번째로 한줄평을 남겨보세요!
                 </BlankText>
               </BlankWrap>
             ) : (
               <>
                 {reviewList.map((review: IReply) => (
-                  <Reply key={review.record_id} replyData={review} />
+                  <Reply key={review.id} replyData={review} />
                 ))}
               </>
             ))}
@@ -227,10 +230,10 @@ export function EvaluationPage() {
 
       {!isLectureInfoLoading && lectureInfo && (
         <ScrolledHeader
-          professor={lectureInfo[0].prof
-            .map((prof: professorInfo) => prof.prof_name)
-            .join(", ")}
-          title={lectureInfo[0].lecture_name}
+          professor={lectureInfo.LectureProfessor.map(
+            (prof: professorInfo) => prof.professor.name
+          ).join(", ")}
+          title={lectureInfo.lectureName}
         />
       )}
     </>

@@ -44,40 +44,16 @@ export interface IButton {
 /** like : 좋아요 누름 / dislike : 싫어요 누름 / none : 둘 다 안 누름 */
 export type pushedLike = "like" | "dislike" | "none";
 
-/**
- * 
- *     "difficulty" : 1,
-    "strength" : 1,
-    "helpful" : 1,
-    "interest" : 1,
-    "lots" : 1,
-    "satisfy" : 1,
-    "review" : "한줄평1",
-    "lecture_id" : 1,
-    "prof_id" : 3,
-    "semester_id" : 1,
-    "year" : "2022",
-    "recommend" : 1,
-
- */
-
-export interface IReply {
-  record_id: number;
-  prof_id: number;
-  user_id: number;
-  writer_id: number;
-  /** 봄: 1, 여름: 2, 가을: 3, 가을:4 */
-  semester: number;
-  year: string;
-  difficulty: number;
-  strength: number;
-  helpful: number;
-  interest: number;
-  lots: number;
-  satisfy: number;
+export interface IReply extends lectureInfo {
+  id: number;
   review: string;
-  /** 강의를 추천하는지 여부, 1: 추천, 0: 비추천, 2:보통 */
-  recommend?: number;
+  recommendation: string;
+  semester: string;
+  year: number;
+  createdAt: string;
+  userUuid: string;
+  lectureId: number;
+  professorId: number;
 }
 
 export type ISortOption =
@@ -97,63 +73,70 @@ export interface UserInfo {
   student_id: string;
 }
 
+export interface LectureCode {
+  code: string;
+  lectureId: number;
+}
+
 export interface lectureInfo {
   /** 강의 id */
   id: number;
   /** 강의 코드, "['GS0000']" 형식이기 때문에 다시 필요한 경우 array로 분리해서 써야 함 */
-  lecture_code: string;
+  LectureCode: LectureCode[];
   /** 강의 이름 */
-  lecture_name: string;
+  lectureName: string;
 }
 
 export interface lectureInfoWithProf extends lectureInfo {
-  prof: professorInfo[];
+  LectureProfessor: professorInfo[];
 }
 
 export interface professorInfo {
-  id: number;
-  prof_name: string;
+  lectureId: number;
+  professorId: number;
+  professor: {
+    id: number;
+    name: string;
+  };
 }
-export interface reviewInfo {
+interface lecture {
   id: number;
-  difficulty: number;
-  strength: number;
-  helpful: number;
-  interest: number;
-  lots: number;
-  satisfy: number;
-  review: string;
-  evaluation: number;
-
-  lecture_id: number;
-  lecture_name: string;
-  lecture_code: string;
-  prof_id: number;
-  prof_name: string;
-
-  recommend: number;
-  semesterId: number;
-  year: string;
+  lectureName: string;
+}
+interface lectureProfessorInfo extends professorInfo {
+  lecture: lecture;
 }
 
-export interface recordInfo {
+interface evaluationData {
+  difficulty: number /*난이도*/;
+  skill: number /*강의력 */;
+  helpfulness: number /*유익함 */;
+  interest: number /*흥미도 */;
+  load: number /*과제량 */;
+  generosity: number /* 성적 후한 정도 */;
+}
+
+export interface reviewInfo extends evaluationData {
+  createdAt: string;
   id: number;
-  difficulty: number;
-  strength: number;
-  helpful: number;
-  interest: number;
-  lots: number;
-  satisfy: number;
+  lectureId: number;
+  professorId: number;
+  recommendation: string /*추천*/;
+  review: string;
+  semester: string;
+  userUuid: string;
+  year: number;
+  lectureProfessor: lectureProfessorInfo;
+}
+
+export interface recordInfo extends evaluationData {
+  id: number;
   review: string;
   evaluation: number;
-
-  lecture_id: number;
-  lecture_name: string;
-  lecture_code: string;
-  prof_id: number;
-  prof_name: string;
-
-  recommend: number;
+  lectureId: number;
+  professorId: number;
+  lectureProfessor: lectureProfessorInfo;
+  recommendation: number;
   semester: number; //위는 semesterID인데 여기는 semester임
   year: string;
 }

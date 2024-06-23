@@ -9,7 +9,6 @@ import styled from "styled-components";
 import { theme } from "@/style/theme";
 
 import { HexLabels, HexagonData } from "../EvaluationPage.const";
-import Card from "@components/Card";
 
 interface HexagonProps {
   HexData: HexagonData;
