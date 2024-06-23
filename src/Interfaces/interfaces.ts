@@ -133,14 +133,10 @@ export interface recordInfo extends evaluationData {
   id: number;
   review: string;
   evaluation: number;
-
-  lecture_id: number;
-  lecture_name: string;
-  lecture_code: string;
-  prof_id: number;
-  prof_name: string;
-
-  recommend: number;
+  lectureId: number;
+  professorId: number;
+  lectureProfessor: lectureProfessorInfo;
+  recommendation: number;
   semester: number; //위는 semesterID인데 여기는 semester임
   year: string;
 }

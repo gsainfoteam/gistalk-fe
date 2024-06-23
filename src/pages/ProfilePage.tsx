@@ -191,19 +191,19 @@ export default function ProfilePage() {
                           {year}년 {semesterArray[Number(semester) - 1]}학기
                         </Semester>
                         {subjects.map((subject, index) => (
-                          <StyledLink to={`/${subject.lecture_id}/evaluation`}>
+                          <StyledLink to={`/${subject.lectureId}/evaluation`}>
                             <Subject key={index}>
                               <SubjectName
                                 fontSize={16}
                                 color={theme.colors.primaryText}
                               >
-                                {subject.lecture_name}
+                                {subject.lectureProfessor.lecture.lectureName}
                               </SubjectName>
                               <ProfessorName
                                 fontSize={14}
                                 color={theme.colors.grayStroke}
                               >
-                                {subject.prof_name}
+                                {subject.lectureProfessor.professor.name}
                               </ProfessorName>
                               <ArrowIcon size={12} src={NavigationArrow_Svg} />
                             </Subject>
