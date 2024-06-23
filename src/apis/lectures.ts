@@ -8,6 +8,7 @@ import {
   NOT_RECOMMEND,
   RECOMMEND,
 } from "@/constants/recommand";
+import { convertSemesterToString } from "@/utils";
 
 //auth 정보를 사용하지 않으므로 axiosInstance를 사용하지 않음
 export const getLectureList = () => {
@@ -83,18 +84,18 @@ export const postLectureEvaluation = (
 
   const payload = {
     difficulty: ratings[RatingQuestionId.Difficulty],
-    strength: ratings[RatingQuestionId.TeachingSkills],
-    helpful: ratings[RatingQuestionId.ContentUsefulness],
+    skill: ratings[RatingQuestionId.TeachingSkills],
+    helpfulness: ratings[RatingQuestionId.ContentUsefulness],
     interest: ratings[RatingQuestionId.LectureEnjoyment],
-    lots: ratings[RatingQuestionId.AssignmentAmount],
-    satisfy: ratings[RatingQuestionId.GradeSatisfaction],
+    load: ratings[RatingQuestionId.AssignmentAmount],
+    generosity: ratings[RatingQuestionId.GradeSatisfaction],
     review: review,
-    lecture_id: lectureId,
-    prof_id: professorId,
-    semester_id: semesterId,
-    year: year,
-    recommend: fixedRecommend,
+    lectureId: lectureId,
+    professorId: professorId,
+    semester: convertSemesterToString(semesterId),
+    year: parseInt(year),
+    recommendation: fixedRecommend,
   };
 
-  return axiosInstance.post(`api/records/add`, payload);
+  return axiosInstance.post(`/api/record`, payload);
 };

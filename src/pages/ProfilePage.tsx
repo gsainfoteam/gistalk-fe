@@ -167,7 +167,7 @@ export default function ProfilePage() {
             <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
               {!isUserInfoLoading && data && (
                 <>
-                  <span>{userInfo.user_name}</span> 님, 안녕하세요
+                  <span>{userInfo.name}</span> 님, 안녕하세요
                 </>
               )}
             </SubjectTitle>

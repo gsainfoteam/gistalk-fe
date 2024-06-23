@@ -28,3 +28,23 @@ export const convertSemesterToNumber = (semester: string) => {
       return 0;
   }
 };
+
+/**
+ *
+ * @param semester 0, 1, 2, 3, 4 중 하나
+ * @returns 'SPRING', 'SUMMER', 'FALL', 'WINTER' 중 하나
+ */
+export const convertSemesterToString = (semester: number) => {
+  switch (semester) {
+    case 1:
+      return "SPRING";
+    case 2:
+      return "SUMMER";
+    case 3:
+      return "FALL";
+    case 4:
+      return "WINTER";
+    default:
+      return "ALL";
+  }
+};

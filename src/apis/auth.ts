@@ -10,15 +10,15 @@ export const getToken = (authCode: string | null) => {
     type: import.meta.env.DEV ? DEVELOPMENT : STAGING,
   };
 
-  return axios.get(`api/user/login`, {
+  return axios.get(`/api/user/login`, {
     params: params,
   });
 };
 
 export const getUserInfo = () => {
-  return axiosInstance.get(`api/user/info`);
+  return axiosInstance.get(`/api/user/info`);
 };
 
 export const getUserEvaluations = () => {
-  return axiosInstance.get(`api/user/record`);
+  return axiosInstance.get(`/api/record?type=user`);
 };
