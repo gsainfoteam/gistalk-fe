@@ -194,8 +194,11 @@ export default function ProfilePage() {
                           학기
                         </Semester>
                         {subjects.map((subject, index) => (
-                          <StyledLink to={`/${subject.lectureId}/evaluation`}>
-                            <Subject key={index}>
+                          <StyledLink
+                            key={subject.id}
+                            to={`/${subject.lectureId}/evaluation`}
+                          >
+                            <Subject>
                               <SubjectName
                                 fontSize={16}
                                 color={theme.colors.primaryText}
