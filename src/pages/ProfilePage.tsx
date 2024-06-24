@@ -13,6 +13,7 @@ import {
 import { StyledLink } from "@components/StyledLink";
 import Card from "@components/Card";
 import { recordInfo, reviewInfo } from "@/Interfaces/interfaces";
+import { convertSemesterToNumber } from "@/utils";
 
 const TitleWrap = styled.div`
   display: flex;
@@ -188,11 +189,16 @@ export default function ProfilePage() {
                     {Object.entries(semesters).map(([semester, subjects]) => (
                       <SemesterEvaluationWrap key={`${year}-${semester}`}>
                         <Semester fontSize={14} color={theme.colors.primary}>
-                          {year}년 {semesterArray[Number(semester) - 1]}학기
+                          {year}년{" "}
+                          {semesterArray[convertSemesterToNumber(semester) - 1]}
+                          학기
                         </Semester>
                         {subjects.map((subject, index) => (
-                          <StyledLink to={`/${subject.lectureId}/evaluation`}>
-                            <Subject key={index}>
+                          <StyledLink
+                            key={subject.id}
+                            to={`/${subject.lectureId}/evaluation`}
+                          >
+                            <Subject>
                               <SubjectName
                                 fontSize={16}
                                 color={theme.colors.primaryText}

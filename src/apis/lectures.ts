@@ -12,7 +12,7 @@ import { convertSemesterToString } from "@/utils";
 
 //auth 정보를 사용하지 않으므로 axiosInstance를 사용하지 않음
 export const getLectureList = () => {
-  return axios.get(`/api/lecture`);
+  return axiosInstance.get(`/lecture`);
 };
 
 export const getLectureEachEvaluation = (
@@ -25,7 +25,7 @@ export const getLectureEachEvaluation = (
     type: "evaluation",
   };
 
-  return axios.get(`/api/record`, {
+  return axiosInstance.get(`/record`, {
     params: params,
   });
 };
@@ -39,7 +39,7 @@ export const getLectureTotalEvaluationForProf = (
     professorId: professorId,
   };
 
-  return axios.get(`/api/lecture/evaluation`, { params: params });
+  return axiosInstance.get(`/lecture/evaluation`, { params: params });
 };
 
 /** 강의의 총합 강의평가를 로드합니다. */
@@ -48,7 +48,7 @@ export const getLectureTotalEvaluation = (lectureId: number) => {
     lectureId: lectureId,
   };
 
-  return axios.get(`/api/lecture/evaluation`, {
+  return axiosInstance.get(`/lecture/evaluation`, {
     params: params,
   });
 };
@@ -57,11 +57,11 @@ export const getLectureTotalEvaluation = (lectureId: number) => {
  * 최근 4개의 강의평을 로드합니다.
  */
 export const getRecentEvaluation = () => {
-  return axios.get(`/api/record?take=4&type=recent`);
+  return axiosInstance.get(`/record?take=4&type=recent`);
 };
 
 export const getLectureSingleInfo = (lectureId: number) => {
-  return axios.get(`/api/lecture/${lectureId}`);
+  return axiosInstance.get(`/lecture/${lectureId}`);
 };
 
 export const postLectureEvaluation = (
@@ -97,5 +97,5 @@ export const postLectureEvaluation = (
     recommendation: fixedRecommend,
   };
 
-  return axiosInstance.post(`/api/record`, payload);
+  return axiosInstance.post(`/record`, payload);
 };

@@ -1,4 +1,3 @@
-import axios from "axios";
 import axiosInstance from "./axiosInstance";
 
 const DEVELOPMENT = "local";
@@ -10,15 +9,15 @@ export const getToken = (authCode: string | null) => {
     type: import.meta.env.DEV ? DEVELOPMENT : STAGING,
   };
 
-  return axios.get(`/api/user/login`, {
+  return axiosInstance.get(`/user/login`, {
     params: params,
   });
 };
 
 export const getUserInfo = () => {
-  return axiosInstance.get(`/api/user/info`);
+  return axiosInstance.get(`/user/info`);
 };
 
 export const getUserEvaluations = () => {
-  return axiosInstance.get(`/api/record?type=user`);
+  return axiosInstance.get(`/record?type=user`);
 };
