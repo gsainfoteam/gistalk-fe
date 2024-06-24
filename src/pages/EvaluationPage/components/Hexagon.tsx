@@ -41,14 +41,15 @@ export default function Hexagon({ HexData }: HexagonProps) {
       : HexLabels.map((i) => {
           const subject = i.subject;
           const isNegative = subject === "난이도" || subject === "과제량";
-          const score = isNegative ? 6 - HexData[i.key] : HexData[i.key];
+          const score =
+            HexData[i.key] && isNegative ? 6 - HexData[i.key] : HexData[i.key];
 
           //score을 소수점 두 번쨰 자리에서 반올림한다
           const adjustedScore = Math.round(score * 10) / 10;
 
           return {
             subject: `${subject} (${adjustedScore})`,
-            A: adjustedScore,
+            score: adjustedScore,
             fullMark: 5.0,
           };
         });
@@ -74,7 +75,7 @@ export default function Hexagon({ HexData }: HexagonProps) {
           <PolarRadiusAxis domain={[0, 5]} angle={90} />
           <Radar
             name="Standard"
-            dataKey="A"
+            dataKey="score"
             fill={theme.colors.primary}
             fillOpacity={0.6}
           />
