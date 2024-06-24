@@ -1,14 +1,14 @@
 import axios, { AxiosInstance, isAxiosError } from "axios";
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}`,
   headers: {
     "Content-Type": "application/json",
   },
+  baseURL: import.meta.env.VITE_BASE_URL,
 });
 
 const TOKEN_KEY = "accessToken";
-const NOT_AUTHORIZED_MESSAGE = "Could not validate credentials";
+const NOT_AUTHORIZED_MESSAGE = "Unauthorized";
 
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -25,10 +25,10 @@ axiosInstance.interceptors.response.use(
     if (
       isAxiosError(error) &&
       error.response?.status === 401 &&
-      error.response.data.detail === NOT_AUTHORIZED_MESSAGE
+      error.response.data.message === NOT_AUTHORIZED_MESSAGE
     ) {
       localStorage.removeItem(TOKEN_KEY);
-      alert("유효하지 않은 토큰입니다. 다시 로그인해 주세요.");
+      alert("로그인 정보가 유효하지 않습니다. 로그인 후 사용해주세요.");
       window.location.replace("/");
     }
 

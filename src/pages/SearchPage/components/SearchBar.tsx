@@ -126,13 +126,13 @@ export function SearchBar({
     return data.map((item) => {
       if (
         searchText != "" &&
-        item.lecture_name.includes(searchText) &&
+        item.lectureName.includes(searchText) &&
         searchTextEnter != searchText
       ) {
         //TODO: 원래는 prof 별로 강의를 하나씩 할당하려고 했는데, 현재 prof별로 강의 id가 다르게 배정되지 않아 한 번에 병함
-        const professorNames = item.prof
-          .map((prof) => prof.prof_name)
-          .join(", ");
+        const professorNames = item.LectureProfessor.map(
+          (prof) => prof.professor.name
+        ).join(", ");
 
         return (
           <Link
@@ -142,11 +142,11 @@ export function SearchBar({
           >
             <SearchItem>
               <p>
-                <span>{item.lecture_name.split(searchText)[0]}</span>
+                <span>{item.lectureName.split(searchText)[0]}</span>
                 <MatchingText color={theme.colors.primary}>
                   {searchText}
                 </MatchingText>
-                <span>{item.lecture_name.split(searchText)[1]}</span>
+                <span>{item.lectureName.split(searchText)[1]}</span>
                 <span>- {professorNames}</span>
               </p>
               <NorthWestSvg src={NorthWest_Svg} size={20} />

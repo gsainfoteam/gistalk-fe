@@ -8,10 +8,11 @@ import {
   NOT_RECOMMEND,
   RECOMMEND,
 } from "@/constants/recommand";
+import { convertSemesterToString } from "@/utils";
 
 //auth 정보를 사용하지 않으므로 axiosInstance를 사용하지 않음
 export const getLectureList = () => {
-  return axios.get(`${import.meta.env.VITE_API_URL}/lectures/all`);
+  return axiosInstance.get(`/lecture`);
 };
 
 export const getLectureEachEvaluation = (
@@ -19,11 +20,12 @@ export const getLectureEachEvaluation = (
   professorId: number | null
 ) => {
   const params = {
-    lecture_id: lectureId,
-    prof_id: professorId,
+    lectureId: lectureId,
+    professorId: professorId,
+    type: "evaluation",
   };
 
-  return axios.get(`${import.meta.env.VITE_API_URL}/lectures/get`, {
+  return axiosInstance.get(`/record`, {
     params: params,
   });
 };
@@ -32,37 +34,34 @@ export const getLectureTotalEvaluationForProf = (
   lectureId: number,
   professorId: number | null
 ) => {
-  return axios.get(
-    `${import.meta.env.VITE_API_URL}/scoring/get/${lectureId}/${professorId}`
-  );
+  const params = {
+    lectureId: lectureId,
+    professorId: professorId,
+  };
+
+  return axiosInstance.get(`/lecture/evaluation`, { params: params });
 };
 
 /** 강의의 총합 강의평가를 로드합니다. */
 export const getLectureTotalEvaluation = (lectureId: number) => {
   const params = {
-    lecture_id: lectureId,
+    lectureId: lectureId,
   };
 
-  return axios.get(`${import.meta.env.VITE_API_URL}/scoring/get/total`, {
+  return axiosInstance.get(`/lecture/evaluation`, {
     params: params,
   });
 };
 
 /**
- * 최근 2개의 강의평을 로드합니다.
+ * 최근 4개의 강의평을 로드합니다.
  */
 export const getRecentEvaluation = () => {
-  return axios.get(`${import.meta.env.VITE_API_URL}/records/latest/4`);
+  return axiosInstance.get(`/record?take=4&type=recent`);
 };
 
 export const getLectureSingleInfo = (lectureId: number) => {
-  const params = {
-    lecture_id: lectureId,
-  };
-
-  return axios.get(`${import.meta.env.VITE_API_URL}/lectures/info/id`, {
-    params: params,
-  });
+  return axiosInstance.get(`/lecture/${lectureId}`);
 };
 
 export const postLectureEvaluation = (
@@ -85,21 +84,18 @@ export const postLectureEvaluation = (
 
   const payload = {
     difficulty: ratings[RatingQuestionId.Difficulty],
-    strength: ratings[RatingQuestionId.TeachingSkills],
-    helpful: ratings[RatingQuestionId.ContentUsefulness],
+    skill: ratings[RatingQuestionId.TeachingSkills],
+    helpfulness: ratings[RatingQuestionId.ContentUsefulness],
     interest: ratings[RatingQuestionId.LectureEnjoyment],
-    lots: ratings[RatingQuestionId.AssignmentAmount],
-    satisfy: ratings[RatingQuestionId.GradeSatisfaction],
+    load: ratings[RatingQuestionId.AssignmentAmount],
+    generosity: ratings[RatingQuestionId.GradeSatisfaction],
     review: review,
-    lecture_id: lectureId,
-    prof_id: professorId,
-    semester_id: semesterId,
-    year: year,
-    recommend: fixedRecommend,
+    lectureId: lectureId,
+    professorId: professorId,
+    semester: convertSemesterToString(semesterId),
+    year: parseInt(year),
+    recommendation: fixedRecommend,
   };
 
-  return axiosInstance.post(
-    `${import.meta.env.VITE_API_URL}/records/add`,
-    payload
-  );
+  return axiosInstance.post(`/record`, payload);
 };

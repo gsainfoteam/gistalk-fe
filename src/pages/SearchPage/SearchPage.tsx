@@ -63,19 +63,21 @@ export function SearchPage() {
       searchTextEnter
     );
 
-    if (filteredLectureList === null) {
+    if (filteredLectureList === null || filteredLectureList === undefined) {
       return null;
     }
 
     return filteredLectureList.map((item: lectureInfoWithProf) => {
-      const professorNames = item.prof.map((prof) => prof.prof_name).join(", ");
+      const professorNames = item.LectureProfessor.map(
+        (prof) => prof.professor.name
+      ).join(", ");
 
       return (
         <StyledLink key={item.id} to={`/${item.id}/evaluation`}>
           <SearchCard
-            subjectCode={item.lecture_code}
+            subjectCode={item.LectureCode}
             professorName={professorNames}
-            subjectName={item.lecture_name}
+            subjectName={item.lectureName}
           />
         </StyledLink>
       );
@@ -116,7 +118,6 @@ export function SearchPage() {
           </BlankWrap>
         ) : null}
       </ItemList>
-      {/* header, footer 어떻게 할지 논의 필요할듯? */}
       <DepartmentSelectModal
         isOpen={departmentOpen}
         setOpen={setDepartmentOpen}

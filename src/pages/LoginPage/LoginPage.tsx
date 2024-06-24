@@ -3,9 +3,8 @@ import styled from "styled-components";
 import { theme } from "@/style/theme";
 import InfoteamLogo_Svg from "@/assets/svgs/infoteamLogo.svg";
 import { useLogin } from "@/hooks/useLogin";
-import { SCOPES } from "./LoginPage.const";
-import { StyledLink } from "@components/StyledLink";
 import { useRedirect } from "@/hooks/useRedirect";
+import { useLocation } from "react-router-dom";
 
 const Wrap = styled.div`
   height: 100vh;
@@ -55,6 +54,14 @@ export default function LoginPage() {
   const redirectPath = useRedirect();
   useLogin(redirectPath);
 
+  const SCOPES = [
+    { field: "redirect_uri", value: `${window.location.href}` },
+    { field: "client_id", value: "gistalk" },
+    { field: "scope", value: "openid profile email student_id offline_access" },
+    { field: "response_type", value: "code" },
+    { field: "prompt", value: "consent" },
+  ];
+
   return (
     <Wrap>
       <LogoWrap>
@@ -72,7 +79,7 @@ export default function LoginPage() {
       </LogoWrap>
 
       <form
-        action={`https://idp.gistory.me/authorize?client_id=gistalk2023&scope=openid%20profile%20email%20student_id%20offline_access&response_type=code`}
+        action={`https://idp.gistory.me/authorize?client_id=gistalk&scope=openid%20profile%20email%20student_id%20offline_access&response_type=code`}
       >
         {SCOPES.map((scope) => {
           return (

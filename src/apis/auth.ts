@@ -1,8 +1,7 @@
-import axios from "axios";
 import axiosInstance from "./axiosInstance";
 
-const DEVELOPMENT = "dev";
-const STAGING = "stg";
+const DEVELOPMENT = "local";
+const STAGING = "web";
 
 export const getToken = (authCode: string | null) => {
   const params = {
@@ -10,15 +9,15 @@ export const getToken = (authCode: string | null) => {
     type: import.meta.env.DEV ? DEVELOPMENT : STAGING,
   };
 
-  return axios.get(`${import.meta.env.VITE_API_URL}/user/join`, {
+  return axiosInstance.get(`/user/login`, {
     params: params,
   });
 };
 
 export const getUserInfo = () => {
-  return axiosInstance.get(`${import.meta.env.VITE_API_URL}/user/info`);
+  return axiosInstance.get(`/user/info`);
 };
 
 export const getUserEvaluations = () => {
-  return axiosInstance.get(`${import.meta.env.VITE_API_URL}/user/record`);
+  return axiosInstance.get(`/record?type=user`);
 };

@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getRecentEvaluation } from "@/apis/lectures";
 import { reviewInfo } from "@/Interfaces/interfaces";
 import { NOT_RECOMMEND, RECOMMEND } from "@/constants/recommand";
+import { convertSemesterToNumber } from "@/utils";
 
 export default function MainPage() {
   const { isLoading, data } = useQuery({
@@ -34,21 +35,23 @@ export default function MainPage() {
           data &&
           recentEvaluation.map((evaluation: reviewInfo) => (
             <StyledLink
-              to={`/${evaluation.lecture_id}/evaluation`}
+              to={`/${evaluation.lectureId}/evaluation`}
               key={evaluation.id}
             >
               <Card>
                 <LectureInformation
-                  LectureName={evaluation.lecture_name}
-                  ProfessorName={evaluation.prof_name}
+                  LectureName={evaluation.lectureProfessor.lecture.lectureName}
+                  ProfessorName={evaluation.lectureProfessor.professor.name}
                   CourseTakenYear={parseInt(
                     evaluation.year.toString().substring(0, 4)
                   )}
-                  CourseTakenSemester={evaluation.semesterId}
+                  CourseTakenSemester={convertSemesterToNumber(
+                    evaluation.semester
+                  )}
                   CourseRecommendation={
-                    evaluation.recommend === RECOMMEND
+                    evaluation.recommendation === RECOMMEND
                       ? true
-                      : evaluation.recommend === NOT_RECOMMEND
+                      : evaluation.recommendation === NOT_RECOMMEND
                       ? false
                       : null
                   }

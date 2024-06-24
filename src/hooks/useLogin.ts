@@ -18,7 +18,6 @@ interface LoginResponse {
 }
 
 /**
- *
  * @param redirectPath 로그인 후 리다이렉트할 경로, null일 경우 메인 페이지로 리다이렉트한다.
  */
 export const useLogin = (redirectPath: string | null) => {

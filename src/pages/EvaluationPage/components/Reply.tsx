@@ -5,6 +5,7 @@ import { IReply } from "@/Interfaces/interfaces";
 import LikeButton from "./LikeButton";
 import RecommendationStatus from "@components/RecommendationStatus";
 import { NOT_RECOMMEND, RECOMMEND } from "@/constants/recommand";
+import { convertSemesterToNumber } from "@/utils";
 
 interface IProps {
   replyData: IReply;
@@ -46,11 +47,13 @@ const semester = ["봄", "여름", "가을", "겨울"];
 
 export default function Reply({ replyData }: IProps) {
   const isRecommend =
-    replyData.recommend == NOT_RECOMMEND
+    replyData.recommendation == NOT_RECOMMEND
       ? "false"
-      : replyData.recommend == RECOMMEND
+      : replyData.recommendation == RECOMMEND
       ? "true"
       : "none"; // "true" or "false" or "none
+
+  const semesterId = convertSemesterToNumber(replyData.semester);
 
   return (
     <Wrap>
@@ -59,8 +62,7 @@ export default function Reply({ replyData }: IProps) {
           <RecommendationStatus like={isRecommend} />
           <SemesterText fontSize={13} color={theme.colors.secondaryText}>
             {replyData.year}년{" "}
-            {replyData.semester !== 5 &&
-              `${semester[replyData.semester - 1]}학기`}
+            {semesterId != 0 && `${semester[semesterId - 1]}학기`}
           </SemesterText>
         </LeftWrap>
         {/* <LikeButton like={0} dislike={0} /> */}

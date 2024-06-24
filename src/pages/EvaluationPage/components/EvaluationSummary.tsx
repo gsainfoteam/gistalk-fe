@@ -54,7 +54,7 @@ function sortScoresBySubject(scores: HexagonData): number[] {
 
 const LOW = 0;
 const MIDDLE = 1;
-const height = 2;
+const HIGH = 2;
 
 export default function EvaluationSummary({ evaluationData }: SummaryProps) {
   if (evaluationData == null) {
@@ -64,12 +64,12 @@ export default function EvaluationSummary({ evaluationData }: SummaryProps) {
   const data = sortScoresBySubject(evaluationData);
 
   const indexData = data.map((item: number) => {
-    if (item <= 2) {
+    if (item < 2.5 && item >= 0) {
       return LOW;
-    } else if (item == 3) {
+    } else if (item >= 2.5 && item <= 3.5) {
       return MIDDLE;
     } else {
-      return height;
+      return HIGH;
     }
   });
 
@@ -84,7 +84,11 @@ export default function EvaluationSummary({ evaluationData }: SummaryProps) {
         >
           <div>{EVALUATION_TEXT[index]}</div>
           <div>
-            <span>{EvaluationToText[index][item]}</span>
+            {data[index] === null ? (
+              <span> -</span>
+            ) : (
+              <span>{EvaluationToText[index][item]}</span>
+            )}
           </div>
         </ConcreteInfo>
       ))}

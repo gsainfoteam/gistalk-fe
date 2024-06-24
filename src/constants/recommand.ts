@@ -1,7 +1,7 @@
 //서버에서 사용하는 추천, 비추천 값
-const RECOMMEND = 1;
-const NOT_RECOMMEND = 0;
-const NORMAL = 2;
+const RECOMMEND = "YES";
+const NOT_RECOMMEND = "NO";
+const NORMAL = "MAYBE";
 
 //클라이언트에서 사용하는 추천, 비추천 값
 const CLIENT_RECOMMEND = 2;

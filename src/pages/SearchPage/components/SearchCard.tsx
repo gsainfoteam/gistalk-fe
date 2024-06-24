@@ -5,9 +5,10 @@ import { major, minor, underG } from "@/constants/StdSet";
 import { departmentColors } from "@/constants/departmentColors";
 import { convertLectureCodeToList } from "@/utils";
 import useSubjectCode from "@/hooks/useSubjectCode";
+import { LectureCode } from "@/Interfaces/interfaces";
 
 interface IProps {
-  subjectCode: string;
+  subjectCode: LectureCode[];
   professorName: string;
   subjectName: string;
 }
@@ -62,21 +63,27 @@ export default function SearchCard({
 }: IProps) {
   const lectureCodeList = convertLectureCodeToList(subjectCode); //lecture_code가 string list로 되어있어서 배열로 변경
   const targetLectureCode = useSubjectCode(lectureCodeList);
-  const Division = targetLectureCode.slice(0, 2);
+
+  if (targetLectureCode === undefined) {
+    return <></>;
+  }
+
+  const division = targetLectureCode.slice(0, 2);
 
   /**major, minor 강의 코드와 대조해서 일치하면 전공/부전공/공통 과목 색상 부여 */
   const IconColor: string = major
-    .map((item) => Division === item.subjectCode)
+    .map((item) => division === item.subjectCode)
     .includes(true)
     ? departmentColors.major
-    : minor.map((item) => Division === item.subjectCode).includes(true)
+    : minor.map((item) => division === item.subjectCode).includes(true)
     ? departmentColors.minor
-    : underG.map((item) => Division === item.subjectCode).includes(true)
+    : underG.map((item) => division === item.subjectCode).includes(true)
     ? departmentColors.underGraduate
     : "#E0E0E0";
+
   return (
     <SearchCardWrap hoverColor={theme.colors.inputBg}>
-      <TempIcon text={Division} color={IconColor} isChecked={false} />
+      <TempIcon text={division} color={IconColor} isChecked={false} />
       <CardContentWrap color={theme.colors.primaryText}>
         <div>{subjectName}</div>
         {/* 과목 이름 */}
