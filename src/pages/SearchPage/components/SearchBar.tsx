@@ -1,11 +1,12 @@
-import { theme } from "@/style/theme";
-import { MatchingText, NorthWestSvg, SearchItem } from "../SearchPage.styled";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import NorthWest_Svg from "@assets/svgs/northWest.svg";
-import Cancel_Svg from "@assets/svgs/cancel_Black.svg";
-import Search_Svg from "@assets/svgs/search.svg";
-import styled from "styled-components";
 import { lectureInfoWithProf } from "@/Interfaces/interfaces";
+import { theme } from "@/style/theme";
+import Cancel_Svg from "@assets/svgs/cancel_Black.svg";
+import NorthWest_Svg from "@assets/svgs/northWest.svg";
+import Search_Svg from "@assets/svgs/search.svg";
+import { useEffect, useRef } from "react";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
+import styled from "styled-components";
+import { MatchingText, NorthWestSvg, SearchItem } from "../SearchPage.styled";
 
 export const SearchSvg = styled(theme.universalComponent.SvgIcon)`
   display: block;
@@ -93,6 +94,15 @@ export function SearchBar({
   searchTextEnter: string;
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const location = useLocation();
+
+  /**메인페이지에서 MockSearchBar 클릭해서 넘어올 경우 focus */
+  useEffect(() => {
+    if (location.state != undefined && location.state.focus) {
+      inputRef.current?.focus();
+    }
+  }, [location]);
 
   /**검색 아이콘 -> 검색어가 입력되면 취소 아이콘 */
   function ResponsiveSvg() {
@@ -177,6 +187,7 @@ export function SearchBar({
           onChange={handleSearchText}
           onKeyDown={(e) => enterSearchText(e)}
           value={searchText}
+          ref={inputRef}
         />
         {ResponsiveSvg()}
       </SearchInputWrap>
