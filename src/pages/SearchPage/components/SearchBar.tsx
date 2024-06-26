@@ -99,7 +99,6 @@ export function SearchBar({
 
   /**메인페이지에서 MockSearchBar 클릭해서 넘어올 경우 focus */
   useEffect(() => {
-    console.log(location);
     if (location.state != undefined && location.state.focus) {
       inputRef.current?.focus();
     }
