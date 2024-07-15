@@ -35,7 +35,7 @@ export default function MainPage() {
           data &&
           recentEvaluation.map((evaluation: reviewInfo) => (
             <StyledLink
-              to={`/${evaluation.lectureId}/evaluation`}
+              to={`/${evaluation.LectureSection.Lecture.id}/evaluation`}
               key={evaluation.id}
             >
               <Card>

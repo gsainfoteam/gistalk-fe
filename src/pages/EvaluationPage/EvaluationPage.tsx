@@ -20,8 +20,8 @@ import {
 } from "@/apis/lectures";
 import { useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
-import { convertLectureCodeToList } from "@/utils";
-import { IReply, professorInfo } from "@/Interfaces/interfaces";
+import { concatProfessorNames, convertLectureCodeToList } from "@/utils";
+import { IReply } from "@/Interfaces/interfaces";
 import Card from "@components/Card";
 
 const Wrap = styled.div`
@@ -157,8 +157,8 @@ export function EvaluationPage() {
         {!isLectureInfoLoading && lectureInfo && (
           <Title
             handleCheckboxChange={handleCheckboxChange}
-            subjectTitle={lectureInfo.lectureName}
-            professorInfo={lectureInfo.LectureProfessor}
+            subjectTitle={lectureInfo.name}
+            sectionInfo={lectureInfo.LectureSection}
             subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
             selectedId={selectedId}
           />
@@ -230,10 +230,8 @@ export function EvaluationPage() {
 
       {!isLectureInfoLoading && lectureInfo && (
         <ScrolledHeader
-          professor={lectureInfo.LectureProfessor.map(
-            (prof: professorInfo) => prof.professor.name
-          ).join(", ")}
-          title={lectureInfo.lectureName}
+          professor={concatProfessorNames(lectureInfo.LectureSection)}
+          title={lectureInfo.name}
         />
       )}
     </>

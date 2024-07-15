@@ -17,11 +17,11 @@ export const getLectureList = () => {
 
 export const getLectureEachEvaluation = (
   lectureId: number,
-  professorId: number | null
+  sectionId: number | null
 ) => {
   const params = {
     lectureId: lectureId,
-    professorId: professorId,
+    sectionId: sectionId,
     type: "evaluation",
   };
 
@@ -32,11 +32,11 @@ export const getLectureEachEvaluation = (
 
 export const getLectureTotalEvaluationForProf = (
   lectureId: number,
-  professorId: number | null
+  sectionId: number | null
 ) => {
   const params = {
     lectureId: lectureId,
-    professorId: professorId,
+    sectionId: sectionId,
   };
 
   return axiosInstance.get(`/lecture/evaluation`, { params: params });
