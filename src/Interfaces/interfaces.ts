@@ -92,19 +92,18 @@ export interface lectureInfoWithProf extends lectureInfo {
 }
 
 export interface professorInfo {
-  lectureId: number;
-  professorId: number;
-  professor: {
-    id: number;
-    name: string;
-  };
+  id: number;
+  name: string;
 }
 interface lecture {
   id: number;
-  lectureName: string;
+  name: string;
 }
-interface lectureProfessorInfo extends professorInfo {
-  lecture: lecture;
+interface LectureSectionInfo extends professorInfo {
+  id: number;
+  lectureId: number;
+  Lecture: lecture;
+  Professor: professorInfo[];
 }
 
 interface evaluationData {
@@ -126,7 +125,8 @@ export interface reviewInfo extends evaluationData {
   semester: string;
   userUuid: string;
   year: number;
-  lectureProfessor: lectureProfessorInfo;
+  sectionId: number;
+  LectureSection: LectureSectionInfo;
 }
 
 export interface recordInfo extends evaluationData {

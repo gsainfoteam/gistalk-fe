@@ -1,4 +1,4 @@
-import { LectureCode } from "@/Interfaces/interfaces";
+import { LectureCode, professorInfo } from "@/Interfaces/interfaces";
 
 /**
  *
@@ -9,6 +9,14 @@ export const convertLectureCodeToList = (lectureCode: LectureCode[]) => {
   return lectureCode.map((lectureCode) => lectureCode.code);
 };
 
+/**
+ * professorInfo[]의 name을 추출해서 하나의 strong으로 변환
+ */
+export const convertProfessorNameToString = (
+  professorInfo: professorInfo[]
+) => {
+  return professorInfo.map((professor) => professor.name).join(", ");
+};
 /**
  *
  * @param semester 'SPRING', 'SUMMER', 'FALL', 'WINTER' 중 하나

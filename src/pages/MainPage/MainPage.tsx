@@ -1,12 +1,12 @@
+import { useQuery } from "@tanstack/react-query";
+
 import Card from "@components/Card";
 import { StyledLink } from "@components/StyledLink";
 import WithTitleAndDescription from "@components/TitleWithDescription";
-
 import { reviewInfo } from "@/Interfaces/interfaces";
 import { getRecentEvaluation } from "@/apis/lectures";
 import { NOT_RECOMMEND, RECOMMEND } from "@/constants/recommand";
-import { convertSemesterToNumber } from "@/utils";
-import { useQuery } from "@tanstack/react-query";
+import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 import LectureInformation from "./components/LectureInformation";
 import LectureReview from "./components/LectureReview";
 import { MockSearchBar } from "./components/MockSearchBar";
@@ -40,8 +40,10 @@ export default function MainPage() {
             >
               <Card>
                 <LectureInformation
-                  LectureName={evaluation.lectureProfessor.lecture.lectureName}
-                  ProfessorName={evaluation.lectureProfessor.professor.name}
+                  LectureName={evaluation.LectureSection.Lecture.name}
+                  ProfessorName={convertProfessorNameToString(
+                    evaluation.LectureSection.Professor
+                  )}
                   CourseTakenYear={parseInt(
                     evaluation.year.toString().substring(0, 4)
                   )}
