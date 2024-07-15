@@ -67,7 +67,7 @@ export const getLectureSingleInfo = (lectureId: number) => {
 export const postLectureEvaluation = (
   review: string,
   lectureId: number,
-  professorId: number | null,
+  sectionId: number | null,
   semesterId: number,
   year: string,
   recommend: number | null,
@@ -91,7 +91,7 @@ export const postLectureEvaluation = (
     generosity: ratings[RatingQuestionId.GradeSatisfaction],
     review: review,
     lectureId: lectureId,
-    professorId: professorId,
+    sectionId: sectionId,
     semester: convertSemesterToString(semesterId),
     year: parseInt(year),
     recommendation: fixedRecommend,
