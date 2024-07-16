@@ -13,7 +13,7 @@ import {
 import { StyledLink } from "@components/StyledLink";
 import Card from "@components/Card";
 import { recordInfo, reviewInfo } from "@/Interfaces/interfaces";
-import { convertSemesterToNumber } from "@/utils";
+import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 
 const TitleWrap = styled.div`
   display: flex;
@@ -196,20 +196,22 @@ export default function ProfilePage() {
                         {subjects.map((subject, index) => (
                           <StyledLink
                             key={subject.id}
-                            to={`/${subject.lectureId}/evaluation`}
+                            to={`/${subject.LectureSection.Lecture.id}/evaluation`}
                           >
                             <Subject>
                               <SubjectName
                                 fontSize={16}
                                 color={theme.colors.primaryText}
                               >
-                                {subject.lectureProfessor.lecture.lectureName}
+                                {subject.LectureSection.Lecture.name}
                               </SubjectName>
                               <ProfessorName
                                 fontSize={14}
                                 color={theme.colors.grayStroke}
                               >
-                                {subject.lectureProfessor.professor.name}
+                                {convertProfessorNameToString(
+                                  subject.LectureSection.Professor
+                                )}
                               </ProfessorName>
                               <ArrowIcon size={12} src={NavigationArrow_Svg} />
                             </Subject>

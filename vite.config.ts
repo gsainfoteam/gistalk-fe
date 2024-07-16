@@ -15,6 +15,9 @@ export default ({ mode }) => {
           rewrite: (path) => path.replace(/^\/api/, ""),
         },
       },
+      headers: {
+        Origin: `${env.VITE_API_URL}`,
+      },
     },
     plugins: [react(), tsconfigPaths()],
     resolve: {

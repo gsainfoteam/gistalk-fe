@@ -1,12 +1,13 @@
 import styled from "styled-components";
 
 import { theme } from "@/style/theme";
-import { professorInfo } from "@/Interfaces/interfaces";
+import { LectureSectionWithProfessorInfo } from "@/Interfaces/interfaces";
 import ProfessorNameCheckbox from "./ProfessorNameCheckbox";
+import { convertProfessorNameToString } from "@/utils";
 
 interface IProps {
   subjectTitle: string;
-  professorInfo: professorInfo[];
+  sectionInfo: LectureSectionWithProfessorInfo[];
   subjectCode: string[];
   selectedId: number | null;
   handleCheckboxChange: (id: number) => void;
@@ -58,7 +59,7 @@ const CheckboxContainer = styled.div`
  */
 export default function Title({
   subjectTitle,
-  professorInfo,
+  sectionInfo,
   subjectCode,
   selectedId,
   handleCheckboxChange,
@@ -75,15 +76,17 @@ export default function Title({
             교수자
           </SubjectTitle>
 
-          {professorInfo.map((professor: professorInfo, index: number) => (
-            <ProfessorNameCheckbox
-              key={index}
-              text={professor.professor.name}
-              id={professor.professorId}
-              selectedId={selectedId}
-              onCheckboxChange={handleCheckboxChange}
-            />
-          ))}
+          {sectionInfo.map(
+            (section: LectureSectionWithProfessorInfo, index: number) => (
+              <ProfessorNameCheckbox
+                key={section.id}
+                text={convertProfessorNameToString(section.Professor)}
+                id={section.id}
+                selectedId={selectedId}
+                onCheckboxChange={handleCheckboxChange}
+              />
+            )
+          )}
         </CheckboxContainer>
       </div>
     </TitleWrap>

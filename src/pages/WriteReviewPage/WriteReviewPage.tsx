@@ -180,8 +180,8 @@ export function WriteReviewPage() {
         {!isLectureInfoLoading && lectureInfo && (
           <Title
             handleCheckboxChange={handleCheckboxChange}
-            subjectTitle={lectureInfo.lectureName}
-            professorInfo={lectureInfo.LectureProfessor}
+            subjectTitle={lectureInfo.name}
+            sectionInfo={lectureInfo.LectureSection}
             subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
             selectedId={selectedId}
           />

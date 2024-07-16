@@ -1,12 +1,14 @@
+import { useEffect, useRef } from "react";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
+import styled from "styled-components";
+
 import { lectureInfoWithProf } from "@/Interfaces/interfaces";
 import { theme } from "@/style/theme";
 import Cancel_Svg from "@assets/svgs/cancel_Black.svg";
 import NorthWest_Svg from "@assets/svgs/northWest.svg";
 import Search_Svg from "@assets/svgs/search.svg";
-import { useEffect, useRef } from "react";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
-import styled from "styled-components";
 import { MatchingText, NorthWestSvg, SearchItem } from "../SearchPage.styled";
+import { concatProfessorNames } from "@/utils";
 
 export const SearchSvg = styled(theme.universalComponent.SvgIcon)`
   display: block;
@@ -136,13 +138,11 @@ export function SearchBar({
     return data.map((item) => {
       if (
         searchText != "" &&
-        item.lectureName.includes(searchText) &&
+        item.name.includes(searchText) &&
         searchTextEnter != searchText
       ) {
         //TODO: 원래는 prof 별로 강의를 하나씩 할당하려고 했는데, 현재 prof별로 강의 id가 다르게 배정되지 않아 한 번에 병함
-        const professorNames = item.LectureProfessor.map(
-          (prof) => prof.professor.name
-        ).join(", ");
+        const professorNames = concatProfessorNames(item.LectureSection);
 
         return (
           <Link
@@ -152,11 +152,11 @@ export function SearchBar({
           >
             <SearchItem>
               <p>
-                <span>{item.lectureName.split(searchText)[0]}</span>
+                <span>{item.name.split(searchText)[0]}</span>
                 <MatchingText color={theme.colors.primary}>
                   {searchText}
                 </MatchingText>
-                <span>{item.lectureName.split(searchText)[1]}</span>
+                <span>{item.name.split(searchText)[1]}</span>
                 <span>- {professorNames}</span>
               </p>
               <NorthWestSvg src={NorthWest_Svg} size={20} />
