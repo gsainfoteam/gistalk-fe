@@ -52,8 +52,7 @@ export interface IReply extends lectureInfo {
   year: number;
   createdAt: string;
   userUuid: string;
-  lectureId: number;
-  professorId: number;
+  LectureSection: LectureSectionInfo;
 }
 
 export type ISortOption =
