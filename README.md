@@ -6,4 +6,4 @@ npm run dev
 
 - master branch: https://gistalk.gistory.me
 
-- dev branch: https://dev.gistalk-frontend.pages.dev
+- dev branch: https://dev.gistalk-fe.pages.dev
