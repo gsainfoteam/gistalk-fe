@@ -121,6 +121,7 @@ export function SearchBar({
           onClick={() => {
             setSearchText("");
             setSearchTextEnter("");
+            setSearchParams("");
           }}
         >
           <CancelSvg size={25} src={Cancel_Svg} />
