@@ -52,8 +52,7 @@ export interface IReply extends lectureInfo {
   year: number;
   createdAt: string;
   userUuid: string;
-  lectureId: number;
-  professorId: number;
+  LectureSection: LectureSectionInfo;
 }
 
 export type ISortOption =
@@ -84,27 +83,32 @@ export interface lectureInfo {
   /** 강의 코드, "['GS0000']" 형식이기 때문에 다시 필요한 경우 array로 분리해서 써야 함 */
   LectureCode: LectureCode[];
   /** 강의 이름 */
-  lectureName: string;
+  name: string;
 }
 
 export interface lectureInfoWithProf extends lectureInfo {
-  LectureProfessor: professorInfo[];
+  LectureSection: LectureSectionWithProfessorInfo[];
 }
 
 export interface professorInfo {
-  lectureId: number;
-  professorId: number;
-  professor: {
-    id: number;
-    name: string;
-  };
+  id: number;
+  name: string;
 }
 interface lecture {
   id: number;
-  lectureName: string;
+  name: string;
 }
-interface lectureProfessorInfo extends professorInfo {
-  lecture: lecture;
+interface LectureSectionInfo {
+  id: number;
+  lectureId: number;
+  Lecture: lecture;
+  Professor: professorInfo[];
+}
+
+export interface LectureSectionWithProfessorInfo {
+  id: number;
+  lectureId: number;
+  Professor: professorInfo[];
 }
 
 interface evaluationData {
@@ -126,7 +130,8 @@ export interface reviewInfo extends evaluationData {
   semester: string;
   userUuid: string;
   year: number;
-  lectureProfessor: lectureProfessorInfo;
+  sectionId: number;
+  LectureSection: LectureSectionInfo;
 }
 
 export interface recordInfo extends evaluationData {
@@ -135,7 +140,7 @@ export interface recordInfo extends evaluationData {
   evaluation: number;
   lectureId: number;
   professorId: number;
-  lectureProfessor: lectureProfessorInfo;
+  LectureSection: LectureSectionInfo;
   recommendation: number;
   semester: number; //위는 semesterID인데 여기는 semester임
   year: string;

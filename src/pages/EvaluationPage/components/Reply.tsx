@@ -5,7 +5,7 @@ import { IReply } from "@/Interfaces/interfaces";
 import LikeButton from "./LikeButton";
 import RecommendationStatus from "@components/RecommendationStatus";
 import { NOT_RECOMMEND, RECOMMEND } from "@/constants/recommand";
-import { convertSemesterToNumber } from "@/utils";
+import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 
 interface IProps {
   replyData: IReply;
@@ -37,6 +37,12 @@ const SemesterText = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSRegular;
 `;
 
+/** 몇 년도 몇 학기인지 표시하는 컴포넌트 */
+const ProfessorText = styled(theme.universalComponent.DivTextContainer)`
+  margin-left: 7px;
+  font-family: NSRegular;
+`;
+
 /** 댓글 내용 Wrap */
 const ContentWrap = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSRegular;
@@ -60,6 +66,9 @@ export default function Reply({ replyData }: IProps) {
       <InfoWrap>
         <LeftWrap>
           <RecommendationStatus like={isRecommend} />
+          <ProfessorText fontSize={13} color={theme.colors.primaryText}>
+            {convertProfessorNameToString(replyData.LectureSection.Professor)}{" "}
+          </ProfessorText>
           <SemesterText fontSize={13} color={theme.colors.secondaryText}>
             {replyData.year}년{" "}
             {semesterId != 0 && `${semester[semesterId - 1]}학기`}

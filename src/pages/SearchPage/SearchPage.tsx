@@ -1,5 +1,6 @@
 import { useState, KeyboardEvent } from "react";
 import { useAtom } from "jotai";
+import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import { departmentOptionAtom, sortOptionAtom } from "@/store";
@@ -23,7 +24,7 @@ import { SearchBar } from "./components/SearchBar";
 import DepartmentSelectModal from "./components/DepartmentSelectModal";
 import { getLectureList } from "@/apis/lectures";
 import { StyledLink } from "@components/StyledLink";
-import { useSearchParams } from "react-router-dom";
+import { concatProfessorNames } from "@/utils";
 
 export function SearchPage() {
   const [searchTextParams, setSearchTextParams] = useSearchParams();
@@ -68,16 +69,13 @@ export function SearchPage() {
     }
 
     return filteredLectureList.map((item: lectureInfoWithProf) => {
-      const professorNames = item.LectureProfessor.map(
-        (prof) => prof.professor.name
-      ).join(", ");
-
+      const professorNames = concatProfessorNames(item.LectureSection);
       return (
         <StyledLink key={item.id} to={`/${item.id}/evaluation`}>
           <SearchCard
             subjectCode={item.LectureCode}
             professorName={professorNames}
-            subjectName={item.lectureName}
+            subjectName={item.name}
           />
         </StyledLink>
       );
