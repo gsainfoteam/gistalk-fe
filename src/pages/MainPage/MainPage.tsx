@@ -10,8 +10,16 @@ import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 import LectureInformation from "./components/LectureInformation";
 import LectureReview from "./components/LectureReview";
 import { MockSearchBar } from "./components/MockSearchBar";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function MainPage() {
+  const [MainParams, setMainParams] = useSearchParams();
+
+  useEffect(() => {
+    setMainParams();
+  }, []);
+
   const { isLoading, data } = useQuery({
     queryKey: [`recentEvaluation`],
     queryFn: getRecentEvaluation,

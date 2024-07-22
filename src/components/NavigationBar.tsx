@@ -35,7 +35,7 @@ const Tab = styled.div<{ active: boolean }>`
 `;
 
 interface TabBarProps {
-  activeTab: number;
+  activeTab: number | undefined;
   onTabChange: (tabIndex: number) => void;
 }
 

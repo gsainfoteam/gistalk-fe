@@ -1,18 +1,31 @@
 import Header from "@components/Header";
 import NavigationBar from "@components/NavigationBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProfilePage from "./ProfilePage";
 import MainPage from "./MainPage/MainPage";
 import ComparePage from "./ComparePage";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
+import { useSearchParams } from "react-router-dom";
 
 const ContentContainer = styled.div`
   padding: 10px 1rem 4rem 1rem;
 `;
 
 function MainRouterPage() {
-  const [activeTab, setActiveTab] = useState(0);
+  const [RouterParams, setRouterParams] = useSearchParams();
+  const activeTabQquery = RouterParams.get("page") ?? "";
+  const [activeTab, setActiveTab] = useState<number>();
+
+  useEffect(() => {
+    if (activeTabQquery === "profile") {
+    setActiveTab(2);
+    }
+    else if (activeTabQquery === "") {
+      setActiveTab(0)
+    }
+    }, [activeTabQquery]);
+  
   const handleTabChange = (tabIndex: number) => {
     setActiveTab(tabIndex);
   };
