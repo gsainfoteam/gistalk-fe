@@ -6,6 +6,9 @@ import ThumbUp_Svg from "@/assets/svgs/thumbUp.svg";
 import ThumbUpBlack_Svg from "@/assets/svgs/thumbUp_Black.svg";
 import ThumbDown_Svg from "@/assets/svgs/thumbDown.svg";
 import ThumbDownBlack_Svg from "@/assets/svgs/thumbDown_Black.svg";
+import { deleteRecordLikeNum, postRecordLikeNum } from "@/apis/records";
+import { useParams } from "react-router-dom";
+import { error } from "console";
 
 const LIKE = "like";
 const DISLIKE = "dislike";
@@ -13,7 +16,7 @@ const NONE = "none";
 
 interface IProps {
   like: number;
-  dislike: number;
+  //dislike: number;
 }
 
 const ButtonContainer = styled.div`
@@ -48,15 +51,23 @@ const DislikeSvg = styled(Svg)`
 `;
 
 //pushedLike none으로 설정후에 Btn이 눌리면 바뀌는 형식으로
-export default function LikeButton({ like, dislike }: IProps) {
-  const [pushedLike, setLikeState] = useState("none");
-  const [likeNum, setLikeNum] = useState(0);
+export default function LikeButton({ like }: IProps) {
 
+  const [pushedLike, setLikeState] = useState("none");
+  const [likeNum, setLikeNum] = useState(like);
+  const { id } = useParams();
+  
   return (
     <ButtonContainer>
       <Button
         onClick={() => {
-          setLikeState(pushedLike === LIKE ? NONE : LIKE);
+          if (pushedLike == LIKE) {
+            deleteRecordLikeNum(id:number);
+            setLikeState(NONE);
+          } else if (pushedLike == NONE) {
+            postRecordLikeNum(id:number);
+            setLikeState(LIKE);
+          }
           setLikeNum(likeNum !== 1 ? 1 : 0);
         }}
         color={
@@ -70,24 +81,6 @@ export default function LikeButton({ like, dislike }: IProps) {
           size={16}
         />
         <div>{likeNum === 1 ? like + likeNum : like}</div>
-      </Button>
-      <Button
-        onClick={() => {
-          setLikeState(pushedLike === DISLIKE ? NONE : DISLIKE);
-          setLikeNum(likeNum !== -1 ? -1 : 0);
-        }}
-        color={
-          pushedLike == DISLIKE
-            ? theme.colors.reverse
-            : theme.colors.primaryText
-        }
-        bgColor={theme.colors.inputBg}
-        fontSize={11}
-      >
-        <DislikeSvg
-          src={pushedLike === DISLIKE ? ThumbDown_Svg : ThumbDownBlack_Svg}
-          size={16}
-        />
       </Button>
     </ButtonContainer>
   );
