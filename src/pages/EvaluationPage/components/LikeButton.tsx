@@ -52,20 +52,20 @@ const DislikeSvg = styled(Svg)`
 
 //pushedLike none으로 설정후에 Btn이 눌리면 바뀌는 형식으로
 export default function LikeButton({ like }: IProps) {
-
   const [pushedLike, setLikeState] = useState("none");
   const [likeNum, setLikeNum] = useState(like);
-  const { id } = useParams();
-  
+  const { stringRecordId } = useParams();
+  const recordId = Number(stringRecordId);
+
   return (
     <ButtonContainer>
       <Button
         onClick={() => {
           if (pushedLike == LIKE) {
-            deleteRecordLikeNum(id:number);
+            deleteRecordLikeNum(recordId);
             setLikeState(NONE);
           } else if (pushedLike == NONE) {
-            postRecordLikeNum(id:number);
+            postRecordLikeNum(recordId);
             setLikeState(LIKE);
           }
           setLikeNum(likeNum !== 1 ? 1 : 0);

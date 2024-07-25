@@ -28,7 +28,8 @@ import {
 import ReactSelect from "react-select";
 import { convertLectureCodeToList } from "@/utils";
 import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
-import { getLectureSingleInfo, postLectureEvaluation } from "@/apis/lectures";
+import { getLectureSingleInfo } from "@/apis/lectures";
+import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
 import { AxiosError, isAxiosError } from "axios";
 

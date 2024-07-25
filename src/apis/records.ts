@@ -64,13 +64,10 @@ export const postLectureEvaluation = (
 };
 
 /**강의평의 좋아요를 남깁니다*/
-export const postRecordLikeNum = (id: number) => {
-  return axiosInstance.get(`/record/${id}/like`);
+export const postRecordLikeNum = (recordId: number) => {
+  return axiosInstance.get(`/record/${recordId}/like`);
 };
-//질문 따로 좋아요의 number를 payload형식으로 db에 post를 보내지 않아도 되는가?
-//api문서에는 별다른 내용이 나와있지 않아 가능할 것 같지만 그러면 좋아요의 수를 어떻게 처리하는지 모르겠다.
-//db의 구조를 알아야할것으로 보인다.현재 docs에는 관련 내용이 업데이트 되어있지 않은 듯
 /**강의평의 좋아요를 삭제합니다.*/
-export const deleteRecordLikeNum = (id: number) => {
-  return axiosInstance.delete(`/record/${id}/like`);
+export const deleteRecordLikeNum = (recordId: number) => {
+  return axiosInstance.delete(`/record/${recordId}/like`);
 };
