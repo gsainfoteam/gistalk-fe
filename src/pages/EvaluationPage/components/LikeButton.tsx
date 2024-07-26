@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ThumbUp_Svg from "@/assets/svgs/thumbUp.svg";
 import ThumbUpBlack_Svg from "@/assets/svgs/thumbUp_Black.svg";
@@ -9,6 +9,7 @@ import ThumbDownBlack_Svg from "@/assets/svgs/thumbDown_Black.svg";
 import { deleteRecordLikeNum, postRecordLikeNum } from "@/apis/records";
 import { useParams } from "react-router-dom";
 import { error } from "console";
+import axios from "axios";
 
 const LIKE = "like";
 const DISLIKE = "dislike";
@@ -57,19 +58,43 @@ export default function LikeButton({ like }: IProps) {
   const { stringRecordId } = useParams();
   const recordId = Number(stringRecordId);
 
+  useEffect(() => {
+    axios
+      .get(`/record/${recordId}/likes`)
+      .then((response) => {
+        setLikeNum(response.data.likes);
+      })
+      .catch((error) => {
+        console.error("Error fetching likes:", error);
+      });
+  }, [recordId]);
+
+  const handleLike = () => {
+    if (pushedLike === LIKE) {
+      deleteRecordLikeNum(recordId)
+        .then(() => {
+          setLikeState(NONE);
+          setLikeNum((prev) => prev - 1);
+        })
+        .catch((error) => {
+          console.error("Error deleting like:", error);
+        });
+    } else if (pushedLike === NONE) {
+      postRecordLikeNum(recordId)
+        .then(() => {
+          setLikeState(LIKE);
+          setLikeNum((prev) => prev + 1);
+        })
+        .catch((error) => {
+          console.error("Error posting like:", error);
+        });
+    }
+  };
+
   return (
     <ButtonContainer>
       <Button
-        onClick={() => {
-          if (pushedLike == LIKE) {
-            deleteRecordLikeNum(recordId);
-            setLikeState(NONE);
-          } else if (pushedLike == NONE) {
-            postRecordLikeNum(recordId);
-            setLikeState(LIKE);
-          }
-          setLikeNum(likeNum !== 1 ? 1 : 0);
-        }}
+        onClick={handleLike}
         color={
           pushedLike === LIKE ? theme.colors.primary : theme.colors.primaryText
         }

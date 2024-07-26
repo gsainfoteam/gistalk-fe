@@ -61,7 +61,6 @@ export default function Reply({ replyData }: IProps) {
       : "none"; // "true" or "false" or "none
 
   const semesterId = convertSemesterToNumber(replyData.semester);
-  const recordId = useParams();
   return (
     <Wrap>
       <InfoWrap>
