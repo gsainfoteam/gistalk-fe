@@ -14,8 +14,7 @@ import { StyledLink } from "@components/StyledLink";
 import Card from "@components/Card";
 import { recordInfo, reviewInfo } from "@/Interfaces/interfaces";
 import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
-import { useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
+import useTabParam from "@/hooks/useTabParam";
 
 const TitleWrap = styled.div`
   display: flex;
@@ -107,11 +106,7 @@ const MENU_TEXT = [
 ];
 
 export default function ProfilePage() {
-  const [ProfileParams, setProfileParams] = useSearchParams();
-  
-  useEffect(() => {
-    setProfileParams({page: "profile"});
-  }, []);
+  useTabParam("profile");
 
   const isValidToken = useCheckValidToken(); //토큰 유효성 검사
 
@@ -218,7 +213,7 @@ export default function ProfilePage() {
                                 color={theme.colors.grayStroke}
                               >
                                 {convertProfessorNameToString(
-                                  subject.LectureSection.Professor
+                                  subject.LectureSection.LectureSectionProfessor
                                 )}
                               </ProfessorName>
                               <ArrowIcon size={12} src={NavigationArrow_Svg} />

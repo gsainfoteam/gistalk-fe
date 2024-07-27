@@ -10,15 +10,10 @@ import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 import LectureInformation from "./components/LectureInformation";
 import LectureReview from "./components/LectureReview";
 import { MockSearchBar } from "./components/MockSearchBar";
-import { useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
+import useTabParam from "@/hooks/useTabParam";
 
 export default function MainPage() {
-  const [MainParams, setMainParams] = useSearchParams();
-
-  useEffect(() => {
-    setMainParams();
-  }, []);
+  useTabParam();
 
   const { isLoading, data } = useQuery({
     queryKey: [`recentEvaluation`],
@@ -50,7 +45,7 @@ export default function MainPage() {
                 <LectureInformation
                   LectureName={evaluation.LectureSection.Lecture.name}
                   ProfessorName={convertProfessorNameToString(
-                    evaluation.LectureSection.Professor
+                    evaluation.LectureSection.LectureSectionProfessor
                   )}
                   CourseTakenYear={parseInt(
                     evaluation.year.toString().substring(0, 4)
