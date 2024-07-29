@@ -8,6 +8,7 @@ import ComparePage from "./ComparePage";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import { useSearchParams } from "react-router-dom";
 import { PROFILE_PAGE, HOME_PAGE } from "@/constants/pageQueryString";
+import { COMPARE_INDEX, MAIN_INDEX, PROFILE_INDEX } from "@/constants/activeTabIndex";
 
 const ContentContainer = styled.div`
   padding: 10px 1rem 4rem 1rem;
@@ -20,10 +21,10 @@ function MainRouterPage() {
 
   useEffect(() => {
     if (activeTabQuery === PROFILE_PAGE) {
-      handleTabChange(2);
+      handleTabChange(PROFILE_INDEX);
     }
     else if (activeTabQuery === HOME_PAGE) {
-      handleTabChange(0)
+      handleTabChange(MAIN_INDEX)
     }
     }, [activeTabQuery]);
   
@@ -37,9 +38,9 @@ function MainRouterPage() {
     <>
       <Header />
       <ContentContainer>
-        {activeTab === 0 && <MainPage />}
-        {activeTab === 1 && <ComparePage />}
-        {activeTab === 2 && <ProfilePage />}
+        {activeTab === MAIN_INDEX && <MainPage />}
+        {activeTab === COMPARE_INDEX && <ComparePage />}
+        {activeTab === PROFILE_INDEX && <ProfilePage />}
       </ContentContainer>
       <NavigationBar activeTab={activeTab} onTabChange={handleTabChange} />
     </>
