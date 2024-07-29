@@ -15,7 +15,7 @@ const ContentContainer = styled.div`
 
 function MainRouterPage() {
   const [RouterParams, setRouterParams] = useSearchParams();
-  const activeTabQuery = RouterParams.get("page") ?? "";
+  const activeTabQuery = RouterParams.get("tab") ?? "";
   const [activeTab, setActiveTab] = useState<number>();
 
   useEffect(() => {
