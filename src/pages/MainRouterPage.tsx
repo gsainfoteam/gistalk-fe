@@ -21,7 +21,6 @@ function MainRouterPage() {
   const [activeTab, setActiveTab] = useState<number>();
   
   useEffect(() => {
-    console.log("useEffect");
     if (activeTabQuery === PROFILE_PAGE) {
       handleTabChange(PROFILE_INDEX);
     }
