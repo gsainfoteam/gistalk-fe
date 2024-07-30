@@ -17,19 +17,21 @@ const ContentContainer = styled.div`
 function MainRouterPage() {
   const [RouterParams, setRouterParams] = useSearchParams();
   const activeTabQuery = RouterParams.get("tab") ?? "";
-  const [activeTab, setActiveTab] = useState<number>();
 
+  const [activeTab, setActiveTab] = useState<number>();
+  
   useEffect(() => {
+    console.log("useEffect");
     if (activeTabQuery === PROFILE_PAGE) {
       handleTabChange(PROFILE_INDEX);
     }
     else if (activeTabQuery === HOME_PAGE) {
-      handleTabChange(MAIN_INDEX)
+      handleTabChange(MAIN_INDEX);
     }
     }, [activeTabQuery]);
-  
+
   const handleTabChange = (tabIndex: number) => {
-    setActiveTab(tabIndex);
+    if (activeTab != tabIndex) setActiveTab(tabIndex);
   };
 
   const isValidToken = useCheckValidToken(); //토큰 유효성 검사
