@@ -12,6 +12,9 @@ import { convertSemesterToString } from "@/utils";
 export const getRecentEvaluation = () => {
   return axiosInstance.get(`/record?take=4&type=recent`);
 };
+export const getEvaluationRecord = () => {
+  return axiosInstance.get(`/record?type=evaluation`);
+};
 export const getLectureEachEvaluation = (
   lectureId: number,
   sectionId: number | null
@@ -59,13 +62,12 @@ export const postLectureEvaluation = (
     year: parseInt(year),
     recommendation: fixedRecommend,
   };
-
   return axiosInstance.post(`/record`, payload);
 };
 
 /**강의평의 좋아요를 남깁니다*/
 export const postRecordLikeNum = (recordId: number) => {
-  return axiosInstance.get(`/record/${recordId}/like`);
+  return axiosInstance.post(`/record/${recordId}/like`);
 };
 /**강의평의 좋아요를 삭제합니다.*/
 export const deleteRecordLikeNum = (recordId: number) => {

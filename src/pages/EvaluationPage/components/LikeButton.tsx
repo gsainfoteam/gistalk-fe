@@ -1,25 +1,28 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import { useEffect, useState } from "react";
+import { isValidElement, useEffect, useState } from "react";
 
 import ThumbUp_Svg from "@/assets/svgs/thumbUp.svg";
 import ThumbUpBlack_Svg from "@/assets/svgs/thumbUp_Black.svg";
 import ThumbDown_Svg from "@/assets/svgs/thumbDown.svg";
 import ThumbDownBlack_Svg from "@/assets/svgs/thumbDown_Black.svg";
-import { deleteRecordLikeNum, postRecordLikeNum } from "@/apis/records";
+import {
+  deleteRecordLikeNum,
+  getEvaluationRecord,
+  getLectureEachEvaluation,
+  postRecordLikeNum,
+} from "@/apis/records";
 import { useParams } from "react-router-dom";
 import { error } from "console";
 import axios from "axios";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
 const LIKE = "like";
-const DISLIKE = "dislike";
 const NONE = "none";
 
 interface IProps {
   like: number;
-  //dislike: number;
 }
-
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
@@ -57,10 +60,10 @@ export default function LikeButton({ like }: IProps) {
   const [likeNum, setLikeNum] = useState(like);
   const { stringRecordId } = useParams();
   const recordId = Number(stringRecordId);
-
+  /*
   useEffect(() => {
     axios
-      .get(`/record/${recordId}/likes`)
+      .get(`/record/${recordId}/like`)
       .then((response) => {
         setLikeNum(response.data.likes);
       })
@@ -89,12 +92,42 @@ export default function LikeButton({ like }: IProps) {
           console.error("Error posting like:", error);
         });
     }
+  };*/
+  //recordId가 없을 경우 에러 처리
+  if (isNaN(recordId)) {
+    console.error("Invalid recordId:", stringRecordId);
+    return <div>Error: Invalid recordId</div>;
+  }
+  const {} = useQuery({
+    queryKey: [`postRecordLike`, recordId],
+    queryFn: () => postRecordLikeNum(recordId),
+    retry: 0,
+    enabled: !!isValidElement,
+  });
+  const {} = useQuery({
+    queryKey: [`deleteRecordLike`, recordId],
+    queryFn: () => deleteRecordLikeNum(recordId),
+    retry: 0,
+    enabled: !!isValidElement,
+  });
+  const getLikeNum = () => {
+    const { data } = useQuery({
+      queryKey: [`recordId`, recordId],
+      queryFn: getEvaluationRecord,
+      retry: 0,
+      enabled: !!isValidElement,
+    });
+    const likeNum = data._count?.likes || 0;
+    return likeNum;
   };
-
+  like = getLikeNum();
   return (
     <ButtonContainer>
       <Button
-        onClick={handleLike}
+        onClick={() => {
+          setLikeState(pushedLike === LIKE ? NONE : LIKE);
+          setLikeNum(likeNum !== 1 ? 1 : 0);
+        }}
         color={
           pushedLike === LIKE ? theme.colors.primary : theme.colors.primaryText
         }
