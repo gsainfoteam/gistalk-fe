@@ -1,7 +1,7 @@
 import {
   LectureCode,
   LectureSectionWithProfessorInfo,
-  professorInfo,
+  LectureSectionProfessorInfo,
 } from "@/Interfaces/interfaces";
 
 /**
@@ -21,7 +21,7 @@ export const concatProfessorNames = (
   LectureSection: LectureSectionWithProfessorInfo[]
 ) => {
   return LectureSection.map((section) =>
-    convertProfessorNameToString(section.Professor)
+    convertProfessorNameToString(section.LectureSectionProfessor)
   ).join(", ");
 };
 
@@ -29,9 +29,9 @@ export const concatProfessorNames = (
  * professorInfo[]의 name을 추출해서 하나의 strong으로 변환
  */
 export const convertProfessorNameToString = (
-  professorInfo: professorInfo[]
+  LectureSectionProfessor: LectureSectionProfessorInfo[]
 ) => {
-  return professorInfo.map((professor) => professor.name).join(", ");
+  return LectureSectionProfessor.map((section) => section.Professor.name).join(", ");
 };
 /**
  *

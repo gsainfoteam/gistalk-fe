@@ -90,7 +90,7 @@ export interface lectureInfoWithProf extends lectureInfo {
   LectureSection: LectureSectionWithProfessorInfo[];
 }
 
-export interface professorInfo {
+interface professorInfo {
   id: number;
   name: string;
 }
@@ -98,17 +98,23 @@ interface lecture {
   id: number;
   name: string;
 }
+export interface LectureSectionProfessorInfo {
+  setionId: number;
+  lectureId: number;
+  professorId: number;
+  Professor: professorInfo;
+}
 interface LectureSectionInfo {
   id: number;
   lectureId: number;
   Lecture: lecture;
-  Professor: professorInfo[];
+  LectureSectionProfessor: LectureSectionProfessorInfo[];
 }
 
 export interface LectureSectionWithProfessorInfo {
   id: number;
   lectureId: number;
-  Professor: professorInfo[];
+  LectureSectionProfessor: LectureSectionProfessorInfo[];
 }
 
 interface evaluationData {
@@ -123,6 +129,12 @@ interface evaluationData {
 export interface reviewInfo extends evaluationData {
   createdAt: string;
   id: number;
+  difficulty: number;
+  skill: number;
+  helpfulness: number;
+  interest: number;
+  load: number;
+  generosity: number;
   lectureId: number;
   professorId: number;
   recommendation: string /*추천*/;
