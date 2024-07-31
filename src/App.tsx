@@ -24,7 +24,6 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/:id/evaluation" element={<EvaluationPage />} />
         <Route path="/:id/write" element={<WriteReviewPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/*" element={<EmptyErrorPage />} />
       </Routes>

@@ -7,7 +7,7 @@ import MainPage from "./MainPage/MainPage";
 import ComparePage from "./ComparePage";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import { useSearchParams } from "react-router-dom";
-import { PROFILE_PAGE, HOME_PAGE } from "@/constants/pageQueryString";
+import { MAIN_TAB, PROFILE_TAB } from "@/constants/pageQueryString";
 import { COMPARE_INDEX, MAIN_INDEX, PROFILE_INDEX } from "@/constants/activeTabIndex";
 
 const ContentContainer = styled.div`
@@ -21,10 +21,10 @@ function MainRouterPage() {
   const [activeTab, setActiveTab] = useState<number>();
   
   useEffect(() => {
-    if (activeTabQuery === PROFILE_PAGE) {
+    if (activeTabQuery === PROFILE_TAB) {
       handleTabChange(PROFILE_INDEX);
     }
-    else if (activeTabQuery === HOME_PAGE) {
+    else if (activeTabQuery === MAIN_TAB) {
       handleTabChange(MAIN_INDEX);
     }
     }, [activeTabQuery]);

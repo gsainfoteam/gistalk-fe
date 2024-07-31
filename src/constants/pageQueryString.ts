@@ -1,2 +1,2 @@
-export const PROFILE_PAGE = "profile";
-export const HOME_PAGE = "";
+export const PROFILE_TAB = "profile";
+export const MAIN_TAB = "";
