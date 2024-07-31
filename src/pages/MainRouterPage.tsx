@@ -8,7 +8,11 @@ import ComparePage from "./ComparePage";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import { useSearchParams } from "react-router-dom";
 import { MAIN_TAB, PROFILE_TAB } from "@/constants/pageQueryString";
-import { COMPARE_INDEX, MAIN_INDEX, PROFILE_INDEX } from "@/constants/activeTabIndex";
+import {
+  COMPARE_INDEX,
+  MAIN_INDEX,
+  PROFILE_INDEX,
+} from "@/constants/activeTabIndex";
 
 const ContentContainer = styled.div`
   padding: 10px 1rem 4rem 1rem;
@@ -19,15 +23,14 @@ function MainRouterPage() {
   const activeTabQuery = RouterParams.get("tab") ?? "";
 
   const [activeTab, setActiveTab] = useState<number>();
-  
+
   useEffect(() => {
     if (activeTabQuery === PROFILE_TAB) {
       handleTabChange(PROFILE_INDEX);
-    }
-    else if (activeTabQuery === MAIN_TAB) {
+    } else if (activeTabQuery === MAIN_TAB) {
       handleTabChange(MAIN_INDEX);
     }
-    }, [activeTabQuery]);
+  }, [activeTabQuery]);
 
   const handleTabChange = (tabIndex: number) => {
     if (activeTab != tabIndex) setActiveTab(tabIndex);
