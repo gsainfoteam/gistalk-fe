@@ -11,6 +11,8 @@ import LectureInformation from "./components/LectureInformation";
 import LectureReview from "./components/LectureReview";
 import { MockSearchBar } from "./components/MockSearchBar";
 import useTabParam from "@/hooks/useTabParam";
+import { GuideWritingReview } from "./components/GuideWritingReview";
+import MoveGuideCard from "@components/MoveGuideCard";
 
 export default function MainPage() {
   useTabParam();
@@ -32,6 +34,12 @@ export default function MainPage() {
           <MockSearchBar />
         </StyledLink>
       </WithTitleAndDescription>
+
+      <StyledLink to="/write">
+        <MoveGuideCard>
+          <GuideWritingReview />
+        </MoveGuideCard>
+      </StyledLink>
 
       <WithTitleAndDescription title={"최근 올라온 강의평가"}>
         {!isLoading &&

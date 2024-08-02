@@ -15,6 +15,7 @@ import Card from "@components/Card";
 import { recordInfo, reviewInfo } from "@/Interfaces/interfaces";
 import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 import useTabParam from "@/hooks/useTabParam";
+import MoveGuideCard from "@components/MoveGuideCard";
 
 const TitleWrap = styled.div`
   display: flex;
@@ -92,12 +93,6 @@ const LoginGuideText = styled.div`
   color: ${theme.colors.primary};
   text-decoration: underline;
   cursor: pointer;
-`;
-
-const GuideToLogin = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 `;
 
 const MENU_TEXT = [
@@ -234,13 +229,9 @@ export default function ProfilePage() {
           </SubjectTitle>
 
           <StyledLink to="/login">
-            <Card>
-              <GuideToLogin>
-                <LoginGuideText>바로 로그인하러 가기</LoginGuideText>
-
-                <FaArrowRightLong />
-              </GuideToLogin>
-            </Card>
+            <MoveGuideCard>
+              <LoginGuideText>바로 로그인하러 가기</LoginGuideText>
+            </MoveGuideCard>
           </StyledLink>
         </>
       )}
