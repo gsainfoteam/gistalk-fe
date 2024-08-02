@@ -64,7 +64,6 @@ const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
   bgColor: string;
 }>`
   position: fixed;
-
   text-align: center;
   max-width: 480px;
   background-color: ${(props) => props.bgColor};
