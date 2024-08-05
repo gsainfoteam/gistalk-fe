@@ -213,7 +213,7 @@ export default function ProfilePage() {
                                 color={theme.colors.grayStroke}
                               >
                                 {convertProfessorNameToString(
-                                  subject.LectureSection.LectureSectionProfessor
+                                  subject.LectureSection.Professor
                                 )}
                               </ProfessorName>
                               <ArrowIcon size={12} src={NavigationArrow_Svg} />

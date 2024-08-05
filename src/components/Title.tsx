@@ -80,7 +80,7 @@ export default function Title({
             (section: LectureSectionWithProfessorInfo, index: number) => (
               <ProfessorNameCheckbox
                 key={section.id}
-                text={convertProfessorNameToString(section.LectureSectionProfessor)}
+                text={convertProfessorNameToString(section.Professor)}
                 id={section.id}
                 selectedId={selectedId}
                 onCheckboxChange={handleCheckboxChange}

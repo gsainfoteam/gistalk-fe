@@ -67,7 +67,7 @@ export default function Reply({ replyData }: IProps) {
         <LeftWrap>
           <RecommendationStatus like={isRecommend} />
           <ProfessorText fontSize={13} color={theme.colors.primaryText}>
-            {convertProfessorNameToString(replyData.LectureSection.LectureSectionProfessor)}{" "}
+            {convertProfessorNameToString(replyData.LectureSection.Professor)}{" "}
           </ProfessorText>
           <SemesterText fontSize={13} color={theme.colors.secondaryText}>
             {replyData.year}년{" "}

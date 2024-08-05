@@ -45,7 +45,7 @@ export default function MainPage() {
                 <LectureInformation
                   LectureName={evaluation.LectureSection.Lecture.name}
                   ProfessorName={convertProfessorNameToString(
-                    evaluation.LectureSection.LectureSectionProfessor
+                    evaluation.LectureSection.Professor
                   )}
                   CourseTakenYear={parseInt(
                     evaluation.year.toString().substring(0, 4)

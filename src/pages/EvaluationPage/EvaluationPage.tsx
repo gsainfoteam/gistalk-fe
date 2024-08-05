@@ -105,7 +105,7 @@ const ScrollBarWrapper = styled.div<{ isFade?: boolean }>`
   opacity: 1;
   transition: opacity 0.5s ease;
   animation-name: ${(props) => props.isFade ? boxFade : null};
-  animation-duration: 3s;
+  animation-duration: 2s;
 
   position: absolute;
   top: 0;
@@ -324,7 +324,7 @@ export function EvaluationPage() {
                   <Reply key={reviewContent.id} replyData={reviewContent}/>))
               ))
             : //교수를 선택했을 때
-            (selectedReview.every((value) => value != undefined && value.length === 0)
+            !evaluationLoading && (selectedReview.every((value) => value != undefined && value.length === 0)
               ? (noComment) : (
               selectedReview.map((select, index) => (
               <div key={selectedId[index]}>
