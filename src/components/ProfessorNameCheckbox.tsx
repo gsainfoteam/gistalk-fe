@@ -5,8 +5,9 @@ import styled from "styled-components";
 interface CheckboxProps {
   text: string;
   id: number;
-  selectedId: number | null;
-  onCheckboxChange: (id: number) => void;
+  selectedId: (number | null)[];
+  onCheckboxChange: (id: number, profNumber: number) => void;
+  profNumber: number;
 }
 
 const CheckboxContainer = styled.label`
@@ -42,11 +43,12 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
   id,
   selectedId,
   onCheckboxChange,
+  profNumber,
 }) => {
-  const isChecked = id === selectedId;
+  const isChecked = id === selectedId[profNumber];
 
   const toggleCheckbox = () => {
-    onCheckboxChange(id);
+    onCheckboxChange(id, profNumber);
   };
 
   return (

@@ -117,7 +117,7 @@ export interface LectureSectionWithProfessorInfo {
   LectureSectionProfessor: LectureSectionProfessorInfo[];
 }
 
-interface evaluationData {
+export interface evaluationData {
   difficulty: number /*난이도*/;
   skill: number /*강의력 */;
   helpfulness: number /*유익함 */;

@@ -1,6 +1,6 @@
 import { theme } from "@/style/theme";
 import styled from "styled-components";
-import { IReply } from "@/Interfaces/interfaces";
+import { reviewInfo } from "@/Interfaces/interfaces";
 
 import LikeButton from "./LikeButton";
 import RecommendationStatus from "@components/RecommendationStatus";
@@ -8,7 +8,7 @@ import { NOT_RECOMMEND, RECOMMEND } from "@/constants/recommand";
 import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 
 interface IProps {
-  replyData: IReply;
+  replyData: reviewInfo;
 }
 
 /** 전체 Wrap */

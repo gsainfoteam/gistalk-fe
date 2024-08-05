@@ -9,8 +9,8 @@ interface IProps {
   subjectTitle: string;
   sectionInfo: LectureSectionWithProfessorInfo[];
   subjectCode: string[];
-  selectedId: number | null;
-  handleCheckboxChange: (id: number) => void;
+  selectedId: (number | null)[];
+  handleCheckboxChange: (id: number, profNumber: number) => void;
 }
 
 const TitleWrap = styled.div<{ color: string; bgColor: string }>`
@@ -84,6 +84,7 @@ export default function Title({
                 id={section.id}
                 selectedId={selectedId}
                 onCheckboxChange={handleCheckboxChange}
+                profNumber={index}
               />
             )
           )}
