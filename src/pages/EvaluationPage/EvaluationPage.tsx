@@ -158,10 +158,14 @@ export function EvaluationPage() {
       selectedId[k] = selectedId[k] ? selectedId[k] : null;
     }
     id === selectedId[profNumber] ? 
-      (selectedId[profNumber] = null, setIsFade(false)) : 
-      (selectedId[profNumber] = id, setIsFade(true));
+      (selectedId[profNumber] = null) : 
+      (selectedId[profNumber] = id);
     setSelectedId([...selectedId]);
     setClickedId(profNumber);
+
+    selectedId[profNumber] != null ? (
+    document.addEventListener('mousedown', () => setIsFade(false)), //마우스 클릭하면 무조건 crollBar 반짝임
+    document.addEventListener('mouseup', () => setIsFade(true))) : null;
   };
 
   useEffect(() => {
@@ -279,7 +283,7 @@ export function EvaluationPage() {
 
         {!isLoading && !totalLoading && selectedEvaluation && (
         <GraphWrap>
-          <Hexagon HexData={selectedEvaluation ?? null} />
+          <Hexagon HexData={selectedEvaluation ?? null} averageData={averageData} />
         </GraphWrap>
         )}
 

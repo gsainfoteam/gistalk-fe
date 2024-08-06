@@ -12,6 +12,7 @@ import { HexLabels, HexagonData } from "../EvaluationPage.const";
 
 interface HexagonProps {
   HexData: HexagonData[];
+  averageData: HexagonData[];
 }
 
 const Wrap = styled.div`
@@ -22,7 +23,7 @@ const Wrap = styled.div`
   overflow-y: hidden;
 `;
 
-export default function Hexagon({ HexData }: HexagonProps) {
+export default function Hexagon({ HexData, averageData }: HexagonProps) {
   let HexCount = 0;
 
   const formattedData =
@@ -69,15 +70,15 @@ export default function Hexagon({ HexData }: HexagonProps) {
             tick={{ fill: theme.colors.secondaryText, fontSize: 13 }}
           />
           <PolarRadiusAxis domain={[0, 5]} angle={90} />
-          {HexData.map((Hex) => {
+          {HexData.map((Hex, index) => {
             if (Hex != null) {
               HexCount += 1;
               return (
                 <Radar
-                key={HexCount}
+                key={HexCount}  
                 name="Standard"
                 dataKey={`score${HexCount}`}
-                fill={theme.colors.primary}
+                fill={averageData === HexData ? "#FF6565" : Object.values(theme.PrimaryColor)[index]}
                 fillOpacity={0.6}
                 />
             );

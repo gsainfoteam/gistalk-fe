@@ -1,5 +1,22 @@
 import styled from "styled-components";
 
+const PrimaryColor = {
+  blue: "#7dd3fc",
+  pink: "#a78bfa",
+  green: "#4ade80",
+  yellow: "#fde047",
+  purple: "#8b5cf6",
+  orange: "#eab308",
+  mint: "#5eead4",
+  brown: "#713f12",
+  dark_purple: "#4c1d95",
+  dark_red: "#881337",
+  indigo: "#1e3a8a",
+  dark_green: "#064e3d",
+  light_green: "#bef264",
+  light_yellow: "#fef08a"
+}
+
 const colors = {
   primary: "#FF6565",
   secondary: "#FF8282",
@@ -35,6 +52,7 @@ const universalComponent = {
 };
 
 export const theme = {
+  PrimaryColor,
   colors,
   universalComponent,
 };
