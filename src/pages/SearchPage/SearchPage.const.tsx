@@ -1,4 +1,4 @@
-import { ISortOption, lectureInfoWithProf } from "@/Interfaces/interfaces";
+import { ISortOption, lectureInfo } from "@/Interfaces/interfaces";
 import { concatProfessorNames } from "@/utils";
 
 /** 정렬을 어떻게 할지 선택할 수 있는 리스트: std 기준으로 sort*/
@@ -13,7 +13,7 @@ export const sortList: { id: number; content: string; std: ISortOption }[] = [
 
 /** 사용자의 필터와 입력한 검색어에 해당하는 강의만 필터링 */
 export const filterLectureList = (
-  lectureList: lectureInfoWithProf[],
+  lectureList: lectureInfo[],
   departmentOption: string[][],
   searchTextEnter: string
 ) => {
@@ -21,30 +21,28 @@ export const filterLectureList = (
     return null;
   }
 
-  const filteredLectureList = lectureList.filter(
-    (item: lectureInfoWithProf) => {
-      //professor list에 있는 professor name을 모두 꺼내서 merge
-      const professorNames = concatProfessorNames(item.LectureSection);
-      const lectureCodes = item.LectureCode.map((code) => code.code).join(", ");
-      //검색어가 존재하는 경우 해당되는 강의만 display함
-      const isNoDepartmentSelected = departmentOption[2].length === 0;
-      const isDepartmentSelected = departmentOption[2].some((code) =>
-        lectureCodes.includes(code)
-      );
+  const filteredLectureList = lectureList.filter((item: lectureInfo) => {
+    //professor list에 있는 professor name을 모두 꺼내서 merge
+    const professorNames = concatProfessorNames(item.LectureSection);
+    const lectureCodes = item.LectureCode.map((code) => code.code).join(", ");
+    //검색어가 존재하는 경우 해당되는 강의만 display함
+    const isNoDepartmentSelected = departmentOption[2].length === 0;
+    const isDepartmentSelected = departmentOption[2].some((code) =>
+      lectureCodes.includes(code)
+    );
 
-      const isProfessorNameMatched = professorNames.includes(searchTextEnter);
-      const isLectureNameMatched = item.name.includes(searchTextEnter);
+    const isProfessorNameMatched = professorNames.includes(searchTextEnter);
+    const isLectureNameMatched = item.name.includes(searchTextEnter);
 
-      if (
-        (isNoDepartmentSelected || isDepartmentSelected) &&
-        (isProfessorNameMatched || isLectureNameMatched)
-      ) {
-        return true;
-      } else {
-        return false;
-      }
+    if (
+      (isNoDepartmentSelected || isDepartmentSelected) &&
+      (isProfessorNameMatched || isLectureNameMatched)
+    ) {
+      return true;
+    } else {
+      return false;
     }
-  );
+  });
 
   if (filteredLectureList.length === 0) {
     return null;

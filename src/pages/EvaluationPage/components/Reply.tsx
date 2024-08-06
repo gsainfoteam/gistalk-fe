@@ -1,6 +1,6 @@
 import { theme } from "@/style/theme";
 import styled from "styled-components";
-import { IReply } from "@/Interfaces/interfaces";
+import { recordInfo } from "@/Interfaces/interfaces";
 
 import LikeButton from "./LikeButton";
 import RecommendationStatus from "@components/RecommendationStatus";
@@ -9,7 +9,7 @@ import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 import { useParams } from "react-router-dom";
 
 interface IProps {
-  replyData: IReply;
+  replyData: recordInfo;
 }
 
 /** 전체 Wrap */
@@ -67,9 +67,7 @@ export default function Reply({ replyData }: IProps) {
         <LeftWrap>
           <RecommendationStatus like={isRecommend} />
           <ProfessorText fontSize={13} color={theme.colors.primaryText}>
-            {convertProfessorNameToString(
-              replyData.LectureSection.LectureSectionProfessor
-            )}{" "}
+            {convertProfessorNameToString(replyData.LectureSection.Professor)}{" "}
           </ProfessorText>
           <SemesterText fontSize={13} color={theme.colors.secondaryText}>
             {replyData.year}년{" "}
