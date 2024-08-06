@@ -10,32 +10,28 @@ interface CheckboxProps {
   profNumber: number;
 }
 
-const CheckboxContainer = styled.label`
+const CheckboxContainer = styled.button<{ isClicked: boolean, color: string }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  
+  background: ${(props) => props.isClicked ? props.color : "white"};
+  margin-left: 10px;
+  border-radius: 5px;
+  border: 1.5px solid ${theme.colors.grayStroke};
 `;
 
-const CheckboxInput = styled.input`
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 2px solid
-    ${(props) =>
-      props.checked ? theme.colors.primary : theme.colors.grayStroke};
-  border-radius: 10px;
-  outline: none;
+const BoxColor = styled.div<{ color: string }>`
+  padding: 6px;
   margin-right: 3px;
-  cursor: pointer;
-
-  &:checked {
-    background-color: ${theme.colors.primary};
-  }
+  background: ${(props) => props.color};  
 `;
 
-const CheckboxText = styled.span`
+const CheckboxText = styled.span<{ isClicked: boolean }>`
   font-size: 16px;
+  color: ${theme.colors.grayStroke};
 `;
 
 const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
@@ -52,13 +48,13 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
   };
 
   return (
-    <CheckboxContainer>
-      <CheckboxInput
-        type="checkbox"
-        checked={isChecked}
-        onChange={toggleCheckbox}
-      />
-      <CheckboxText>{text}</CheckboxText>
+    <CheckboxContainer 
+    isClicked={isChecked} 
+    color={Object.values(theme.PrimaryColor)[profNumber]} 
+    onClick={toggleCheckbox}
+    >
+      <BoxColor color={Object.values(theme.PrimaryColor)[profNumber]} />
+      <CheckboxText isClicked={isChecked}>{text}</CheckboxText>
     </CheckboxContainer>
   );
 };

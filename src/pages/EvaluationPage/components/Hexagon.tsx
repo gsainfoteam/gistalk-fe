@@ -79,7 +79,7 @@ export default function Hexagon({ HexData, averageData }: HexagonProps) {
                 name="Standard"
                 dataKey={`score${HexCount}`}
                 fill={averageData === HexData ? "#FF6565" : Object.values(theme.PrimaryColor)[index]}
-                fillOpacity={0.6}
+                fillOpacity={averageData === HexData ? 0.6 : 1}
                 />
             );
           }
