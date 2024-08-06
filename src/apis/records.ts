@@ -12,9 +12,6 @@ import { convertSemesterToString } from "@/utils";
 export const getRecentEvaluation = () => {
   return axiosInstance.get(`/record?take=4&type=recent`);
 };
-export const getEvaluationRecord = () => {
-  return axiosInstance.get(`/record?type=evaluation`);
-};
 export const getLectureEachEvaluation = (
   lectureId: number,
   sectionId: number | null
@@ -29,6 +26,7 @@ export const getLectureEachEvaluation = (
     params: params,
   });
 };
+export const getLikeStatus = (recordId: string, currentUser: number) => {};
 //type이 user일때 유저의 강의평을 조회하는 구현이 되어있지 않음
 export const postLectureEvaluation = (
   review: string,
@@ -66,10 +64,14 @@ export const postLectureEvaluation = (
 };
 
 /**강의평의 좋아요를 남깁니다*/
-export const postRecordLikeNum = (recordId: number) => {
-  return axiosInstance.post(`/record/${recordId}/like`);
+export const postRecordLike = async (recordId: number) => {
+  const response = await axiosInstance.post(`/record/${recordId}/like`);
+  console.log(response.data);
+  return response.data;
 };
 /**강의평의 좋아요를 삭제합니다.*/
-export const deleteRecordLikeNum = (recordId: number) => {
-  return axiosInstance.delete(`/record/${recordId}/like`);
+export const deleteRecordLike = async (recordId: number) => {
+  const response = await axiosInstance.delete(`/record/${recordId}/like`);
+  console.log(response.data);
+  return response.data;
 };

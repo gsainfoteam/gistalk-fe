@@ -67,14 +67,16 @@ export default function Reply({ replyData }: IProps) {
         <LeftWrap>
           <RecommendationStatus like={isRecommend} />
           <ProfessorText fontSize={13} color={theme.colors.primaryText}>
-            {convertProfessorNameToString(replyData.LectureSection.LectureSectionProfessor)}{" "}
+            {convertProfessorNameToString(
+              replyData.LectureSection.LectureSectionProfessor
+            )}{" "}
           </ProfessorText>
           <SemesterText fontSize={13} color={theme.colors.secondaryText}>
             {replyData.year}년{" "}
             {semesterId != 0 && `${semester[semesterId - 1]}학기`}
           </SemesterText>
         </LeftWrap>
-        <LikeButton like={0} />
+        <LikeButton like={replyData._count} recordId={replyData.id} />
       </InfoWrap>
       <ContentWrap fontSize={13} color={theme.colors.primaryText}>
         {replyData.review}

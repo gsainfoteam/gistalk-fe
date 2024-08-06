@@ -1,33 +1,25 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import { isValidElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import ThumbUp_Svg from "@/assets/svgs/thumbUp.svg";
 import ThumbUpBlack_Svg from "@/assets/svgs/thumbUp_Black.svg";
-import ThumbDown_Svg from "@/assets/svgs/thumbDown.svg";
-import ThumbDownBlack_Svg from "@/assets/svgs/thumbDown_Black.svg";
-import {
-  deleteRecordLikeNum,
-  getEvaluationRecord,
-  getLectureEachEvaluation,
-  postRecordLikeNum,
-} from "@/apis/records";
-import { useParams } from "react-router-dom";
-import { error } from "console";
-import axios from "axios";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { likeState } from "@/Interfaces/interfaces";
+import { deleteRecordLike, postRecordLike } from "@/apis/records";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const LIKE = "like";
 const NONE = "none";
 
 interface IProps {
   like: number;
+  recordId: number;
 }
+
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
 `;
-//resolve no overload matches this call error
 
 const Button = styled(theme.universalComponent.DivTextContainer)<{
   bgColor: string;
@@ -54,91 +46,72 @@ const DislikeSvg = styled(Svg)`
   top: 2px;
 `;
 
-//pushedLike none으로 설정후에 Btn이 눌리면 바뀌는 형식으로
-export default function LikeButton({ like }: IProps) {
-  const [pushedLike, setLikeState] = useState("none");
-  const [likeNum, setLikeNum] = useState(like);
-  const { stringRecordId } = useParams();
-  const recordId = Number(stringRecordId);
-  /*
+export default function LikeButton({ like, recordId }: IProps) {
+  const [likeState, setLikeState] = useState<likeState>(NONE);
+  const queryClient = useQueryClient();
+  //만약 눌러진 상태였다면, likeState를 LIKE로 세팅
   useEffect(() => {
-    axios
-      .get(`/record/${recordId}/like`)
-      .then((response) => {
-        setLikeNum(response.data.likes);
-      })
-      .catch((error) => {
-        console.error("Error fetching likes:", error);
-      });
-  }, [recordId]);
+    setLikeState(like > 0 ? LIKE : NONE);
+  }, [like]);
+
+  const likeMutation = useMutation({
+    mutationFn: async () => {
+      if (likeState === LIKE) {
+        const respose = await deleteRecordLike(recordId);
+        return respose.data;
+      } else {
+        const response = await postRecordLike(recordId);
+        return response.data;
+      }
+    },
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ["likeCount", recordId] });
+
+      const prevLikeCount =
+        queryClient.getQueryData<number>(["likeCount", recordId]) || 0;
+      console.log(prevLikeCount);
+      queryClient.setQueryData<number>(
+        ["likeCount", recordId],
+        likeState === LIKE ? like - 1 : like + 1
+      );
+
+      setLikeState(likeState === LIKE ? NONE : LIKE);
+
+      return { prevLikeCount };
+    },
+    onError: (err, variables, context) => {
+      if (context?.prevLikeCount !== undefined) {
+        queryClient.setQueryData(
+          ["likeCount", recordId],
+          context.prevLikeCount
+        );
+      }
+      setLikeState(likeState === LIKE ? LIKE : NONE);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["likeCount", recordId] });
+    },
+  });
 
   const handleLike = () => {
-    if (pushedLike === LIKE) {
-      deleteRecordLikeNum(recordId)
-        .then(() => {
-          setLikeState(NONE);
-          setLikeNum((prev) => prev - 1);
-        })
-        .catch((error) => {
-          console.error("Error deleting like:", error);
-        });
-    } else if (pushedLike === NONE) {
-      postRecordLikeNum(recordId)
-        .then(() => {
-          setLikeState(LIKE);
-          setLikeNum((prev) => prev + 1);
-        })
-        .catch((error) => {
-          console.error("Error posting like:", error);
-        });
-    }
-  };*/
-  //recordId가 없을 경우 에러 처리
-  if (isNaN(recordId)) {
-    console.error("Invalid recordId:", stringRecordId);
-    return <div>Error: Invalid recordId</div>;
-  }
-  const {} = useQuery({
-    queryKey: [`postRecordLike`, recordId],
-    queryFn: () => postRecordLikeNum(recordId),
-    retry: 0,
-    enabled: !!isValidElement,
-  });
-  const {} = useQuery({
-    queryKey: [`deleteRecordLike`, recordId],
-    queryFn: () => deleteRecordLikeNum(recordId),
-    retry: 0,
-    enabled: !!isValidElement,
-  });
-  const getLikeNum = () => {
-    const { data } = useQuery({
-      queryKey: [`recordId`, recordId],
-      queryFn: getEvaluationRecord,
-      retry: 0,
-      enabled: !!isValidElement,
-    });
-    const likeNum = data._count?.likes || 0;
-    return likeNum;
+    likeMutation.mutate();
   };
-  like = getLikeNum();
+
   return (
     <ButtonContainer>
       <Button
-        onClick={() => {
-          setLikeState(pushedLike === LIKE ? NONE : LIKE);
-          setLikeNum(likeNum !== 1 ? 1 : 0);
-        }}
+        onClick={handleLike}
         color={
-          pushedLike === LIKE ? theme.colors.primary : theme.colors.primaryText
+          likeState === LIKE ? theme.colors.primary : theme.colors.primaryText
         }
         bgColor={theme.colors.inputBg}
         fontSize={11}
       >
         <Svg
-          src={pushedLike === LIKE ? ThumbUp_Svg : ThumbUpBlack_Svg}
+          src={likeState === LIKE ? ThumbUp_Svg : ThumbUpBlack_Svg}
           size={16}
         />
-        <div>{likeNum === 1 ? like + likeNum : like}</div>
+        <div>{like}</div>
       </Button>
     </ButtonContainer>
   );
