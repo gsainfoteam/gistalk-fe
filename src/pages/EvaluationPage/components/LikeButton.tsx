@@ -6,7 +6,6 @@ import ThumbUp_Svg from "@/assets/svgs/thumbUp.svg";
 import ThumbUpBlack_Svg from "@/assets/svgs/thumbUp_Black.svg";
 import { likeState } from "@/Interfaces/interfaces";
 import { deleteRecordLike, postRecordLike } from "@/apis/records";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const LIKE = "like";
 const NONE = "none";
