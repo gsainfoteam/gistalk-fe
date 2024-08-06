@@ -114,7 +114,8 @@ interface evaluationData {
 
 /** `/record` path api 호출에 대해서 사용하는 info  */
 export interface recordInfo extends evaluationData {
-  _count: number;
+  isLiked: Boolean;
+  _count: any;
   id: number;
   review: string;
   lectureId: number;

@@ -14,6 +14,7 @@ const NONE = "none";
 interface IProps {
   like: number;
   recordId: number;
+  isLiked: Boolean;
 }
 
 const ButtonContainer = styled.div`
@@ -46,9 +47,16 @@ const DislikeSvg = styled(Svg)`
   top: 2px;
 `;
 
-export default function LikeButton({ like, recordId }: IProps) {
+export default function LikeButton({ like, recordId, isLiked }: IProps) {
   const [likeState, setLikeState] = useState<likeState>(NONE);
   const [likeNum, setLikeNum] = useState(0);
+  useEffect(() => {
+    if (isLiked) {
+      setLikeState(LIKE);
+    } else {
+      setLikeState(NONE);
+    }
+  }, [isLiked]);
 
   const handleLike = () => {
     if (likeState === LIKE) {

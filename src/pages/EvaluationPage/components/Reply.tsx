@@ -74,7 +74,11 @@ export default function Reply({ replyData }: IProps) {
             {semesterId != 0 && `${semester[semesterId - 1]}학기`}
           </SemesterText>
         </LeftWrap>
-        <LikeButton like={replyData._count} recordId={replyData.id} />
+        <LikeButton
+          like={replyData._count.RecordLike}
+          recordId={replyData.id}
+          isLiked={replyData.isLiked}
+        />
       </InfoWrap>
       <ContentWrap fontSize={13} color={theme.colors.primaryText}>
         {replyData.review}
