@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import ThumbUp_Svg from "@/assets/svgs/thumbUp.svg";
 import ThumbUpBlack_Svg from "@/assets/svgs/thumbUp_Black.svg";
-import { likeState } from "@/Interfaces/interfaces";
 import { deleteRecordLike, postRecordLike } from "@/apis/records";
 
 const LIKE = "like";
@@ -47,27 +46,25 @@ const DislikeSvg = styled(Svg)`
 `;
 
 export default function LikeButton({ like, recordId, isLiked }: IProps) {
-  const [likeState, setLikeState] = useState<likeState>(NONE);
-  const [likeNum, setLikeNum] = useState(0);
-  useEffect(() => {
-    if (isLiked) {
-      setLikeState(LIKE);
-    } else {
-      setLikeState(NONE);
-    }
-  }, [isLiked]);
+  const [likeState, setLikeState] = useState(isLiked ? LIKE : NONE);
+  const [likeNum, setLikeNum] = useState<number>(like);
 
-  const handleLike = () => {
+  useEffect(() => {
+    setLikeState(isLiked ? LIKE : NONE);
+    setLikeNum(like);
+  }, [isLiked, like]);
+
+  const handleLike = useCallback(async () => {
     if (likeState === LIKE) {
-      deleteRecordLike(recordId);
+      await deleteRecordLike(recordId);
       setLikeState(NONE);
-      setLikeNum(0);
+      setLikeNum((prev) => prev - 1);
     } else {
-      postRecordLike(recordId);
+      await postRecordLike(recordId);
       setLikeState(LIKE);
-      setLikeNum(1);
+      setLikeNum((prev) => prev + 1);
     }
-  };
+  }, [likeState, recordId]);
 
   return (
     <ButtonContainer>
@@ -83,7 +80,7 @@ export default function LikeButton({ like, recordId, isLiked }: IProps) {
           src={likeState === LIKE ? ThumbUp_Svg : ThumbUpBlack_Svg}
           size={16}
         />
-        <div>{likeNum === 1 ? like + likeNum : like}</div>
+        <div>{likeNum}</div>
       </Button>
     </ButtonContainer>
   );

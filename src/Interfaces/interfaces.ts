@@ -41,10 +41,6 @@ export interface IButton {
   background: string;
 }
 
-/** like : 좋아요 누름 / dislike : 싫어요 누름 / none : 둘 다 안 누름 */
-//변수 이름 pushedLike-> likeState 로 변경*/
-export type likeState = "like" | "dislike" | "none";
-
 export type ISortOption =
   | "평균점수"
   | "수업 난이도"
@@ -115,7 +111,7 @@ interface evaluationData {
 /** `/record` path api 호출에 대해서 사용하는 info  */
 export interface recordInfo extends evaluationData {
   isLiked: Boolean;
-  _count: any;
+  _count: { RecordLike: number };
   id: number;
   review: string;
   lectureId: number;
