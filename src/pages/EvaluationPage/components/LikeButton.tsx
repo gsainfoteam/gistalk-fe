@@ -48,53 +48,18 @@ const DislikeSvg = styled(Svg)`
 
 export default function LikeButton({ like, recordId }: IProps) {
   const [likeState, setLikeState] = useState<likeState>(NONE);
-  const queryClient = useQueryClient();
-  //만약 눌러진 상태였다면, likeState를 LIKE로 세팅
-  useEffect(() => {
-    setLikeState(like > 0 ? LIKE : NONE);
-  }, [like]);
-
-  const likeMutation = useMutation({
-    mutationFn: async () => {
-      if (likeState === LIKE) {
-        const respose = await deleteRecordLike(recordId);
-        return respose.data;
-      } else {
-        const response = await postRecordLike(recordId);
-        return response.data;
-      }
-    },
-    onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ["likeCount", recordId] });
-
-      const prevLikeCount =
-        queryClient.getQueryData<number>(["likeCount", recordId]) || 0;
-      console.log(prevLikeCount);
-      queryClient.setQueryData<number>(
-        ["likeCount", recordId],
-        likeState === LIKE ? like - 1 : like + 1
-      );
-
-      setLikeState(likeState === LIKE ? NONE : LIKE);
-
-      return { prevLikeCount };
-    },
-    onError: (err, variables, context) => {
-      if (context?.prevLikeCount !== undefined) {
-        queryClient.setQueryData(
-          ["likeCount", recordId],
-          context.prevLikeCount
-        );
-      }
-      setLikeState(likeState === LIKE ? LIKE : NONE);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["likeCount", recordId] });
-    },
-  });
+  const [likeNum, setLikeNum] = useState(0);
 
   const handleLike = () => {
-    likeMutation.mutate();
+    if (likeState === LIKE) {
+      deleteRecordLike(recordId);
+      setLikeState(NONE);
+      setLikeNum(0);
+    } else {
+      postRecordLike(recordId);
+      setLikeState(LIKE);
+      setLikeNum(1);
+    }
   };
 
   return (
@@ -111,7 +76,7 @@ export default function LikeButton({ like, recordId }: IProps) {
           src={likeState === LIKE ? ThumbUp_Svg : ThumbUpBlack_Svg}
           size={16}
         />
-        <div>{like}</div>
+        <div>{likeNum === 1 ? like + likeNum : like}</div>
       </Button>
     </ButtonContainer>
   );
