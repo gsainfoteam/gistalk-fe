@@ -55,7 +55,8 @@ export function WriteReviewPage() {
   });
   const [recommendation, setRecommendation] = useState(-1); // 0 비추천, 1 추천, 2 보통 (왜 반대지?)
   const [text, setText] = useState("");
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<(number | null)[]>([null]);
+  const [clickedId, setClickedId] = useState<number>(0);
 
   const params = useParams() as { id: string };
   const id = Number(params.id);
@@ -84,8 +85,21 @@ export function WriteReviewPage() {
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
     setText(event.target.value);
 
-  const handleCheckboxChange = (id: number) => {
-    setSelectedId(id === selectedId ? null : id);
+  const handleCheckboxChange = (id: number, profNumber: number) => {
+    let nullCount = 0;
+    const checkboxClick = id === selectedId[profNumber] ? null : id;
+
+    for(let k = 0; k < profNumber; k++) {
+      selectedId[k] = selectedId[k] ? selectedId[k] : null;
+    }
+    for(let k = 0; k < selectedId.length; k++) { //selectedId에 null 개수 카운트
+      selectedId[k] === null ? nullCount += 1 : null;
+    }
+    selectedId.length - nullCount === 0 ? //두 개 이상 선택 불가능 하도록 만드는 내용
+      (selectedId[profNumber] = checkboxClick) : 
+      (selectedId.map((id, index) => selectedId[index] = null), selectedId[profNumber] = checkboxClick);
+    setSelectedId([...selectedId]);
+    setClickedId(profNumber);
   };
 
   const {
@@ -141,6 +155,7 @@ export function WriteReviewPage() {
         text,
         id,
         selectedId,
+        clickedId,
         selectedValues.semester ? (selectedValues.semester as Option).value : 0,
         selectedValues.year ? (selectedValues.year as Option).label : "2000",
         recommendation,
