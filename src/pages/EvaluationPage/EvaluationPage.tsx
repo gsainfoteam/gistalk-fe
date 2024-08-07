@@ -274,6 +274,7 @@ export function EvaluationPage() {
             sectionInfo={lectureInfo.LectureSection}
             subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
             selectedId={selectedId}
+            isWrite={false}
           />
         )}
 

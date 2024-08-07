@@ -8,9 +8,38 @@ interface CheckboxProps {
   selectedId: (number | null)[];
   onCheckboxChange: (id: number, profNumber: number) => void;
   profNumber: number;
+  isWrite: boolean | undefined;
 }
 
-const CheckboxContainer = styled.button<{ isClicked: boolean, color: string }>`
+const CheckboxContainer = styled.label`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px;
+`;
+
+const CheckboxInput = styled.input`
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid
+    ${(props) =>
+      props.checked ? theme.colors.primary : theme.colors.grayStroke};
+  border-radius: 10px;
+  outline: none;
+  margin-right: 3px;
+  cursor: pointer;
+
+  &:checked {
+    background-color: ${theme.colors.primary};
+  }
+`;
+
+const CheckboxText = styled.span`
+  font-size: 16px;
+`;
+
+const ColorboxContainer = styled.button<{ isClicked: boolean, color: string }>`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -29,9 +58,9 @@ const BoxColor = styled.div<{ color: string }>`
   background: ${(props) => props.color};  
 `;
 
-const CheckboxText = styled.span<{ isClicked: boolean }>`
+const ColorboxText = styled.span<{ isClicked: boolean }>`
   font-size: 16px;
-  color: ${theme.colors.grayStroke};
+  color: ${theme.colors.black};
 `;
 
 const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
@@ -40,6 +69,7 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
   selectedId,
   onCheckboxChange,
   profNumber,
+  isWrite,
 }) => {
   const isChecked = id === selectedId[profNumber];
 
@@ -47,16 +77,29 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
     onCheckboxChange(id, profNumber);
   };
 
-  return (
-    <CheckboxContainer 
+  if(isWrite) {
+    return (
+      <CheckboxContainer>
+        <CheckboxInput
+          type="checkbox"
+          checked={isChecked}
+          onChange={toggleCheckbox}
+        />
+        <CheckboxText>{text}</CheckboxText>
+      </CheckboxContainer>
+    );
+  } else {
+    return (
+    <ColorboxContainer 
     isClicked={isChecked} 
     color={Object.values(theme.PrimaryColor)[profNumber]} 
     onClick={toggleCheckbox}
     >
       <BoxColor color={Object.values(theme.PrimaryColor)[profNumber]} />
-      <CheckboxText isClicked={isChecked}>{text}</CheckboxText>
-    </CheckboxContainer>
-  );
+      <ColorboxText isClicked={isChecked}>{text}</ColorboxText>
+    </ColorboxContainer>
+    )
+  }
 };
 
 export default ProfessorNameCheckbox;

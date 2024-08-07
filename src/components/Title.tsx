@@ -11,6 +11,7 @@ interface IProps {
   subjectCode: string[];
   selectedId: (number | null)[];
   handleCheckboxChange: (id: number, profNumber: number) => void;
+  isWrite?: boolean;
 }
 
 const TitleWrap = styled.div<{ color: string; bgColor: string }>`
@@ -63,6 +64,7 @@ export default function Title({
   subjectCode,
   selectedId,
   handleCheckboxChange,
+  isWrite,
 }: IProps) {
   return (
     <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
@@ -85,6 +87,7 @@ export default function Title({
                 selectedId={selectedId}
                 onCheckboxChange={handleCheckboxChange}
                 profNumber={index}
+                isWrite={isWrite}
               />
             )
           )}

@@ -199,6 +199,7 @@ export function WriteReviewPage() {
             sectionInfo={lectureInfo.LectureSection}
             subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
             selectedId={selectedId}
+            isWrite={true}
           />
         )}
 
