@@ -157,7 +157,7 @@ export function WriteReviewPage() {
       postLectureEvaluation(
         text,
         id,
-        selectedId,
+        clickedId,
         selectedValues.semester ? (selectedValues.semester as Option).value : 0,
         selectedValues.year ? (selectedValues.year as Option).label : "2000",
         recommendation,
