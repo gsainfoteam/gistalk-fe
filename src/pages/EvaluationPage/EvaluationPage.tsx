@@ -13,11 +13,11 @@ import NavigationHeader from "../../components/NavigationHeader";
 import EvaluationSummary from "./components/EvaluationSummary";
 import { StyledLink } from "@components/StyledLink";
 import {
-  getLectureEachEvaluation,
   getLectureSingleInfo,
   getLectureTotalEvaluation,
   getLectureTotalEvaluationForProf,
 } from "@/apis/lectures";
+import { getLectureEachEvaluation } from "@/apis/records";
 import { useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import { concatProfessorNames, convertLectureCodeToList } from "@/utils";
