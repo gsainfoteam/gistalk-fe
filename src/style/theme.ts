@@ -1,5 +1,39 @@
 import styled from "styled-components";
 
+const PrimaryOpaqueColor = {
+  blue: "rgb(125,211,252,0.6)",
+  green: "rgb(74,222,128,0.6)",
+  yellow: "rgb(253,224,71,0.6)",
+  purple: "rgb(139,92,246,0.6)",
+  orange: "rgb(234,179,8,0.6)",
+  mint: "rgb(94,234,212,0.6)",
+  brown: "rgb(113,63,18,0.6)",
+  pink: "rgb(167,139,250,0.6)",
+  dark_purple: "rgb(76,29,149,0.6)",
+  dark_red: "rgb(136,19,55,0.6)",
+  indigo: "rgb(30,58,138,0.6)",
+  dark_green: "rgb(6,78,61,0.6)",
+  light_green: "rgb(190,242,100,0.6)",
+  light_yellow: "rgb(254,240,138,0.6)"
+}
+
+const PrimaryColor = {
+  blue: "rgb(125,211,252)",
+  green: "rgb(74,222,128)",
+  yellow: "rgb(253,224,71)",
+  purple: "rgb(139,92,246)",
+  orange: "rgb(234,179,8)",
+  mint: "rgb(94,234,212)",
+  brown: "rgb(113,63,18)",
+  pink: "rgb(167,139,250)",
+  dark_purple: "rgb(76,29,149)",
+  dark_red: "rgb(136,19,55)",
+  indigo: "rgb(30,58,138)",
+  dark_green: "rgb(6,78,61)",
+  light_green: "rgb(190,242,100)",
+  light_yellow: "rgb(254,240,138)"
+}
+
 const colors = {
   primary: "#FF6565",
   secondary: "#FF8282",
@@ -35,6 +69,8 @@ const universalComponent = {
 };
 
 export const theme = {
+  PrimaryOpaqueColor,
+  PrimaryColor,
   colors,
   universalComponent,
 };

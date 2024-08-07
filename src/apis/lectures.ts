@@ -1,14 +1,4 @@
-import axios from "axios";
 import axiosInstance from "./axiosInstance";
-import { RatingQuestionId } from "@/pages/WriteReviewPage/WriteReviewPage.const";
-import {
-  CLIENT_NOT_RECOMMEND,
-  CLIENT_RECOMMEND,
-  NORMAL,
-  NOT_RECOMMEND,
-  RECOMMEND,
-} from "@/constants/recommand";
-import { convertSemesterToString } from "@/utils";
 
 //auth 정보를 사용하지 않으므로 axiosInstance를 사용하지 않음
 export const getLectureList = () => {
