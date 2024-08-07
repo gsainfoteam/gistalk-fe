@@ -11,7 +11,7 @@ interface IProps {
   subjectCode: string[];
   selectedId: (number | null)[];
   handleCheckboxChange: (id: number, profNumber: number) => void;
-  isWrite?: boolean;
+  isWrite: boolean;
 }
 
 const TitleWrap = styled.div<{ color: string; bgColor: string }>`

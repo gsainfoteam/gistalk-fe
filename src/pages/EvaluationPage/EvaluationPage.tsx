@@ -292,7 +292,10 @@ export function EvaluationPage() {
         {!isLoading && !totalLoading && selectedEvaluation && (
           <SummaryWrapper>
             <SummaryScroll>
-              <EvaluationSummary evaluationData={selectedEvaluation ?? null} />
+              <EvaluationSummary 
+              evaluationData={selectedEvaluation ?? null} 
+              averageData={averageData}
+              />
               <ScrollBarWrapper className="barWrapper" isFade={isFade} />
             </SummaryScroll>
           </SummaryWrapper>

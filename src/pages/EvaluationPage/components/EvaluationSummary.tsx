@@ -44,6 +44,7 @@ const ConcreteInfo = styled(theme.universalComponent.DivTextContainer)<{
 
 interface SummaryProps {
   evaluationData: HexagonData[];
+  averageData: HexagonData[];
 }
 
 function sortScoresBySubject(scores: HexagonData): number[] {
@@ -59,47 +60,52 @@ const LOW = 0;
 const MIDDLE = 1;
 const HIGH = 2;
 
-export default function EvaluationSummary({ evaluationData }: SummaryProps) {
+export default function EvaluationSummary({ evaluationData, averageData }: SummaryProps) {
   let result: JSX.Element[] = [];
-  evaluationData.map((summary, index) => {
-    if (evaluationData == null) {
-      return null;
-    }
-  
-    const data = sortScoresBySubject(summary);
-  
-    const indexData = data.map((item: number) => {
-      if (item < 2.5 && item >= 0) {
-        return LOW;
-      } else if (item >= 2.5 && item <= 3.5) {
-        return MIDDLE;
-      } else {
-        return HIGH;
-      }
-    });
-  
-    result[index] = (
-      <ConcreteInfoGrid key={index}>
-        {indexData.map((item: number, index: number) => (
-          <ConcreteInfo
-            key={index}
-            color={theme.colors.secondaryText}
-            colorP={theme.colors.primary}
-            fontSize={15}
-          >
-            <div>{EVALUATION_TEXT[index]}</div>
-            <div>
-              {data[index] === null ? (
-                <span> -</span>
-              ) : (
-                <span>{EvaluationToText[index][item]}</span>
-              )}
-            </div>
-          </ConcreteInfo>
-        ))}
-      </ConcreteInfoGrid>
-    );
-  });
 
-  return <>{result.map((value, index) => result[index])}</>;
+  function showResult (order: number) {
+    evaluationData.map((summary, index) => {
+      if (evaluationData == null) {
+        return null;
+      }
+    
+      const data = sortScoresBySubject(summary);
+    
+      const indexData = data.map((item: number) => {
+        if (item < 2.5 && item >= 0) {
+          return LOW;
+        } else if (item >= 2.5 && item <= 3.5) {
+          return MIDDLE;
+        } else {
+          return HIGH;
+        }
+      });
+    
+      result[index] = (
+        <ConcreteInfoGrid key={index}>
+          {indexData.map((item: number, index: number) => (
+            <ConcreteInfo
+              key={index}
+              color={theme.colors.secondaryText}
+              colorP={averageData === evaluationData ? "#FF6565" : Object.values(theme.PrimaryColor)[order]}
+              fontSize={15}
+            >
+              <div>{EVALUATION_TEXT[index]}</div>
+              <div>
+                {data[index] === null ? (
+                  <span> -</span>
+                ) : (
+                  <span>{EvaluationToText[index][item]}</span>
+                )}
+              </div>
+            </ConcreteInfo>
+          ))}
+        </ConcreteInfoGrid>
+      );
+    });
+
+    return result[order];
+  }
+
+  return <>{evaluationData.map((value, index) => showResult(index))}</>;
 }

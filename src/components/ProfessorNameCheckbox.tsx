@@ -15,7 +15,7 @@ const CheckboxContainer = styled.label`
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 4px;
+  padding: 6px;
 `;
 
 const CheckboxInput = styled.input`
@@ -92,7 +92,7 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
     return (
     <ColorboxContainer 
     isClicked={isChecked} 
-    color={Object.values(theme.PrimaryColor)[profNumber]} 
+    color={Object.values(theme.PrimaryOpaqueColor)[profNumber]} 
     onClick={toggleCheckbox}
     >
       <BoxColor color={Object.values(theme.PrimaryColor)[profNumber]} />
