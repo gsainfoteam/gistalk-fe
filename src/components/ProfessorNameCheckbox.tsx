@@ -30,7 +30,7 @@ const CheckboxInput = styled.input<{ color: string, isWrite: boolean }>`
   appearance: none;
   width: ${(props) => props.isWrite ? inputSize.big : inputSize.small};
   height: ${(props) => props.isWrite ? inputSize.big : inputSize.small};
-  border: 1.5px solid ${theme.colors.secondaryText};
+  border: 2px solid ${theme.colors.grayStroke};
   border-radius: ${(props) => props.isWrite ? borderRadius.circle : borderRadius.none};
   outline: none;
   cursor: pointer;
@@ -43,7 +43,7 @@ const CheckboxInput = styled.input<{ color: string, isWrite: boolean }>`
 
 const CheckboxText = styled.span`
   font-size: 15px;
-  color: ${theme.colors.secondaryText};
+  color: ${theme.colors.black};
 `;
 
 const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
