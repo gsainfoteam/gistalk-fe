@@ -1,37 +1,24 @@
 import styled from "styled-components";
 
-const PrimaryOpaqueColor = {
-  blue: "rgb(125,211,252,0.6)",
-  green: "rgb(74,222,128,0.6)",
-  yellow: "rgb(253,224,71,0.6)",
-  purple: "rgb(139,92,246,0.6)",
-  orange: "rgb(234,179,8,0.6)",
-  mint: "rgb(94,234,212,0.6)",
-  brown: "rgb(113,63,18,0.6)",
-  pink: "rgb(167,139,250,0.6)",
-  dark_purple: "rgb(76,29,149,0.6)",
-  dark_red: "rgb(136,19,55,0.6)",
-  indigo: "rgb(30,58,138,0.6)",
-  dark_green: "rgb(6,78,61,0.6)",
-  light_green: "rgb(190,242,100,0.6)",
-  light_yellow: "rgb(254,240,138,0.6)"
-}
+const RadarColor = (opacity: number) => { 
+  const colors = [
+    `rgb(56, 189, 248,${opacity})`, 
+    `rgb(251, 146, 60,${opacity})`,
+    `rgb(163, 230, 53,${opacity})`,
+    `rgb(192, 132, 252,${opacity})`,
+    `rgb(45, 212, 191,${opacity})`,
+    `rgb(251, 113, 133,${opacity})`,
+    `rgb(96, 165, 250,${opacity})`,
+    `rgb(129, 140, 248,${opacity})`,
+    `rgb(74, 222, 128,${opacity})`,
+    `rgb(232, 121, 249,${opacity})`,
+    `rgb(52, 211, 153,${opacity})`,
+    `rgb(34, 211, 238,${opacity})`,
+    `rgb(250, 204, 21,${opacity})`,
+    `rgb(244, 114, 182,${opacity})`
+  ]
 
-const PrimaryColor = {
-  blue: "rgb(125,211,252)",
-  green: "rgb(74,222,128)",
-  yellow: "rgb(253,224,71)",
-  purple: "rgb(139,92,246)",
-  orange: "rgb(234,179,8)",
-  mint: "rgb(94,234,212)",
-  brown: "rgb(113,63,18)",
-  pink: "rgb(167,139,250)",
-  dark_purple: "rgb(76,29,149)",
-  dark_red: "rgb(136,19,55)",
-  indigo: "rgb(30,58,138)",
-  dark_green: "rgb(6,78,61)",
-  light_green: "rgb(190,242,100)",
-  light_yellow: "rgb(254,240,138)"
+  return colors
 }
 
 const colors = {
@@ -69,8 +56,7 @@ const universalComponent = {
 };
 
 export const theme = {
-  PrimaryOpaqueColor,
-  PrimaryColor,
+  RadarColor,
   colors,
   universalComponent,
 };

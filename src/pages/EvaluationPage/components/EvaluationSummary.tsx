@@ -4,6 +4,7 @@ import { EvaluationToText } from "@/constants/EvaluationToText";
 import {
   EVALUATION_TEXT,
   HexagonData,
+  opacity,
   SUBJECT_SHOW_ORDER,
 } from "../EvaluationPage.const";
 
@@ -87,7 +88,7 @@ export default function EvaluationSummary({ evaluationData, averageData }: Summa
             <ConcreteInfo
               key={index}
               color={theme.colors.secondaryText}
-              colorP={averageData === evaluationData ? "#FF6565" : Object.values(theme.PrimaryColor)[order]}
+              colorP={averageData === evaluationData ? theme.colors.primary : theme.RadarColor(opacity.none)[order]}
               fontSize={15}
             >
               <div>{EVALUATION_TEXT[index]}</div>

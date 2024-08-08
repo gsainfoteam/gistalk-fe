@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import Reply from "./components/Reply";
 
-import CatBlankList_Svg from "@/assets/svgs/catBlankList.svg";
 import Title from "../../components/Title";
 import ScrolledHeader from "@components/ScrolledHeader";
 import NavigationHeader from "../../components/NavigationHeader";
@@ -24,6 +23,8 @@ import { concatProfessorNames, convertLectureCodeToList } from "@/utils";
 import { IReply, LectureSectionWithProfessorInfo, reviewInfo } from "@/Interfaces/interfaces";
 import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
+import { NoComment } from "./components/NoComment";
+import { ReviewAmount } from "./EvaluationPage.util";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -129,19 +130,6 @@ const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
   width: 100%;
 `;
 
-/** Search 리스트가 비었을 떄 나오는 고양이 일러스트, 문구 Wrap */
-const BlankWrap = styled.div`
-  margin: 40px auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const BlankSvg = styled(theme.universalComponent.SvgIcon)``;
-const BlankText = styled(theme.universalComponent.DivTextContainer)`
-  font-family: NSBold;
-`;
-
 export function EvaluationPage() {
   const [clickedId, setClickedId] = useState<number | null>(null); //isEvaluationEmpty 구별할 때 사용
   const isValidToken = useCheckValidToken();
@@ -151,12 +139,11 @@ export function EvaluationPage() {
   const navigate = useNavigate();
 
   const handleCheckboxChange = (id: number, profNumber: number) => {
-    for(let k = 0; k < profNumber; k++) {
+    for(let k = 0; k < profNumber; k++) { //처음 selectedId를 설정할 때 중간에 undefined를 null로 바꿔줌
       selectedId[k] = selectedId[k] ? selectedId[k] : null;
     }
-    id === selectedId[profNumber] ? 
-      (selectedId[profNumber] = null) : 
-      (selectedId[profNumber] = id);
+
+    selectedId[profNumber] = id === selectedId[profNumber] ? null : id;
     setSelectedId([...selectedId]);
     setClickedId(profNumber);
 
@@ -247,22 +234,6 @@ export function EvaluationPage() {
     : null));
   const emptyValues = isEvaluationEmpty.filter((id) => id != null);
 
-  const noComment = (
-  <BlankWrap>
-    <BlankSvg size={120} src={CatBlankList_Svg} />
-      <BlankText fontSize={14} color={theme.colors.secondaryText}>
-        아직 한줄평이 없습니다. 첫 번째로 한줄평을 남겨보세요!
-    </BlankText>
-  </BlankWrap>
-  );
-
-  const ReviewAmount = () => {
-    let count = 0;
-    selectedReview.map((review) => count += review.length)
-
-    return count;
-  };
-
   return (
     <>
       <NavigationHeader text={"강의평"} />
@@ -321,7 +292,7 @@ export function EvaluationPage() {
               :
               <span>
                 {" "}
-                이 강의에 {ReviewAmount()}명이 평가를 남겼어요
+                이 강의에 {ReviewAmount(selectedReview)}명이 평가를 남겼어요
               </span>
             )}
           </OneLineReviewText>
@@ -333,13 +304,13 @@ export function EvaluationPage() {
           lectureInfo &&
             selectedId.every((value) => value === null) ? //아무런 교수도 선택하지 않았을 때
               (Object.values(totalEvaluation).every((value) => value === null) 
-              ? (noComment) : ( 
+              ? <NoComment /> : ( 
                   reviewList[0]?.data.map((reviewContent: reviewInfo) => ( //아무 선택도 안 했을 때 모든 리뷰 나타내기
                   <Reply key={reviewContent.id} replyData={reviewContent}/>))
               ))
             : //교수를 선택했을 때
             !evaluationLoading && (selectedReview.every((value) => value != undefined && value.length === 0)
-              ? (noComment) : (
+              ? <NoComment /> : (
               selectedReview.map((select, index) => (
               <div key={selectedId[index]}>
                 {select.map((review: reviewInfo) => (

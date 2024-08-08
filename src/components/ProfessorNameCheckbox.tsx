@@ -1,3 +1,4 @@
+import { opacity } from "@/pages/EvaluationPage/EvaluationPage.const";
 import { theme } from "@/style/theme";
 import React from "react";
 import styled from "styled-components";
@@ -57,7 +58,7 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
   return (
     <CheckboxContainer
     isClicked={isChecked} 
-    color={Object.values(theme.PrimaryOpaqueColor)[profNumber]} 
+    color={Object.values(theme.RadarColor(opacity.true))[profNumber]} 
     isWrite={isWrite}
     >
       <CheckboxInput
