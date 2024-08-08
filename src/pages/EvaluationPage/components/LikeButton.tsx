@@ -1,26 +1,24 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import ThumbUp_Svg from "@/assets/svgs/thumbUp.svg";
 import ThumbUpBlack_Svg from "@/assets/svgs/thumbUp_Black.svg";
-import ThumbDown_Svg from "@/assets/svgs/thumbDown.svg";
-import ThumbDownBlack_Svg from "@/assets/svgs/thumbDown_Black.svg";
+import { deleteRecordLike, postRecordLike } from "@/apis/records";
 
 const LIKE = "like";
-const DISLIKE = "dislike";
 const NONE = "none";
 
 interface IProps {
   like: number;
-  dislike: number;
+  recordId: number;
+  isLiked: Boolean;
 }
 
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
 `;
-//resolve no overload matches this call error
 
 const Button = styled(theme.universalComponent.DivTextContainer)<{
   bgColor: string;
@@ -47,47 +45,42 @@ const DislikeSvg = styled(Svg)`
   top: 2px;
 `;
 
-//pushedLike none으로 설정후에 Btn이 눌리면 바뀌는 형식으로
-export default function LikeButton({ like, dislike }: IProps) {
-  const [pushedLike, setLikeState] = useState("none");
-  const [likeNum, setLikeNum] = useState(0);
+export default function LikeButton({ like, recordId, isLiked }: IProps) {
+  const [likeState, setLikeState] = useState(isLiked ? LIKE : NONE);
+  const [likeNum, setLikeNum] = useState<number>(like);
+
+  useEffect(() => {
+    setLikeState(isLiked ? LIKE : NONE);
+    setLikeNum(like);
+  }, [isLiked, like]);
+
+  const handleLike = useCallback(async () => {
+    if (likeState === LIKE) {
+      await deleteRecordLike(recordId);
+      setLikeState(NONE);
+      setLikeNum((prev) => prev - 1);
+    } else {
+      await postRecordLike(recordId);
+      setLikeState(LIKE);
+      setLikeNum((prev) => prev + 1);
+    }
+  }, [likeState, recordId]);
 
   return (
     <ButtonContainer>
       <Button
-        onClick={() => {
-          setLikeState(pushedLike === LIKE ? NONE : LIKE);
-          setLikeNum(likeNum !== 1 ? 1 : 0);
-        }}
+        onClick={handleLike}
         color={
-          pushedLike === LIKE ? theme.colors.primary : theme.colors.primaryText
+          likeState === LIKE ? theme.colors.primary : theme.colors.primaryText
         }
         bgColor={theme.colors.inputBg}
         fontSize={11}
       >
         <Svg
-          src={pushedLike === LIKE ? ThumbUp_Svg : ThumbUpBlack_Svg}
+          src={likeState === LIKE ? ThumbUp_Svg : ThumbUpBlack_Svg}
           size={16}
         />
-        <div>{likeNum === 1 ? like + likeNum : like}</div>
-      </Button>
-      <Button
-        onClick={() => {
-          setLikeState(pushedLike === DISLIKE ? NONE : DISLIKE);
-          setLikeNum(likeNum !== -1 ? -1 : 0);
-        }}
-        color={
-          pushedLike == DISLIKE
-            ? theme.colors.reverse
-            : theme.colors.primaryText
-        }
-        bgColor={theme.colors.inputBg}
-        fontSize={11}
-      >
-        <DislikeSvg
-          src={pushedLike === DISLIKE ? ThumbDown_Svg : ThumbDownBlack_Svg}
-          size={16}
-        />
+        <div>{likeNum}</div>
       </Button>
     </ButtonContainer>
   );

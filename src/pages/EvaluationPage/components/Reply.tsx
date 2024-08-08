@@ -1,14 +1,15 @@
 import { theme } from "@/style/theme";
 import styled from "styled-components";
-import { reviewInfo } from "@/Interfaces/interfaces";
+import { recordInfo } from "@/Interfaces/interfaces";
 
 import LikeButton from "./LikeButton";
 import RecommendationStatus from "@components/RecommendationStatus";
 import { NOT_RECOMMEND, RECOMMEND } from "@/constants/recommand";
 import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
+import { useParams } from "react-router-dom";
 
 interface IProps {
-  replyData: reviewInfo;
+  replyData: recordInfo;
 }
 
 /** 전체 Wrap */
@@ -60,7 +61,6 @@ export default function Reply({ replyData }: IProps) {
       : "none"; // "true" or "false" or "none
 
   const semesterId = convertSemesterToNumber(replyData.semester);
-
   return (
     <Wrap>
       <InfoWrap>
@@ -74,9 +74,12 @@ export default function Reply({ replyData }: IProps) {
             {semesterId != 0 && `${semester[semesterId - 1]}학기`}
           </SemesterText>
         </LeftWrap>
-        {/* <LikeButton like={0} dislike={0} /> */}
+        <LikeButton
+          like={replyData._count.RecordLike}
+          recordId={replyData.id}
+          isLiked={replyData.isLiked}
+        />
       </InfoWrap>
-
       <ContentWrap fontSize={13} color={theme.colors.primaryText}>
         {replyData.review}
       </ContentWrap>

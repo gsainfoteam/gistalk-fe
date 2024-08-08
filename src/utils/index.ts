@@ -1,6 +1,6 @@
 import {
   LectureCode,
-  LectureSectionWithProfessorInfo,
+  LectureSectionInfo,
   professorInfo,
 } from "@/Interfaces/interfaces";
 
@@ -14,12 +14,10 @@ export const convertLectureCodeToList = (lectureCode: LectureCode[]) => {
 };
 
 /**
- * LectureSectionWithProfessorInfo[]의 Professor[]의 name을 추출해서 하나의 strong으로 변환
+ * LectureSectionInfo[]의 Professor[]의 name을 추출해서 하나의 string으로 변환
  * lectureSection이 array로 오는 경우가 있어서 해당 경우에 교수진 이름 합치는 걸 해결하기 위해 만듬
  */
-export const concatProfessorNames = (
-  LectureSection: LectureSectionWithProfessorInfo[]
-) => {
+export const concatProfessorNames = (LectureSection: LectureSectionInfo[]) => {
   return LectureSection.map((section) =>
     convertProfessorNameToString(section.Professor)
   ).join(", ");
@@ -33,6 +31,7 @@ export const convertProfessorNameToString = (
 ) => {
   return LectureSectionProfessor.map((section) => section.name).join(", ");
 };
+
 /**
  *
  * @param semester 'SPRING', 'SUMMER', 'FALL', 'WINTER' 중 하나

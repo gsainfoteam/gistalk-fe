@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import Card from "@components/Card";
 import { StyledLink } from "@components/StyledLink";
 import WithTitleAndDescription from "@components/TitleWithDescription";
-import { reviewInfo } from "@/Interfaces/interfaces";
-import { getRecentEvaluation } from "@/apis/lectures";
+import { recordInfo } from "@/Interfaces/interfaces";
+import { getRecentEvaluation } from "@/apis/records";
 import { NOT_RECOMMEND, RECOMMEND } from "@/constants/recommand";
 import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 import LectureInformation from "./components/LectureInformation";
@@ -36,7 +36,7 @@ export default function MainPage() {
       <WithTitleAndDescription title={"최근 올라온 강의평가"}>
         {!isLoading &&
           data &&
-          recentEvaluation.map((evaluation: reviewInfo) => (
+          recentEvaluation.map((evaluation: recordInfo) => (
             <StyledLink
               to={`/${evaluation.LectureSection.Lecture.id}/evaluation`}
               key={evaluation.id}

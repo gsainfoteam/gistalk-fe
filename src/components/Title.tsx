@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 import { theme } from "@/style/theme";
-import { LectureSectionWithProfessorInfo } from "@/Interfaces/interfaces";
+import { LectureSectionInfo } from "@/Interfaces/interfaces";
 import ProfessorNameCheckbox from "./ProfessorNameCheckbox";
 import { convertProfessorNameToString } from "@/utils";
 
 interface IProps {
   subjectTitle: string;
-  sectionInfo: LectureSectionWithProfessorInfo[];
+  sectionInfo: LectureSectionInfo[];
   subjectCode: string[];
   selectedId: (number | null)[];
   handleCheckboxChange: (id: number, profNumber: number) => void;
@@ -78,19 +78,17 @@ export default function Title({
             교수자
           </SubjectTitle>
 
-          {sectionInfo.map(
-            (section: LectureSectionWithProfessorInfo, index: number) => (
-              <ProfessorNameCheckbox
-                key={section.id}
-                text={convertProfessorNameToString(section.Professor)}
-                id={section.id}
-                selectedId={selectedId}
-                onCheckboxChange={handleCheckboxChange}
-                profNumber={index}
-                isWrite={isWrite}
-              />
-            )
-          )}
+          {sectionInfo.map((section: LectureSectionInfo, index: number) => (
+            <ProfessorNameCheckbox
+              key={section.id}
+              text={convertProfessorNameToString(section.Professor)}
+              id={section.id}
+              selectedId={selectedId}
+              onCheckboxChange={handleCheckboxChange}
+              profNumber={index}
+              isWrite={isWrite}
+            />
+          ))}
         </CheckboxContainer>
       </div>
     </TitleWrap>

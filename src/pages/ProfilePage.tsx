@@ -12,7 +12,7 @@ import {
 } from "@/constants/localStorageKeys";
 import { StyledLink } from "@components/StyledLink";
 import Card from "@components/Card";
-import { recordInfo, reviewInfo } from "@/Interfaces/interfaces";
+import { recordInfo } from "@/Interfaces/interfaces";
 import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 import useTabParam from "@/hooks/useTabParam";
 

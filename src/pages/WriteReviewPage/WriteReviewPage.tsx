@@ -28,7 +28,8 @@ import {
 import ReactSelect from "react-select";
 import { convertLectureCodeToList } from "@/utils";
 import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
-import { getLectureSingleInfo, postLectureEvaluation } from "@/apis/lectures";
+import { getLectureSingleInfo } from "@/apis/lectures";
+import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
 import { AxiosError, isAxiosError } from "axios";
 
@@ -89,15 +90,17 @@ export function WriteReviewPage() {
     let nullCount = 0;
     const checkboxClick = id === selectedId[profNumber] ? null : id;
 
-    for(let k = 0; k < profNumber; k++) {
+    for (let k = 0; k < profNumber; k++) {
       selectedId[k] = selectedId[k] ? selectedId[k] : null;
     }
-    for(let k = 0; k < selectedId.length; k++) { //selectedId에 null 개수 카운트
-      selectedId[k] === null ? nullCount += 1 : null;
+    for (let k = 0; k < selectedId.length; k++) {
+      //selectedId에 null 개수 카운트
+      selectedId[k] === null ? (nullCount += 1) : null;
     }
-    selectedId.length - nullCount === 0 ? //두 개 이상 선택 불가능 하도록 만드는 내용
-      (selectedId[profNumber] = checkboxClick) : 
-      (selectedId.map((id, index) => selectedId[index] = null), selectedId[profNumber] = checkboxClick);
+    selectedId.length - nullCount === 0 //두 개 이상 선택 불가능 하도록 만드는 내용
+      ? (selectedId[profNumber] = checkboxClick)
+      : (selectedId.map((id, index) => (selectedId[index] = null)),
+        (selectedId[profNumber] = checkboxClick));
     setSelectedId([...selectedId]);
     setClickedId(profNumber);
   };
@@ -154,7 +157,6 @@ export function WriteReviewPage() {
       postLectureEvaluation(
         text,
         id,
-        selectedId,
         clickedId,
         selectedValues.semester ? (selectedValues.semester as Option).value : 0,
         selectedValues.year ? (selectedValues.year as Option).label : "2000",

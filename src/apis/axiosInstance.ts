@@ -28,8 +28,13 @@ axiosInstance.interceptors.response.use(
       error.response.data.message === NOT_AUTHORIZED_MESSAGE
     ) {
       localStorage.removeItem(TOKEN_KEY);
-      alert("로그인 정보가 유효하지 않습니다. 로그인 후 사용해주세요.");
-      window.location.replace("/");
+      alert(
+        "로그인 정보가 만료되었거나 로그아웃 상태입니다. 로그인 후 다시 접속해주세요."
+      );
+
+      if (window.location.pathname.endsWith("/write")) {
+        window.location.replace("/");
+      }
     }
 
     return Promise.reject(error);

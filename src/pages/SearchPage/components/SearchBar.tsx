@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 
-import { lectureInfoWithProf } from "@/Interfaces/interfaces";
+import { lectureInfo } from "@/Interfaces/interfaces";
 import { theme } from "@/style/theme";
 import Cancel_Svg from "@assets/svgs/cancel_Black.svg";
 import NorthWest_Svg from "@assets/svgs/northWest.svg";
@@ -88,7 +88,7 @@ export function SearchBar({
   enterSearchText,
   searchTextEnter,
 }: {
-  data: lectureInfoWithProf[];
+  data: lectureInfo[];
   setSearchText: any;
   searchText: string;
   setSearchTextEnter: any;
