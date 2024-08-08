@@ -14,12 +14,14 @@ interface IProps {
 }
 
 const SearchCardWrap = styled.div<{ hoverColor: string }>`
-  width: 100%;
   margin-bottom: 3px;
+  padding: 0 6vw;
   display: flex;
   align-items: center;
-  :active {
+  :hover {
     background-color: ${(props) => props.hoverColor};
+    transition: 0.2s;
+    transform: scale(0.96);
   }
 `;
 
