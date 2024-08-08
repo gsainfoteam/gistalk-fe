@@ -142,11 +142,8 @@ const BlankText = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
 `;
 
-const NO_DATA_MESSAGE = "데이터가 없습니다.";
-const PLEASE_SELECT_PROFESSOR_MESSAGE = "교수자를 선택해주세요.";
-
 export function EvaluationPage() {
-  const [clickedId, setClickedId] = useState(0); //isEvaluationEmpty 구별할 때 사용
+  const [clickedId, setClickedId] = useState<number | null>(null); //isEvaluationEmpty 구별할 때 사용
   const isValidToken = useCheckValidToken();
   const [selectedId, setSelectedId] = useState<(number | null)[]>([null]);
   const [isFade, setIsFade] = useState(false);
@@ -243,9 +240,12 @@ export function EvaluationPage() {
 
   const selectedEvaluation = //선택한 교수가 없는 경우 전체를 보여주고, 선택한 교수가 있는 경우 그 교수의 평가만 보여줌. 만약에 데이터가 모두 없는 경우 null을 로드
     selectedId.every((value) => value == null)  ? averageData : selectedData; 
-  const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌
-    selectedEvaluation.every((value) => value !== undefined) && selectedEvaluation[clickedId] !== undefined &&
-    Object.values(selectedEvaluation[clickedId]).every((value) => value === null);
+  const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌, 데이터가 있으면 배열의 위치를 반환
+  selectedId.map((id, index) => (id != null ? 
+    (selectedEvaluation[index] !== undefined && 
+    Object.values(selectedEvaluation[index]).every((value) => value === null) ? index : null) 
+    : null));
+  const emptyValues = isEvaluationEmpty.filter((id) => id != null);
 
   const noComment = (
   <BlankWrap>
@@ -278,9 +278,15 @@ export function EvaluationPage() {
           />
         )}
 
-        {!isLoading && !totalLoading && isEvaluationEmpty && (
-          <Card> {NO_DATA_MESSAGE}</Card>
-        )}
+        {!isLoading && 
+        !isLectureInfoLoading && 
+        !totalLoading && 
+        isEvaluationEmpty.filter((value) => value != null)[0] != undefined &&
+        <Card>
+          {isEvaluationEmpty.map((empty, index) => empty !== null && (
+          `${lectureInfo.LectureSection[empty].Professor[0].name}
+          ${emptyValues[emptyValues.length - 1] !== empty ? ", " : ""}`))} 교수님의 데이터가 없습니다.
+        </Card>}
 
         {!isLoading && !totalLoading && selectedEvaluation && (
         <GraphWrap>

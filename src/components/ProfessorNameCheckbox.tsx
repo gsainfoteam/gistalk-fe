@@ -8,14 +8,16 @@ interface CheckboxProps {
   selectedId: (number | null)[];
   onCheckboxChange: (id: number, profNumber: number) => void;
   profNumber: number;
-  isWrite: boolean | undefined;
+  isWrite: boolean;
 }
 
-const CheckboxContainer = styled.label`
+const CheckboxContainer = styled.label<{ isClicked: boolean, color: string, isWrite: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 6px;
+  padding: 4px;
+
+  border-bottom: 2px solid ${(props) => (props.isClicked && !props.isWrite) ? props.color : "white"};
 `;
 
 const CheckboxInput = styled.input`
@@ -39,30 +41,6 @@ const CheckboxText = styled.span`
   font-size: 16px;
 `;
 
-const ColorboxContainer = styled.button<{ isClicked: boolean, color: string }>`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding-left: 4px;
-  padding-right: 4px;
-  
-  background: ${(props) => props.isClicked ? props.color : "white"};
-  margin-left: 10px;
-  border-radius: 5px;
-  border: 1.5px solid ${theme.colors.grayStroke};
-`;
-
-const BoxColor = styled.div<{ color: string }>`
-  padding: 6px;
-  margin-right: 3px;
-  background: ${(props) => props.color};  
-`;
-
-const ColorboxText = styled.span<{ isClicked: boolean }>`
-  font-size: 16px;
-  color: ${theme.colors.black};
-`;
-
 const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
   text,
   id,
@@ -76,30 +54,20 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
   const toggleCheckbox = () => {
     onCheckboxChange(id, profNumber);
   };
-
-  if(isWrite) {
-    return (
-      <CheckboxContainer>
-        <CheckboxInput
-          type="checkbox"
-          checked={isChecked}
-          onChange={toggleCheckbox}
-        />
-        <CheckboxText>{text}</CheckboxText>
-      </CheckboxContainer>
-    );
-  } else {
-    return (
-    <ColorboxContainer 
+  return (
+    <CheckboxContainer
     isClicked={isChecked} 
     color={Object.values(theme.PrimaryOpaqueColor)[profNumber]} 
-    onClick={toggleCheckbox}
+    isWrite={isWrite}
     >
-      <BoxColor color={Object.values(theme.PrimaryColor)[profNumber]} />
-      <ColorboxText isClicked={isChecked}>{text}</ColorboxText>
-    </ColorboxContainer>
-    )
-  }
+      <CheckboxInput
+        type="checkbox"
+        checked={isChecked}
+        onChange={toggleCheckbox}
+      />
+      <CheckboxText>{text}</CheckboxText>
+    </CheckboxContainer>
+  );
 };
 
 export default ProfessorNameCheckbox;
