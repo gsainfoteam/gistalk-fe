@@ -1,7 +1,7 @@
-import { opacity } from "@/pages/EvaluationPage/EvaluationPage.const";
+import { borderRadius, inputSize, opacity } from "@/pages/EvaluationPage/EvaluationPage.const";
 import { theme } from "@/style/theme";
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 interface CheckboxProps {
   text: string;
@@ -12,34 +12,38 @@ interface CheckboxProps {
   isWrite: boolean;
 }
 
-const CheckboxContainer = styled.label<{ isClicked: boolean, color: string, isWrite: boolean }>`
+const CheckboxContainer = styled.label<{ isClicked: boolean, color: string, vividColor: string, isWrite: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  gap: 4px;
+  background: ${(props) => (props.isClicked && !props.isWrite) ? props.color : theme.colors.white};
 
-  border-bottom: 2px solid ${(props) => (props.isClicked && !props.isWrite) ? props.color : "white"};
+  border-radius: 5px;
 `;
 
-const CheckboxInput = styled.input`
+const CheckboxInput = styled.input<{ color: string, isWrite: boolean }>`
   appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 2px solid
-    ${(props) =>
-      props.checked ? theme.colors.primary : theme.colors.grayStroke};
-  border-radius: 10px;
+  width: ${(props) => props.isWrite ? inputSize.big : inputSize.small};
+  height: ${(props) => props.isWrite ? inputSize.big : inputSize.small};
+  border: 1.5px solid ${theme.colors.secondaryText};
+  border-radius: ${(props) => props.isWrite ? borderRadius.circle : borderRadius.none};
   outline: none;
-  margin-right: 3px;
   cursor: pointer;
 
   &:checked {
-    background-color: ${theme.colors.primary};
+    background-color: ${(props) => props.isWrite ? theme.colors.primary : props.color};
+    border: 1.5px solid ${(props) => props.isWrite ? theme.colors.primary : props.color};
   }
 `;
 
 const CheckboxText = styled.span`
-  font-size: 16px;
+  font-size: 15px;
+  color: ${theme.colors.secondaryText};
 `;
 
 const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
@@ -58,13 +62,16 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
   return (
     <CheckboxContainer
     isClicked={isChecked} 
-    color={Object.values(theme.RadarColor(opacity.true))[profNumber]} 
+    color={theme.RadarColor(opacity.background)[profNumber]} 
+    vividColor={theme.RadarColor(opacity.true)[profNumber]}
     isWrite={isWrite}
     >
       <CheckboxInput
         type="checkbox"
         checked={isChecked}
+        color={theme.RadarColor(opacity.none)[profNumber]}
         onChange={toggleCheckbox}
+        isWrite={isWrite}
       />
       <CheckboxText>{text}</CheckboxText>
     </CheckboxContainer>

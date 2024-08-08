@@ -51,6 +51,8 @@ const CheckboxContainer = styled.div`
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
+  margin-top: 10px;
+  gap: 4px;
 `;
 
 /** 강의평가가 표시되는 title
