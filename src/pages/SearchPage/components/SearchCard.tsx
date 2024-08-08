@@ -6,11 +6,14 @@ import { departmentColors } from "@/constants/departmentColors";
 import { convertLectureCodeToList } from "@/utils";
 import useSubjectCode from "@/hooks/useSubjectCode";
 import { LectureCode } from "@/Interfaces/interfaces";
+import BookMark from "./Bookmark";
 
 interface IProps {
   subjectCode: LectureCode[];
   professorName: string;
   subjectName: string;
+  isMarked: boolean;
+  lectureId: number;
 }
 
 const SearchCardWrap = styled.div<{ hoverColor: string }>`
@@ -60,6 +63,7 @@ export default function SearchCard({
   subjectCode,
   professorName,
   subjectName,
+  isMarked,
 }: IProps) {
   const lectureCodeList = convertLectureCodeToList(subjectCode); //lecture_code가 string list로 되어있어서 배열로 변경
   const targetLectureCode = useSubjectCode(lectureCodeList);

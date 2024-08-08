@@ -52,7 +52,7 @@ const ContentWrap = styled(theme.universalComponent.DivTextContainer)`
 
 const semester = ["봄", "여름", "가을", "겨울"];
 
-export default function Reply({ replyData }: IProps) {
+export default function xxxxReply({ replyData }: IProps) {
   const isRecommend =
     replyData.recommendation == NOT_RECOMMEND
       ? "false"
