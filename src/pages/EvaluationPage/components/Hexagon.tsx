@@ -41,7 +41,7 @@ export default function Hexagon({ HexData, averageData }: HexagonProps) {
       });
 
       let dataKey: any = { 
-        subject: `${subject} (${adjustedScore})`,
+        subject: `${subject}`,
         fullMark: 5.0,
       };
       for (let k = 0; k < HexData.length + 1; k++) { //return할 객체값을 동적 변수로 저장한다
