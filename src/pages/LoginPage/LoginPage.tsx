@@ -5,7 +5,6 @@ import InfoteamLogo_Svg from "@/assets/svgs/infoteamLogo.svg";
 import { useLogin } from "@/hooks/useLogin";
 import { useRedirect } from "@/hooks/useRedirect";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
 
 const Wrap = styled.div`
   height: 100vh;
@@ -53,7 +52,7 @@ const IDPBtn = styled.button<{
 
 export default function LoginPage() {
   const redirectPath = useRedirect();
-  const isLogin = useLogin(redirectPath);
+  useLogin(redirectPath);
   const SCOPES = [
     { field: "redirect_uri", value: `${window.location.href}` },
     { field: "client_id", value: "gistalk" },
@@ -63,6 +62,7 @@ export default function LoginPage() {
   ];
   const [searchParams, setSearchParams] = useSearchParams();
   const authCode = searchParams.get("code");
+
   if (authCode !== null) {
     return (
       <Wrap>
