@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
@@ -23,15 +23,15 @@ interface LoginResponse {
 export const useLogin = (redirectPath: string | null) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const authCode = searchParams.get("code");
+  const authCode = searchParams.get("code"); // IDP에서 받아온 파라미터
 
+  //토큰 로그인
   const { isLoading, data, error } = useQuery({
     queryKey: [`getToken`],
     queryFn: () => getToken(authCode),
     retry: 0,
     enabled: !!authCode,
   });
-
   useEffect(() => {
     if (error) {
       console.error(error.message);
@@ -62,4 +62,5 @@ export const useLogin = (redirectPath: string | null) => {
       navigate("/");
     }
   }, []);
+  return;
 };
