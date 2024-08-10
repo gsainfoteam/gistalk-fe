@@ -70,24 +70,16 @@ export default function SearchCard({
 
   const division = targetLectureCode.slice(0, 2);
 
-  /**major, minor 강의 코드와 대조해서 일치하면 전공/부전공/공통 과목 색상 부여 */
-  const IconColor: string = major
-    .map((item) => division === item.subjectCode)
-    .includes(true)
-    ? departmentColors.major
-    : minor.map((item) => division === item.subjectCode).includes(true)
-    ? departmentColors.minor
-    : underG.map((item) => division === item.subjectCode).includes(true)
-    ? departmentColors.underGraduate
-    : "#E0E0E0";
-
   return (
     <SearchCardWrap hoverColor={theme.colors.inputBg}>
-      <DepartmentIcon text={division} color={IconColor} isChecked={false} />
+      <DepartmentIcon
+        text={division}
+        color={theme.colors["gray-50"]}
+        isChecked={false}
+      />
       <CardContentWrap color={theme.colors.primaryText}>
         <div>{subjectName}</div>
         {/* 과목 이름 */}
-
         <p>
           <span>{professorName}</span> {/* 교수 이름 */}&nbsp; |&nbsp; &nbsp;
           {lectureCodeList.join(", ")} {/* 과목 코드 */}
