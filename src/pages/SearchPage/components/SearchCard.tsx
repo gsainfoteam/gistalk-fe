@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import TempIcon from "@/pages/SearchPage/components/TempIcon";
 import { major, minor, underG } from "@/constants/StdSet";
 import { departmentColors } from "@/constants/departmentColors";
 import { convertLectureCodeToList } from "@/utils";
 import useSubjectCode from "@/hooks/useSubjectCode";
 import { LectureCode } from "@/Interfaces/interfaces";
+import DepartmentIcon from "@/pages/SearchPage/components/DepartmentIcon";
 
 interface IProps {
   subjectCode: LectureCode[];
@@ -83,7 +83,7 @@ export default function SearchCard({
 
   return (
     <SearchCardWrap hoverColor={theme.colors.inputBg}>
-      <TempIcon text={division} color={IconColor} isChecked={false} />
+      <DepartmentIcon text={division} color={IconColor} isChecked={false} />
       <CardContentWrap color={theme.colors.primaryText}>
         <div>{subjectName}</div>
         {/* 과목 이름 */}
