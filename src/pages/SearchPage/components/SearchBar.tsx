@@ -80,13 +80,25 @@ export const SearchInput = styled.input<{
   color: ${(props) => props.color};
 `;
 
+/**
+ * 검색바 컴포넌트, hooks에 useSearch를 사용하면 필요한 훅을 사용할 수 있음.
+ * @param data: 강의 정보 데이터
+ * @param setSearchText: 검색어를 설정하는 함수
+ * @param searchText: 검색어
+ * @param searchTextEnter: 엔터를 눌렀을 때 검색어
+ * @param clearSearchText: 검색어를 초기화하는 함수
+ * @param enterSearchText: 검색어 입력시 엔터키를 누르면 검색하는 함수
+ * @param isSearchWrite: 검색창이 평가쓰기인지 검색인지 구분하는 변수, 리다이렉션 경로가 달라짐.
+ */
+
 export function SearchBar({
   data,
   setSearchText,
   searchText,
+  searchTextEnter,
   clearSearchText,
   enterSearchText,
-  searchTextEnter,
+  isSearchWrite = false,
 }: {
   data: lectureInfo[];
   setSearchText: any;
@@ -94,8 +106,8 @@ export function SearchBar({
   clearSearchText: () => void;
   enterSearchText: any;
   searchTextEnter: string;
+  isSearchWrite: boolean;
 }) {
-  const [searchParams, setSearchParams] = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
 
@@ -133,7 +145,7 @@ export function SearchBar({
       if (
         searchText != "" &&
         item.name.includes(searchText) &&
-        searchTextEnter != searchText
+        searchTextEnter != searchText //엔터 쳤을 때는 아래에 나오는 검색 결과를 보도록 유도
       ) {
         //TODO: 원래는 prof 별로 강의를 하나씩 할당하려고 했는데, 현재 prof별로 강의 id가 다르게 배정되지 않아 한 번에 병함
         const professorNames = concatProfessorNames(item.LectureSection);
@@ -141,7 +153,7 @@ export function SearchBar({
         return (
           <Link
             key={item.id}
-            to={`/evaluation/${item.id}`}
+            to={isSearchWrite ? `/write/${item.id}` : `/evaluation/${item.id}`}
             style={{ textDecoration: "none" }}
           >
             <SearchItem>
@@ -165,10 +177,7 @@ export function SearchBar({
 
   const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchText = (e.target as HTMLInputElement).value;
-    searchParams.set("keyword", searchText);
-
     setSearchText(searchText);
-    setSearchParams(searchParams);
   };
 
   return (

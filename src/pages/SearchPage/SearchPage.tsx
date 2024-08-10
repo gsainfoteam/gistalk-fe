@@ -44,7 +44,6 @@ export function SearchPage() {
     searchText,
     setSearchText,
     searchTextEnter,
-    setSearchTextEnter,
     enterSearchText,
     clearSearchText,
   } = useSearch();
@@ -88,6 +87,7 @@ export function SearchPage() {
         searchTextEnter={searchTextEnter}
         enterSearchText={enterSearchText}
         clearSearchText={clearSearchText}
+        isSearchWrite={false}
       />
       <OptionBtnWrap color={theme.colors.secondaryText} fontSize={14}>
         {/* <div onClick={() => setSortOpen(true)}>

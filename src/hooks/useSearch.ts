@@ -12,6 +12,8 @@ export const useSearch = () => {
   const enterSearchText = (e: KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === "Enter") {
       setSearchTextEnter(searchText);
+      searchTextParams.set("keyword", searchText);
+      setSearchTextParams(searchTextParams);
     }
   };
 
@@ -25,7 +27,6 @@ export const useSearch = () => {
     searchText,
     setSearchText,
     searchTextEnter,
-    setSearchTextEnter,
     enterSearchText,
     clearSearchText,
   };
