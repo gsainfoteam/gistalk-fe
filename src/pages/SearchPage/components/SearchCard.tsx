@@ -15,7 +15,7 @@ interface IProps {
 
 const SearchCardWrap = styled.div<{ hoverColor: string }>`
   margin-bottom: 3px;
-  padding: 0 6vw;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
   :hover {
