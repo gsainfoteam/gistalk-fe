@@ -257,7 +257,7 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
               {major.map((item) => (
                 <DepartmentGridItemWrapComponent
                   item={item}
-                  iconColor={"#FFCF23"}
+                  iconColor={theme.colors["gray-50"]}
                   textColor={theme.colors.secondaryText}
                   key={item.id}
                 ></DepartmentGridItemWrapComponent>
@@ -270,7 +270,7 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
                   fullKorean: "공통과목",
                   subjectCode: "UC",
                 }}
-                iconColor={"#E0E0E0"}
+                iconColor={theme.colors["gray-50"]}
                 textColor={theme.colors.secondaryText}
               ></DepartmentGridItemWrapComponent>
             </DepartmentGrid>
@@ -285,7 +285,7 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
               {minor.map((item) => (
                 <DepartmentGridItemWrapComponent
                   item={item}
-                  iconColor={"#8CBAFF"}
+                  iconColor={theme.colors["cyan-50"]}
                   textColor={theme.colors.secondaryText}
                   key={item.id}
                 ></DepartmentGridItemWrapComponent>
