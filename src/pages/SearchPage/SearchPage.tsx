@@ -8,7 +8,7 @@ import { theme } from "@/style/theme";
 import SearchCard from "@/pages/SearchPage/components/SearchCard";
 import Filter_Svg from "@assets/svgs/tune.svg";
 import CatBlankList_Svg from "@assets/svgs/catBlankList.svg";
-import { lectureInfoWithProf } from "@/Interfaces/interfaces";
+import { lectureInfo } from "@/Interfaces/interfaces";
 import SortSelectModal from "@/pages/SearchPage/components/SortSelectModal";
 import Header from "@components/Header";
 import {
@@ -69,7 +69,7 @@ export function SearchPage() {
       return null;
     }
 
-    return filteredLectureList.map((item: lectureInfoWithProf) => {
+    return filteredLectureList.map((item: lectureInfo) => {
       const professorNames = concatProfessorNames(item.LectureSection);
       return (
         <StyledLink key={item.id} to={`/${item.id}/evaluation`}>

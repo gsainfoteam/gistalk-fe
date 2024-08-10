@@ -13,16 +13,16 @@ import NavigationHeader from "../../components/NavigationHeader";
 import EvaluationSummary from "./components/EvaluationSummary";
 import { StyledLink } from "@components/StyledLink";
 import {
-  getLectureEachEvaluation,
   getLectureSingleInfo,
   getLectureTotalEvaluation,
   getLectureTotalEvaluationForProf,
 } from "@/apis/lectures";
+import { getLectureEachEvaluation } from "@/apis/records";
 import { useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import { concatProfessorNames, convertLectureCodeToList } from "@/utils";
-import { IReply } from "@/Interfaces/interfaces";
 import Card from "@components/Card";
+import { recordInfo } from "@/Interfaces/interfaces";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -197,7 +197,7 @@ export function EvaluationPage() {
               </BlankWrap>
             ) : (
               <>
-                {reviewList.map((review: IReply) => (
+                {reviewList.map((review: recordInfo) => (
                   <Reply key={review.id} replyData={review} />
                 ))}
               </>
