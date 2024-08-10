@@ -1,6 +1,5 @@
-import { useState, KeyboardEvent } from "react";
+import { useState } from "react";
 import { useAtom } from "jotai";
-import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import { departmentOptionAtom, sortOptionAtom } from "@/store";
@@ -26,19 +25,14 @@ import { getLectureList } from "@/apis/lectures";
 import { StyledLink } from "@components/StyledLink";
 import { concatProfessorNames } from "@/utils";
 import WriteReviewButton from "./components/WriteReviewButton";
+import { useSearch } from "@/hooks/useSearch";
 
 export function SearchPage() {
-  const [searchTextParams, setSearchTextParams] = useSearchParams();
-  const query = searchTextParams.get("keyword") ?? ""; // test
-
   const [sortOpen, setSortOpen] = useState(false);
   const [departmentOpen, setDepartmentOpen] = useState(false);
 
   const [sortStd, setSortStd] = useAtom(sortOptionAtom);
   const departmentOption = useAtom(departmentOptionAtom)[0];
-
-  const [searchText, setSearchText] = useState(query); //search bar에 들어가는 단어
-  const [searchTextEnter, setSearchTextEnter] = useState(query); // 엔터를 눌러서 검색 기준이 되는 단어
 
   const { isLoading, data, isError, error } = useQuery({
     queryKey: ["getEvaluationList"],
@@ -46,13 +40,14 @@ export function SearchPage() {
   });
 
   const { data: lectureList } = { ...data };
-
-  /**검색바에 입력된 글자가 Enter를 눌러야 SearchList에 적용될 수 있도록 하는 enterSearchText*/
-  const enterSearchText = (e: KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") {
-      setSearchTextEnter(searchText);
-    }
-  };
+  const {
+    searchText,
+    setSearchText,
+    searchTextEnter,
+    setSearchTextEnter,
+    enterSearchText,
+    clearSearchText,
+  } = useSearch();
 
   /**Search 페이지의 강의 리스트 */
   function DisplayItemList() {
@@ -90,9 +85,9 @@ export function SearchPage() {
         data={lectureList}
         setSearchText={setSearchText}
         searchText={searchText}
-        setSearchTextEnter={setSearchTextEnter}
-        enterSearchText={enterSearchText}
         searchTextEnter={searchTextEnter}
+        enterSearchText={enterSearchText}
+        clearSearchText={clearSearchText}
       />
       <OptionBtnWrap color={theme.colors.secondaryText} fontSize={14}>
         {/* <div onClick={() => setSortOpen(true)}>

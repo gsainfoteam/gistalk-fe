@@ -84,14 +84,14 @@ export function SearchBar({
   data,
   setSearchText,
   searchText,
-  setSearchTextEnter,
+  clearSearchText,
   enterSearchText,
   searchTextEnter,
 }: {
   data: lectureInfo[];
   setSearchText: any;
   searchText: string;
-  setSearchTextEnter: any;
+  clearSearchText: () => void;
   enterSearchText: any;
   searchTextEnter: string;
 }) {
@@ -116,14 +116,7 @@ export function SearchBar({
       );
     } else {
       return (
-        <SearchBtnWrap
-          bgColor={theme.colors.white}
-          onClick={() => {
-            setSearchText("");
-            setSearchTextEnter("");
-            setSearchParams("");
-          }}
-        >
+        <SearchBtnWrap bgColor={theme.colors.white} onClick={clearSearchText}>
           <CancelSvg size={25} src={Cancel_Svg} />
         </SearchBtnWrap>
       );
