@@ -151,7 +151,7 @@ export function EvaluationPage() {
 
   return (
     <>
-      <NavigationHeader text={"강의평"} />
+      <NavigationHeader text={"강의평"} isNavigateHome={true} />
       <Wrap>
         {!isLectureInfoLoading && lectureInfo && (
           <Title

@@ -73,7 +73,7 @@ export function WriteReviewGuidePage() {
 
   return (
     <>
-      <NavigationHeader text={"강의평 작성"} />
+      <NavigationHeader text={"강의평 작성"} isNavigateHome={true} />
       <Wrapper>
         <Card>
           <TitleWithDescription
