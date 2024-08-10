@@ -11,6 +11,9 @@ export const sortList: { id: number; content: string; std: ISortOption }[] = [
   { id: 6, content: "강의력 좋은 순", std: "강의력" },
 ];
 
+const CURRENT_YEAR = 2024;
+const CURRENT_SEMESTER = "FALL";
+
 /** 사용자의 필터와 입력한 검색어에 해당하는 강의만 필터링 */
 export const filterLectureList = (
   lectureList: lectureInfo[],
@@ -34,9 +37,18 @@ export const filterLectureList = (
     const isProfessorNameMatched = professorNames.includes(searchTextEnter);
     const isLectureNameMatched = item.name.includes(searchTextEnter);
 
+    const isCurrentSemester =
+      item.LectureSection.filter(
+        (section) =>
+          section.year === CURRENT_YEAR && section.semester === CURRENT_SEMESTER
+      ).length > 0;
+
+    console.log(isCurrentSemester, item.LectureSection);
+
     if (
       (isNoDepartmentSelected || isDepartmentSelected) &&
-      (isProfessorNameMatched || isLectureNameMatched)
+      (isProfessorNameMatched || isLectureNameMatched) &&
+      isCurrentSemester
     ) {
       return true;
     } else {
