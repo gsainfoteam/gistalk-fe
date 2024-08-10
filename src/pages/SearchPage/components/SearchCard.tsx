@@ -1,8 +1,5 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import TempIcon from "@/pages/SearchPage/components/TempIcon";
-import { major, minor, underG } from "@/constants/StdSet";
-import { departmentColors } from "@/constants/departmentColors";
 import { convertLectureCodeToList } from "@/utils";
 import useSubjectCode from "@/hooks/useSubjectCode";
 import { LectureCode } from "@/Interfaces/interfaces";
