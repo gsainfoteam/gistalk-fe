@@ -57,7 +57,7 @@ export function WriteReviewPage() {
   const [recommendation, setRecommendation] = useState(-1); // 0 비추천, 1 추천, 2 보통 (왜 반대지?)
   const [text, setText] = useState("");
   const [selectedId, setSelectedId] = useState<(number | null)[]>([null]);
-  const [clickedId, setClickedId] = useState<number>(0);
+  const [clickedId, setClickedId] = useState<number | null>(null);
 
   const params = useParams() as { id: string };
   const id = Number(params.id);
@@ -87,22 +87,11 @@ export function WriteReviewPage() {
     setText(event.target.value);
 
   const handleCheckboxChange = (id: number, profNumber: number) => {
-    let nullCount = 0;
-    const checkboxClick = id === selectedId[profNumber] ? null : id;
-
-    for (let k = 0; k < profNumber; k++) {
-      selectedId[k] = selectedId[k] ? selectedId[k] : null;
-    }
-    for (let k = 0; k < selectedId.length; k++) {
-      //selectedId에 null 개수 카운트
-      selectedId[k] === null ? (nullCount += 1) : null;
-    }
-    selectedId.length - nullCount === 0 //두 개 이상 선택 불가능 하도록 만드는 내용
-      ? (selectedId[profNumber] = checkboxClick)
-      : (selectedId.map((id, index) => (selectedId[index] = null)),
-        (selectedId[profNumber] = checkboxClick));
-    setSelectedId([...selectedId]);
-    setClickedId(profNumber);
+    setClickedId(id === selectedId[profNumber] ? null : id);
+    const _selectedId = selectedId;
+    _selectedId[profNumber] = id;
+    selectedId.map((select, index) => _selectedId[index] = select === id ? id : null);
+    setSelectedId([..._selectedId]);
   };
 
   const {
@@ -118,7 +107,7 @@ export function WriteReviewPage() {
   const { data: lectureInfo } = { ...lectureInfoData };
 
   const checkValidation = () => {
-    if (selectedId === null) {
+    if (clickedId === null) {
       alert("교수자를 선택해주세요");
       return false;
     }
@@ -152,7 +141,7 @@ export function WriteReviewPage() {
 
   //TODO: 토큰 만료 상황 대비해서 로그인 페이지로 리다이렉트
 
-  const addEvaluationMutate = useMutation({
+  const addEvaluationMutate = useMutation({ //이거 수정할 때 postLectureEvaluation에 매개변수 하나 더 보내기. profile 수정하기에서 들어왔다면 post말고 patch하도록..
     mutationFn: () =>
       postLectureEvaluation(
         text,

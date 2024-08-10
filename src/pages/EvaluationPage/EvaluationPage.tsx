@@ -24,7 +24,7 @@ import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { getLectureEachEvaluation } from "@/apis/records";
 import { NoComment } from "./components/NoComment";
-import { ReviewAmount } from "./EvaluationPage.util";
+import { makeIsEvaluationEmpty, makeReviewData, makeSelectedData, reviewAmount } from "./EvaluationPage.util";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -220,29 +220,17 @@ export function EvaluationPage() {
   const evaluationLoading = evaluationData.isLoading;
   const isLoading = profLectures.isLoading;
 
-  const averageData = [totalEvaluation]; //평균 정보를 배열로 변환해 저장
+  const averageData: HexagonData[] = [totalEvaluation]; //평균 정보를 배열로 변환해 저장
   const selectedData: HexagonData[] = []; //선택된 교수 정보를 배열로 변환해 저장
-  !isLoading &&
-    selectedId.map((select, index) =>
-      select != null
-        ? (selectedData[index] = profEvaluation[index]?.data)
-        : null
-    );
+  !isLoading && makeSelectedData(selectedId, selectedData, profEvaluation);
+    
   const selectedReview: recordInfo[][] = []; //리뷰 정보를 배열로 변환해 저장
-  !evaluationLoading &&
-    selectedId.map((select, index) =>
-      select != null ? (selectedReview[index] = reviewList[index]?.data) : null
-    );
+  !evaluationLoading && makeReviewData(selectedId, selectedReview, reviewList);
 
   const selectedEvaluation = //선택한 교수가 없는 경우 전체를 보여주고, 선택한 교수가 있는 경우 그 교수의 평가만 보여줌. 만약에 데이터가 모두 없는 경우 null을 로드
     selectedId.every((value) => value == null) ? averageData : selectedData;
   const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌, 데이터가 있으면 배열의 위치를 반환
-    selectedId.map((id, index) => 
-      id != null 
-        ? (selectedEvaluation[index] !== undefined && 
-        Object.values(selectedEvaluation[index]).every((value) => value === null) 
-          ? index : null) 
-          : null);
+    makeIsEvaluationEmpty(selectedId, selectedEvaluation);
   const emptyValues = isEvaluationEmpty.filter((id) => id != null);
 
   return (
@@ -304,7 +292,7 @@ export function EvaluationPage() {
                   남겼어요
                 </span>
               ) : (
-                <span> 이 강의에 {ReviewAmount(selectedReview)}명이 평가를 남겼어요</span>
+                <span> 이 강의에 {reviewAmount(selectedReview)}명이 평가를 남겼어요</span>
               ))}
           </OneLineReviewText>
 
