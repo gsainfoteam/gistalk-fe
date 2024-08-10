@@ -194,7 +194,7 @@ export default function ProfilePage() {
                         {subjects.map((subject, index) => (
                           <StyledLink
                             key={subject.id}
-                            to={`/${subject.LectureSection.Lecture.id}/evaluation`}
+                            to={`/evaluation/${subject.LectureSection.Lecture.id}`}
                           >
                             <Subject>
                               <SubjectName

@@ -22,8 +22,9 @@ function App() {
       <Routes>
         <Route path="/" element={<MainRouterPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/:id/evaluation" element={<EvaluationPage />} />
-        <Route path="/:id/write" element={<WriteReviewPage />} />
+        <Route path="/evaluation/:id" element={<EvaluationPage />} />
+        <Route path="/write/:id" element={<WriteReviewPage />} />
+        <Route path="/write" element={<WriteReviewPage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/*" element={<EmptyErrorPage />} />
       </Routes>

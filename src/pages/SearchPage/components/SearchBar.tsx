@@ -148,7 +148,7 @@ export function SearchBar({
         return (
           <Link
             key={item.id}
-            to={`/${item.id}/evaluation`}
+            to={`/evaluation/${item.id}`}
             style={{ textDecoration: "none" }}
           >
             <SearchItem>

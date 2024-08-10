@@ -206,7 +206,7 @@ export function EvaluationPage() {
       </Wrap>
 
       {isValidToken ? (
-        <StyledLink to={`/${params.id}/write`}>
+        <StyledLink to={`/write/${params.id}`}>
           <GoWriteBtn
             fontSize={20}
             bgColor={theme.colors.primary}
@@ -216,7 +216,7 @@ export function EvaluationPage() {
           </GoWriteBtn>
         </StyledLink>
       ) : (
-        <StyledLink to="/login" state={{ prevPath: `/${params.id}/write` }}>
+        <StyledLink to="/login" state={{ prevPath: `/write/${params.id}` }}>
           <GoWriteBtn
             fontSize={20}
             bgColor={theme.colors.primary}
