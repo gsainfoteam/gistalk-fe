@@ -16,12 +16,12 @@ const BlankText = styled(theme.universalComponent.DivTextContainer)`
 `;
 
 export function NoComment() {
-    return(
-        <BlankWrap>
-          <BlankSvg size={120} src={CatBlankList_Svg} />
-            <BlankText fontSize={14} color={theme.colors.secondaryText}>
-              아직 한줄평이 없습니다. 첫 번째로 한줄평을 남겨보세요!
-          </BlankText>
-        </BlankWrap>
-    );
+  return (
+    <BlankWrap>
+      <BlankSvg size={120} src={CatBlankList_Svg} />
+      <BlankText fontSize={14} color={theme.colors.secondaryText}>
+        아직 한줄평이 없습니다. 첫 번째로 한줄평을 남겨보세요!
+      </BlankText>
+    </BlankWrap>
+  );
 }

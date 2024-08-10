@@ -24,26 +24,24 @@ const Wrap = styled.div`
 `;
 
 export default function Hexagon({ HexData, averageData }: HexagonProps) {
-  const formattedData =
-    HexLabels.map((i) => {
-      const subject = i.subject;
-      const isNegative = subject === "난이도" || subject === "과제량";
-      const  adjustedScore = HexData.map((Hex) => {
-        const score =
-        Hex[i.key] && isNegative ? 6 - Hex[i.key] : Hex[i.key]
-        return Math.round(score * 10) / 10;
-      });
-
-      let dataKey: any = { 
-        subject: `${subject}`,
-        fullMark: 5.0,
-      };
-      HexData.map((Hex, index) => 
-        (dataKey[`score${index}`] = adjustedScore[index]))
-      
-
-      return dataKey;
+  const formattedData = HexLabels.map((i) => {
+    const subject = i.subject;
+    const isNegative = subject === "난이도" || subject === "과제량";
+    const adjustedScore = HexData.map((Hex) => {
+      const score = Hex[i.key] && isNegative ? 6 - Hex[i.key] : Hex[i.key];
+      return Math.round(score * 10) / 10;
     });
+
+    let dataKey: any = {
+      subject: `${subject}`,
+      fullMark: 5.0,
+    };
+    HexData.map(
+      (Hex, index) => (dataKey[`score${index}`] = adjustedScore[index])
+    );
+
+    return dataKey;
+  });
 
   return (
     <>
@@ -68,16 +66,21 @@ export default function Hexagon({ HexData, averageData }: HexagonProps) {
             if (Object.values(Hex).every((value) => value != null)) {
               return (
                 <Radar
-                key={index}  
-                name="Standard"
-                dataKey={`score${index}`}
-                fill={averageData === HexData ? theme.colors.primary : theme.RadarColor(opacity.true)[index]}
-                fillOpacity={averageData === HexData ? opacity.true : opacity.none}
+                  key={index}
+                  name="Standard"
+                  dataKey={`score${index}`}
+                  fill={
+                    averageData === HexData
+                      ? theme.colors.primary
+                      : theme.RadarColor(opacity.true)[index]
+                  }
+                  fillOpacity={
+                    averageData === HexData ? opacity.true : opacity.none
+                  }
                 />
-            );
-          }
-          })
-          }
+              );
+            }
+          })}
         </RadarChart>
       </Wrap>
     </>
