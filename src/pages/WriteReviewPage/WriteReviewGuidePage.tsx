@@ -1,57 +1,20 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
+import { useEffect } from "react";
 import NavigationHeader from "@components/NavigationHeader";
-import Title from "@components/Title";
-import {
-  COURSE_TAKEN_SEMESTER,
-  COURSE_TAKEN_YEAR,
-  RATING_QUESTIONS,
-  RECOMMEND_TEXT,
-} from "./WriteReviewPage.const";
-import {
-  Button,
-  Description,
-  FormField,
-  LeftLabel,
-  RightLabel,
-  StarRating,
-  TextArea,
-  Wrapper,
-  Label,
-  Form,
-  RadioContainer,
-  RadioButton,
-  RadioCheckText,
-  Circle,
-} from "./WriteReviewPage.styled";
-import ReactSelect from "react-select";
-import { convertLectureCodeToList } from "@/utils";
-import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
-import { getLectureList, getLectureSingleInfo } from "@/apis/lectures";
-import { postLectureEvaluation } from "@/apis/records";
+import { RATING_QUESTIONS } from "./WriteReviewPage.const";
+import { Wrapper } from "./WriteReviewPage.styled";
+import { concatProfessorNames } from "@/utils";
+import { useQuery } from "@tanstack/react-query";
+import { getLectureList } from "@/apis/lectures";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
-import { isAxiosError } from "axios";
 import { SearchBar } from "../SearchPage/components/SearchBar";
 import { useSearch } from "@/hooks/useSearch";
-import { checkValidation } from "./WriteReviewPage.util";
 import Card from "@components/Card";
 import TitleWithDescription from "@components/TitleWithDescription";
-
-const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
-  acc[question.id] = 0;
-  return acc;
-}, {} as { [key: number]: number | null });
-
-interface Option {
-  value: number;
-  label: string;
-}
-
-interface SelectedValues {
-  year: Option | null;
-  semester: Option | null;
-}
+import { ItemList } from "../SearchPage/SearchPage.styled";
+import { filterLectureList } from "../SearchPage/SearchPage.const";
+import { lectureInfo } from "@/Interfaces/interfaces";
+import { StyledLink } from "@components/StyledLink";
+import SearchCard from "../SearchPage/components/SearchCard";
 
 export function WriteReviewGuidePage() {
   const {
@@ -79,6 +42,35 @@ export function WriteReviewGuidePage() {
 
   const { data: lectureList } = { ...lectureListData };
 
+  /**Search 페이지의 강의 리스트 */
+  function DisplayItemList() {
+    if (isLectureListLoading) {
+      return null;
+    }
+    const filteredLectureList = filterLectureList(
+      lectureList,
+      [[], [], []],
+      searchTextEnter
+    );
+
+    if (filteredLectureList === null || filteredLectureList === undefined) {
+      return null;
+    }
+
+    return filteredLectureList.map((item: lectureInfo) => {
+      const professorNames = concatProfessorNames(item.LectureSection);
+      return (
+        <StyledLink key={item.id} to={`/write/${item.id}`}>
+          <SearchCard
+            subjectCode={item.LectureCode}
+            professorName={professorNames}
+            subjectName={item.name}
+          />
+        </StyledLink>
+      );
+    });
+  }
+
   return (
     <>
       <NavigationHeader text={"강의평 작성"} />
@@ -89,15 +81,21 @@ export function WriteReviewGuidePage() {
             description="강의평을 작성할 강의를 검색해서 선택해주세요."
           />
         </Card>
-        <SearchBar
-          data={lectureList}
-          setSearchText={setSearchText}
-          searchText={searchText}
-          searchTextEnter={searchTextEnter}
-          enterSearchText={enterSearchText}
-          clearSearchText={clearSearchText}
-          isSearchWrite={true}
-        />
+
+        {!isLectureListLoading && (
+          <>
+            <SearchBar
+              data={lectureList}
+              setSearchText={setSearchText}
+              searchText={searchText}
+              searchTextEnter={searchTextEnter}
+              enterSearchText={enterSearchText}
+              clearSearchText={clearSearchText}
+              isSearchWrite={true}
+            />
+            <ItemList>{DisplayItemList()}</ItemList>
+          </>
+        )}
       </Wrapper>
     </>
   );
