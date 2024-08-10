@@ -198,6 +198,7 @@ export function WriteReviewPage() {
               onChange={(selectedOption) =>
                 handleSelectChange("year", selectedOption)
               }
+              isSearchable={false}
             />
           </FormField>
 
@@ -210,6 +211,7 @@ export function WriteReviewPage() {
               onChange={(selectedOption) =>
                 handleSelectChange("semester", selectedOption)
               }
+              isSearchable={false}
             />
           </FormField>
           {RATING_QUESTIONS.map((question, index) => (
