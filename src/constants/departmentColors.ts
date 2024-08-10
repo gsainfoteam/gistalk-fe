@@ -1,6 +1,8 @@
+import { theme } from "@/style/theme";
+
 export const departmentColors = {
-  major: "#FFCF23",
-  minor: "#8CBAFF",
+  major: theme.colors.inputBg,
+  minor: theme.colors.inputBg,
   underGraduate: "#00b102",
   default: "#E0E0E0",
 };
