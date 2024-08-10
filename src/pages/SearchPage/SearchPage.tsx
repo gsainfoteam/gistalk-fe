@@ -24,7 +24,6 @@ import DepartmentSelectModal from "./components/DepartmentSelectModal";
 import { getLectureList } from "@/apis/lectures";
 import { StyledLink } from "@components/StyledLink";
 import { concatProfessorNames } from "@/utils";
-import WriteReviewButton from "./components/WriteReviewButton";
 import { useSearch } from "@/hooks/useSearch";
 
 export function SearchPage() {
@@ -112,7 +111,6 @@ export function SearchPage() {
           </BlankWrap>
         ) : null}
       </ItemList>
-      <WriteReviewButton />
       <DepartmentSelectModal
         isOpen={departmentOpen}
         setOpen={setDepartmentOpen}
