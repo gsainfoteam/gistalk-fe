@@ -36,9 +36,7 @@ const CheckMark = styled.div`
   right: 0;
 `;
 
-const Svg = styled(theme.universalComponent.SvgIcon)`
-  margin-left: 5px;
-`;
+const Svg = styled(theme.universalComponent.SvgIcon)``;
 
 const CheckedSvg = styled(theme.universalComponent.SvgIcon)`
   position: relative;
@@ -53,7 +51,7 @@ export default function DepartmentIcon({ text, color, isChecked }: IProps) {
     <>
       <IconFrame color={color}>
         {departmentSVG.length > 0 ? (
-          <Svg src={departmentSVG[0].icon} size={16}></Svg>
+          <Svg src={departmentSVG[0].icon} size={20}></Svg>
         ) : (
           <p>{text}</p>
         )}
