@@ -35,6 +35,8 @@ const CheckMark = styled.div`
   right: 0;
 `;
 
+const Svg = styled(theme.universalComponent.SvgIcon)``;
+
 const CheckedSvg = styled(theme.universalComponent.SvgIcon)`
   position: relative;
   top: -1px;
@@ -45,7 +47,11 @@ export default function TempIcon({ text, color, isChecked }: IProps) {
   return (
     <>
       <IconFrame color={color}>
-        <p>{text}</p>
+        {departmentSVG.length > 0 ? (
+          <Svg src={departmentSVG[0].icon} size={20}></Svg>
+        ) : (
+          <p>{text}</p>
+        )}
         {isChecked && (
           <CheckMark>
             <CheckedSvg size={15} src={Checked_Svg}></CheckedSvg>
