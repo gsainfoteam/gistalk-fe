@@ -13,23 +13,41 @@ export const convertLectureCodeToList = (lectureCode: LectureCode[]) => {
   return lectureCode.map((lectureCode) => lectureCode.code);
 };
 
+export const extractProfessors = (lectureSections: LectureSectionInfo[]) => {
+  const professorArray = lectureSections.reduce(
+    (professors: professorInfo[], section) => {
+      if (section.Professor && section.Professor.length > 0) {
+        professors.push(...section.Professor);
+      }
+
+      return professors;
+    },
+    []
+  );
+
+  return professorArray;
+};
+
 /**
  * LectureSectionInfo[]의 Professor[]의 name을 추출해서 하나의 string으로 변환
  * lectureSection이 array로 오는 경우가 있어서 해당 경우에 교수진 이름 합치는 걸 해결하기 위해 만듬
  */
 export const concatProfessorNames = (LectureSection: LectureSectionInfo[]) => {
-  return LectureSection.map((section) =>
-    convertProfessorNameToString(section.Professor)
-  ).join(", ");
+  const professorArray = convertProfessorNameToString(
+    extractProfessors(LectureSection)
+  );
+  const professorSet = new Set(professorArray);
+
+  return [...professorSet].join(", ");
 };
 
 /**
- * professorInfo[]의 name을 추출해서 하나의 strong으로 변환
+ * professorInfo[]의 name을 추출해서 하나의 string으로 변환
  */
 export const convertProfessorNameToString = (
   LectureSectionProfessor: professorInfo[]
 ) => {
-  return LectureSectionProfessor.map((section) => section.name).join(", ");
+  return LectureSectionProfessor.map((section) => section.name);
 };
 
 /**

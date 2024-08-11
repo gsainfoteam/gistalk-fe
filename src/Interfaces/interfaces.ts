@@ -86,6 +86,11 @@ interface lecture {
 export interface LectureSectionInfo {
   id: number;
   lectureId: number;
+  year: number;
+  semester: string;
+  capacity: number;
+  registrationCount: number;
+  fullCapacityTime: number;
   Professor: professorInfo[];
 }
 
