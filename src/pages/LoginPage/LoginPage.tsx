@@ -5,6 +5,8 @@ import InfoteamLogo_Svg from "@/assets/svgs/infoteamLogo.svg";
 import { useLogin } from "@/hooks/useLogin";
 import { useRedirect } from "@/hooks/useRedirect";
 import { useLocation, useSearchParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const Wrap = styled.div`
   height: 100vh;
@@ -52,7 +54,8 @@ const IDPBtn = styled.button<{
 
 export default function LoginPage() {
   const redirectPath = useRedirect();
-  useLogin(redirectPath);
+  const isLogin = useLogin(redirectPath);
+  const { error, isLoading, data } = isLogin;
   const SCOPES = [
     { field: "redirect_uri", value: `${window.location.href}` },
     { field: "client_id", value: "gistalk" },
@@ -62,16 +65,10 @@ export default function LoginPage() {
   ];
   const [searchParams, setSearchParams] = useSearchParams();
   const authCode = searchParams.get("code");
-
-  if (authCode !== null) {
+  if (isLoading) {
     return (
       <Wrap>
-        <LogoWrap>
-          <LogoSvg size={115} src={InfoteamLogo_Svg}></LogoSvg>
-          <InfoteamText fontSize={33} color={theme.colors.primary}>
-            로그인 성공!
-          </InfoteamText>
-        </LogoWrap>
+        <FontAwesomeIcon icon={faSpinner} />
       </Wrap>
     );
   }
