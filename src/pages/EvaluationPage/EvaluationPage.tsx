@@ -251,8 +251,8 @@ export function EvaluationPage() {
         !totalLoading && 
         isEvaluationEmpty.filter((value) => value != null)[0] != undefined &&
         <Card>
-          {isEvaluationEmpty.map((empty) => empty !== null && 
-            noProfData(lectureInfo, emptyValues, empty))} 교수님의 데이터가 없습니다.
+          {isEvaluationEmpty.map((empty) =>  noProfData(lectureInfo, emptyValues, empty))} 
+          교수님의 데이터가 없습니다.
         </Card>}
 
         <GraphWrap>
