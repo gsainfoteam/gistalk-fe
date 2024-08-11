@@ -5,8 +5,7 @@ import InfoteamLogo_Svg from "@/assets/svgs/infoteamLogo.svg";
 import { useLogin } from "@/hooks/useLogin";
 import { useRedirect } from "@/hooks/useRedirect";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { SyncLoader } from "react-spinners";
 
 const Wrap = styled.div`
   height: 100vh;
@@ -65,10 +64,10 @@ export default function LoginPage() {
   ];
   const [searchParams, setSearchParams] = useSearchParams();
   const authCode = searchParams.get("code");
-  if (isLoading) {
+  if (authCode) {
     return (
       <Wrap>
-        <FontAwesomeIcon icon={faSpinner} />
+        <SyncLoader color="#ff7c7b" size={10} />
       </Wrap>
     );
   }
