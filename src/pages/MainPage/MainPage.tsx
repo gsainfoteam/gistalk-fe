@@ -54,7 +54,7 @@ export default function MainPage() {
                   LectureName={evaluation.LectureSection.Lecture.name}
                   ProfessorName={convertProfessorNameToString(
                     evaluation.LectureSection.Professor
-                  )}
+                  ).join(", ")}
                   CourseTakenYear={parseInt(
                     evaluation.year.toString().substring(0, 4)
                   )}
