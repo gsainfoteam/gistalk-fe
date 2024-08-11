@@ -24,7 +24,7 @@ import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { getLectureEachEvaluation } from "@/apis/records";
 import { NoComment } from "./components/NoComment";
-import { makeIsEvaluationEmpty, makeReviewData, makeSelectedData, reviewAmount } from "./EvaluationPage.util";
+import { makeIsEvaluationEmpty, makeReviewData, makeSelectedData, noProfData, reviewAmount } from "./EvaluationPage.util";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -231,12 +231,6 @@ export function EvaluationPage() {
     makeIsEvaluationEmpty(selectedId, selectedEvaluation);
   const emptyValues = isEvaluationEmpty.filter((id) => id != null);
 
-  const noProfData = (lectureInfo: any, emptyValues: number[], empty: number) => {
-    return (
-      `${lectureInfo.LectureSection[empty].Professor[0].name}
-       ${emptyValues[emptyValues.length - 1] !== empty ? ", " : ""}`)
-  }
-
   return (
     <>
       <NavigationHeader text={"강의평"} />
@@ -257,8 +251,8 @@ export function EvaluationPage() {
         !totalLoading && 
         isEvaluationEmpty.filter((value) => value != null)[0] != undefined &&
         <Card>
-          {isEvaluationEmpty.map((empty) => empty !== null && 
-            noProfData(lectureInfo, emptyValues, empty))} 교수님의 데이터가 없습니다.
+          {isEvaluationEmpty.filter((empty) => empty !== null).map((empty) =>  
+            noProfData(lectureInfo, emptyValues, empty)).join(", ")} 교수님의 데이터가 없습니다.
         </Card>}
 
         <GraphWrap>

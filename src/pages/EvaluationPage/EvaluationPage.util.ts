@@ -85,3 +85,16 @@ export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (selectedId, selecte
           ? index : null) 
         : null));
 }
+
+/**
+ * 평가 데이터가 없는 교수님들을 쉼표를 통해 string을 반환하여 나타내는 함수
+ * 
+ * @param lectureInfo 
+ * @param emptyValues 
+ * @param empty 
+ * @returns 
+ */
+export const noProfData: noProfData = (lectureInfo, emptyValues, empty) => {
+  return (
+    `${lectureInfo.LectureSection[empty].Professor[0].name}`)
+}
