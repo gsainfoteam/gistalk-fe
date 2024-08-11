@@ -141,7 +141,7 @@ export function WriteReviewPage() {
 
   //TODO: 토큰 만료 상황 대비해서 로그인 페이지로 리다이렉트
 
-  const addEvaluationMutate = useMutation({ //이거 수정할 때 postLectureEvaluation에 매개변수 하나 더 보내기. profile 수정하기에서 들어왔다면 post말고 patch하도록..
+  const addEvaluationMutate = useMutation({
     mutationFn: () =>
       postLectureEvaluation(
         text,
