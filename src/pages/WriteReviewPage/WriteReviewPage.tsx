@@ -31,7 +31,8 @@ import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
-import { AxiosError, isAxiosError } from "axios";
+import { isAxiosError } from "axios";
+import { checkValidation } from "./WriteReviewPage.util";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -101,41 +102,7 @@ export function WriteReviewPage() {
 
   const { data: lectureInfo } = { ...lectureInfoData };
 
-  const checkValidation = () => {
-    if (selectedId === null) {
-      alert("교수자를 선택해주세요");
-      return false;
-    }
-    if (selectedValues.year === null) {
-      alert("수강 년도를 선택해주세요");
-      return false;
-    }
-    if (selectedValues.semester === null) {
-      alert("수강 학기를 선택해주세요");
-      return false;
-    }
-    if (Object.values(ratings).some((rating) => rating === 0)) {
-      alert("평가하지 않은 항목이 있습니다. 모든 항목을 평가해주세요.");
-      return false;
-    }
-    if (recommendation === -1) {
-      alert("강의를 추천하시는지 선택해주세요");
-      return false;
-    }
-    if (text === "") {
-      alert("총평을 작성해주세요");
-      return false;
-    }
-    // 15자 이상으로 작성해야 함
-    if (text.length < 15) {
-      alert("총평을 15자 이상으로 작성해주세요");
-      return false;
-    }
-    return true;
-  };
-
   //TODO: 토큰 만료 상황 대비해서 로그인 페이지로 리다이렉트
-
   const addEvaluationMutate = useMutation({
     mutationFn: () =>
       postLectureEvaluation(
@@ -167,7 +134,13 @@ export function WriteReviewPage() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const isValid = checkValidation();
+    const isValid = checkValidation(
+      selectedId,
+      selectedValues,
+      ratings,
+      recommendation,
+      text
+    );
 
     if (isValid) {
       addEvaluationMutate.mutate();
@@ -178,94 +151,98 @@ export function WriteReviewPage() {
     <>
       <NavigationHeader text={"강의평 작성"} />
       <Wrapper>
-        {!isLectureInfoLoading && lectureInfo && (
-          <Title
-            handleCheckboxChange={handleCheckboxChange}
-            subjectTitle={lectureInfo.name}
-            sectionInfo={lectureInfo.LectureSection}
-            subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
-            selectedId={selectedId}
-          />
-        )}
-
-        <Form onSubmit={handleSubmit}>
-          <FormField>
-            <Label>수강 년도</Label>
-            <ReactSelect
-              options={COURSE_TAKEN_YEAR}
-              placeholder={"수강 년도를 선택해주세요"}
-              value={selectedValues.year}
-              onChange={(selectedOption) =>
-                handleSelectChange("year", selectedOption)
-              }
+        <>
+          {!isLectureInfoLoading && lectureInfo && (
+            <Title
+              handleCheckboxChange={handleCheckboxChange}
+              subjectTitle={lectureInfo.name}
+              sectionInfo={lectureInfo.LectureSection}
+              subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
+              selectedId={selectedId}
             />
-          </FormField>
+          )}
 
-          <FormField>
-            <Label>수강 학기</Label>
-            <ReactSelect
-              options={COURSE_TAKEN_SEMESTER}
-              placeholder={"수강 학기를 선택해주세요"}
-              value={selectedValues.semester}
-              onChange={(selectedOption) =>
-                handleSelectChange("semester", selectedOption)
-              }
-            />
-          </FormField>
-          {RATING_QUESTIONS.map((question, index) => (
-            <FormField key={index}>
-              <Label>{question.question}</Label>
-              <Description>{question.description}</Description>
-              <StarRating>
-                <LeftLabel>{question.leftText}</LeftLabel>
-
-                {[1, 2, 3, 4, 5].map((num) => (
-                  <Circle
-                    key={num}
-                    rating={num}
-                    onClick={() => handleRatingChange(question.id, num)}
-                    isSelected={ratings[question.id] === num}
-                  />
-                ))}
-                <RightLabel>{question.rightText}</RightLabel>
-              </StarRating>
+          <Form onSubmit={handleSubmit}>
+            <FormField>
+              <Label>수강 년도</Label>
+              <ReactSelect
+                options={COURSE_TAKEN_YEAR}
+                placeholder={"수강 년도를 선택해주세요"}
+                value={selectedValues.year}
+                onChange={(selectedOption) =>
+                  handleSelectChange("year", selectedOption)
+                }
+                isSearchable={false}
+              />
             </FormField>
-          ))}
 
-          <FormField>
-            <Label>{RECOMMEND_TEXT.question}</Label>
-            <RadioContainer>
-              {RECOMMEND_TEXT.options.map((option, index) => (
-                <label key={option}>
-                  <RadioButton
-                    type="radio"
-                    value={option}
-                    checked={index === recommendation}
-                    onChange={() => setRecommendation(() => index)}
-                  />
-                  <RadioCheckText> {option}</RadioCheckText>
-                </label>
-              ))}
-            </RadioContainer>
-          </FormField>
+            <FormField>
+              <Label>수강 학기</Label>
+              <ReactSelect
+                options={COURSE_TAKEN_SEMESTER}
+                placeholder={"수강 학기를 선택해주세요"}
+                value={selectedValues.semester}
+                onChange={(selectedOption) =>
+                  handleSelectChange("semester", selectedOption)
+                }
+                isSearchable={false}
+              />
+            </FormField>
+            {RATING_QUESTIONS.map((question, index) => (
+              <FormField key={index}>
+                <Label>{question.question}</Label>
+                <Description>{question.description}</Description>
+                <StarRating>
+                  <LeftLabel>{question.leftText}</LeftLabel>
 
-          <FormField>
-            <Label>총평을 적어주세요</Label>
-            <Description>
-              {text.length}자 작성 (최소 15자 이상으로 작성해주세요)
-            </Description>
+                  {[1, 2, 3, 4, 5].map((num) => (
+                    <Circle
+                      key={num}
+                      rating={num}
+                      onClick={() => handleRatingChange(question.id, num)}
+                      isSelected={ratings[question.id] === num}
+                    />
+                  ))}
+                  <RightLabel>{question.rightText}</RightLabel>
+                </StarRating>
+              </FormField>
+            ))}
 
-            <TextArea
-              minRows={10}
-              onChange={handleTextChange}
-              placeholder="과제, 시험, 출석 등 강의에 대해 사람들이 꼭 알았으면 하는 점을 적어주세요"
-            />
-          </FormField>
+            <FormField>
+              <Label>{RECOMMEND_TEXT.question}</Label>
+              <RadioContainer>
+                {RECOMMEND_TEXT.options.map((option, index) => (
+                  <label key={option}>
+                    <RadioButton
+                      type="radio"
+                      value={option}
+                      checked={index === recommendation}
+                      onChange={() => setRecommendation(() => index)}
+                    />
+                    <RadioCheckText> {option}</RadioCheckText>
+                  </label>
+                ))}
+              </RadioContainer>
+            </FormField>
 
-          <Button disabled={isMutating > 0} type="submit">
-            강의평가 제출
-          </Button>
-        </Form>
+            <FormField>
+              <Label>총평을 적어주세요</Label>
+              <Description>
+                {text.length}자 작성 (최소 15자 이상으로 작성해주세요)
+              </Description>
+
+              <TextArea
+                minRows={10}
+                onChange={handleTextChange}
+                placeholder="과제, 시험, 출석 등 강의에 대해 사람들이 꼭 알았으면 하는 점을 적어주세요"
+              />
+            </FormField>
+
+            <Button disabled={isMutating > 0} type="submit">
+              강의평가 제출
+            </Button>
+          </Form>
+        </>
       </Wrapper>
     </>
   );
