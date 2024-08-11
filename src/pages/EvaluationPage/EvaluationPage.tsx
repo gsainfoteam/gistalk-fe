@@ -255,26 +255,26 @@ export function EvaluationPage() {
           (noProfData(lectureInfo, emptyValues, empty)))} 교수님의 데이터가 없습니다.
         </Card>}
 
-        {!isLoading && !totalLoading && selectedEvaluation && (
         <GraphWrap>
+        {!isLoading && !totalLoading && selectedEvaluation && (
           <Hexagon 
             HexData={selectedEvaluation ?? null} 
             averageData={averageData} />
+            )}
         </GraphWrap>
-        )}
 
         <Upper>
-          {!isLoading && !totalLoading && selectedEvaluation && (
-            <SummaryWrapper>
-              <SummaryScroll>
-                <EvaluationSummary 
-                  evaluationData={selectedEvaluation ?? null} 
-                  averageData={averageData}
-                />
-                <ScrollBarWrapper className="barWrapper" isFade={isFade} />
-              </SummaryScroll>
-            </SummaryWrapper>
-          )}
+          <SummaryWrapper>
+            <SummaryScroll>
+            {!isLoading && !totalLoading && selectedEvaluation && (
+              <EvaluationSummary 
+                evaluationData={selectedEvaluation ?? null} 
+                averageData={averageData}
+              />
+              )}
+              <ScrollBarWrapper className="barWrapper" isFade={isFade} />
+            </SummaryScroll>
+          </SummaryWrapper>
           <OneLineReviewText
             fontSize={18}
             color={theme.colors.primaryText}
