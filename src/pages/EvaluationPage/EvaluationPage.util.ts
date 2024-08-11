@@ -20,7 +20,6 @@ type makeIsEvaluationEmpty = (
 
 type noProfData = (
   lectureInfo: any,
-  emptyValues: number[],
   empty: number
 ) => string;
 
@@ -94,7 +93,7 @@ export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (selectedId, selecte
  * @param empty 
  * @returns 
  */
-export const noProfData: noProfData = (lectureInfo, emptyValues, empty) => {
+export const noProfData: noProfData = (lectureInfo, empty) => {
   return (
     `${lectureInfo.LectureSection[empty].Professor[0].name}`)
 }

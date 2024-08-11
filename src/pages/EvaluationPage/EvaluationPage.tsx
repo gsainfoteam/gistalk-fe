@@ -252,7 +252,7 @@ export function EvaluationPage() {
         isEvaluationEmpty.filter((value) => value != null)[0] != undefined &&
         <Card>
           {isEvaluationEmpty.filter((empty) => empty !== null).map((empty) =>  
-            noProfData(lectureInfo, emptyValues, empty)).join(", ")} 교수님의 데이터가 없습니다.
+            noProfData(lectureInfo, empty)).join(", ")} 교수님의 데이터가 없습니다.
         </Card>}
 
         <GraphWrap>
