@@ -97,5 +97,5 @@ export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (selectedId, selecte
 export const noProfData: noProfData = (lectureInfo, emptyValues, empty) => {
   return (
     `${lectureInfo.LectureSection[empty].Professor[0].name}
-     ${emptyValues[emptyValues.length - 1] !== empty ? ", " : ""}`)
+     ${emptyValues[emptyValues.length - 1] != empty ? ", " : ""}`)
 }
