@@ -8,10 +8,11 @@ import {
 import styled from "styled-components";
 import { theme } from "@/style/theme";
 
-import { HexLabels, HexagonData } from "../EvaluationPage.const";
+import { HexLabels, HexagonData, opacity } from "../EvaluationPage.const";
 
 interface HexagonProps {
-  HexData: HexagonData;
+  HexData: HexagonData[];
+  averageData: HexagonData[];
 }
 
 const Wrap = styled.div`
@@ -22,37 +23,25 @@ const Wrap = styled.div`
   overflow-y: hidden;
 `;
 
-const EMPTY_DATA = {
-  score: 0,
-  subject: "",
-};
+export default function Hexagon({ HexData, averageData }: HexagonProps) {
+  const formattedData = HexLabels.map((i) => {
+    const subject = i.subject;
+    const isNegative = subject === "난이도" || subject === "과제량";
+    const adjustedScore = HexData.map((Hex) => {
+      const score = Hex[i.key] && isNegative ? 6 - Hex[i.key] : Hex[i.key];
+      return Math.round(score * 10) / 10;
+    });
 
-export default function Hexagon({ HexData }: HexagonProps) {
-  // empty_data로 채워진 길이 6의 배열을 반복문으로 구현한다
-  const emptyData = Array.from({ length: 6 }, (_, i) => {
-    return {
-      ...EMPTY_DATA,
+    let dataKey: any = {
+      subject: `${subject}`,
+      fullMark: 5.0,
     };
+    HexData.map(
+      (Hex, index) => (dataKey[`score${index}`] = adjustedScore[index])
+    );
+
+    return dataKey;
   });
-
-  const formattedData =
-    HexData == null
-      ? emptyData
-      : HexLabels.map((i) => {
-          const subject = i.subject;
-          const isNegative = subject === "난이도" || subject === "과제량";
-          const score =
-            HexData[i.key] && isNegative ? 6 - HexData[i.key] : HexData[i.key];
-
-          //score을 소수점 두 번쨰 자리에서 반올림한다
-          const adjustedScore = Math.round(score * 10) / 10;
-
-          return {
-            subject: `${subject} (${adjustedScore})`,
-            score: adjustedScore,
-            fullMark: 5.0,
-          };
-        });
 
   return (
     <>
@@ -73,12 +62,25 @@ export default function Hexagon({ HexData }: HexagonProps) {
             tick={{ fill: theme.colors.secondaryText, fontSize: 13 }}
           />
           <PolarRadiusAxis domain={[0, 5]} angle={90} />
-          <Radar
-            name="Standard"
-            dataKey="score"
-            fill={theme.colors.primary}
-            fillOpacity={0.6}
-          />
+          {HexData.map((Hex, index) => {
+            if (Object.values(Hex).every((value) => value != null)) {
+              return (
+                <Radar
+                  key={index}
+                  name="Standard"
+                  dataKey={`score${index}`}
+                  fill={
+                    averageData === HexData
+                      ? theme.colors.primary
+                      : theme.RadarColor(opacity.true)[index]
+                  }
+                  fillOpacity={
+                    averageData === HexData ? opacity.true : opacity.none
+                  }
+                />
+              );
+            }
+          })}
         </RadarChart>
       </Wrap>
     </>
