@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 import { theme } from "@/style/theme";
-import { LectureSectionInfo } from "@/Interfaces/interfaces";
+import { LectureSectionInfo, professorInfo } from "@/Interfaces/interfaces";
 import ProfessorNameCheckbox from "./ProfessorNameCheckbox";
-import { convertProfessorNameToString } from "@/utils";
+import { convertProfessorNameToString, extractProfessors } from "@/utils";
 
 interface IProps {
   subjectTitle: string;
@@ -64,6 +64,8 @@ export default function Title({
   selectedId,
   handleCheckboxChange,
 }: IProps) {
+  const professorInfoList = extractProfessors(sectionInfo);
+
   return (
     <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
       <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
@@ -76,15 +78,17 @@ export default function Title({
             교수자
           </SubjectTitle>
 
-          {sectionInfo.map((section: LectureSectionInfo, index: number) => (
-            <ProfessorNameCheckbox
-              key={section.id}
-              text={convertProfessorNameToString(section.Professor)}
-              id={section.id}
-              selectedId={selectedId}
-              onCheckboxChange={handleCheckboxChange}
-            />
-          ))}
+          {professorInfoList.map(
+            (professorInfo: professorInfo, index: number) => (
+              <ProfessorNameCheckbox
+                key={professorInfo.id}
+                text={professorInfo.name}
+                id={professorInfo.id}
+                selectedId={selectedId}
+                onCheckboxChange={handleCheckboxChange}
+              />
+            )
+          )}
         </CheckboxContainer>
       </div>
     </TitleWrap>
