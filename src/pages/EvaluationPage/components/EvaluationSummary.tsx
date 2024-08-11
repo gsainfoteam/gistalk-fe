@@ -61,17 +61,20 @@ const LOW = 0;
 const MIDDLE = 1;
 const HIGH = 2;
 
-export default function EvaluationSummary({ evaluationData, averageData }: SummaryProps) {
+export default function EvaluationSummary({
+  evaluationData,
+  averageData,
+}: SummaryProps) {
   let result: JSX.Element[] = [];
 
-  function showResult (order: number) {
+  function showResult(order: number) {
     evaluationData.map((summary, index) => {
       if (evaluationData == null) {
         return null;
       }
-    
+
       const data = sortScoresBySubject(summary);
-    
+
       const indexData = data.map((item: number) => {
         if (item < 2.5 && item >= 0) {
           return LOW;
@@ -81,14 +84,18 @@ export default function EvaluationSummary({ evaluationData, averageData }: Summa
           return HIGH;
         }
       });
-    
+
       result[index] = (
         <ConcreteInfoGrid key={index}>
           {indexData.map((item: number, index: number) => (
             <ConcreteInfo
               key={index}
               color={theme.colors.secondaryText}
-              colorP={averageData === evaluationData ? theme.colors.primary : theme.RadarColor(opacity.none)[order]}
+              colorP={
+                averageData === evaluationData
+                  ? theme.colors.primary
+                  : theme.RadarColor(opacity.none)[order]
+              }
               fontSize={15}
             >
               <div>{EVALUATION_TEXT[index]}</div>
