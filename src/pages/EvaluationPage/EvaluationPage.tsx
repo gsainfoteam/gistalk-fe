@@ -251,7 +251,7 @@ export function EvaluationPage() {
         !totalLoading && 
         isEvaluationEmpty.filter((value) => value != null)[0] != undefined &&
         <Card>
-          {isEvaluationEmpty.filter((empty) => empty !== null).map((empty) =>  
+          {isEvaluationEmpty.filter((empty) => empty !== null).map((empty) => empty !== null &&
             noProfData(lectureInfo, empty)).join(", ")} 교수님의 데이터가 없습니다.
         </Card>}
 
