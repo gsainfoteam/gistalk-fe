@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 import { major, minor } from "@/constants/StdSet";
 import { IDepartmentGridItemWrapComponent } from "@/Interfaces/interfaces";
-import TempIcon from "@/pages/SearchPage/components/TempIcon";
+
 import School_Svg from "@/assets/svgs/school.svg";
 
 import done_Svg from "@/assets/svgs/done.svg";
@@ -15,6 +15,7 @@ import reset_Svg from "@/assets/svgs/reset.svg";
 import { useAtom } from "jotai";
 import { departmentOptionAtom } from "@/store";
 import { useSearchParams } from "react-router-dom";
+import DepartmentIcon from "./DepartmentIcon";
 
 interface IProps {
   isOpen: boolean;
@@ -217,7 +218,7 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
           switchDepartmentOption(item.fullKorean, item.korean, item.subjectCode)
         }
       >
-        <TempIcon
+        <DepartmentIcon
           text={item.subjectCode}
           color={iconColor}
           isChecked={findItem(item.subjectCode)}
@@ -257,7 +258,7 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
               {major.map((item) => (
                 <DepartmentGridItemWrapComponent
                   item={item}
-                  iconColor={"#FFCF23"}
+                  iconColor={theme.colors["gray-50"]}
                   textColor={theme.colors.secondaryText}
                   key={item.id}
                 ></DepartmentGridItemWrapComponent>
@@ -270,7 +271,7 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
                   fullKorean: "공통과목",
                   subjectCode: "UC",
                 }}
-                iconColor={"#E0E0E0"}
+                iconColor={theme.colors["gray-50"]}
                 textColor={theme.colors.secondaryText}
               ></DepartmentGridItemWrapComponent>
             </DepartmentGrid>
@@ -285,7 +286,7 @@ export default function DepartmentSelectModal({ isOpen, setOpen }: IProps) {
               {minor.map((item) => (
                 <DepartmentGridItemWrapComponent
                   item={item}
-                  iconColor={"#8CBAFF"}
+                  iconColor={theme.colors["cyan-50"]}
                   textColor={theme.colors.secondaryText}
                   key={item.id}
                 ></DepartmentGridItemWrapComponent>

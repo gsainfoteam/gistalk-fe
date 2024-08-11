@@ -42,6 +42,9 @@ const colors = {
 
   black: "#000000",
   white: "#ffffff",
+
+  "gray-50": "#f9fafb",
+  "cyan-50": "#ecfeff",
 };
 
 const universalComponent = {

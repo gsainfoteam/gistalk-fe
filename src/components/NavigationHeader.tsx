@@ -4,6 +4,7 @@ import { theme } from "@/style/theme";
 import NavigationArrow_Svg from "@/assets/svgs/navigationArrow.svg";
 import { IHeader } from "@/Interfaces/interfaces";
 import { useNavigate } from "react-router-dom";
+import { FaHouse, FaHouseMedical } from "react-icons/fa6";
 
 const Wrap = styled.div<{ bgColor: string }>`
   display: flex;
@@ -24,7 +25,12 @@ const NavigationText = styled.div<{ color: string }>`
   text-align: center;
 `;
 
-export default function NavigationHeader({ prevUrl, text }: IHeader) {
+const NavigationHome = styled.div`
+  margin-right: 10px;
+`;
+
+export default function NavigationHeader(props: IHeader) {
+  const { prevUrl, text, isNavigateHome = false } = props;
   const navigate = useNavigate();
 
   return (
@@ -41,6 +47,15 @@ export default function NavigationHeader({ prevUrl, text }: IHeader) {
       </div>
 
       <NavigationText color={theme.colors.primaryText}>{text}</NavigationText>
+      {isNavigateHome && (
+        <NavigationHome
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          <FaHouse size={20} />
+        </NavigationHome>
+      )}
     </Wrap>
   );
 }

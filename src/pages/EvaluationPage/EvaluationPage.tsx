@@ -120,7 +120,6 @@ const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
   bgColor: string;
 }>`
   position: fixed;
-
   text-align: center;
   max-width: 480px;
   background-color: ${(props) => props.bgColor};
@@ -233,7 +232,7 @@ export function EvaluationPage() {
 
   return (
     <>
-      <NavigationHeader text={"강의평"} />
+      <NavigationHeader text={"강의평"} isNavigateHome={true} />
       <Wrap>
         {!isLectureInfoLoading && lectureInfo && (
           <Title
@@ -325,7 +324,7 @@ export function EvaluationPage() {
       </Wrap>
 
       {isValidToken ? (
-        <StyledLink to={`/${params.id}/write`}>
+        <StyledLink to={`/write/${params.id}`}>
           <GoWriteBtn
             fontSize={20}
             bgColor={theme.colors.primary}
@@ -335,7 +334,7 @@ export function EvaluationPage() {
           </GoWriteBtn>
         </StyledLink>
       ) : (
-        <StyledLink to="/login" state={{ prevPath: `/${params.id}/write` }}>
+        <StyledLink to="/login" state={{ prevPath: `/write/${params.id}` }}>
           <GoWriteBtn
             fontSize={20}
             bgColor={theme.colors.primary}

@@ -102,8 +102,9 @@ export const OptionBtnWrap = styled(theme.universalComponent.DivTextContainer)`
 
 /** SearchCard 나열하는거 감싸는 div. 검색했을 때 리스트 형태로 나오는 걸 감싸는 부분 */
 export const ItemList = styled.div`
-  max-width: 85vw;
   margin: 15px auto 0 auto;
+  padding-bottom: 80px;
+  -webkit-tap-highlight-color: transparent;
 `;
 
 /** Search 리스트가 비었을 떄 나오는 냥이 일러스트, 문구 Wrap */
