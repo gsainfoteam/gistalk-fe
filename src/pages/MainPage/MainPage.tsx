@@ -49,7 +49,7 @@ export default function MainPage() {
               to={`/evaluation/${evaluation.LectureSection.Lecture.id}`}
               key={evaluation.id}
             >
-              <Card>
+              <Card isInteractive={true}>
                 <LectureInformation
                   LectureName={evaluation.LectureSection.Lecture.name}
                   ProfessorName={convertProfessorNameToString(

@@ -81,21 +81,17 @@ export function WriteReviewGuidePage() {
             description="강의평을 작성할 강의를 검색해서 선택해주세요."
           />
         </Card>
+        <SearchBar
+          data={lectureList}
+          setSearchText={setSearchText}
+          searchText={searchText}
+          searchTextEnter={searchTextEnter}
+          enterSearchText={enterSearchText}
+          clearSearchText={clearSearchText}
+          isSearchWrite={true}
+        />
 
-        {!isLectureListLoading && (
-          <>
-            <SearchBar
-              data={lectureList}
-              setSearchText={setSearchText}
-              searchText={searchText}
-              searchTextEnter={searchTextEnter}
-              enterSearchText={enterSearchText}
-              clearSearchText={clearSearchText}
-              isSearchWrite={true}
-            />
-            <ItemList>{DisplayItemList()}</ItemList>
-          </>
-        )}
+        {!isLectureListLoading && <ItemList>{DisplayItemList()}</ItemList>}
       </Wrapper>
     </>
   );

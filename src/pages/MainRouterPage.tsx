@@ -16,6 +16,7 @@ import {
 
 const ContentContainer = styled.div`
   padding: 10px 1rem 4rem 1rem;
+  -webkit-tap-highlight-color: transparent;
 `;
 
 function MainRouterPage() {
