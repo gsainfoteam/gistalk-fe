@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 import { getToken } from "@/apis/auth";
@@ -62,5 +61,5 @@ export const useLogin = (redirectPath: string | null) => {
       navigate("/");
     }
   }, []);
-  return;
+  return { error, isLoading, data };
 };
