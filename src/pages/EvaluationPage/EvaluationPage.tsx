@@ -131,7 +131,6 @@ const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
 `;
 
 export function EvaluationPage() {
-  const [clickedId, setClickedId] = useState<number | null>(null); //isEvaluationEmpty 구별할 때 사용
   const isValidToken = useCheckValidToken();
   const [selectedId, setSelectedId] = useState<(number | null)[]>([null]);
   const [isFade, setIsFade] = useState(false);
@@ -145,7 +144,6 @@ export function EvaluationPage() {
 
     selectedId[profNumber] = id === selectedId[profNumber] ? null : id;
     setSelectedId([...selectedId]);
-    setClickedId(profNumber);
 
     selectedId[profNumber] != null ? (
     document.addEventListener('mousedown', () => setIsFade(false)), //마우스 클릭하면 무조건 crollBar 반짝임
