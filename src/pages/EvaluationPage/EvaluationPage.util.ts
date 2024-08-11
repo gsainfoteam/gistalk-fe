@@ -64,11 +64,11 @@ export const makeReviewData: makeReviewData = (selectedId, selectedReview, revie
 }
 
 /**
- * 선택한 강의의 강의평 작성 여부를 알려주는 함수.
+ * 선택한 교수의 강의평 작성 여부를 알려주는 함수.
  * 
  * @param selectedId 
  * @param selectedEvaluation 
- * @returns -만약 특정 강의의 강의평이 작성되었다면 그 강의의 배열 위치를 반환. 아니라면 null 반환
+ * @returns -만약 특정 교수의 강의평이 작성되었다면 그 강의의 배열 위치를 반환. 아니라면 null 반환
  */
 export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (selectedId, selectedEvaluation) => {
   return (

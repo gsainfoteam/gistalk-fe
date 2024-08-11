@@ -56,8 +56,8 @@ export function WriteReviewPage() {
   });
   const [recommendation, setRecommendation] = useState(-1); // 0 비추천, 1 추천, 2 보통 (왜 반대지?)
   const [text, setText] = useState("");
-  const [selectedId, setSelectedId] = useState<(number | null)[]>([null]); //강의들을 화면에 나오는 순서대로 배열로 나타냄, 클리된 강의들은 그 방에 sectionId를 저장함. 
-  const [clickedId, setClickedId] = useState<number | null>(null); //현재 클릭한 강의의 sectionId
+  const [selectedId, setSelectedId] = useState<(number | null)[]>([null]); //교수들을 화면에 나오는 순서대로 배열로 나타냄, 클릭하면 그 위치에 sectionId를 저장함. 
+  const [clickedId, setClickedId] = useState<number | null>(null); //현재 클릭한 교수의 sectionId
 
   const params = useParams() as { id: string };
   const id = Number(params.id);
