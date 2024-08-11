@@ -65,7 +65,7 @@ export default function Title({
   subjectCode,
   selectedId,
   handleCheckboxChange,
-  isWrite,
+  isWrite, //WriteReviewPage인지 EvaluationPage인지 구별해주는 boolean.
 }: IProps) {
   return (
     <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
