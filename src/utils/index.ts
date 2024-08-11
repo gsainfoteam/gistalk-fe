@@ -13,13 +13,23 @@ export const convertLectureCodeToList = (lectureCode: LectureCode[]) => {
   return lectureCode.map((lectureCode) => lectureCode.code);
 };
 
+/**
+ *
+ * @param lectureSections
+ * @returns professorInfo[] 로 flat하게 변환한다.
+ */
 export const extractProfessors = (lectureSections: LectureSectionInfo[]) => {
+  const seenIds = new Set(); // Set to track unique IDs
   const professorArray = lectureSections.reduce(
     (professors: professorInfo[], section) => {
       if (section.Professor && section.Professor.length > 0) {
-        professors.push(...section.Professor);
+        section.Professor.forEach((professor) => {
+          if (!seenIds.has(professor.id)) {
+            seenIds.add(professor.id);
+            professors.push(professor);
+          }
+        });
       }
-
       return professors;
     },
     []
@@ -36,13 +46,12 @@ export const concatProfessorNames = (LectureSection: LectureSectionInfo[]) => {
   const professorArray = convertProfessorNameToString(
     extractProfessors(LectureSection)
   );
-  const professorSet = new Set(professorArray);
 
-  return [...professorSet].join(", ");
+  return professorArray.join(", ");
 };
 
 /**
- * professorInfo[]의 name을 추출해서 하나의 string으로 변환
+ * professorInfo[]의 name을 추출해서 중복을 제거한다.
  */
 export const convertProfessorNameToString = (
   LectureSectionProfessor: professorInfo[]
