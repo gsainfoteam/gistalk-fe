@@ -35,7 +35,7 @@ export const Form = styled.form`
 export const FormField = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 `;
 
 export const Label = styled.label`
@@ -71,6 +71,7 @@ export const StarRating = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
 `;
 
 export const Circle = styled.div<CircleProps>`
@@ -89,7 +90,7 @@ export const Circle = styled.div<CircleProps>`
       ? "24px"
       : "28px"};
   border-radius: 50%;
-  margin: 0 8px;
+  margin: 0 12px;
   border: 2px solid;
   border-color: ${theme.colors.grayStroke};
   transition: background-color 0.2s, transform 0.2s;
