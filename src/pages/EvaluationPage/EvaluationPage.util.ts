@@ -21,8 +21,8 @@ type makeIsEvaluationEmpty = (
 type noProfData = (
   lectureInfo: any,
   emptyValues: number[],
-  isEvaluationEmpty: (number | null)[]
-) => (string | boolean)[];
+  empty: number
+) => string;
 
 /**
  * 선택된 교수들의 총 리뷰 개수를 구한다. 
@@ -84,22 +84,4 @@ export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (selectedId, selecte
         Object.values(selectedEvaluation[index]).every((value) => value === null) 
           ? index : null) 
         : null));
-}
-
-/**
- * 평가 데이터가 없는 교수님들을 쉼표를 통해 string을 반환하여 나타내는 함수
- * 
- * @param lectureInfo 
- * @param {number[]} emptyValues 
- * @param {(number | null)[]} empty 
- * @returns 
- */
-export const noProfData: noProfData = (lectureInfo, emptyValues, isEvaluationEmpty) => {
-  return (
-    isEvaluationEmpty.map((empty) => 
-    empty !== null && 
-      `${lectureInfo.LectureSection[empty].Professor[0].name}
-      ${emptyValues[emptyValues.length - 1] !== empty ? ", " : ""}`
-    )
-  )
 }
