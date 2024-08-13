@@ -1,5 +1,6 @@
 import { lectureInfo, recordInfo } from "@/Interfaces/interfaces";
-import { HexagonData } from "./EvaluationPage.const";
+import { evaluationData, HexagonData } from "./EvaluationPage.const";
+import { extractProfessors } from "@/utils";
 
 type makeSelectedData = (
   selectedId: (number | null)[],
@@ -15,7 +16,7 @@ type makeReviewData = (
 
 type makeIsEvaluationEmpty = (
   selectedId: (number | null)[],
-  selectedEvaluation: HexagonData[]
+  selectedEvaluation: evaluationData[] | undefined
 ) => (number | null)[];
 
 type noProfData = (
@@ -73,14 +74,14 @@ export const makeReviewData: makeReviewData = (selectedId, selectedReview, revie
  * 
  * @param selectedId 
  * @param selectedEvaluation 
- * @returns -만약 특정 교수의 강의평이 작성되었다면 그 강의의 배열 위치를 반환. 아니라면 null 반환
+ * @returns -만약 특정 교수의 강의평이 작성되지 않았다면 그 강의의 배열 위치를 반환. 작성 되었다면 null 반환
  */
 export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (selectedId, selectedEvaluation) => {
   return (
     selectedId.map((id, index) => 
-      id != null 
+      id != null && selectedEvaluation !== undefined
         ? (selectedEvaluation[index] !== undefined && 
-        Object.values(selectedEvaluation[index]).every((value) => value === null) 
+        Object.values(selectedEvaluation[index]).every((value) => value === null)
           ? index : null) 
         : null));
 }
@@ -94,5 +95,7 @@ export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (selectedId, selecte
  * @returns 
  */
 export const noProfData: noProfData = (lectureInfo, empty) => {
-  return (`${lectureInfo.LectureSection[empty].Professor[0].name}`);
+  const professorInfoList = extractProfessors(lectureInfo.LectureSection);
+
+  return (`${professorInfoList[empty].name}`);
 }

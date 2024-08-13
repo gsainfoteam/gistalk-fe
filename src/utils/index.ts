@@ -1,7 +1,9 @@
 import {
+  evaluationData,
   LectureCode,
   LectureSectionInfo,
   professorInfo,
+  recordInfo,
 } from "@/Interfaces/interfaces";
 
 /**
@@ -14,22 +16,76 @@ export const convertLectureCodeToList = (lectureCode: LectureCode[]) => {
 };
 
 /**
+ *
+ * @param lectureSections
+ * @returns professorInfo[] 로 flat하게 변환한다.
+ */
+export const extractProfessors = (lectureSections: LectureSectionInfo[]) => {
+  const seenIds = new Set(); // Set to track unique IDs
+  const professorArray = lectureSections.reduce(
+    (professors: professorInfo[], section) => {
+      if (section.Professor && section.Professor.length > 0) {
+        section.Professor.forEach((professor) => {
+          if (!seenIds.has(professor.id)) {
+            seenIds.add(professor.id);
+            professors.push(professor);
+          }
+        });
+      }
+      return professors;
+    },
+    []
+  );
+
+  return professorArray;
+};
+
+/**
  * LectureSectionInfo[]의 Professor[]의 name을 추출해서 하나의 string으로 변환
  * lectureSection이 array로 오는 경우가 있어서 해당 경우에 교수진 이름 합치는 걸 해결하기 위해 만듬
  */
 export const concatProfessorNames = (LectureSection: LectureSectionInfo[]) => {
-  return LectureSection.map((section) =>
-    convertProfessorNameToString(section.Professor)
-  ).join(", ");
+  const professorArray = convertProfessorNameToString(
+    extractProfessors(LectureSection)
+  );
+
+  return professorArray.join(", ");
 };
 
 /**
- * professorInfo[]의 name을 추출해서 하나의 strong으로 변환
+ * professorInfo[]의 name을 추출해서 중복을 제거한다.
  */
 export const convertProfessorNameToString = (
   LectureSectionProfessor: professorInfo[]
 ) => {
-  return LectureSectionProfessor.map((section) => section.name).join(", ");
+  return LectureSectionProfessor.map((section) => section.name);
+};
+
+/**
+ * 특정 수업의 리뷰 점수를 합산하여 평균을 구한다. 
+ * 
+ * @param selectedId 
+ * @param reviewList 
+ * @param evaluationLoading 
+ * @returns {evaluationData[]}
+ */
+export const extractEvaluationData = (selectedId: (number | null)[], reviewList: any, evaluationLoading: boolean) => {
+  const reviewContent = ['difficulty', 'skill', 'helpfulness', 'interest', 'load', 'generosity'];
+
+  if(!evaluationLoading && !selectedId.every((id) => id === null)) {
+    const selectedData = 
+      selectedId.map((id, index) => id !== null ? reviewList[index].data : null);
+    return selectedData.map((data) => {
+      return (
+        reviewContent.reduce((acc: any, key) => {
+          acc[key] = data === null || data.every((review: recordInfo) => review === undefined) 
+            ? null
+            : data.reduce((avg: number, num: any) => avg += num[key], 0)/data.length; 
+          return acc;}, {})
+        )
+      }
+    );
+  }
 };
 
 /**

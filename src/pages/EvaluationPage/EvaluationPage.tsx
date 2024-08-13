@@ -18,7 +18,7 @@ import {
 } from "@/apis/lectures";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
-import { concatProfessorNames, convertLectureCodeToList } from "@/utils";
+import { concatProfessorNames, convertLectureCodeToList, extractEvaluationData } from "@/utils";
 import { recordInfo } from "@/Interfaces/interfaces";
 import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
@@ -225,10 +225,11 @@ export function EvaluationPage() {
   !evaluationLoading && makeReviewData(selectedId, selectedReview, reviewList);
 
   const selectedEvaluation = //선택한 교수가 없는 경우 전체를 보여주고, 선택한 교수가 있는 경우 그 교수의 평가만 보여줌. 만약에 데이터가 모두 없는 경우 null을 로드
-    selectedId.every((value) => value == null) ? averageData : selectedData;
+    selectedId.every((value) => value == null) 
+      ? averageData 
+      : extractEvaluationData(selectedId, reviewList, evaluationLoading);
   const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌, 데이터가 있으면 배열의 위치를 반환
     makeIsEvaluationEmpty(selectedId, selectedEvaluation);
-  const emptyValues = isEvaluationEmpty.filter((id) => id != null);
 
   return (
     <>
