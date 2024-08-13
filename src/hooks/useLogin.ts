@@ -36,7 +36,6 @@ export const useLogin = (redirectPath: string | null) => {
       console.error(error.message);
     } else if (!isLoading && data) {
       const { data: tokenData } = { ...data };
-
       const { access_token: accessToken, expires_in: expiredTime } =
         tokenData as LoginResponse;
 
@@ -61,5 +60,6 @@ export const useLogin = (redirectPath: string | null) => {
       navigate("/");
     }
   }, []);
+
   return { error, isLoading, data };
 };
