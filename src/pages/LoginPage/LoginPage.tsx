@@ -4,7 +4,7 @@ import { theme } from "@/style/theme";
 import InfoteamLogo_Svg from "@/assets/svgs/infoteamLogo.svg";
 import { useLogin } from "@/hooks/useLogin";
 import { useRedirect } from "@/hooks/useRedirect";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
 import Cat404_Svg from "@/assets/svgs/cat404.svg";
 
@@ -89,6 +89,7 @@ export default function LoginPage() {
           <Err404Text fontSize={16} color={theme.colors.secondaryText}>
             로그인에 실패했습니다. 다시 시도하세요
           </Err404Text>
+          <Link to="/?tab=profile"> 이전 화면으로 돌아가기 </Link>
         </Err404Wrap>
       </Wrap>
     );
