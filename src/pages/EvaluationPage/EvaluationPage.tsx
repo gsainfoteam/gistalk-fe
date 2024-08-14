@@ -18,7 +18,7 @@ import {
 } from "@/apis/lectures";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
-import { concatProfessorNames, convertLectureCodeToList, extractEvaluationData } from "@/utils";
+import { concatProfessorNames, convertLectureCodeToList, extractEvaluationData, makeSelectedIdNull } from "@/utils";
 import { recordInfo } from "@/Interfaces/interfaces";
 import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
@@ -137,12 +137,11 @@ export function EvaluationPage() {
   const navigate = useNavigate();
 
   const handleCheckboxChange = (id: number, profNumber: number) => {
-    for(let k = 0; k < profNumber; k++) { //처음 selectedId를 설정할 때 중간에 undefined를 null로 바꿔줌
-      selectedId[k] = selectedId[k] ? selectedId[k] : null;
-    }
+    makeSelectedIdNull(profNumber, selectedId);
 
-    selectedId[profNumber] = id === selectedId[profNumber] ? null : id;
-    setSelectedId([...selectedId]);
+    const _selectedId = selectedId;
+    _selectedId[profNumber] = id === selectedId[profNumber] ? null : id;
+    setSelectedId([..._selectedId]);
 
     selectedId[profNumber] != null ? (
     document.addEventListener('mousedown', () => setIsFade(false)), //마우스 클릭하면 무조건 crollBar 반짝임
