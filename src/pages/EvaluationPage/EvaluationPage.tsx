@@ -24,7 +24,7 @@ import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { getLectureEachEvaluation } from "@/apis/records";
 import { NoComment } from "./components/NoComment";
-import { makeIsEvaluationEmpty, makeReviewData, makeSelectedData, noProfData, noProfInReviewList, reviewAmount } from "./EvaluationPage.util";
+import { makeIsEvaluationEmpty, makeReviewData, makeSameReviewAsOne, makeSelectedData, noProfData, noProfInReviewList, reviewAmount } from "./EvaluationPage.util";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -318,6 +318,7 @@ export function EvaluationPage() {
                 : selectedReview.map((select, index) => (
                     <div key={selectedId[index]}>
                       {select.map((review: recordInfo) => (
+                        makeSameReviewAsOne(selectedReview),
                         <Reply key={review.id} replyData={review} />
                       ))}
                     </div>

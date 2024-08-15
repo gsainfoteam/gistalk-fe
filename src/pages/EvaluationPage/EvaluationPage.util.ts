@@ -111,3 +111,24 @@ export const noProfInReviewList = (reviews: recordInfo[]) => {
       ? reviews.splice(index, 1) 
       : null);
 }
+
+
+/**
+ * 선택한 리뷰에서 같은 리뷰 중 하나만 selectedReview에 저장
+ * 
+ * @param selectedReview 
+ */
+export const makeSameReviewAsOne = (selectedReview: recordInfo[][]) => {
+  selectedReview.map(
+    (main, mIndex) =>
+      main.map((review) => 
+        selectedReview.map((compare, cIndex) => 
+          compare.map((value) => 
+            mIndex < cIndex && //map할 때 이미 체크한 배열 제외
+            review.id === value.id &&
+            selectedReview.splice(mIndex, 1)
+          )
+        )
+      )
+    )
+}
