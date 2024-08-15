@@ -99,3 +99,15 @@ export const noProfData: noProfData = (lectureInfo, empty) => {
 
   return (`${professorInfoList[empty].name}`);
 }
+
+/**
+ * 교수자가 없는 리뷰는 reviewList에서 삭제
+ * 
+ * @param reviews 
+ */
+export const noProfInReviewList = (reviews: recordInfo[]) => {
+  reviews.map((review, index) => 
+    review.LectureSection.Professor.length === 0 
+      ? reviews.splice(index, 1) 
+      : null);
+}

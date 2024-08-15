@@ -24,7 +24,7 @@ import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { getLectureEachEvaluation } from "@/apis/records";
 import { NoComment } from "./components/NoComment";
-import { makeIsEvaluationEmpty, makeReviewData, makeSelectedData, noProfData, reviewAmount } from "./EvaluationPage.util";
+import { makeIsEvaluationEmpty, makeReviewData, makeSelectedData, noProfData, noProfInReviewList, reviewAmount } from "./EvaluationPage.util";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -215,6 +215,8 @@ export function EvaluationPage() {
   
   const evaluationLoading = evaluationData.isLoading;
   const isLoading = profLectures.isLoading;
+
+  !evaluationLoading && noProfInReviewList(reviewList[0]?.data);
 
   const averageData: HexagonData[] = [totalEvaluation]; //평균 정보를 배열로 변환해 저장
   const selectedData: HexagonData[] = []; //선택된 교수 정보를 배열로 변환해 저장
