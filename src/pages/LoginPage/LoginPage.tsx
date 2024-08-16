@@ -4,8 +4,9 @@ import { theme } from "@/style/theme";
 import InfoteamLogo_Svg from "@/assets/svgs/infoteamLogo.svg";
 import { useLogin } from "@/hooks/useLogin";
 import { useRedirect } from "@/hooks/useRedirect";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
+import Cat404_Svg from "@/assets/svgs/cat404.svg";
 
 const Wrap = styled.div`
   height: 100vh;
@@ -50,6 +51,17 @@ const IDPBtn = styled.button<{
   color: white;
   border: none;
 `;
+const Err404Wrap = styled.div`
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Err404Svg = styled(theme.universalComponent.SvgIcon)``;
+const Err404Text = styled(theme.universalComponent.DivTextContainer)`
+  font-family: NSBold;
+`;
 
 export default function LoginPage() {
   const redirectPath = useRedirect();
@@ -62,15 +74,25 @@ export default function LoginPage() {
     { field: "response_type", value: "code" },
     { field: "prompt", value: "consent" },
   ];
-  const [searchParams, setSearchParams] = useSearchParams();
-  const authCode = searchParams.get("code");
-  if (authCode) {
+
+  if (data || isLoading)
     return (
       <Wrap>
         <SyncLoader color="#ff7c7b" size={10} />
       </Wrap>
     );
-  }
+  else if (error)
+    return (
+      <Wrap>
+        <Err404Wrap>
+          <Err404Svg size={160} src={Cat404_Svg} />
+          <Err404Text fontSize={16} color={theme.colors.secondaryText}>
+            로그인에 실패했습니다. 다시 시도하세요
+          </Err404Text>
+          <Link to="/?tab=profile"> 이전 화면으로 돌아가기 </Link>
+        </Err404Wrap>
+      </Wrap>
+    );
   return (
     <Wrap>
       <LogoWrap>
