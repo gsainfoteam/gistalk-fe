@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import { major, minor, underG } from "@/constants/StdSet";
-import { departmentColors } from "@/constants/departmentColors";
 import { convertLectureCodeToList } from "@/utils";
 import useSubjectCode from "@/hooks/useSubjectCode";
 import { LectureCode } from "@/Interfaces/interfaces";
@@ -14,12 +12,14 @@ interface IProps {
 }
 
 const SearchCardWrap = styled.div<{ hoverColor: string }>`
-  width: 100%;
   margin-bottom: 3px;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
-  :active {
+  :hover {
     background-color: ${(props) => props.hoverColor};
+    transition: 0.2s;
+    transform: scale(0.96);
   }
 `;
 

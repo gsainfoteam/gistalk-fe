@@ -56,7 +56,8 @@ export function WriteReviewPage() {
   });
   const [recommendation, setRecommendation] = useState(-1); // 0 비추천, 1 추천, 2 보통 (왜 반대지?)
   const [text, setText] = useState("");
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<(number | null)[]>([null]); //교수들을 화면에 나오는 순서대로 배열로 나타냄, 클릭하면 그 위치에 sectionId를 저장함. 
+  const [clickedId, setClickedId] = useState<number | null>(null); //현재 클릭한 교수의 sectionId
 
   const params = useParams() as { id: string };
   const id = Number(params.id);
@@ -85,8 +86,12 @@ export function WriteReviewPage() {
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
     setText(event.target.value);
 
-  const handleCheckboxChange = (id: number) => {
-    setSelectedId(id === selectedId ? null : id);
+  const handleCheckboxChange = (id: number, profNumber: number) => {
+    setClickedId(id === selectedId[profNumber] ? null : id);
+    const _selectedId = selectedId;
+    _selectedId[profNumber] = id;
+    selectedId.map((select, index) => _selectedId[index] = select === id ? id : null);
+    setSelectedId([..._selectedId]);
   };
 
   const {
@@ -102,7 +107,7 @@ export function WriteReviewPage() {
   const { data: lectureInfo } = { ...lectureInfoData };
 
   const checkValidation = () => {
-    if (selectedId === null) {
+    if (clickedId === null) {
       alert("교수자를 선택해주세요");
       return false;
     }
@@ -141,7 +146,7 @@ export function WriteReviewPage() {
       postLectureEvaluation(
         text,
         id,
-        selectedId,
+        clickedId,
         selectedValues.semester ? (selectedValues.semester as Option).value : 0,
         selectedValues.year ? (selectedValues.year as Option).label : "2000",
         recommendation,
@@ -185,6 +190,7 @@ export function WriteReviewPage() {
             sectionInfo={lectureInfo.LectureSection}
             subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
             selectedId={selectedId}
+            isWrite={true}
           />
         )}
 

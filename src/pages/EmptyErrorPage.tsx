@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 const Wrap = styled.div`
   height: 100vh;
-  width: 100vw;
   display: flex;
   align-items: center;
 `;
