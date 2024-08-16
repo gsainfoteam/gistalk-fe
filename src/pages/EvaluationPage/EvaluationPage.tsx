@@ -1,12 +1,11 @@
 import Hexagon from "./components/Hexagon";
 import { theme } from "@/style/theme";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Reply from "./components/Reply";
 
-import CatBlankList_Svg from "@/assets/svgs/catBlankList.svg";
 import Title from "../../components/Title";
 import ScrolledHeader from "@components/ScrolledHeader";
 import NavigationHeader from "../../components/NavigationHeader";
@@ -17,12 +16,15 @@ import {
   getLectureTotalEvaluation,
   getLectureTotalEvaluationForProf,
 } from "@/apis/lectures";
-import { getLectureEachEvaluation } from "@/apis/records";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import { concatProfessorNames, convertLectureCodeToList } from "@/utils";
-import Card from "@components/Card";
 import { recordInfo } from "@/Interfaces/interfaces";
+import Card from "@components/Card";
+import { evaluationData, HexagonData } from "./EvaluationPage.const";
+import { getLectureEachEvaluation } from "@/apis/records";
+import { NoComment } from "./components/NoComment";
+import { makeIsEvaluationEmpty, makeReviewData, makeSelectedData, noProfData, reviewAmount } from "./EvaluationPage.util";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -59,12 +61,65 @@ const Upper = styled.div`
   top: -70px;
 `;
 
+const SummaryWrapper = styled.div`
+  position: relative;
+
+  &:hover .barWrapper {
+    opacity: 0;
+    transition: opacity 0.1s ease;
+  }
+`;
+
+const SummaryScroll = styled.div`
+  height: 80px;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+    height: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #b1b8c0;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+`;
+
+const boxFade = keyframes`
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const ScrollBarWrapper = styled.div<{ isFade?: boolean }>`
+  width: 7px;
+  height: 100%;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  animation-name: ${(props) => (props.isFade ? boxFade : null)};
+  animation-duration: 2s;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  background: white;
+`;
+
 /** '강의평 쓰러가기' 버튼, 가로로 꽉 차야 함 */
 const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
   bgColor: string;
 }>`
   position: fixed;
-
   text-align: center;
   max-width: 480px;
   background-color: ${(props) => props.bgColor};
@@ -74,30 +129,24 @@ const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
   width: 100%;
 `;
 
-/** Search 리스트가 비었을 떄 나오는 고양이 일러스트, 문구 Wrap */
-const BlankWrap = styled.div`
-  margin: 40px auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const BlankSvg = styled(theme.universalComponent.SvgIcon)``;
-const BlankText = styled(theme.universalComponent.DivTextContainer)`
-  font-family: NSBold;
-`;
-
-const NO_DATA_MESSAGE = "데이터가 없습니다.";
-const PLEASE_SELECT_PROFESSOR_MESSAGE = "교수자를 선택해주세요.";
-
 export function EvaluationPage() {
   const isValidToken = useCheckValidToken();
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<(number | null)[]>([null]);
+  const [isFade, setIsFade] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleCheckboxChange = (id: number) => {
-    setSelectedId(id === selectedId ? null : id);
+  const handleCheckboxChange = (id: number, profNumber: number) => {
+    for(let k = 0; k < profNumber; k++) { //처음 selectedId를 설정할 때 중간에 undefined를 null로 바꿔줌
+      selectedId[k] = selectedId[k] ? selectedId[k] : null;
+    }
+
+    selectedId[profNumber] = id === selectedId[profNumber] ? null : id;
+    setSelectedId([...selectedId]);
+
+    selectedId[profNumber] != null ? (
+    document.addEventListener('mousedown', () => setIsFade(false)), //마우스 클릭하면 무조건 crollBar 반짝임
+    document.addEventListener('mouseup', () => setIsFade(true))) : null;
   };
 
   useEffect(() => {
@@ -110,17 +159,38 @@ export function EvaluationPage() {
   /**강의별 id */
   const id = Number(params.id);
 
-  const { isLoading: evaluationLoading, data: evaluationData } = useQuery({
-    queryKey: [`getEvaluation/${id}/${selectedId}`],
-    queryFn: () => getLectureEachEvaluation(id, selectedId),
-    retry: 0,
+  const evaluationData = useQueries({
+    queries: selectedId.map((select) => {
+      //selectedId가 null일 때는 특정 lectureId의 전체값을 가져옴
+      return {
+        queryKey: [`getEvaluation/${id}/${select}`],
+        queryFn: () => getLectureEachEvaluation(id, select),
+        retry: 0,
+      };
+    }),
+    combine: (evaluationData) => {
+      return {
+        data: evaluationData.map((evaluation) => evaluation.data),
+        isLoading: evaluationData.some((evaluation) => evaluation.isLoading),
+      };
+    },
   });
 
-  const { isLoading, data: profEvaluationData } = useQuery({
-    queryKey: [`getEvaluationScore/${id}/${selectedId}`],
-    queryFn: () => getLectureTotalEvaluationForProf(id, selectedId),
-    retry: 0,
-    enabled: !!selectedId, //교수를 아무도 선택하지 않을때, 즉 null일때는 쿼리를 보내지 않음
+  const profLectures = useQueries({
+    queries: selectedId.map((select) => {
+      return {
+        queryKey: [`getEvaluationScore/${id}/${select}`],
+        queryFn: () => getLectureTotalEvaluationForProf(id, select),
+        retry: 0,
+        enabled: !!selectedId, //교수를 아무도 선택하지 않을때, 즉 null일때는 쿼리를 보내지 않음
+      };
+    }),
+    combine: (profLectures) => {
+      return {
+        data: profLectures.map((lecture) => lecture.data),
+        isLoading: profLectures.some((lecture) => lecture.isLoading),
+      };
+    },
   });
 
   const { isLoading: totalLoading, data: totalEvaluationData } = useQuery({
@@ -140,19 +210,29 @@ export function EvaluationPage() {
   });
 
   const { data: lectureInfo } = { ...lectureInfoData };
-  const { data: reviewList } = { ...evaluationData };
-  const { data: profEvaluation } = { ...profEvaluationData };
+  const reviewList = { ...evaluationData.data };
+  const profEvaluation = { ...profLectures.data };
   const { data: totalEvaluation } = { ...totalEvaluationData };
+  
+  const evaluationLoading = evaluationData.isLoading;
+  const isLoading = profLectures.isLoading;
 
-  const selectedEvaluation =
-    selectedId == null ? totalEvaluation : profEvaluation; //선택한 교수가 없는 경우 전체를 보여주고, 선택한 교수가 있는 경우 그 교수의 평가만 보여줌. 만약에 데이터가 모두 없는 경우 null을 로드
-  const isEvaluationEmpty =
-    selectedEvaluation !== undefined &&
-    Object.values(selectedEvaluation).every((value) => value === null);
+  const averageData: HexagonData[] = [totalEvaluation]; //평균 정보를 배열로 변환해 저장
+  const selectedData: HexagonData[] = []; //선택된 교수 정보를 배열로 변환해 저장
+  !isLoading && makeSelectedData(selectedId, selectedData, profEvaluation);
+    
+  const selectedReview: recordInfo[][] = []; //리뷰 정보를 배열로 변환해 저장
+  !evaluationLoading && makeReviewData(selectedId, selectedReview, reviewList);
+
+  const selectedEvaluation = //선택한 교수가 없는 경우 전체를 보여주고, 선택한 교수가 있는 경우 그 교수의 평가만 보여줌. 만약에 데이터가 모두 없는 경우 null을 로드
+    selectedId.every((value) => value == null) ? averageData : selectedData;
+  const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌, 데이터가 있으면 배열의 위치를 반환
+    makeIsEvaluationEmpty(selectedId, selectedEvaluation);
+  const emptyValues = isEvaluationEmpty.filter((id) => id != null);
 
   return (
     <>
-      <NavigationHeader text={"강의평"} />
+      <NavigationHeader text={"강의평"} isNavigateHome={true} />
       <Wrap>
         {!isLectureInfoLoading && lectureInfo && (
           <Title
@@ -161,53 +241,90 @@ export function EvaluationPage() {
             sectionInfo={lectureInfo.LectureSection}
             subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
             selectedId={selectedId}
+            isWrite={false}
           />
         )}
 
-        {!isLoading && !totalLoading && isEvaluationEmpty && (
-          <Card> {NO_DATA_MESSAGE}</Card>
-        )}
+        {!isLoading && 
+        !isLectureInfoLoading && 
+        !totalLoading && 
+        isEvaluationEmpty.filter((value) => value != null)[0] != undefined &&
+        <Card>
+          {isEvaluationEmpty.filter((empty) => empty !== null).map((empty) => empty !== null &&
+            noProfData(lectureInfo, empty)).join(", ")} 교수님의 데이터가 없습니다.
+        </Card>}
 
         <GraphWrap>
-          <Hexagon HexData={selectedEvaluation ?? null} />
+        {!isLoading && !totalLoading && selectedEvaluation && (
+          <Hexagon 
+            HexData={selectedEvaluation ?? null} 
+            averageData={averageData} />
+            )}
         </GraphWrap>
 
         <Upper>
-          <EvaluationSummary evaluationData={selectedEvaluation ?? null} />
+          <SummaryWrapper>
+            <SummaryScroll>
+            {!isLoading && !totalLoading && selectedEvaluation && (
+              <EvaluationSummary 
+                evaluationData={selectedEvaluation ?? null} 
+                averageData={averageData}
+              />
+              )}
+              <ScrollBarWrapper className="barWrapper" isFade={isFade} />
+            </SummaryScroll>
+          </SummaryWrapper>
           <OneLineReviewText
             fontSize={18}
             color={theme.colors.primaryText}
             borderColor={theme.colors.grayStroke}
           >
             한줄평
-            {!evaluationLoading && (
-              <span>
-                {" "}
-                이 강의에 {(reviewList ?? []).length ?? 0}명이 평가를 남겼어요
-              </span>
-            )}
+            {!evaluationLoading &&
+              (selectedId.every((value) => value === null) ? ( //아무런 교수도 선택하지 않았을 때
+                <span>
+                  {" "}
+                  이 강의에 {(reviewList[0]?.data ?? []).length ?? 0}명이 평가를
+                  남겼어요
+                </span>
+              ) : (
+                <span> 이 강의에 {reviewAmount(selectedReview)}명이 평가를 남겼어요</span>
+              ))}
           </OneLineReviewText>
 
           {!evaluationLoading && //로딩이 완료되고 나서 강의평이 존재하지 않는 경우를 핸들링
-            ((reviewList ?? []).length === 0 ? (
-              <BlankWrap>
-                <BlankSvg size={120} src={CatBlankList_Svg} />
-                <BlankText fontSize={14} color={theme.colors.secondaryText}>
-                  아직 한줄평이 없습니다. 첫 번째로 한줄평을 남겨보세요!
-                </BlankText>
-              </BlankWrap>
-            ) : (
-              <>
-                {reviewList.map((review: recordInfo) => (
-                  <Reply key={review.id} replyData={review} />
-                ))}
-              </>
-            ))}
+          !totalLoading &&
+          selectedReview.every((value) => value != undefined) &&
+          !isLectureInfoLoading &&
+          lectureInfo &&
+          selectedId.every((value) => value === null) //아무런 교수도 선택하지 않았을 때
+            ? Object.values(totalEvaluation).every((value) => value === null)
+              ? <NoComment />
+              : reviewList[0]?.data.map(
+                  (
+                    reviewContent: recordInfo //아무 선택도 안 했을 때 모든 리뷰 나타내기
+                  ) => (
+                    <Reply key={reviewContent.id} replyData={reviewContent} />
+                  )
+                )
+            : //교수를 선택했을 때
+              !evaluationLoading &&
+              (selectedReview.every(
+                (value) => value != undefined && value.length === 0
+              )
+                ? <NoComment />
+                : selectedReview.map((select, index) => (
+                    <div key={selectedId[index]}>
+                      {select.map((review: recordInfo) => (
+                        <Reply key={review.id} replyData={review} />
+                      ))}
+                    </div>
+                  )))}
         </Upper>
       </Wrap>
 
       {isValidToken ? (
-        <StyledLink to={`/${params.id}/write`}>
+        <StyledLink to={`/write/${params.id}`}>
           <GoWriteBtn
             fontSize={20}
             bgColor={theme.colors.primary}
@@ -217,7 +334,7 @@ export function EvaluationPage() {
           </GoWriteBtn>
         </StyledLink>
       ) : (
-        <StyledLink to="/login" state={{ prevPath: `/${params.id}/write` }}>
+        <StyledLink to="/login" state={{ prevPath: `/write/${params.id}` }}>
           <GoWriteBtn
             fontSize={20}
             bgColor={theme.colors.primary}

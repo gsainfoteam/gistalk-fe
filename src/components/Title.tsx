@@ -9,8 +9,9 @@ interface IProps {
   subjectTitle: string;
   sectionInfo: LectureSectionInfo[];
   subjectCode: string[];
-  selectedId: number | null;
-  handleCheckboxChange: (id: number) => void;
+  selectedId: (number | null)[];
+  handleCheckboxChange: (id: number, profNumber: number) => void;
+  isWrite: boolean;
 }
 
 const TitleWrap = styled.div<{ color: string; bgColor: string }>`
@@ -50,6 +51,7 @@ const CheckboxContainer = styled.div`
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
+  gap: 4px;
 `;
 
 /** 강의평가가 표시되는 title
@@ -63,6 +65,7 @@ export default function Title({
   subjectCode,
   selectedId,
   handleCheckboxChange,
+  isWrite, //WriteReviewPage인지 EvaluationPage인지 구별해주는 boolean.
 }: IProps) {
   return (
     <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
@@ -83,6 +86,8 @@ export default function Title({
               id={section.id}
               selectedId={selectedId}
               onCheckboxChange={handleCheckboxChange}
+              profNumber={index}
+              isWrite={isWrite}
             />
           ))}
         </CheckboxContainer>
