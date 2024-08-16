@@ -4,7 +4,7 @@ import { theme } from "@/style/theme";
 import InfoteamLogo_Svg from "@/assets/svgs/infoteamLogo.svg";
 import { useLogin } from "@/hooks/useLogin";
 import { useRedirect } from "@/hooks/useRedirect";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
 import Cat404_Svg from "@/assets/svgs/cat404.svg";
 
