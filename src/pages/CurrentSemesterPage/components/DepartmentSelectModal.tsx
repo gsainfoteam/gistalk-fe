@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 
 import { major, minor } from "@/constants/StdSet";
 import { IDepartmentGridItemWrapComponent } from "@/Interfaces/interfaces";
-import TempIcon from "@/pages/SearchPage/components/TempIcon";
 import School_Svg from "@/assets/svgs/school.svg";
 
 import done_Svg from "@/assets/svgs/done.svg";
@@ -14,7 +13,7 @@ import reset_Svg from "@/assets/svgs/reset.svg";
 
 import { useAtom } from "jotai";
 import { departmentOptionAtom } from "@/store";
-import { useSearchParams } from "react-router-dom";
+import TempIcon from "./TempIcon";
 
 interface IProps {
   isOpen: boolean;

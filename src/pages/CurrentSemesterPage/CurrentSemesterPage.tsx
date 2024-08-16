@@ -3,14 +3,13 @@ import { useAtom } from "jotai";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
-import { departmentOptionAtom, sortOptionAtom } from "@/store";
+import { departmentOptionAtom } from "@/store";
 import { theme } from "@/style/theme";
 import SearchCard from "@/pages/SearchPage/components/SearchCard";
 import Filter_Svg from "@assets/svgs/tune.svg";
 import CatBlankList_Svg from "@assets/svgs/catBlankList.svg";
 import { lectureInfo } from "@/Interfaces/interfaces";
 import SortSelectModal from "@/pages/SearchPage/components/SortSelectModal";
-import Header from "@components/Header";
 import {
   BlankSvg,
   BlankText,
@@ -19,7 +18,7 @@ import {
   ItemList,
   OptionBtnWrap,
 } from "./CurrentSemesterPage.styled";
-import { filterLectureList, sortList } from "./CurrentSemesterPage.const";
+import { sortList } from "./CurrentSemesterPage.const";
 import { SearchBar } from "./components/SearchBar";
 import DepartmentSelectModal from "./components/DepartmentSelectModal";
 import { getLectureList } from "@/apis/lectures";
@@ -27,6 +26,10 @@ import { StyledLink } from "@components/StyledLink";
 import { concatProfessorNames } from "@/utils";
 import { CURRENT_SEMESTER_TAB } from "@/constants/pageQueryString";
 import useTabParam from "@/hooks/useTabParam";
+import {
+  filterLectureByYearSemester,
+  filterLectureList,
+} from "./CurrentSemesterPage.utils";
 
 export function CurrentSemesterPage() {
   const [searchTextParams, setSearchTextParams] = useSearchParams();
@@ -34,8 +37,6 @@ export function CurrentSemesterPage() {
 
   const [sortOpen, setSortOpen] = useState(false);
   const [departmentOpen, setDepartmentOpen] = useState(false);
-
-  const [sortStd, setSortStd] = useAtom(sortOptionAtom);
   const departmentOption = useAtom(departmentOptionAtom)[0];
 
   const [searchText, setSearchText] = useState(query); //search bar에 들어가는 단어
@@ -67,11 +68,17 @@ export function CurrentSemesterPage() {
       searchTextEnter
     );
 
-    if (filteredLectureList === null || filteredLectureList === undefined) {
+    const currentSemesterLectureList =
+      filterLectureByYearSemester(filteredLectureList);
+
+    if (
+      currentSemesterLectureList === null ||
+      currentSemesterLectureList === undefined
+    ) {
       return null;
     }
 
-    return filteredLectureList.map((item: lectureInfo) => {
+    return currentSemesterLectureList.map((item: lectureInfo) => {
       const professorNames = concatProfessorNames(item.LectureSection);
       return (
         <StyledLink key={item.id} to={`/${item.id}/evaluation`}>
