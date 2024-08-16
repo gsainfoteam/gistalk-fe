@@ -78,18 +78,26 @@ export function CurrentSemesterPage() {
       return null;
     }
 
-    return currentSemesterLectureList.map((item: lectureInfo) => {
-      const professorNames = concatProfessorNames(item.LectureSection);
-      return (
-        <StyledLink key={item.id} to={`/${item.id}/evaluation`}>
-          <SearchCard
-            subjectCode={item.LectureCode}
-            professorName={professorNames}
-            subjectName={item.name}
-          />
-        </StyledLink>
-      );
-    });
+    return currentSemesterLectureList.map((lecture: lectureInfo) =>
+      lecture.LectureSection.map((section) => {
+        const professorNames = section.Professor.map(
+          (professor) => professor.name
+        ).join(", ");
+
+        return (
+          <StyledLink
+            key={`${section.year}/${section.year}/${section.id}`}
+            to={`/evaluation/${lecture.id}`}
+          >
+            <SearchCard
+              subjectCode={lecture.LectureCode}
+              professorName={professorNames}
+              subjectName={lecture.name}
+            />
+          </StyledLink> // 강의평가 페이지로 이동
+        );
+      })
+    );
   }
 
   return (
