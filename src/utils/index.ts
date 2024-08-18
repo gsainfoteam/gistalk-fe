@@ -69,12 +69,27 @@ export const convertProfessorNameToString = (
  * @param evaluationLoading 
  * @returns {evaluationData[]}
  */
-export const extractEvaluationData = (selectedId: (number | null)[], reviewList: any, evaluationLoading: boolean) => {
+export const extractEvaluationData = (
+  selectedId: (number | null)[], 
+  reviewList: any, 
+  evaluationLoading: boolean, 
+  lectureInfo: any,
+  isLectureInfoLoading: boolean) => {
   const reviewContent = ['difficulty', 'skill', 'helpfulness', 'interest', 'load', 'generosity'];
 
-  if(!evaluationLoading && !selectedId.every((id) => id === null)) {
-    const selectedData = 
-      selectedId.map((id, index) => id !== null ? reviewList[index].data : null);
+  if(!evaluationLoading && !isLectureInfoLoading) {
+    const professorArray = extractProfessors(lectureInfo.LectureSection);
+    let selectedData = new Array(professorArray.length);
+    professorArray.map((prof, index) => selectedData[index] = []);
+
+    selectedId.every((value) => value == null)
+      ? professorArray.map((prof, pIndex) => 
+        reviewList[0].data.map((review: recordInfo) => review.LectureSection.Professor.map((member) => 
+          prof.name === member.name 
+            ? selectedData[pIndex].push(review) 
+            : null)))
+      : selectedData = selectedId.map((id, index) => 
+        id !== null ? reviewList[index].data : null).filter((content) => content !== null);
     return selectedData.map((data) => {
       return (
         reviewContent.reduce((acc: any, key) => {

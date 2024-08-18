@@ -1,4 +1,4 @@
-import { lectureInfo, recordInfo } from "@/Interfaces/interfaces";
+import { lectureInfo, LectureSectionInfo, recordInfo } from "@/Interfaces/interfaces";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { extractProfessors } from "@/utils";
 
@@ -16,7 +16,9 @@ type makeReviewData = (
 
 type makeIsEvaluationEmpty = (
   selectedId: (number | null)[],
-  selectedEvaluation: evaluationData[] | undefined
+  selectedEvaluation: evaluationData[] | undefined,
+  lectureInfo: any,
+  isLectureInfoLoading: boolean
 ) => (number | null)[];
 
 type noProfData = (
@@ -76,14 +78,26 @@ export const makeReviewData: makeReviewData = (selectedId, selectedReview, revie
  * @param selectedEvaluation 
  * @returns -만약 특정 교수의 강의평이 작성되지 않았다면 그 강의의 배열 위치를 반환. 작성 되었다면 null 반환
  */
-export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (selectedId, selectedEvaluation) => {
-  return (
-    selectedId.map((id, index) => 
-      id != null && selectedEvaluation !== undefined
-        ? (selectedEvaluation[index] !== undefined && 
-        Object.values(selectedEvaluation[index]).every((value) => value === null)
-          ? index : null) 
-        : null));
+export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (
+  selectedId, 
+  selectedEvaluation, 
+  lectureInfo, 
+  isLectureInfoLoading
+  ) => {
+  let valueCount = -1;
+  if (selectedId.every((value) => value == null) && !isLectureInfoLoading && selectedEvaluation !== undefined) 
+    return extractProfessors(lectureInfo.LectureSection).map((prof, index) => 
+      Object.values(selectedEvaluation[index]).every((value) => value === null) 
+        ? index : null)
+  else
+    return (
+      selectedId.map((id, index) => (
+        (id != null && selectedEvaluation !== undefined
+          ? (valueCount++, selectedEvaluation[valueCount] !== undefined && 
+          Object.values(selectedEvaluation[valueCount]).every((value) => value === null)
+            ? index : null) 
+          : null)))
+    ); 
 }
 
 /**
@@ -109,6 +123,17 @@ export const noProfInReviewList = (reviews: recordInfo[]) => {
   reviews.map((review, index) => 
     review.LectureSection.Professor.length === 0 
       ? reviews.splice(index, 1) 
+      : null);
+}
+
+/**
+ * 교수자가 없는 lectureInfo는 그 배열 삭제
+ * 
+ */
+export const noProfInLectureInfo = (lectureInfo: lectureInfo) => {
+  lectureInfo.LectureSection.map((section: LectureSectionInfo, index) => 
+    section.Professor.length === 0 
+      ? lectureInfo.LectureSection.splice(index, 1)
       : null);
 }
 

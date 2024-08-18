@@ -12,7 +12,7 @@ import { HexLabels, HexagonData, opacity } from "../EvaluationPage.const";
 
 interface HexagonProps {
   HexData: HexagonData[];
-  averageData: HexagonData[];
+  selectedId: (number | null)[];
 }
 
 const Wrap = styled.div`
@@ -23,7 +23,9 @@ const Wrap = styled.div`
   overflow-y: hidden;
 `;
 
-export default function Hexagon({ HexData, averageData }: HexagonProps) {
+export default function Hexagon({ HexData, selectedId }: HexagonProps) {
+  let valueCount = -1;
+  
   const formattedData = HexLabels.map((i) => {
     const subject = i.subject;
     const isNegative = subject === "난이도" || subject === "과제량";
@@ -62,20 +64,22 @@ export default function Hexagon({ HexData, averageData }: HexagonProps) {
             tick={{ fill: theme.colors.secondaryText, fontSize: 13 }}
           />
           <PolarRadiusAxis domain={[0, 5]} angle={90} />
-          {HexData.map((Hex, index) => {
-            if (Object.values(Hex).every((value) => value != null)) {
+          {selectedId.map((id, index) => {
+            if (id !== null || selectedId.every((value) => value == null)) {
+              valueCount++;
               return (
                 <Radar
                   key={index}
                   name="Standard"
-                  dataKey={`score${index}`}
+                  dataKey={`score${valueCount}`}
                   fill={
-                    averageData === HexData
+                    selectedId.every((value) => value == null)
                       ? theme.colors.primary
                       : theme.RadarColor(opacity.true)[index]
                   }
                   fillOpacity={
-                    averageData === HexData ? opacity.true : opacity.none
+                    selectedId.every((value) => value == null)
+                    ? opacity.true : opacity.none
                   }
                 />
               );

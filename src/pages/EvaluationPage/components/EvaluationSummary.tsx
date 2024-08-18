@@ -45,7 +45,7 @@ const ConcreteInfo = styled(theme.universalComponent.DivTextContainer)<{
 
 interface SummaryProps {
   evaluationData: HexagonData[];
-  averageData: HexagonData[];
+  selectedId: (number | null)[];
 }
 
 function sortScoresBySubject(scores: HexagonData): number[] {
@@ -63,9 +63,10 @@ const HIGH = 2;
 
 export default function EvaluationSummary({
   evaluationData,
-  averageData,
+  selectedId,
 }: SummaryProps) {
   let result: JSX.Element[] = [];
+  let valueCount = -1;
 
   function showResult(order: number) {
     evaluationData.map((summary, index) => {
@@ -92,7 +93,7 @@ export default function EvaluationSummary({
               key={index}
               color={theme.colors.secondaryText}
               colorP={
-                averageData === evaluationData
+                selectedId.every((value) => value == null)
                   ? theme.colors.primary
                   : theme.RadarColor(opacity.none)[order]
               }
@@ -112,8 +113,10 @@ export default function EvaluationSummary({
       );
     });
 
-    return result[order];
+    valueCount++
+    return result[valueCount];
   }
 
-  return <>{evaluationData.map((value, index) => showResult(index))}</>;
+  return <>{selectedId.map((id, index) => 
+    (id !== null || selectedId.every((value) => value === null)) && showResult(index))}</>;
 }

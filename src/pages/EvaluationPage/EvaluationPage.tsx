@@ -18,13 +18,13 @@ import {
 } from "@/apis/lectures";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
-import { concatProfessorNames, convertLectureCodeToList, extractEvaluationData, makeSelectedIdNull } from "@/utils";
+import { concatProfessorNames, convertLectureCodeToList, extractEvaluationData, extractProfessors, makeSelectedIdNull } from "@/utils";
 import { recordInfo } from "@/Interfaces/interfaces";
 import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { getLectureEachEvaluation } from "@/apis/records";
 import { NoComment } from "./components/NoComment";
-import { makeIsEvaluationEmpty, makeReviewData, makeSameReviewAsOne, makeSelectedData, noProfData, noProfInReviewList, reviewAmount } from "./EvaluationPage.util";
+import { makeIsEvaluationEmpty, makeReviewData, makeSameReviewAsOne, makeSelectedData, noProfData, noProfInLectureInfo, noProfInReviewList, reviewAmount } from "./EvaluationPage.util";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -217,21 +217,18 @@ export function EvaluationPage() {
   const isLoading = profLectures.isLoading;
 
   !evaluationLoading && noProfInReviewList(reviewList[0]?.data);
+  !isLectureInfoLoading && noProfInLectureInfo(lectureInfo);
 
   const averageData: HexagonData[] = [totalEvaluation]; //평균 정보를 배열로 변환해 저장
-  const selectedData: HexagonData[] = []; //선택된 교수 정보를 배열로 변환해 저장
-  !isLoading && makeSelectedData(selectedId, selectedData, profEvaluation);
     
   const selectedReview: recordInfo[][] = []; //리뷰 정보를 배열로 변환해 저장
   !evaluationLoading && makeReviewData(selectedId, selectedReview, reviewList);
 
-  const selectedEvaluation = //선택한 교수가 없는 경우 전체를 보여주고, 선택한 교수가 있는 경우 그 교수의 평가만 보여줌. 만약에 데이터가 모두 없는 경우 null을 로드
-    selectedId.every((value) => value == null) 
-      ? averageData 
-      : extractEvaluationData(selectedId, reviewList, evaluationLoading);
+  const selectedEvaluation = //선택한 교수가 없는 경우 전체를 보여주고, 선택한 교수가 있는 경우 그 교수의 평가만 보여줌. 만약에 데이터가 모두 없는 경우 각 값에 null을 할당
+    extractEvaluationData(selectedId, reviewList, evaluationLoading, lectureInfo, isLectureInfoLoading);
   const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌, 데이터가 있으면 배열의 위치를 반환
-    makeIsEvaluationEmpty(selectedId, selectedEvaluation);
-
+    makeIsEvaluationEmpty(selectedId, selectedEvaluation, lectureInfo, isLectureInfoLoading);
+  
   return (
     <>
       <NavigationHeader text={"강의평"} isNavigateHome={true} />
@@ -260,7 +257,7 @@ export function EvaluationPage() {
         {!isLoading && !totalLoading && selectedEvaluation && (
           <Hexagon 
             HexData={selectedEvaluation ?? null} 
-            averageData={averageData} />
+            selectedId={selectedId} />
             )}
         </GraphWrap>
 
@@ -270,7 +267,7 @@ export function EvaluationPage() {
             {!isLoading && !totalLoading && selectedEvaluation && (
               <EvaluationSummary 
                 evaluationData={selectedEvaluation ?? null} 
-                averageData={averageData}
+                selectedId={selectedId}
               />
               )}
               <ScrollBarWrapper className="barWrapper" isFade={isFade} />
