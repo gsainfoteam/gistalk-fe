@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import Checked_Svg from "@/assets/svgs/doneBold.svg";
+import Checked_Svg from "@assets/svgs/doneBold.svg";
+import { departmentSVGList } from "@assets/svgs/departmentIcons/departmentIcons";
 
 interface IProps {
   text: string;
@@ -35,17 +36,25 @@ const CheckMark = styled.div`
   right: 0;
 `;
 
+const Svg = styled(theme.universalComponent.SvgIcon)``;
+
 const CheckedSvg = styled(theme.universalComponent.SvgIcon)`
   position: relative;
   top: -1px;
 `;
 
 /** 임시 분과 아이콘 (text는 아이콘 안에 들어갈 텍스트 두 글자, color은 아이콘 색깔) */
-export default function TempIcon({ text, color, isChecked }: IProps) {
+export default function DepartmentIcon({ text, color, isChecked }: IProps) {
+  const departmentSVG = departmentSVGList.filter((item) => item.name === text);
+
   return (
     <>
       <IconFrame color={color}>
-        <p>{text}</p>
+        {departmentSVG.length > 0 ? (
+          <Svg src={departmentSVG[0].icon} size={20}></Svg>
+        ) : (
+          <p>{text}</p>
+        )}
         {isChecked && (
           <CheckMark>
             <CheckedSvg size={15} src={Checked_Svg}></CheckedSvg>
@@ -56,6 +65,6 @@ export default function TempIcon({ text, color, isChecked }: IProps) {
   );
 }
 
-TempIcon.defaultProps = {
+DepartmentIcon.defaultProps = {
   color: "#FFCF23",
 };

@@ -4,7 +4,7 @@ import { major, minor, underG } from "@/constants/StdSet";
 import { convertLectureCodeToList } from "@/utils";
 import useSubjectCode from "@/hooks/useSubjectCode";
 import { LectureCode } from "@/Interfaces/interfaces";
-import TempIcon from "./TempIcon";
+import DepartmentIcon from "./DepartmentIcon";
 
 interface IProps {
   subjectCode: LectureCode[];
@@ -71,7 +71,7 @@ export default function SearchCard({
 
   return (
     <SearchCardWrap hoverColor={theme.colors.inputBg}>
-      <TempIcon
+      <DepartmentIcon
         text={division}
         color={theme.colors["gray-50"]}
         isChecked={false}
