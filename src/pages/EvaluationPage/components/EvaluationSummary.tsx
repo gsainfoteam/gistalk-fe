@@ -117,6 +117,8 @@ export default function EvaluationSummary({
     return result[valueCount];
   }
 
-  return <>{selectedId.map((id, index) => 
-    (id !== null || selectedId.every((value) => value === null)) && showResult(index))}</>;
+  return <>{selectedId.every((value) => value === null) 
+    ? showResult(0)
+    : selectedId.map((id, index) => 
+      id !== null && showResult(index))}</>;
 }

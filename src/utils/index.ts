@@ -76,6 +76,8 @@ export const extractEvaluationData = (
   lectureInfo: any,
   isLectureInfoLoading: boolean) => {
   const reviewContent = ['difficulty', 'skill', 'helpfulness', 'interest', 'load', 'generosity'];
+  let sum: number;
+  let reviewNumber: number;
 
   if(!evaluationLoading && !isLectureInfoLoading) {
     const professorArray = extractProfessors(lectureInfo.LectureSection);
@@ -90,7 +92,8 @@ export const extractEvaluationData = (
             : null)))
       : selectedData = selectedId.map((id, index) => 
         id !== null ? reviewList[index].data : null).filter((content) => content !== null);
-    return selectedData.map((data) => {
+      
+    const result = selectedData.map((data) => {
       return (
         reviewContent.reduce((acc: any, key) => {
           acc[key] = data === null || data.every((review: recordInfo) => review === undefined) 
@@ -100,6 +103,23 @@ export const extractEvaluationData = (
         )
       }
     );
+
+    const averageResult = 
+      result.map((review) => 
+        reviewContent.reduce((acc: any, key) => {
+          sum = 0;
+          reviewNumber = 0;
+          result.map((value) => value[key] !== null 
+            ? (sum += value[key], reviewNumber++)
+            : sum += 0);
+          
+          acc[key] = review[key] !== null ? sum/reviewNumber : null;
+          return acc;}, {})
+      );
+
+    return selectedId.every((value) => value == null) 
+      ? averageResult
+      : result;
   }
 };
 

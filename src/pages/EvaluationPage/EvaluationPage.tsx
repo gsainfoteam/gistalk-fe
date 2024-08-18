@@ -228,7 +228,7 @@ export function EvaluationPage() {
     extractEvaluationData(selectedId, reviewList, evaluationLoading, lectureInfo, isLectureInfoLoading);
   const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌, 데이터가 있으면 배열의 위치를 반환
     makeIsEvaluationEmpty(selectedId, selectedEvaluation, lectureInfo, isLectureInfoLoading);
-  
+
   return (
     <>
       <NavigationHeader text={"강의평"} isNavigateHome={true} />
@@ -246,7 +246,6 @@ export function EvaluationPage() {
 
         {!isLoading && 
         !isLectureInfoLoading && 
-        !totalLoading && 
         isEvaluationEmpty.filter((value) => value != null)[0] != undefined &&
         <Card>
           {isEvaluationEmpty.filter((empty) => empty !== null).map((empty) => empty !== null &&
@@ -254,7 +253,7 @@ export function EvaluationPage() {
         </Card>}
 
         <GraphWrap>
-        {!isLoading && !totalLoading && selectedEvaluation && (
+        {!isLoading && !isLectureInfoLoading && selectedEvaluation && (
           <Hexagon 
             HexData={selectedEvaluation ?? null} 
             selectedId={selectedId} />
@@ -264,7 +263,7 @@ export function EvaluationPage() {
         <Upper>
           <SummaryWrapper>
             <SummaryScroll>
-            {!isLoading && !totalLoading && selectedEvaluation && (
+            {!isLoading && !isLectureInfoLoading && selectedEvaluation && (
               <EvaluationSummary 
                 evaluationData={selectedEvaluation ?? null} 
                 selectedId={selectedId}

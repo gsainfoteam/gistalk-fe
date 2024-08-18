@@ -45,6 +45,22 @@ export default function Hexagon({ HexData, selectedId }: HexagonProps) {
     return dataKey;
   });
 
+  const radarComponent = (index: number) =>
+    <Radar
+    key={index}
+    name="Standard"
+    dataKey={`score${valueCount}`}
+    fill={
+      selectedId.every((value) => value == null)
+        ? theme.colors.primary
+        : theme.RadarColor(opacity.true)[index]
+    }
+    fillOpacity={
+      selectedId.every((value) => value == null)
+      ? opacity.true : opacity.none
+    }
+    />
+
   return (
     <>
       <Wrap>
@@ -64,24 +80,13 @@ export default function Hexagon({ HexData, selectedId }: HexagonProps) {
             tick={{ fill: theme.colors.secondaryText, fontSize: 13 }}
           />
           <PolarRadiusAxis domain={[0, 5]} angle={90} />
-          {selectedId.map((id, index) => {
-            if (id !== null || selectedId.every((value) => value == null)) {
+          {selectedId.every((value) => value == null) 
+            ? (valueCount = 0, radarComponent(0))
+            : selectedId.map((id, index) => {
+            if (id !== null) {
               valueCount++;
               return (
-                <Radar
-                  key={index}
-                  name="Standard"
-                  dataKey={`score${valueCount}`}
-                  fill={
-                    selectedId.every((value) => value == null)
-                      ? theme.colors.primary
-                      : theme.RadarColor(opacity.true)[index]
-                  }
-                  fillOpacity={
-                    selectedId.every((value) => value == null)
-                    ? opacity.true : opacity.none
-                  }
-                />
+                radarComponent(index)
               );
             }
           })}
