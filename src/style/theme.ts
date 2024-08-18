@@ -9,13 +9,16 @@ const RadarColor = (opacity: number) => {
     `rgb(45, 212, 191,${opacity})`,
     `rgb(251, 113, 133,${opacity})`,
     `rgb(96, 165, 250,${opacity})`,
+    `rgb(167, 139, 250,${opacity})`,
     `rgb(129, 140, 248,${opacity})`,
     `rgb(74, 222, 128,${opacity})`,
     `rgb(232, 121, 249,${opacity})`,
     `rgb(52, 211, 153,${opacity})`,
     `rgb(34, 211, 238,${opacity})`,
     `rgb(250, 204, 21,${opacity})`,
-    `rgb(244, 114, 182,${opacity})`
+    `rgb(244, 114, 182,${opacity})`,
+    `rgb(251, 191, 36,${opacity})`,
+    `rgb(248, 113, 113,${opacity})`
   ]
 
   return colors
