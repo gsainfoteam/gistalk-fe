@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 import NavigationHeader from "@components/NavigationHeader";
 import Title from "@components/Title";
@@ -30,8 +30,10 @@ import { convertLectureCodeToList } from "@/utils";
 import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
-import { REDIRECT_PATH } from "@/constants/localStorageKeys";
+import { ACCESS_TOKEN, REDIRECT_PATH } from "@/constants/localStorageKeys";
 import { AxiosError, isAxiosError } from "axios";
+import { useLogin } from "@/hooks/useLogin";
+import { useRedirect } from "@/hooks/useRedirect";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -56,7 +58,7 @@ export function WriteReviewPage() {
   });
   const [recommendation, setRecommendation] = useState(-1); // 0 비추천, 1 추천, 2 보통 (왜 반대지?)
   const [text, setText] = useState("");
-  const [selectedId, setSelectedId] = useState<(number | null)[]>([null]); //교수들을 화면에 나오는 순서대로 배열로 나타냄, 클릭하면 그 위치에 sectionId를 저장함. 
+  const [selectedId, setSelectedId] = useState<(number | null)[]>([null]); //교수들을 화면에 나오는 순서대로 배열로 나타냄, 클릭하면 그 위치에 sectionId를 저장함.
   const [clickedId, setClickedId] = useState<number | null>(null); //현재 클릭한 교수의 sectionId
 
   const params = useParams() as { id: string };
@@ -90,7 +92,9 @@ export function WriteReviewPage() {
     setClickedId(id === selectedId[profNumber] ? null : id);
     const _selectedId = selectedId;
     _selectedId[profNumber] = id;
-    selectedId.map((select, index) => _selectedId[index] = select === id ? id : null);
+    selectedId.map(
+      (select, index) => (_selectedId[index] = select === id ? id : null)
+    );
     setSelectedId([..._selectedId]);
   };
 

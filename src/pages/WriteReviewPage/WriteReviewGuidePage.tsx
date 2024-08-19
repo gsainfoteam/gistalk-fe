@@ -5,7 +5,7 @@ import { Wrapper } from "./WriteReviewPage.styled";
 import { concatProfessorNames } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import { getLectureList } from "@/apis/lectures";
-import { REDIRECT_PATH } from "@/constants/localStorageKeys";
+import { ACCESS_TOKEN, REDIRECT_PATH } from "@/constants/localStorageKeys";
 import { SearchBar } from "../SearchPage/components/SearchBar";
 import { useSearch } from "@/hooks/useSearch";
 import Card from "@components/Card";
@@ -15,6 +15,7 @@ import { filterLectureList } from "../SearchPage/SearchPage.const";
 import { lectureInfo } from "@/Interfaces/interfaces";
 import { StyledLink } from "@components/StyledLink";
 import SearchCard from "../SearchPage/components/SearchCard";
+import { Navigate } from "react-router-dom";
 
 export function WriteReviewGuidePage() {
   const {
@@ -26,6 +27,11 @@ export function WriteReviewGuidePage() {
   } = useSearch();
 
   localStorage.removeItem(REDIRECT_PATH); // 로그인 페이지에서 리다이렉션 링크가 걸려 들어온 경우 제거
+  // 로그인 된 상태인지 확인
+  const loginToken = localStorage.getItem(ACCESS_TOKEN);
+  if (loginToken === null) {
+    return <Navigate to="/login" replace />;
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
