@@ -1,6 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import NavigationHeader from "@components/NavigationHeader";
-import { RATING_QUESTIONS } from "./WriteReviewPage.const";
 import { Wrapper } from "./WriteReviewPage.styled";
 import { concatProfessorNames } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -15,7 +14,8 @@ import { filterLectureList } from "../SearchPage/SearchPage.const";
 import { lectureInfo } from "@/Interfaces/interfaces";
 import { StyledLink } from "@components/StyledLink";
 import SearchCard from "../SearchPage/components/SearchCard";
-import { Navigate } from "react-router-dom";
+import LoginModal from "./components/modal";
+import { useNavigate } from "react-router-dom";
 
 export function WriteReviewGuidePage() {
   const {
@@ -29,9 +29,19 @@ export function WriteReviewGuidePage() {
   localStorage.removeItem(REDIRECT_PATH); // 로그인 페이지에서 리다이렉션 링크가 걸려 들어온 경우 제거
   // 로그인 된 상태인지 확인
   const loginToken = localStorage.getItem(ACCESS_TOKEN);
-  if (loginToken === null) {
-    return <Navigate to="/login" replace />;
-  }
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    navigate("/", { replace: true });
+  };
+
+  useEffect(() => {
+    if (loginToken === null) {
+      setShowModal(true);
+    }
+  }, [loginToken]);
 
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
@@ -76,7 +86,9 @@ export function WriteReviewGuidePage() {
       );
     });
   }
-
+  if (showModal) {
+    return <LoginModal show={showModal} onClose={handleCloseModal} />;
+  }
   return (
     <>
       <NavigationHeader text={"강의평 작성"} isNavigateHome={true} />
