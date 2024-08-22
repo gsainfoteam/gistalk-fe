@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { theme } from "@/style/theme";
 
 import { HexLabels, HexagonData, opacity } from "../EvaluationPage.const";
+import { hexagonRadar } from "./HexagonRadar";
 
 interface HexagonProps {
   HexData: HexagonData[];
@@ -24,7 +25,6 @@ const Wrap = styled.div`
 `;
 
 export default function Hexagon({ HexData, selectedId }: HexagonProps) {
-  let valueCount = -1;
   
   const formattedData = HexLabels.map((i) => {
     const subject = i.subject;
@@ -44,22 +44,6 @@ export default function Hexagon({ HexData, selectedId }: HexagonProps) {
 
     return dataKey;
   });
-
-  const radarComponent = (index: number) =>
-    <Radar
-    key={index}
-    name="Standard"
-    dataKey={`score${valueCount}`}
-    fill={
-      selectedId.every((value) => value == null)
-        ? theme.colors.primary
-        : theme.RadarColor(opacity.true)[index]
-    }
-    fillOpacity={
-      selectedId.every((value) => value == null)
-      ? opacity.true : opacity.none
-    }
-    />
 
   return (
     <>
@@ -81,15 +65,10 @@ export default function Hexagon({ HexData, selectedId }: HexagonProps) {
           />
           <PolarRadiusAxis domain={[0, 5]} angle={90} />
           {selectedId.every((value) => value == null) 
-            ? (valueCount = 0, radarComponent(0))
-            : selectedId.map((id, index) => {
-            if (id !== null) {
-              valueCount++;
-              return (
-                radarComponent(index)
-              );
-            }
-          })}
+            ? hexagonRadar(0, 0, selectedId)
+            : selectedId.filter((id) => (id !== null)).map((id, index) => 
+              hexagonRadar(selectedId.indexOf(id), index, selectedId)
+          )}
         </RadarChart>
       </Wrap>
     </>

@@ -33,10 +33,7 @@ type noProfData = (
  * @return {number} -배열의 총 길이
  */
 export const reviewAmount = (selectedReview: recordInfo[][]) => {
-    let count = 0;
-    selectedReview.map((review) => count += review.length)
-
-    return count;
+    return selectedReview.reduce((acc, review) => acc += review.length, 0);
   };
 
   /**
@@ -84,20 +81,20 @@ export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (
   lectureInfo, 
   isLectureInfoLoading
   ) => {
-  let valueCount = -1;
+
   if (selectedId.every((value) => value == null) && !isLectureInfoLoading && selectedEvaluation !== undefined) 
     return extractProfessors(lectureInfo.LectureSection).map((prof, index) => 
       Object.values(selectedEvaluation[index]).every((value) => value === null) 
         ? index : null)
   else
     return (
-      selectedId.map((id, index) => (
+      selectedId.filter((id) => (id !== null)).map((id, index) =>
         (id != null && selectedEvaluation !== undefined
-          ? (valueCount++, selectedEvaluation[valueCount] !== undefined && 
-          Object.values(selectedEvaluation[valueCount]).every((value) => value === null)
-            ? index : null) 
-          : null)))
-    ); 
+          ? selectedEvaluation[index] !== undefined && 
+          Object.values(selectedEvaluation[index]).every((value) => value === null)
+            ? selectedId.indexOf(id) : null
+          : null))
+      )
 }
 
 /**
@@ -119,11 +116,10 @@ export const noProfData: noProfData = (lectureInfo, empty) => {
  * 
  * @param reviews 
  */
-export const noProfInReviewList = (reviews: recordInfo[]) => {
+export const spliceEmptyProfReviewList = (reviews: recordInfo[]) => {
   reviews.map((review, index) => 
     review.LectureSection.Professor.length === 0 
-      ? reviews.splice(index, 1) 
-      : null);
+      && reviews.splice(index, 1));
 }
 
 /**
@@ -139,7 +135,7 @@ export const noProfInLectureInfo = (lectureInfo: lectureInfo) => {
 
 
 /**
- * 선택한 리뷰에서 같은 리뷰 중 하나만 selectedReview에 저장
+ * 리뷰에 교수가 두 명이라면 두 교수 모두 선택했을 때 하나만 selectedReview에 저장
  * 
  * @param selectedReview 
  */

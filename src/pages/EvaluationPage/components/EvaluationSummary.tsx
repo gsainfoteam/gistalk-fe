@@ -66,9 +66,8 @@ export default function EvaluationSummary({
   selectedId,
 }: SummaryProps) {
   let result: JSX.Element[] = [];
-  let valueCount = -1;
 
-  function showResult(order: number) {
+  function showResult(order: number, idIndex: number) {
     evaluationData.map((summary, index) => {
       if (evaluationData == null) {
         return null;
@@ -113,12 +112,11 @@ export default function EvaluationSummary({
       );
     });
 
-    valueCount++
-    return result[valueCount];
+    return result[idIndex];
   }
 
   return <>{selectedId.every((value) => value === null) 
-    ? showResult(0)
-    : selectedId.map((id, index) => 
-      id !== null && showResult(index))}</>;
+    ? showResult(0, 0)
+    : selectedId.filter((id) => id !== null).map((id, index) => 
+        showResult(selectedId.indexOf(id), index))}</>;
 }
