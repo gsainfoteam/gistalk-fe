@@ -24,7 +24,7 @@ import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { getLectureEachEvaluation } from "@/apis/records";
 import { NoComment } from "./components/NoComment";
-import { makeIsEvaluationEmpty, makeReviewData, makeSameReviewAsOne, makeSelectedData, noProfData, noProfInLectureInfo, reviewAmount, spliceEmptyProfReviewList } from "./EvaluationPage.util";
+import { makeIsEvaluationEmpty, makeReviewData, makeSameReviewAsOne, noProfData, noProfInLectureInfo, reviewAmount, spliceEmptyProfReviewList } from "./EvaluationPage.util";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -200,9 +200,14 @@ export function EvaluationPage() {
   !isEvaluationLoading && makeReviewData(selectedId, selectedReview, reviewList);
 
   const selectedEvaluation = //선택한 교수가 없는 경우 전체를 보여주고, 선택한 교수가 있는 경우 그 교수의 평가만 보여줌. 만약에 데이터가 모두 없는 경우 각 값에 null을 할당
-    extractEvaluationData(selectedId, reviewList, isEvaluationLoading, lectureInfo, isLectureInfoLoading);
+    !isLectureInfoLoading && !isEvaluationLoading 
+      ? extractEvaluationData(selectedId, reviewList, lectureInfo)
+      : undefined;
   const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌, 데이터가 있으면 배열의 위치를 반환
-    makeIsEvaluationEmpty(selectedId, selectedEvaluation, lectureInfo, isLectureInfoLoading);
+    lectureInfo &&
+    !isLectureInfoLoading
+      ? makeIsEvaluationEmpty(selectedId, selectedEvaluation, lectureInfo.LectureSection)
+      : undefined;
 
   return (
     <>
@@ -220,10 +225,11 @@ export function EvaluationPage() {
         )}
 
         {!isLectureInfoLoading && 
+        isEvaluationEmpty &&
         isEvaluationEmpty.filter((value) => value != null)[0] != undefined &&
         <Card>
           {isEvaluationEmpty.filter((empty) => empty !== null).map((empty) => empty !== null &&
-            noProfData(lectureInfo, empty)).join(", ")} 교수님의 데이터가 없습니다.
+            noProfData(lectureInfo.LectureSection, empty)).join(", ")} 교수님의 데이터가 없습니다.
         </Card>}
 
         <GraphWrap>

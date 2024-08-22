@@ -2,27 +2,20 @@ import { lectureInfo, LectureSectionInfo, recordInfo } from "@/Interfaces/interf
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { extractProfessors } from "@/utils";
 
-type makeSelectedData = (
-  selectedId: (number | null)[],
-  selectedData: HexagonData[],
-  profEvaluation: any
-) => HexagonData[];
-
 type makeReviewData = (
   selectedId: (number | null)[],
   selectedReview: recordInfo[][],
-  reviewList: any
+  reviewList: recordInfo[][] | undefined
 ) => recordInfo[][];
 
 type makeIsEvaluationEmpty = (
   selectedId: (number | null)[],
   selectedEvaluation: evaluationData[] | undefined,
-  lectureInfo: any,
-  isLectureInfoLoading: boolean
+  lectureSection: LectureSectionInfo[]
 ) => (number | null)[];
 
 type noProfData = (
-  lectureInfo: any,
+  lectureInfo: LectureSectionInfo[],
   empty: number
 ) => string;
 
@@ -36,23 +29,6 @@ export const reviewAmount = (selectedReview: recordInfo[][]) => {
     return selectedReview.reduce((acc, review) => acc += review.length, 0);
   };
 
-  /**
-   * 선택한 교수의 강의평 점수를 저장하여 반환함
-   * 
-   * @param selectedId 
-   * @param selectedData 
-   * @param profEvaluation 
-   * @returns 
-   */
-export const makeSelectedData: makeSelectedData = (selectedId, selectedData, profEvaluation) => {
-  selectedId.map((select, index) =>
-    select != null
-      ? (selectedData[index] = profEvaluation[index]?.data)
-      : null
-  );
-  return selectedData;
-}
-
 /**
  * 선택한 교수의 리뷰 내용을 저장하여 반환함
  * 
@@ -63,7 +39,7 @@ export const makeSelectedData: makeSelectedData = (selectedId, selectedData, pro
  */
 export const makeReviewData: makeReviewData = (selectedId, selectedReview, reviewList) => {
   selectedId.map((select, index) =>
-    select != null ? (selectedReview[index] = reviewList[index]) : null
+    select != null && reviewList && (selectedReview[index] = reviewList[index])
   );
   return selectedReview;
 }
@@ -78,12 +54,11 @@ export const makeReviewData: makeReviewData = (selectedId, selectedReview, revie
 export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (
   selectedId, 
   selectedEvaluation, 
-  lectureInfo, 
-  isLectureInfoLoading
+  lectureSection
   ) => {
 
-  if (selectedId.every((value) => value == null) && !isLectureInfoLoading && selectedEvaluation !== undefined) 
-    return extractProfessors(lectureInfo.LectureSection).map((prof, index) => 
+  if (selectedId.every((value) => value == null) && selectedEvaluation !== undefined) 
+    return extractProfessors(lectureSection).map((prof, index) => 
       Object.values(selectedEvaluation[index]).every((value) => value === null) 
         ? index : null)
   else
@@ -100,13 +75,13 @@ export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (
 /**
  * 평가 데이터가 없는 교수님들을 쉼표를 통해 string을 반환하여 나타내는 함수
  * 
- * @param lectureInfo 
+ * @param lectureSection
  * @param emptyValues 
  * @param empty 
  * @returns 
  */
-export const noProfData: noProfData = (lectureInfo, empty) => {
-  const professorInfoList = extractProfessors(lectureInfo.LectureSection);
+export const noProfData: noProfData = (lectureSection, empty) => {
+  const professorInfoList = extractProfessors(lectureSection);
 
   return (`${professorInfoList[empty].name}`);
 }

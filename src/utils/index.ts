@@ -72,15 +72,13 @@ export const convertProfessorNameToString = (
  */
 export const extractEvaluationData = (
   selectedId: (number | null)[], 
-  reviewList: recordInfo[][] | undefined, 
-  isEvaluationLoading: boolean, 
-  lectureInfo: lectureInfo,
-  isLectureInfoLoading: boolean) => {
+  reviewList: recordInfo[][] | undefined,
+  lectureInfo: lectureInfo) => {
   const reviewContent = ['difficulty', 'skill', 'helpfulness', 'interest', 'load', 'generosity'];
   let sum: number;
   let reviewNumber: number;
 
-  if(reviewList && !isLectureInfoLoading) {
+  if(reviewList) {
     const professorArray = extractProfessors(lectureInfo.LectureSection);
     let selectedData = new Array(professorArray.length);
     professorArray.map((prof, index) => selectedData[index] = []);
