@@ -63,7 +63,7 @@ export const makeSelectedData: makeSelectedData = (selectedId, selectedData, pro
  */
 export const makeReviewData: makeReviewData = (selectedId, selectedReview, reviewList) => {
   selectedId.map((select, index) =>
-    select != null ? (selectedReview[index] = reviewList[index]?.data) : null
+    select != null ? (selectedReview[index] = reviewList[index]) : null
   );
   return selectedReview;
 }
@@ -112,7 +112,7 @@ export const noProfData: noProfData = (lectureInfo, empty) => {
 }
 
 /**
- * 교수자가 없는 리뷰는 reviewList에서 삭제
+ * 처음에 아무 것도 선택 안 됐을 때 reviewList를 기반으로 교수자가 없는 리뷰는 reviewList에서 삭제
  * 
  * @param reviews 
  */

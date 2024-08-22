@@ -175,29 +175,6 @@ export function EvaluationPage() {
     },
   });
 
-  const profLectures = useQueries({
-    queries: selectedId.map((select) => {
-      return {
-        queryKey: [`getEvaluationScore/${id}/${select}`],
-        queryFn: () => getLectureTotalEvaluationForProf(id, select),
-        retry: 0,
-        enabled: !!selectedId, //교수를 아무도 선택하지 않을때, 즉 null일때는 쿼리를 보내지 않음
-      };
-    }),
-    combine: (profLectures) => {
-      return {
-        data: profLectures.map((lecture) => lecture.data),
-        isLoading: profLectures.some((lecture) => lecture.isLoading),
-      };
-    },
-  });
-
-  const { isLoading: totalLoading, data: totalEvaluationData } = useQuery({
-    queryKey: [`getEvaluationScore/${id}`],
-    queryFn: () => getLectureTotalEvaluation(id),
-    retry: 0,
-  });
-
   const {
     isLoading: isLectureInfoLoading,
     data: lectureInfoData,
@@ -209,23 +186,21 @@ export function EvaluationPage() {
   });
 
   const { data: lectureInfo } = { ...lectureInfoData };
-  const reviewList = { ...evaluationData.data };
-  const profEvaluation = { ...profLectures.data };
-  const { data: totalEvaluation } = { ...totalEvaluationData };
   
-  const evaluationLoading = evaluationData.isLoading;
-  const isLoading = profLectures.isLoading;
+  const isEvaluationLoading = evaluationData.isLoading;
 
-  !evaluationLoading && spliceEmptyProfReviewList(reviewList[0]?.data);
+  const reviewList = !isEvaluationLoading 
+    ? evaluationData.data.map((test) => test !== undefined && test.data) 
+    : undefined;
+
+  reviewList && spliceEmptyProfReviewList(reviewList[0]);
   !isLectureInfoLoading && noProfInLectureInfo(lectureInfo);
-
-  const averageData: HexagonData[] = [totalEvaluation]; //평균 정보를 배열로 변환해 저장
     
   const selectedReview: recordInfo[][] = []; //리뷰 정보를 배열로 변환해 저장
-  !evaluationLoading && makeReviewData(selectedId, selectedReview, reviewList);
+  !isEvaluationLoading && makeReviewData(selectedId, selectedReview, reviewList);
 
   const selectedEvaluation = //선택한 교수가 없는 경우 전체를 보여주고, 선택한 교수가 있는 경우 그 교수의 평가만 보여줌. 만약에 데이터가 모두 없는 경우 각 값에 null을 할당
-    extractEvaluationData(selectedId, reviewList, evaluationLoading, lectureInfo, isLectureInfoLoading);
+    extractEvaluationData(selectedId, reviewList, isEvaluationLoading, lectureInfo, isLectureInfoLoading);
   const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌, 데이터가 있으면 배열의 위치를 반환
     makeIsEvaluationEmpty(selectedId, selectedEvaluation, lectureInfo, isLectureInfoLoading);
 
@@ -244,8 +219,7 @@ export function EvaluationPage() {
           />
         )}
 
-        {!isLoading && 
-        !isLectureInfoLoading && 
+        {!isLectureInfoLoading && 
         isEvaluationEmpty.filter((value) => value != null)[0] != undefined &&
         <Card>
           {isEvaluationEmpty.filter((empty) => empty !== null).map((empty) => empty !== null &&
@@ -253,7 +227,7 @@ export function EvaluationPage() {
         </Card>}
 
         <GraphWrap>
-        {!isLoading && !isLectureInfoLoading && selectedEvaluation && (
+        {!isLectureInfoLoading && selectedEvaluation && (
           <Hexagon 
             HexData={selectedEvaluation ?? null} 
             selectedId={selectedId} />
@@ -263,7 +237,7 @@ export function EvaluationPage() {
         <Upper>
           <SummaryWrapper>
             <SummaryScroll>
-            {!isLoading && !isLectureInfoLoading && selectedEvaluation && (
+            {!isLectureInfoLoading && selectedEvaluation && (
               <EvaluationSummary 
                 evaluationData={selectedEvaluation ?? null} 
                 selectedId={selectedId}
@@ -278,11 +252,11 @@ export function EvaluationPage() {
             borderColor={theme.colors.grayStroke}
           >
             한줄평
-            {!evaluationLoading &&
+            {reviewList &&
               (selectedId.every((value) => value === null) ? ( //아무런 교수도 선택하지 않았을 때
                 <span>
                   {" "}
-                  이 강의에 {(reviewList[0]?.data ?? []).length ?? 0}명이 평가를
+                  이 강의에 {(reviewList[0] ?? []).length ?? 0}명이 평가를
                   남겼어요
                 </span>
               ) : (
@@ -290,15 +264,16 @@ export function EvaluationPage() {
               ))}
           </OneLineReviewText>
 
-          {!evaluationLoading && //로딩이 완료되고 나서 강의평이 존재하지 않는 경우를 핸들링
-          !totalLoading &&
+          {reviewList && //로딩이 완료되고 나서 강의평이 존재하지 않는 경우를 핸들링
           selectedReview.every((value) => value != undefined) &&
+          selectedEvaluation &&
           !isLectureInfoLoading &&
           lectureInfo &&
           selectedId.every((value) => value === null) //아무런 교수도 선택하지 않았을 때
-            ? Object.values(totalEvaluation).every((value) => value === null)
+            ? selectedEvaluation.every((value) => 
+              Object.values(value).every((content) => content === null))
               ? <NoComment />
-              : reviewList[0]?.data.map(
+              : reviewList[0].map(
                   (
                     reviewContent: recordInfo //아무 선택도 안 했을 때 모든 리뷰 나타내기
                   ) => (
@@ -306,7 +281,7 @@ export function EvaluationPage() {
                   )
                 )
             : //교수를 선택했을 때
-              !evaluationLoading &&
+              !isEvaluationLoading &&
               (selectedReview.every(
                 (value) => value != undefined && value.length === 0
               )
