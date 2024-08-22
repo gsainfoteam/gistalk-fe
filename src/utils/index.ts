@@ -75,13 +75,10 @@ export const extractEvaluationData = (
   reviewList: recordInfo[][] | undefined,
   lectureInfo: lectureInfo) => {
   const reviewContent = ['difficulty', 'skill', 'helpfulness', 'interest', 'load', 'generosity'];
-  let sum: number;
-  let reviewNumber: number;
 
   if(reviewList) {
     const professorArray = extractProfessors(lectureInfo.LectureSection);
-    let selectedData = new Array(professorArray.length);
-    professorArray.map((prof, index) => selectedData[index] = []);
+    let selectedData = professorArray.map(() => new Array());
 
     selectedId.every((value) => value == null)
       ? professorArray.map((prof, pIndex) => 
@@ -104,15 +101,15 @@ export const extractEvaluationData = (
     );
 
     const averageResult = 
-      result.map((review) => 
+      result.map((review) => //교수진 개수 만큼 같은 내용의 평균 리뷰 배열로 생성
         reviewContent.reduce((acc: any, key) => {
-          sum = 0;
-          reviewNumber = 0;
-          result.map((value) => value[key] !== null 
-            ? (sum += value[key], reviewNumber++)
-            : sum += 0);
+          const scoreSum = result.reduce((acc, value) => {
+            value[key] !== null 
+              ? (acc[0] += value[key], acc[1]++)
+              : acc[0] += 0
+            return acc;}, [0, 0]);
           
-          acc[key] = review[key] !== null ? sum/reviewNumber : null;
+          acc[key] = review[key] !== null ? scoreSum[0]/scoreSum[1] : null;
           return acc;}, {})
       );
 
