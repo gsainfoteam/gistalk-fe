@@ -1,4 +1,4 @@
-import { lectureInfo, LectureSectionInfo, recordInfo } from "@/Interfaces/interfaces";
+import { LectureSectionInfo, recordInfo } from "@/Interfaces/interfaces";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { extractProfessors } from "@/utils";
 
@@ -49,6 +49,7 @@ export const makeReviewData: makeReviewData = (selectedId, selectedReview, revie
  * 
  * @param selectedId 
  * @param selectedEvaluation 
+ * @param lectuerSection
  * @returns -만약 특정 교수의 강의평이 작성되지 않았다면 그 강의의 배열 위치를 반환. 작성 되었다면 null 반환
  */
 export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (
@@ -76,7 +77,6 @@ export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (
  * 평가 데이터가 없는 교수님들을 쉼표를 통해 string을 반환하여 나타내는 함수
  * 
  * @param lectureSection
- * @param emptyValues 
  * @param empty 
  * @returns 
  */
@@ -100,11 +100,12 @@ export const spliceEmptyProfReviewList = (reviews: recordInfo[]) => {
 /**
  * 교수자가 없는 lectureInfo는 그 배열 삭제
  * 
+ * @param lectuerSection
  */
-export const noProfInLectureInfo = (lectureInfo: lectureInfo) => {
-  lectureInfo.LectureSection.map((section: LectureSectionInfo, index) => 
+export const spliceEmptyProfLectureInfo = (lectureSection: LectureSectionInfo[]) => {
+  lectureSection.map((section: LectureSectionInfo, index) => 
     section.Professor.length === 0 
-      ? lectureInfo.LectureSection.splice(index, 1)
+      ? lectureSection.splice(index, 1)
       : null);
 }
 
@@ -117,14 +118,10 @@ export const noProfInLectureInfo = (lectureInfo: lectureInfo) => {
 export const makeSameReviewAsOne = (selectedReview: recordInfo[][]) => {
   selectedReview.map(
     (main, mIndex) =>
-      main.map((review) => 
-        selectedReview.map((compare, cIndex) => 
-          compare.map((value) => 
-            mIndex < cIndex && //map할 때 이미 체크한 배열 제외
-            review.id === value.id &&
-            selectedReview.splice(mIndex, 1)
-          )
-        )
-      )
+      main.map((review) => (
+        selectedReview.slice(mIndex + 1).map((compare) => 
+          compare.some((value) => review.id === value.id) && 
+          selectedReview.splice(mIndex, 1))
+      ))
     )
 }
