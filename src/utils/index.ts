@@ -86,8 +86,8 @@ export const extractEvaluationData = (
           prof.name === member.name 
             ? selectedData[pIndex].push(review) 
             : null)))
-      : selectedData = selectedId.map((id, index) => 
-        id !== null ? reviewList[index] : null).filter((content) => content !== null);
+      : selectedData = selectedId.filter((id) => id !== null).map((id) => 
+          reviewList[selectedId.indexOf(id)]);
       
     const result = selectedData.map((data) => {
       return (
