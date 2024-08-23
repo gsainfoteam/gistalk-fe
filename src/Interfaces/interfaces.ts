@@ -87,12 +87,12 @@ interface lecture {
 export interface LectureSectionInfo {
   id: number;
   lectureId: number;
+  Professor: professorInfo[];
   year: number;
   semester: string;
   capacity: number;
   registrationCount: number;
   fullCapacityTime: number;
-  Professor: professorInfo[];
 }
 
 export interface RecordLectureSectionInfo extends LectureSectionInfo {

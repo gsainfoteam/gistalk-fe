@@ -1,10 +1,14 @@
 import { zIndex } from "@/style/zIndex";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { FaChartLine } from "react-icons/fa6";
+import { FaChartLine, FaList } from "react-icons/fa6";
 import { FaCircleUser } from "react-icons/fa6";
 import { theme } from "@/style/theme";
-import { MAIN_INDEX, PROFILE_INDEX } from "@/constants/activeTabIndex";
+import {
+  CURRENT_SEMESTER_INDEX,
+  MAIN_INDEX,
+  PROFILE_INDEX,
+} from "@/constants/activeTabIndex";
 
 const TabBarContainer = styled.div<{ isScrolled: boolean }>`
   position: fixed;
@@ -56,14 +60,27 @@ function NavigationBar({ activeTab, onTabChange }: TabBarProps) {
 
   return (
     <TabBarContainer isScrolled={isScrolled}>
-      <Tab active={activeTab === MAIN_INDEX} onClick={() => onTabChange(MAIN_INDEX)}>
+      <Tab
+        active={activeTab === MAIN_INDEX}
+        onClick={() => onTabChange(MAIN_INDEX)}
+      >
         <FaChartLine size={20} />
         강의평가
       </Tab>
       {/* <Tab active={activeTab === 1} onClick={() => onTabChange(1)}>
         강의비교
       </Tab> */}
-      <Tab active={activeTab === PROFILE_INDEX} onClick={() => onTabChange(PROFILE_INDEX)}>
+      <Tab
+        active={activeTab === CURRENT_SEMESTER_INDEX}
+        onClick={() => onTabChange(CURRENT_SEMESTER_INDEX)}
+      >
+        <FaList size={20} />
+        가을학기 강의
+      </Tab>
+      <Tab
+        active={activeTab === PROFILE_INDEX}
+        onClick={() => onTabChange(PROFILE_INDEX)}
+      >
         <FaCircleUser size={20} />
         사용자 정보
       </Tab>
