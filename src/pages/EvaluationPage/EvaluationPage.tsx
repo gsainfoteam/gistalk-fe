@@ -232,13 +232,14 @@ export function EvaluationPage() {
           />
         )}
 
-        {/**!isLectureInfoLoading && 보류
+        {!isLectureInfoLoading &&
         isEvaluationEmpty &&
-        isEvaluationEmpty.filter((value) => value != null)[0] != undefined &&
+        (selectedId.filter((id) => id !== null).some((id) => 
+          isEvaluationEmpty[selectedId.indexOf(id)]) || 
+        isEvaluationEmpty.every((value) => value === true)) &&
         <Card> 
-          {isEvaluationEmpty.filter((empty) => empty !== null).map((empty) =>
-            noProfData(lectureInfo.LectureSection, empty)).join(", ")} 교수님의 데이터가 없습니다.
-        </Card>*/}
+          데이터가 없습니다.
+        </Card>}
 
         <GraphWrap>
         {!isLectureInfoLoading && selectedEvaluation && averageEvaluation && (
