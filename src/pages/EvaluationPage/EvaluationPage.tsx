@@ -198,6 +198,7 @@ export function EvaluationPage() {
     
   const selectedReview: recordInfo[][] = []; //리뷰 정보를 배열로 변환해 저장
   !isEvaluationLoading && makeReviewData(selectedId, selectedReview, reviewList);
+  makeSameReviewAsOne(selectedReview)
 
   const selectedEvaluation = //선택한 교수가 없는 경우 전체 점수의 평균을 보여주고, 선택한 교수가 있는 경우 그 교수의 점수의 평균만 보여줌. 만약에 데이터가 모두 없는 경우 각 값에 null을 할당
     !isLectureInfoLoading && !isEvaluationLoading && reviewList
@@ -299,10 +300,9 @@ export function EvaluationPage() {
                 ? <NoComment />
                 : selectedReview.map((select, index) => (
                     <div key={selectedId[index]}>
-                      {select.map((review: recordInfo) => (
-                        makeSameReviewAsOne(selectedReview),
+                      {select.map((review: recordInfo) => 
                         <Reply key={review.id} replyData={review} />
-                      ))}
+                      )}
                     </div>
                   )))}
         </Upper>
