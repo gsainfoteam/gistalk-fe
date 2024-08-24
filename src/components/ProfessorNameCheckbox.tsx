@@ -17,7 +17,8 @@ const CheckboxContainer = styled.label<{
   isClicked: boolean, 
   color: string, 
   vividColor: string, 
-  isWrite: boolean,}>`
+  isWrite: boolean, 
+  isEvaluationEmpty: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -27,12 +28,14 @@ const CheckboxContainer = styled.label<{
   padding-bottom: 2px;
   gap: 4px;
   background: ${(props) => 
-    (props.isClicked && !props.isWrite) ? props.color : theme.colors.white};
+    (props.isClicked && 
+    !props.isWrite &&
+    !props.isEvaluationEmpty) ? props.color : theme.colors.white};
 
   border-radius: 5px;
 `;
 
-const CheckboxInput = styled.input<{ color: string, isWrite: boolean }>`
+const CheckboxInput = styled.input<{ color: string, isWrite: boolean, isEvaluationEmpty: boolean }>`
   appearance: none;
   width: ${inputSize.big};
   height: ${inputSize.big};
@@ -40,16 +43,21 @@ const CheckboxInput = styled.input<{ color: string, isWrite: boolean }>`
   border-radius: ${borderRadius.circle};
   outline: none;
   cursor: pointer;
+  ${(props) => props.isEvaluationEmpty && css`opacity: 0.3;`}
 
-  &:checked {
-    background-color: ${(props) => props.isWrite ? theme.colors.primary : props.color};
-    border: 1.5px solid ${(props) => props.isWrite ? theme.colors.primary : props.color};
+  ${(props) => !props.isEvaluationEmpty &&
+    css`
+      &:checked {
+      background-color: ${props.isWrite ? theme.colors.primary : props.color};
+      border: 1.5px solid ${props.isWrite ? theme.colors.primary : props.color};
+    }
+    `
   }
 `;
 
-const CheckboxText = styled.span`
+const CheckboxText = styled.span<{ isEvaluationEmpty: boolean }>`
   font-size: 15px;
-  color: ${theme.colors.black};
+  color: ${(props) => props.isEvaluationEmpty ? theme.colors.grayStroke : theme.colors.black};
 `;
 
 const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
@@ -72,6 +80,7 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
     color={theme.RadarColor(opacity.background)[profNumber]} 
     vividColor={theme.RadarColor(opacity.true)[profNumber]}
     isWrite={isWrite}
+    isEvaluationEmpty={isEvaluationEmpty[profNumber]}
     >
       <CheckboxInput
         type="checkbox"
@@ -79,8 +88,9 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
         color={theme.RadarColor(opacity.none)[profNumber]}
         onChange={toggleCheckbox}
         isWrite={isWrite}
+        isEvaluationEmpty={isEvaluationEmpty[profNumber]}
       />
-      <CheckboxText>{text}</CheckboxText>
+      <CheckboxText isEvaluationEmpty={isEvaluationEmpty[profNumber]}>{text}</CheckboxText>
     </CheckboxContainer>
   );
 };
