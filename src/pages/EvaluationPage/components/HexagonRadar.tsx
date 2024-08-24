@@ -1,6 +1,5 @@
-import { theme } from "@/style/theme";
+import { opacity, theme } from "@/style/theme";
 import { Radar } from "recharts";
-import { opacity } from "../EvaluationPage.const";
 
 export function hexagonRadar (
     selectedIndex: number, 

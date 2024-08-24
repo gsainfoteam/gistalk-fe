@@ -88,19 +88,3 @@ export const SUBJECT_SHOW_ORDER = [
   AVERAGE_SATISFY,
   AVERAGE_STRENGTH,
 ];
-
-export const opacity = {
-  none: 1,
-  true: 0.6,
-  background: 0.2
-}
-
-export const inputSize = {
-  small: css`18px`,
-  big: css`20px`
-}
-
-export const borderRadius = {
-  none: css`0px`,
-  circle: css`10px`
-}

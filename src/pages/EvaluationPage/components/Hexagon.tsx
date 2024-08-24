@@ -8,7 +8,7 @@ import {
 import styled from "styled-components";
 import { theme } from "@/style/theme";
 
-import { HexLabels, HexagonData, opacity } from "../EvaluationPage.const";
+import { HexLabels, HexagonData } from "../EvaluationPage.const";
 import { hexagonRadar } from "./HexagonRadar";
 
 interface HexagonProps {
