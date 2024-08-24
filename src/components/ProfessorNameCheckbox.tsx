@@ -1,5 +1,5 @@
-import { borderRadius, inputSize, opacity } from "@/pages/EvaluationPage/EvaluationPage.const";
-import { theme } from "@/style/theme";
+
+import { borderRadius, inputSize, opacity, theme } from "@/style/theme";
 import React from "react";
 import styled, { css } from "styled-components";
 

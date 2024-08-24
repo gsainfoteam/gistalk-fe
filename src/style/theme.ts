@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const RadarColor = (opacity: number) => { 
   const colors = [
@@ -83,3 +83,19 @@ export const theme = {
   colors,
   universalComponent,
 };
+
+export const opacity = {
+  none: 1,
+  true: 0.6,
+  background: 0.2
+}
+
+export const inputSize = {
+  small: css`18px`,
+  big: css`20px`
+}
+
+export const borderRadius = {
+  none: css`0px`,
+  circle: css`10px`
+}

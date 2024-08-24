@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import { theme } from "@/style/theme";
+import { opacity, theme } from "@/style/theme";
 import { EvaluationToText } from "@/constants/EvaluationToText";
 import {
   EVALUATION_TEXT,
   HexagonData,
-  opacity,
   SUBJECT_SHOW_ORDER,
 } from "../EvaluationPage.const";
 
