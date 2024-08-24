@@ -129,6 +129,8 @@ const GoWriteBtn = styled(theme.universalComponent.DivTextContainer)<{
   width: 100%;
 `;
 
+let averageEvaluation: evaluationData[];
+
 export function EvaluationPage() {
   const isValidToken = useCheckValidToken();
   const [selectedId, setSelectedId] = useState<(number | null)[]>([null]);
@@ -201,11 +203,14 @@ export function EvaluationPage() {
     !isLectureInfoLoading && !isEvaluationLoading 
       ? extractEvaluationData(selectedId, reviewList, lectureInfo)
       : undefined;
+
+  selectedId.every((value) => value == null) && selectedEvaluation ? averageEvaluation = selectedEvaluation : null;
   
   const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌, 데이터가 있으면 배열의 위치를 반환
     lectureInfo &&
-    !isLectureInfoLoading
-      ? makeIsEvaluationEmpty(selectedId, selectedEvaluation, lectureInfo.LectureSection)
+    !isLectureInfoLoading &&
+    averageEvaluation
+      ? makeIsEvaluationEmpty(averageEvaluation)
       : undefined;
 
   return (
@@ -225,10 +230,11 @@ export function EvaluationPage() {
 
         {!isLectureInfoLoading && 
         isEvaluationEmpty &&
-        isEvaluationEmpty.filter((value) => value != null)[0] != undefined &&
+        (selectedId.filter((id) => id !== null).some((id) => 
+          isEvaluationEmpty[selectedId.indexOf(id)]) ||
+        isEvaluationEmpty.every((empty) => empty)) &&
         <Card>
-          {isEvaluationEmpty.filter((empty) => empty !== null).map((empty) => empty !== null &&
-            noProfData(lectureInfo.LectureSection, empty)).join(", ")} 교수님의 데이터가 없습니다.
+          데이터가 없습니다.
         </Card>}
 
         <GraphWrap>
