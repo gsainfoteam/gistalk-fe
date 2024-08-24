@@ -6,6 +6,7 @@ import {
   professorInfo,
   recordInfo,
 } from "@/Interfaces/interfaces";
+import { SUBJECT_SHOW_ORDER } from "@/pages/EvaluationPage/EvaluationPage.const";
 
 /**
  *
@@ -72,51 +73,47 @@ export const convertProfessorNameToString = (
  */
 export const extractEvaluationData = (
   selectedId: (number | null)[], 
-  reviewList: recordInfo[][] | undefined,
+  reviewList: recordInfo[][],
   lectureInfo: lectureInfo) => {
-  const reviewContent = ['difficulty', 'skill', 'helpfulness', 'interest', 'load', 'generosity'];
+  const professorArray = extractProfessors(lectureInfo.LectureSection);
+  let selectedData = professorArray.map(() => new Array());
 
-  if(reviewList) {
-    const professorArray = extractProfessors(lectureInfo.LectureSection);
-    let selectedData = professorArray.map(() => new Array());
+  selectedId.every((value) => value == null)
+    ? professorArray.map((prof, pIndex) => 
+      reviewList[0].map((review: recordInfo) => review.LectureSection.Professor.map((member) => 
+        prof.name === member.name 
+          ? selectedData[pIndex].push(review) 
+          : null)))
+    : selectedData = selectedId.filter((id) => id !== null).map((id) => 
+        reviewList[selectedId.indexOf(id)]);
+    
+  const result = selectedData.map((data) => {
+    return (
+      SUBJECT_SHOW_ORDER.reduce((acc: any, key) => {
+        acc[key] = data === null || data.every((review: recordInfo) => review === undefined) 
+          ? null
+          : data.reduce((avg: number, num: any) => avg += num[key], 0)/data.length; 
+        return acc;}, {})
+      )
+    }
+  );
 
-    selectedId.every((value) => value == null)
-      ? professorArray.map((prof, pIndex) => 
-        reviewList[0].map((review: recordInfo) => review.LectureSection.Professor.map((member) => 
-          prof.name === member.name 
-            ? selectedData[pIndex].push(review) 
-            : null)))
-      : selectedData = selectedId.filter((id) => id !== null).map((id) => 
-          reviewList[selectedId.indexOf(id)]);
-      
-    const result = selectedData.map((data) => {
-      return (
-        reviewContent.reduce((acc: any, key) => {
-          acc[key] = data === null || data.every((review: recordInfo) => review === undefined) 
-            ? null
-            : data.reduce((avg: number, num: any) => avg += num[key], 0)/data.length; 
-          return acc;}, {})
-        )
-      }
+  const averageResult = 
+    result.map((review) => //교수진 개수 만큼 같은 내용의 평균 리뷰 배열로 생성
+      SUBJECT_SHOW_ORDER.reduce((acc: any, key) => {
+        const scoreSum = result.reduce((acc, value) => {
+          value[key] !== null 
+            ? (acc[0] += value[key], acc[1]++)
+            : acc[0] += 0
+          return acc;}, [0, 0]);
+        
+        acc[key] = review[key] !== null ? scoreSum[0]/scoreSum[1] : null;
+        return acc;}, {})
     );
 
-    const averageResult = 
-      result.map((review) => //교수진 개수 만큼 같은 내용의 평균 리뷰 배열로 생성
-        reviewContent.reduce((acc: any, key) => {
-          const scoreSum = result.reduce((acc, value) => {
-            value[key] !== null 
-              ? (acc[0] += value[key], acc[1]++)
-              : acc[0] += 0
-            return acc;}, [0, 0]);
-          
-          acc[key] = review[key] !== null ? scoreSum[0]/scoreSum[1] : null;
-          return acc;}, {})
-      );
-
-    return selectedId.every((value) => value == null) 
-      ? averageResult
-      : result;
-  }
+  return selectedId.every((value) => value == null) 
+    ? averageResult
+    : result;
 };
 
 /**

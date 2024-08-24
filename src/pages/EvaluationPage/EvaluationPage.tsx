@@ -200,7 +200,7 @@ export function EvaluationPage() {
   !isEvaluationLoading && makeReviewData(selectedId, selectedReview, reviewList);
 
   const selectedEvaluation = //선택한 교수가 없는 경우 전체 점수의 평균을 보여주고, 선택한 교수가 있는 경우 그 교수의 점수의 평균만 보여줌. 만약에 데이터가 모두 없는 경우 각 값에 null을 할당
-    !isLectureInfoLoading && !isEvaluationLoading 
+    !isLectureInfoLoading && !isEvaluationLoading && reviewList
       ? extractEvaluationData(selectedId, reviewList, lectureInfo)
       : undefined;
 
