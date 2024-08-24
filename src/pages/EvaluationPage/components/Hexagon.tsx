@@ -13,6 +13,7 @@ import { hexagonRadar } from "./HexagonRadar";
 
 interface HexagonProps {
   HexData: HexagonData[];
+  averageData: HexagonData[];
   selectedId: (number | null)[];
 }
 
@@ -24,25 +25,31 @@ const Wrap = styled.div`
   overflow-y: hidden;
 `;
 
-export default function Hexagon({ HexData, selectedId }: HexagonProps) {
-  
+export default function Hexagon({ HexData, averageData, selectedId }: HexagonProps) {
   const formattedData = HexLabels.map((i) => {
     const subject = i.subject;
     const isNegative = subject === "난이도" || subject === "과제량";
-    const adjustedScore = HexData.map((Hex) => {
-      const score = Hex[i.key] && isNegative ? 6 - Hex[i.key] : Hex[i.key];
-      return Math.round(score * 10) / 10;
-    });
-
-    let dataKey: any = {
-      subject: `${subject}`,
-      fullMark: 5.0,
+    const dataKeyResult = (data: HexagonData[]) => {
+      const adjustedScore = data.map((Hex) => {
+        const score = Hex[i.key] && isNegative ? 6 - Hex[i.key] : Hex[i.key];
+        return Math.round(score * 10) / 10;
+      });
+  
+      let dataKey: any = {
+        subject: `${subject}`,
+        fullMark: 5.0,
+      };
+      data.map(
+        (Hex, index) => (dataKey[`score${index}`] = adjustedScore[index])
+      );
+  
+      return dataKey;
     };
-    HexData.map(
-      (Hex, index) => (dataKey[`score${index}`] = adjustedScore[index])
-    );
 
-    return dataKey;
+    return selectedId.every((value) => value == null) 
+      ? dataKeyResult(averageData)
+      : dataKeyResult(HexData)
+    
   });
 
   return (
@@ -65,7 +72,10 @@ export default function Hexagon({ HexData, selectedId }: HexagonProps) {
           />
           <PolarRadiusAxis domain={[0, 5]} angle={90} />
           {selectedId.every((value) => value == null) 
-            ? hexagonRadar(0, 0, selectedId)
+            ? hexagonRadar(
+              0, 
+              averageData.findIndex((data) => Object.values(data).every((content) => content !== null)), 
+              selectedId)
             : selectedId.filter((id) => (id !== null)).map((id, index) => 
               hexagonRadar(selectedId.indexOf(id), index, selectedId)
           )}

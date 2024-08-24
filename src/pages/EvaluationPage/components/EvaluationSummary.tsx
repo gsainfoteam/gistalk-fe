@@ -45,6 +45,7 @@ const ConcreteInfo = styled(theme.universalComponent.DivTextContainer)<{
 
 interface SummaryProps {
   evaluationData: HexagonData[];
+  averageData: HexagonData[];
   selectedId: (number | null)[];
 }
 
@@ -63,13 +64,14 @@ const HIGH = 2;
 
 export default function EvaluationSummary({
   evaluationData,
+  averageData,
   selectedId,
 }: SummaryProps) {
   let result: JSX.Element[] = [];
 
-  function showResult(order: number, idIndex: number) {
-    evaluationData.map((summary, index) => {
-      if (evaluationData == null) {
+  function showResult(order: number, idIndex: number, reviewData: HexagonData[]) {
+    reviewData.map((summary, index) => {
+      if (reviewData == null) {
         return null;
       }
 
@@ -115,8 +117,12 @@ export default function EvaluationSummary({
     return result[idIndex];
   }
 
+  console.log();
   return <>{selectedId.every((value) => value === null) 
-    ? showResult(0, 0)
+    ? showResult(
+      0, 
+      averageData.findIndex((data) => Object.values(data).every((content) => content !== null)), 
+      averageData)
     : selectedId.filter((id) => id !== null).map((id, index) => 
-        showResult(selectedId.indexOf(id), index))}</>;
+        showResult(selectedId.indexOf(id), index, evaluationData))}</>;
 }

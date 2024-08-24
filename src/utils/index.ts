@@ -6,6 +6,7 @@ import {
   professorInfo,
   recordInfo,
 } from "@/Interfaces/interfaces";
+import { SUBJECT_SHOW_ORDER } from "@/pages/EvaluationPage/EvaluationPage.const";
 
 /**
  *
@@ -63,6 +64,26 @@ export const convertProfessorNameToString = (
 };
 
 /**
+ * index 내에서 사용되는 함수로, 입력받은 값을 evaluationData로 변형하는 역할
+ * 
+ * @param selectedData 
+ * @returns 
+ */
+const makeEvaluationResult = (
+  selectedData: recordInfo[][]) => {
+  return selectedData.map((data) => {
+    return (
+      SUBJECT_SHOW_ORDER.reduce((acc: any, key) => {
+        acc[key] = data === null || data.every((review: recordInfo) => review === undefined) 
+          ? null
+          : data.reduce((avg: number, num: any) => avg += num[key], 0)/data.length; 
+        return acc;}, {})
+      )
+    }
+  );
+}
+
+/**
  * 특정 수업의 리뷰 점수를 합산하여 평균을 구한다. 
  * 
  * @param selectedId 
@@ -72,52 +93,52 @@ export const convertProfessorNameToString = (
  */
 export const extractEvaluationData = (
   selectedId: (number | null)[], 
-  reviewList: recordInfo[][] | undefined,
+  reviewList: recordInfo[][],
   lectureInfo: lectureInfo) => {
-  const reviewContent = ['difficulty', 'skill', 'helpfulness', 'interest', 'load', 'generosity'];
+  const professorArray = extractProfessors(lectureInfo.LectureSection);
+  let selectedData = professorArray.map(() => new Array());
 
-  if(reviewList) {
-    const professorArray = extractProfessors(lectureInfo.LectureSection);
-    let selectedData = professorArray.map(() => new Array());
+  selectedData = selectedId.filter((id) => id !== null).map((id) => 
+        reviewList[selectedId.indexOf(id)]);
 
-    selectedId.every((value) => value == null)
-      ? professorArray.map((prof, pIndex) => 
-        reviewList[0].map((review: recordInfo) => review.LectureSection.Professor.map((member) => 
-          prof.name === member.name 
-            ? selectedData[pIndex].push(review) 
-            : null)))
-      : selectedData = selectedId.filter((id) => id !== null).map((id) => 
-          reviewList[selectedId.indexOf(id)]);
-      
-    const result = selectedData.map((data) => {
-      return (
-        reviewContent.reduce((acc: any, key) => {
-          acc[key] = data === null || data.every((review: recordInfo) => review === undefined) 
-            ? null
-            : data.reduce((avg: number, num: any) => avg += num[key], 0)/data.length; 
-          return acc;}, {})
-        )
-      }
+  return makeEvaluationResult(selectedData);
+};
+
+/**
+ * 강의의 총 평균 점수를 교수 명수 대로 반환. 만약 교수의 리뷰 데이터가 없으면 null 할당.
+ * 
+ * @param reviewList 
+ * @param lectureInfo 
+ * @returns 
+ */
+export const extractEvaluationAvg = (
+  reviewList: recordInfo[][],
+  lectureInfo: lectureInfo) => {
+  const professorArray = extractProfessors(lectureInfo.LectureSection);
+  let selectedData = professorArray.map(() => new Array());
+
+  professorArray.map((prof, pIndex) => 
+    reviewList[0].map((review: recordInfo) => review.LectureSection.Professor.map((member) => 
+      prof.name === member.name &&
+       selectedData[pIndex].push(review))))
+  
+  const result = makeEvaluationResult(selectedData);
+
+  const averageResult =
+    result.map((review) => 
+      SUBJECT_SHOW_ORDER.reduce((acc: any, key) => {
+        const scoreSum = result.reduce((acc, value) => {
+          value[key] !== null 
+            ? (acc[0] += value[key], acc[1]++)
+            : acc[0] += 0
+          return acc;}, [0, 0]);
+        
+        acc[key] = review[key] === null ? null : scoreSum[0]/scoreSum[1];
+        return acc;}, {})
     );
 
-    const averageResult = 
-      result.map((review) => //교수진 개수 만큼 같은 내용의 평균 리뷰 배열로 생성
-        reviewContent.reduce((acc: any, key) => {
-          const scoreSum = result.reduce((acc, value) => {
-            value[key] !== null 
-              ? (acc[0] += value[key], acc[1]++)
-              : acc[0] += 0
-            return acc;}, [0, 0]);
-          
-          acc[key] = review[key] !== null ? scoreSum[0]/scoreSum[1] : null;
-          return acc;}, {})
-      );
-
-    return selectedId.every((value) => value == null) 
-      ? averageResult
-      : result;
-  }
-};
+  return averageResult;
+}
 
 /**
  *

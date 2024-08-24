@@ -18,13 +18,13 @@ import {
 } from "@/apis/lectures";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
-import { concatProfessorNames, convertLectureCodeToList, extractEvaluationData, extractProfessors, makeSelectedIdNull } from "@/utils";
+import { concatProfessorNames, convertLectureCodeToList, extractEvaluationAvg, extractEvaluationData, extractProfessors, makeSelectedIdNull } from "@/utils";
 import { recordInfo } from "@/Interfaces/interfaces";
 import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { getLectureEachEvaluation } from "@/apis/records";
 import { NoComment } from "./components/NoComment";
-import { makeIsEvaluationEmpty, makeReviewData, makeSameReviewAsOne, noProfData, reviewAmount, spliceEmptyProfLectureInfo, spliceEmptyProfReviewList } from "./EvaluationPage.util";
+import { makeIsEvaluationEmpty, makeReviewData, makeSameReviewAsOne, reviewAmount, spliceEmptyProfLectureInfo, spliceEmptyProfReviewList } from "./EvaluationPage.util";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -195,24 +195,32 @@ export function EvaluationPage() {
   reviewList && spliceEmptyProfReviewList(reviewList[0]);
     
   const selectedReview: recordInfo[][] = []; //리뷰 정보를 배열로 변환해 저장
-  !isEvaluationLoading && makeReviewData(selectedId, selectedReview, reviewList);
+  !isEvaluationLoading && reviewList && makeReviewData(selectedId, selectedReview, reviewList);
+  makeSameReviewAsOne(selectedReview);
 
-  const selectedEvaluation = //선택한 교수가 없는 경우 전체 점수의 평균을 보여주고, 선택한 교수가 있는 경우 그 교수의 점수의 평균만 보여줌. 만약에 데이터가 모두 없는 경우 각 값에 null을 할당
-    !isLectureInfoLoading && !isEvaluationLoading 
+  const selectedEvaluation = //교수를 선택하면 그 교수의 점수의 평균만 보여줌. 만약에 데이터가 모두 없는 경우 각 값에 null을 할당
+    !isLectureInfoLoading && !isEvaluationLoading && reviewList
       ? extractEvaluationData(selectedId, reviewList, lectureInfo)
+      : undefined;
+
+  const averageEvaluation = //평균 교수의 
+    !isLectureInfoLoading && !isEvaluationLoading && reviewList
+      ? extractEvaluationAvg(reviewList, lectureInfo)
       : undefined;
   
   const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌, 데이터가 있으면 배열의 위치를 반환
     lectureInfo &&
-    !isLectureInfoLoading
-      ? makeIsEvaluationEmpty(selectedId, selectedEvaluation, lectureInfo.LectureSection)
+    !isLectureInfoLoading &&
+    averageEvaluation &&
+    reviewList
+      ? makeIsEvaluationEmpty(averageEvaluation, lectureInfo.LectureSection)
       : undefined;
 
   return (
     <>
       <NavigationHeader text={"강의평"} isNavigateHome={true} />
       <Wrap>
-        {!isLectureInfoLoading && lectureInfo && (
+        {!isLectureInfoLoading && lectureInfo && isEvaluationEmpty &&(
           <Title
             handleCheckboxChange={handleCheckboxChange}
             subjectTitle={lectureInfo.name}
@@ -220,21 +228,23 @@ export function EvaluationPage() {
             subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
             selectedId={selectedId}
             isWrite={false}
+            isEvaluationEmpty={isEvaluationEmpty}
           />
         )}
 
-        {!isLectureInfoLoading && 
+        {/**!isLectureInfoLoading && 보류
         isEvaluationEmpty &&
         isEvaluationEmpty.filter((value) => value != null)[0] != undefined &&
-        <Card>
-          {isEvaluationEmpty.filter((empty) => empty !== null).map((empty) => empty !== null &&
+        <Card> 
+          {isEvaluationEmpty.filter((empty) => empty !== null).map((empty) =>
             noProfData(lectureInfo.LectureSection, empty)).join(", ")} 교수님의 데이터가 없습니다.
-        </Card>}
+        </Card>*/}
 
         <GraphWrap>
-        {!isLectureInfoLoading && selectedEvaluation && (
+        {!isLectureInfoLoading && selectedEvaluation && averageEvaluation && (
           <Hexagon 
             HexData={selectedEvaluation ?? null} 
+            averageData={averageEvaluation ?? null}
             selectedId={selectedId} />
             )}
         </GraphWrap>
@@ -242,9 +252,10 @@ export function EvaluationPage() {
         <Upper>
           <SummaryWrapper>
             <SummaryScroll>
-            {!isLectureInfoLoading && selectedEvaluation && (
+            {!isLectureInfoLoading && selectedEvaluation && averageEvaluation && (
               <EvaluationSummary 
                 evaluationData={selectedEvaluation ?? null} 
+                averageData={averageEvaluation ?? null}
                 selectedId={selectedId}
               />
               )}
@@ -271,11 +282,11 @@ export function EvaluationPage() {
 
           {reviewList && //로딩이 완료되고 나서 강의평이 존재하지 않는 경우를 핸들링
           selectedReview.every((value) => value != undefined) &&
-          selectedEvaluation &&
+          averageEvaluation &&
           !isLectureInfoLoading &&
           lectureInfo &&
           selectedId.every((value) => value === null) //아무런 교수도 선택하지 않았을 때
-            ? selectedEvaluation.every((value) => 
+            ? averageEvaluation.every((value) =>
               Object.values(value).every((content) => content === null))
               ? <NoComment />
               : reviewList[0].map(
@@ -294,7 +305,6 @@ export function EvaluationPage() {
                 : selectedReview.map((select, index) => (
                     <div key={selectedId[index]}>
                       {select.map((review: recordInfo) => (
-                        makeSameReviewAsOne(selectedReview),
                         <Reply key={review.id} replyData={review} />
                       ))}
                     </div>

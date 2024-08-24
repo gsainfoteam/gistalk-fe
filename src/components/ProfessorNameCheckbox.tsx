@@ -10,9 +10,14 @@ interface CheckboxProps {
   onCheckboxChange: (id: number, profNumber: number) => void;
   profNumber: number;
   isWrite: boolean;
+  isEvaluationEmpty: boolean[];
 }
 
-const CheckboxContainer = styled.label<{ isClicked: boolean, color: string, vividColor: string, isWrite: boolean }>`
+const CheckboxContainer = styled.label<{ 
+  isClicked: boolean, 
+  color: string, 
+  vividColor: string, 
+  isWrite: boolean,}>`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -21,7 +26,8 @@ const CheckboxContainer = styled.label<{ isClicked: boolean, color: string, vivi
   padding-top: 2px;
   padding-bottom: 2px;
   gap: 4px;
-  background: ${(props) => (props.isClicked && !props.isWrite) ? props.color : theme.colors.white};
+  background: ${(props) => 
+    (props.isClicked && !props.isWrite) ? props.color : theme.colors.white};
 
   border-radius: 5px;
 `;
@@ -53,6 +59,7 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
   onCheckboxChange,
   profNumber,
   isWrite,
+  isEvaluationEmpty,
 }) => {
   const isChecked = id === selectedId[profNumber];
 
