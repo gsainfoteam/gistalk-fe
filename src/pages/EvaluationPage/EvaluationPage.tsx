@@ -160,7 +160,7 @@ export function EvaluationPage() {
   /**강의별 id */
   const id = Number(params.id);
 
-  const evaluationData = useQueries({
+  const {data: evaluationData, isLoading: isEvaluationLoading} = useQueries({
     queries: selectedId.map((select) => {
       //selectedId가 null일 때는 특정 lectureId의 전체값을 가져옴
       return {
@@ -188,11 +188,10 @@ export function EvaluationPage() {
   });
 
   const { data: lectureInfo } = { ...lectureInfoData };
-  !isLectureInfoLoading && lectureInfo && spliceEmptyProfLectureInfo(lectureInfo.LectureSection);
+  if (!isLectureInfoLoading && lectureInfo) spliceEmptyProfLectureInfo(lectureInfo.LectureSection);
 
-  const isEvaluationLoading = evaluationData.isLoading;
   const reviewList = !isEvaluationLoading 
-    ? evaluationData.data.map((test) => test !== undefined && test.data) 
+    ? evaluationData.map((test) => test !== undefined && test.data) 
     : undefined;
   reviewList && spliceEmptyProfReviewList(reviewList[0]);
     
@@ -207,7 +206,7 @@ export function EvaluationPage() {
 
   selectedId.every((value) => value == null) && selectedEvaluation ? averageEvaluation = selectedEvaluation : null;
   
-  const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌, 데이터가 있으면 배열의 위치를 반환
+  const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌
     lectureInfo &&
     !isLectureInfoLoading &&
     averageEvaluation

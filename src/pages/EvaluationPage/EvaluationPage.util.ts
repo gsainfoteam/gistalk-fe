@@ -46,7 +46,7 @@ export const makeReviewData: makeReviewData = (selectedId, selectedReview, revie
  * 선택한 교수의 강의평 작성 여부를 알려주는 함수.
  * 
  * @param averageEvaluation 
- * @returns -만약 특정 교수의 강의평이 작성되지 않았다면 그 강의의 배열 위치를 반환. 작성 되었다면 null 반환
+ * @returns -특정 교수의 강의평이 작성되지 않았다면 true 반환. 작성 되었다면 false 반환
  */
 export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (
   averageEvaluation
