@@ -24,7 +24,7 @@ import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { getLectureEachEvaluation } from "@/apis/records";
 import { NoComment } from "./components/NoComment";
-import { isAllSelectedIdNull, makeIsEvaluationEmpty, makeReviewData, makeSameReviewAsOne, noProfData, reviewAmount, spliceEmptyProfLectureInfo, spliceEmptyProfReviewList } from "./EvaluationPage.util";
+import { isAllSelectedIdNull, makeIsEvaluationEmpty, makeReviewData, spliceSameReviewAsOne, reviewAmount, spliceEmptyProfLectureInfo, spliceEmptyProfReviewList } from "./EvaluationPage.util";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -196,8 +196,8 @@ export function EvaluationPage() {
   reviewList && spliceEmptyProfReviewList(reviewList[0]);
     
   const selectedReview: recordInfo[][] = []; //리뷰 정보를 배열로 변환해 저장
-  !isEvaluationLoading && makeReviewData(selectedId, selectedReview, reviewList);
-  makeSameReviewAsOne(selectedReview)
+  !isEvaluationLoading && reviewList && makeReviewData(selectedId, selectedReview, reviewList);
+  spliceSameReviewAsOne(selectedReview)
 
   const selectedEvaluation = //선택한 교수가 없는 경우 전체 점수의 평균을 보여주고, 선택한 교수가 있는 경우 그 교수의 점수의 평균만 보여줌. 만약에 데이터가 모두 없는 경우 각 값에 null을 할당
     !isLectureInfoLoading && !isEvaluationLoading && reviewList
