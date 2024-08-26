@@ -6,6 +6,7 @@ import {
   HexagonData,
   SUBJECT_SHOW_ORDER,
 } from "../EvaluationPage.const";
+import { isAllSelectedIdNull } from "../EvaluationPage.util";
 
 const ConcreteInfoGrid = styled.div`
   margin: 10px auto 0 auto;
@@ -91,7 +92,7 @@ export default function EvaluationSummary({
               key={index}
               color={theme.colors.secondaryText}
               colorP={
-                selectedId.every((value) => value == null)
+                isAllSelectedIdNull(selectedId)
                   ? theme.colors.primary
                   : theme.RadarColor(opacity.none)[order]
               }
@@ -114,7 +115,7 @@ export default function EvaluationSummary({
     return result[idIndex];
   }
 
-  return <>{selectedId.every((value) => value === null) 
+  return <>{isAllSelectedIdNull(selectedId) 
     ? showResult(0, 0)
     : selectedId.filter((id) => id !== null).map((id, index) => 
         showResult(selectedId.indexOf(id), index))}</>;

@@ -1,5 +1,6 @@
 import { opacity, theme } from "@/style/theme";
 import { Radar } from "recharts";
+import { isAllSelectedIdNull } from "../EvaluationPage.util";
 
 export function hexagonRadar (
     selectedIndex: number, 
@@ -11,13 +12,13 @@ export function hexagonRadar (
         name="Standard"
         dataKey={`score${idIndex}`}
         fill={
-        selectedId.every((value) => value == null)
+        isAllSelectedIdNull(selectedId)
             ? theme.colors.primary
             : theme.RadarColor(opacity.true)[selectedIndex]
         }
         fillOpacity={
-        selectedId.every((value) => value == null)
-        ? opacity.true : opacity.none
+        isAllSelectedIdNull(selectedId)
+            ? opacity.true : opacity.none
         }
         />
     )

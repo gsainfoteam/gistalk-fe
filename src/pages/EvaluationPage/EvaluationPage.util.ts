@@ -108,3 +108,13 @@ export const makeSameReviewAsOne = (selectedReview: recordInfo[][]) => {
       ))
     )
 }
+
+/**
+ * 아무런 교수도 선택하지 않았을 때 true 반환
+ * 
+ * @param selectedId 
+ * @returns 
+ */
+export const isAllSelectedIdNull = (selectedId: (number | null)[]) => {
+  return selectedId.every((value) => value === null);
+}

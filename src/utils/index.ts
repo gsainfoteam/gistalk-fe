@@ -7,6 +7,7 @@ import {
   recordInfo,
 } from "@/Interfaces/interfaces";
 import { SUBJECT_SHOW_ORDER } from "@/pages/EvaluationPage/EvaluationPage.const";
+import { isAllSelectedIdNull } from "@/pages/EvaluationPage/EvaluationPage.util";
 
 /**
  *
@@ -78,7 +79,7 @@ export const extractEvaluationData = (
   const professorArray = extractProfessors(lectureInfo.LectureSection);
   let selectedData = professorArray.map(() => new Array());
 
-  selectedId.every((value) => value == null)
+  isAllSelectedIdNull(selectedId)
     ? professorArray.map((prof, pIndex) => 
       reviewList[0].map((review: recordInfo) => review.LectureSection.Professor.map((member) => 
         prof.name === member.name 
@@ -111,7 +112,7 @@ export const extractEvaluationData = (
         return acc;}, {})
     );
 
-  return selectedId.every((value) => value == null) 
+  return isAllSelectedIdNull(selectedId) 
     ? averageResult
     : result;
 };

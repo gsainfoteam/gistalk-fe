@@ -10,6 +10,7 @@ import { theme } from "@/style/theme";
 
 import { HexLabels, HexagonData } from "../EvaluationPage.const";
 import { hexagonRadar } from "./HexagonRadar";
+import { isAllSelectedIdNull } from "../EvaluationPage.util";
 
 interface HexagonProps {
   HexData: HexagonData[];
@@ -64,7 +65,7 @@ export default function Hexagon({ HexData, selectedId }: HexagonProps) {
             tick={{ fill: theme.colors.secondaryText, fontSize: 13 }}
           />
           <PolarRadiusAxis domain={[0, 5]} angle={90} />
-          {selectedId.every((value) => value == null) 
+          {isAllSelectedIdNull(selectedId) 
             ? hexagonRadar(0, 0, selectedId)
             : selectedId.filter((id) => (id !== null)).map((id, index) => 
               hexagonRadar(selectedId.indexOf(id), index, selectedId)
