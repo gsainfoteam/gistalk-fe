@@ -68,7 +68,8 @@ export default function EvaluationSummary({
 }: SummaryProps) {
   let result: JSX.Element[] = [];
 
-  function showResult(order: number, existIndex: number) {
+  function showResult(order: number, existIndex: number) { 
+    //existIndex는 교수자 선택 시 교수자의 index 값을, 그 외에는 리뷰가 있는 첫 번째 교수자의 index를 갖는다. 
     selectedEvaluation.map((summary, index) => {
       if (selectedEvaluation == null) {
         return null;
