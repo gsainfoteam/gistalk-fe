@@ -24,7 +24,7 @@ import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { getLectureEachEvaluation } from "@/apis/records";
 import { NoComment } from "./components/NoComment";
-import { makeIsEvaluationEmpty, makeReviewData, makeSameReviewAsOne, reviewAmount, spliceEmptyProfLectureInfo, spliceEmptyProfReviewList } from "./EvaluationPage.util";
+import { isAllSelectedIdNull, makeIsEvaluationEmpty, makeReviewData, spliceSameReviewAsOne, reviewAmount, spliceEmptyProfLectureInfo, spliceEmptyProfReviewList } from "./EvaluationPage.util";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -162,7 +162,7 @@ export function EvaluationPage() {
   /**강의별 id */
   const id = Number(params.id);
 
-  const evaluationData = useQueries({
+  const {data: evaluationData, isLoading: isEvaluationLoading} = useQueries({
     queries: selectedId.map((select) => {
       //selectedId가 null일 때는 특정 lectureId의 전체값을 가져옴
       return {
@@ -190,31 +190,34 @@ export function EvaluationPage() {
   });
 
   const { data: lectureInfo } = { ...lectureInfoData };
-  !isLectureInfoLoading && lectureInfo && spliceEmptyProfLectureInfo(lectureInfo.LectureSection);
+  if (!isLectureInfoLoading && lectureInfo) spliceEmptyProfLectureInfo(lectureInfo.LectureSection);
 
-  const isEvaluationLoading = evaluationData.isLoading;
   const reviewList = !isEvaluationLoading 
-    ? evaluationData.data.map((value) => value !== undefined && value.data) 
+    ? evaluationData.map((test) => test !== undefined && test.data) 
     : undefined;
   reviewList && spliceEmptyProfReviewList(reviewList[0]);
     
   const selectedReview: recordInfo[][] = []; //리뷰 정보를 배열로 변환해 저장
-  !isEvaluationLoading && makeReviewData(selectedId, selectedReview, reviewList);
-  makeSameReviewAsOne(selectedReview)
+  !isEvaluationLoading && reviewList && makeReviewData(selectedId, selectedReview, reviewList);
+  spliceSameReviewAsOne(selectedReview)
 
   const selectedEvaluation = //선택한 교수가 없는 경우 전체 점수의 평균을 보여주고, 선택한 교수가 있는 경우 그 교수의 점수의 평균만 보여줌. 만약에 데이터가 모두 없는 경우 각 값에 null을 할당
     !isLectureInfoLoading && !isEvaluationLoading && reviewList
       ? extractEvaluationData(selectedId, reviewList, lectureInfo)
       : undefined;
 
-  selectedId.every((value) => value == null) && selectedEvaluation ? averageEvaluation = selectedEvaluation : null;
-  
-  const isEvaluationEmpty = //선택한 강의의 데이터 유무를 보여줌, 데이터가 있으면 배열의 위치를 반환
-    lectureInfo &&
-    !isLectureInfoLoading &&
-    averageEvaluation
-      ? makeIsEvaluationEmpty(averageEvaluation)
-      : undefined;
+  isAllSelectedIdNull(selectedId) && selectedEvaluation ? averageEvaluation = selectedEvaluation : null;
+
+  const isEvaluationEmpty = 
+    averageEvaluation &&
+    (selectedId.filter((id) => id !== null).some((id) => 
+      makeIsEvaluationEmpty(averageEvaluation)[selectedId.indexOf(id)]) ||
+    makeIsEvaluationEmpty(averageEvaluation).every((empty) => empty))
+
+  const isReviewNotExist = //교수자가 선택되지 않았을 땐 전체 리뷰의 존재를 판단하고 선택됐을 땐 선택된 리뷰를 판단
+    selectedEvaluation &&
+    selectedEvaluation.every((value) => 
+    Object.values(value).every((content) => content === null));
 
   return (
     <>
@@ -231,17 +234,13 @@ export function EvaluationPage() {
           />
         )}
 
-        {!isLectureInfoLoading && 
-        isEvaluationEmpty &&
-        (selectedId.filter((id) => id !== null).some((id) => 
-          isEvaluationEmpty[selectedId.indexOf(id)]) ||
-        isEvaluationEmpty.every((empty) => empty)) &&
+        {isEvaluationEmpty &&
         <Card>
           데이터가 없습니다.
         </Card>}
 
         <GraphWrap>
-        {!isLectureInfoLoading && selectedEvaluation && (
+        {selectedEvaluation && (
           <Hexagon 
             HexData={selectedEvaluation ?? null} 
             selectedId={selectedId} />
@@ -251,9 +250,9 @@ export function EvaluationPage() {
         <Upper>
           <SummaryWrapper>
             <SummaryScroll>
-            {!isLectureInfoLoading && selectedEvaluation && (
+            {selectedEvaluation && (
               <EvaluationSummary 
-                evaluationData={selectedEvaluation ?? null} 
+                selectedEvaluation={selectedEvaluation ?? null} 
                 selectedId={selectedId}
               />
               )}
@@ -267,7 +266,7 @@ export function EvaluationPage() {
           >
             한줄평
             {reviewList &&
-              (selectedId.every((value) => value === null) ? ( //아무런 교수도 선택하지 않았을 때
+              (isAllSelectedIdNull(selectedId) ? ( 
                 <span>
                   {" "}
                   이 강의에 {(reviewList[0] ?? []).length ?? 0}명이 평가를
@@ -278,35 +277,27 @@ export function EvaluationPage() {
               ))}
           </OneLineReviewText>
 
-          {reviewList && //로딩이 완료되고 나서 강의평이 존재하지 않는 경우를 핸들링
-          selectedReview.every((value) => value != undefined) &&
-          selectedEvaluation &&
-          !isLectureInfoLoading &&
-          lectureInfo &&
-          selectedId.every((value) => value === null) //아무런 교수도 선택하지 않았을 때
-            ? selectedEvaluation.every((value) => 
-              Object.values(value).every((content) => content === null))
+          {isAllSelectedIdNull(selectedId)
+            ? isReviewNotExist 
               ? <NoComment />
-              : reviewList[0].map(
+              : reviewList && reviewList[0].map( //아무 선택도 안 했지만 데이터가 있을 때 모든 리뷰 나타내기
                   (
-                    reviewContent: recordInfo //아무 선택도 안 했을 때 모든 리뷰 나타내기
+                    reviewContent: recordInfo 
                   ) => (
                     <Reply key={reviewContent.id} replyData={reviewContent} />
                   )
                 )
             : //교수를 선택했을 때
-              !isEvaluationLoading &&
-              (selectedReview.every(
-                (value) => value != undefined && value.length === 0
-              )
+              !isAllSelectedIdNull(selectedId) && //로딩중일 때 "데이터가 없습니다"가 뜨지 않도록 핸들링
+              isReviewNotExist
                 ? <NoComment />
-                : selectedReview.map((select, index) => (
+                : selectedReview && selectedReview.map((select, index) => (
                     <div key={selectedId[index]}>
                       {select.map((review: recordInfo) => 
                         <Reply key={review.id} replyData={review} />
                       )}
                     </div>
-                  )))}
+                  ))}
         </Upper>
       </Wrap>
 

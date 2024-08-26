@@ -8,11 +8,12 @@ import {
 import styled from "styled-components";
 import { theme } from "@/style/theme";
 
-import { HexLabels, HexagonData } from "../EvaluationPage.const";
+import { HexLabels, HexagonData, evaluationData } from "../EvaluationPage.const";
 import { hexagonRadar } from "./HexagonRadar";
+import { indexOfExistData, isAllSelectedIdNull } from "../EvaluationPage.util";
 
 interface HexagonProps {
-  HexData: HexagonData[];
+  HexData: evaluationData[];
   selectedId: (number | null)[];
 }
 
@@ -29,7 +30,7 @@ export default function Hexagon({ HexData, selectedId }: HexagonProps) {
   const formattedData = HexLabels.map((i) => {
     const subject = i.subject;
     const isNegative = subject === "난이도" || subject === "과제량";
-    const adjustedScore = HexData.map((Hex) => {
+    const adjustedScore = HexData.map((Hex: any) => {
       const score = Hex[i.key] && isNegative ? 6 - Hex[i.key] : Hex[i.key];
       return Math.round(score * 10) / 10;
     });
@@ -64,8 +65,8 @@ export default function Hexagon({ HexData, selectedId }: HexagonProps) {
             tick={{ fill: theme.colors.secondaryText, fontSize: 13 }}
           />
           <PolarRadiusAxis domain={[0, 5]} angle={90} />
-          {selectedId.every((value) => value == null) 
-            ? hexagonRadar(0, 0, selectedId)
+          {isAllSelectedIdNull(selectedId) 
+            ? hexagonRadar(0, indexOfExistData(HexData), selectedId)
             : selectedId.filter((id) => (id !== null)).map((id, index) => 
               hexagonRadar(selectedId.indexOf(id), index, selectedId)
           )}

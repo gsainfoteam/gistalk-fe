@@ -27,10 +27,10 @@ const CheckboxContainer = styled.label<{ isClicked: boolean, color: string, vivi
 
 const CheckboxInput = styled.input<{ color: string, isWrite: boolean }>`
   appearance: none;
-  width: ${inputSize.big};
-  height: ${inputSize.big};
+  width: ${(props) => props.isWrite ? inputSize.big : inputSize.small};
+  height: ${(props) => props.isWrite ? inputSize.big : inputSize.small};
   border: 2px solid ${theme.colors.grayStroke};
-  border-radius: ${borderRadius.circle};
+  border-radius: ${(props) => props.isWrite ? borderRadius.circle : borderRadius.none};
   outline: none;
   cursor: pointer;
 
