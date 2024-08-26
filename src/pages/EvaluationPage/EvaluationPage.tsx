@@ -24,7 +24,7 @@ import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { getLectureEachEvaluation } from "@/apis/records";
 import { NoComment } from "./components/NoComment";
-import { makeIsEvaluationEmpty, makeReviewData, makeSameReviewAsOne, noProfData, reviewAmount, spliceEmptyProfLectureInfo, spliceEmptyProfReviewList } from "./EvaluationPage.util";
+import { makeIsEvaluationEmpty, makeReviewData, makeSameReviewAsOne, reviewAmount, spliceEmptyProfLectureInfo, spliceEmptyProfReviewList } from "./EvaluationPage.util";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -63,6 +63,7 @@ const Upper = styled.div`
 
 const SummaryWrapper = styled.div`
   position: relative;
+  height: 80px;
 
   &:hover .barWrapper {
     opacity: 0;
@@ -72,6 +73,7 @@ const SummaryWrapper = styled.div`
 
 const SummaryScroll = styled.div`
   height: 80px;
+  width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
 
@@ -88,11 +90,14 @@ const SummaryScroll = styled.div`
   }
 `;
 
-const boxFade = keyframes`
+const fade = keyframes`
   0% {
     opacity: 1;
   }
-  50% {
+  15% {
+    opacity: 0;
+  }
+  85% {
     opacity: 0;
   }
   100% {
@@ -103,16 +108,14 @@ const boxFade = keyframes`
 const ScrollBarWrapper = styled.div<{ isFade?: boolean }>`
   width: 7px;
   height: 100%;
-  opacity: 1;
   transition: opacity 0.5s ease;
-  animation-name: ${(props) => (props.isFade ? boxFade : null)};
-  animation-duration: 2s;
-
+  animation-name: ${(props) => (props.isFade ? fade : null)};
+  animation-duration: 3s;
   position: absolute;
   top: 0;
   right: 0;
 
-  background: white;
+  background: grey;
 `;
 
 /** '강의평 쓰러가기' 버튼, 가로로 꽉 차야 함 */
@@ -145,9 +148,8 @@ export function EvaluationPage() {
     _selectedId[profNumber] = id === selectedId[profNumber] ? null : id;
     setSelectedId([..._selectedId]);
 
-    selectedId[profNumber] != null ? (
-    document.addEventListener('mousedown', () => setIsFade(false)), //마우스 클릭하면 무조건 crollBar 반짝임
-    document.addEventListener('mouseup', () => setIsFade(true))) : null;
+    setIsFade(false);
+    setTimeout(() => {setIsFade(true);}, 10);
   };
 
   useEffect(() => {
@@ -192,7 +194,7 @@ export function EvaluationPage() {
 
   const isEvaluationLoading = evaluationData.isLoading;
   const reviewList = !isEvaluationLoading 
-    ? evaluationData.data.map((test) => test !== undefined && test.data) 
+    ? evaluationData.data.map((value) => value !== undefined && value.data) 
     : undefined;
   reviewList && spliceEmptyProfReviewList(reviewList[0]);
     

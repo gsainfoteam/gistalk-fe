@@ -57,19 +57,6 @@ export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (
 }
 
 /**
- * 평가 데이터가 없는 교수님들을 쉼표를 통해 string을 반환하여 나타내는 함수
- * 
- * @param lectureSection
- * @param empty 
- * @returns 
- */
-export const noProfData: noProfData = (lectureSection, empty) => {
-  const professorInfoList = extractProfessors(lectureSection);
-
-  return (`${professorInfoList[empty].name}`);
-}
-
-/**
  * 처음에 아무 것도 선택 안 됐을 때 reviewList를 기반으로 교수자가 없는 리뷰는 reviewList에서 삭제
  * 
  * @param reviews 
