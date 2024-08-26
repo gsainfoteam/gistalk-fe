@@ -115,7 +115,7 @@ const ScrollBarWrapper = styled.div<{ isFade?: boolean }>`
   top: 0;
   right: 0;
 
-  background: grey;
+  background: white;
 `;
 
 /** '강의평 쓰러가기' 버튼, 가로로 꽉 차야 함 */
@@ -149,7 +149,7 @@ export function EvaluationPage() {
     setSelectedId([..._selectedId]);
 
     setIsFade(false);
-    setTimeout(() => {setIsFade(true);}, 10);
+    setTimeout(() => {setIsFade(true);}, 50);
   };
 
   useEffect(() => {
