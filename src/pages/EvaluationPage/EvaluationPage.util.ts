@@ -1,27 +1,16 @@
-import { lectureInfo, recordInfo } from "@/Interfaces/interfaces";
-import { HexagonData } from "./EvaluationPage.const";
-
-type makeSelectedData = (
-  selectedId: (number | null)[],
-  selectedData: HexagonData[],
-  profEvaluation: any
-) => HexagonData[];
+import { LectureSectionInfo, recordInfo } from "@/Interfaces/interfaces";
+import { evaluationData, HexagonData } from "./EvaluationPage.const";
+import { extractProfessors } from "@/utils";
 
 type makeReviewData = (
   selectedId: (number | null)[],
   selectedReview: recordInfo[][],
-  reviewList: any
+  reviewList: recordInfo[][]
 ) => recordInfo[][];
 
 type makeIsEvaluationEmpty = (
-  selectedId: (number | null)[],
-  selectedEvaluation: HexagonData[]
-) => (number | null)[];
-
-type noProfData = (
-  lectureInfo: any,
-  empty: number
-) => string;
+  averageEvaluation: evaluationData[],
+) => boolean[];
 
 /**
  * 선택된 교수들의 총 리뷰 개수를 구한다. 
@@ -30,40 +19,20 @@ type noProfData = (
  * @return {number} -배열의 총 길이
  */
 export const reviewAmount = (selectedReview: recordInfo[][]) => {
-    let count = 0;
-    selectedReview.map((review) => count += review.length)
-
-    return count;
+    return selectedReview.reduce((acc, review) => acc += review.length, 0);
   };
-
-  /**
-   * 선택한 교수의 강의평 점수를 저장하여 반환함
-   * 
-   * @param selectedId 
-   * @param selectedData 
-   * @param profEvaluation 
-   * @returns 
-   */
-export const makeSelectedData: makeSelectedData = (selectedId, selectedData, profEvaluation) => {
-  selectedId.map((select, index) =>
-    select != null
-      ? (selectedData[index] = profEvaluation[index]?.data)
-      : null
-  );
-  return selectedData;
-}
 
 /**
  * 선택한 교수의 리뷰 내용을 저장하여 반환함
  * 
- * @param selectedId 
- * @param selectedReview 
- * @param reviewList 
- * @returns 
+ * @param {(number | null)[]} selectedId 
+ * @param {recordInfo[][]} selectedReview 
+ * @param {recordInfo[][]} reviewList 
+ * @returns {recordInfo[][]}
  */
 export const makeReviewData: makeReviewData = (selectedId, selectedReview, reviewList) => {
   selectedId.map((select, index) =>
-    select != null ? (selectedReview[index] = reviewList[index]?.data) : null
+    select != null && (selectedReview[index] = reviewList[index])
   );
   return selectedReview;
 }
@@ -71,28 +40,74 @@ export const makeReviewData: makeReviewData = (selectedId, selectedReview, revie
 /**
  * 선택한 교수의 강의평 작성 여부를 알려주는 함수.
  * 
- * @param selectedId 
- * @param selectedEvaluation 
- * @returns -만약 특정 교수의 강의평이 작성되었다면 그 강의의 배열 위치를 반환. 아니라면 null 반환
+ * @param {evaluationData[]} averageEvaluation 
+ * @returns {boolean} -특정 교수의 강의평이 작성되지 않았다면 true 반환. 작성 되었다면 false 반환
  */
-export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (selectedId, selectedEvaluation) => {
-  return (
-    selectedId.map((id, index) => 
-      id != null 
-        ? (selectedEvaluation[index] !== undefined && 
-        Object.values(selectedEvaluation[index]).every((value) => value === null) 
-          ? index : null) 
-        : null));
+export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (
+  averageEvaluation
+  ) => {
+  return averageEvaluation.map((score, index) =>
+      Object.values(averageEvaluation[index]).every((value) => value === null)
+        ? true : false)
 }
 
 /**
- * 평가 데이터가 없는 교수님들을 쉼표를 통해 string을 반환하여 나타내는 함수
+ * 처음에 아무 것도 선택 안 됐을 때 reviewList를 기반으로 교수자가 없는 리뷰는 reviewList에서 삭제
  * 
- * @param lectureInfo 
- * @param emptyValues 
- * @param empty 
- * @returns 
+ * @param {recordInfo[]} reviews 
  */
-export const noProfData: noProfData = (lectureInfo, empty) => {
-  return (`${lectureInfo.LectureSection[empty].Professor[0].name}`);
+export const spliceEmptyProfReviewList = (reviews: recordInfo[]) => {
+  reviews.map((review, index) => 
+    review.LectureSection.Professor.length === 0 
+      && reviews.splice(index, 1));
+}
+
+/**
+ * 교수자가 없는 lectureInfo는 그 배열 삭제
+ * 
+ * @param {LectureSectionInfo[]} lectuerSection
+ */
+export const spliceEmptyProfLectureInfo = (lectureSection: LectureSectionInfo[]) => {
+  lectureSection.map((section: LectureSectionInfo, index) => 
+    section.Professor.length === 0 
+      ? lectureSection.splice(index, 1)
+      : null);
+}
+
+
+/**
+ * 리뷰에 교수가 두 명이라면 두 교수 모두 선택했을 때 하나만 selectedReview에 저장
+ * 
+ * @param {recordInfo[][]} selectedReview 
+ */
+export const spliceSameReviewAsOne = (selectedReview: recordInfo[][]) => {
+  selectedReview.map(
+    (main, mIndex) =>
+      main.map((review) => (
+        selectedReview.slice(mIndex + 1).map((compare) => 
+          compare.some((value) => review.id === value.id) && 
+          selectedReview.splice(mIndex, 1))
+      ))
+    )
+}
+
+/**
+ * 아무런 교수도 선택하지 않았을 때 true 반환
+ * 
+ * @param {(number | null)[]} selectedId 
+ * @returns {boolean}
+ */
+export const isAllSelectedIdNull = (selectedId: (number | null)[]) => {
+  return selectedId.every((value) => value === null);
+}
+
+/**
+ * 리뷰 데이터가 있는 교수자의 index 반환
+ * 
+ * @param {evaluationData[]} selectedEvaluation 
+ * @returns {number}
+ */
+export const indexOfExistData = (selectedEvaluation: evaluationData[]) => {
+  return selectedEvaluation.findIndex((select) => 
+    Object.values(select).every((value) => value !== null));
 }

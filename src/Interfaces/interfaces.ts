@@ -99,7 +99,7 @@ export interface RecordLectureSectionInfo extends LectureSectionInfo {
   Lecture: lecture;
 }
 
-interface evaluationData {
+export interface evaluationData {
   /**난이도*/
   difficulty: number;
   /**강의력 */

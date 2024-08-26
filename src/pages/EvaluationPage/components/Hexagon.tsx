@@ -8,11 +8,13 @@ import {
 import styled from "styled-components";
 import { theme } from "@/style/theme";
 
-import { HexLabels, HexagonData, opacity } from "../EvaluationPage.const";
+import { HexLabels, HexagonData, evaluationData } from "../EvaluationPage.const";
+import { hexagonRadar } from "./HexagonRadar";
+import { indexOfExistData, isAllSelectedIdNull } from "../EvaluationPage.util";
 
 interface HexagonProps {
-  HexData: HexagonData[];
-  averageData: HexagonData[];
+  HexData: evaluationData[];
+  selectedId: (number | null)[];
 }
 
 const Wrap = styled.div`
@@ -23,11 +25,12 @@ const Wrap = styled.div`
   overflow-y: hidden;
 `;
 
-export default function Hexagon({ HexData, averageData }: HexagonProps) {
+export default function Hexagon({ HexData, selectedId }: HexagonProps) {
+  
   const formattedData = HexLabels.map((i) => {
     const subject = i.subject;
     const isNegative = subject === "난이도" || subject === "과제량";
-    const adjustedScore = HexData.map((Hex) => {
+    const adjustedScore = HexData.map((Hex: any) => {
       const score = Hex[i.key] && isNegative ? 6 - Hex[i.key] : Hex[i.key];
       return Math.round(score * 10) / 10;
     });
@@ -62,25 +65,11 @@ export default function Hexagon({ HexData, averageData }: HexagonProps) {
             tick={{ fill: theme.colors.secondaryText, fontSize: 13 }}
           />
           <PolarRadiusAxis domain={[0, 5]} angle={90} />
-          {HexData.map((Hex, index) => {
-            if (Object.values(Hex).every((value) => value != null)) {
-              return (
-                <Radar
-                  key={index}
-                  name="Standard"
-                  dataKey={`score${index}`}
-                  fill={
-                    averageData === HexData
-                      ? theme.colors.primary
-                      : theme.RadarColor(opacity.true)[index]
-                  }
-                  fillOpacity={
-                    averageData === HexData ? opacity.true : opacity.none
-                  }
-                />
-              );
-            }
-          })}
+          {isAllSelectedIdNull(selectedId) 
+            ? hexagonRadar(0, indexOfExistData(HexData), selectedId)
+            : selectedId.filter((id) => (id !== null)).map((id, index) => 
+              hexagonRadar(selectedId.indexOf(id), index, selectedId)
+          )}
         </RadarChart>
       </Wrap>
     </>
