@@ -215,7 +215,7 @@ export function EvaluationPage() {
   const isReviewNotExist = //교수자가 선택되지 않았을 땐 전체 리뷰의 존재를 판단하고 선택됐을 땐 선택된 리뷰를 판단
     selectedEvaluation &&
     selectedEvaluation.every((value) => 
-    Object.values(value).every((content) => content === null))
+    Object.values(value).every((content) => content === null));
 
   return (
     <>
@@ -250,7 +250,7 @@ export function EvaluationPage() {
             <SummaryScroll>
             {selectedEvaluation && (
               <EvaluationSummary 
-                evaluationData={selectedEvaluation ?? null} 
+                selectedEvaluation={selectedEvaluation ?? null} 
                 selectedId={selectedId}
               />
               )}

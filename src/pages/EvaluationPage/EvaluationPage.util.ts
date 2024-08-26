@@ -118,3 +118,14 @@ export const makeSameReviewAsOne = (selectedReview: recordInfo[][]) => {
 export const isAllSelectedIdNull = (selectedId: (number | null)[]) => {
   return selectedId.every((value) => value === null);
 }
+
+/**
+ * 리뷰 데이터가 있는 교수자의 index 반환
+ * 
+ * @param selectedEvaluation 
+ * @returns 
+ */
+export const indexOfExistData = (selectedEvaluation: evaluationData[]) => {
+  return selectedEvaluation.findIndex((select) => 
+    Object.values(select).every((value) => value !== null));
+}

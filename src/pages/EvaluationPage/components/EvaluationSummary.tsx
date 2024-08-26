@@ -3,10 +3,11 @@ import { opacity, theme } from "@/style/theme";
 import { EvaluationToText } from "@/constants/EvaluationToText";
 import {
   EVALUATION_TEXT,
+  evaluationData,
   HexagonData,
   SUBJECT_SHOW_ORDER,
 } from "../EvaluationPage.const";
-import { isAllSelectedIdNull } from "../EvaluationPage.util";
+import { indexOfExistData, isAllSelectedIdNull } from "../EvaluationPage.util";
 
 const ConcreteInfoGrid = styled.div`
   margin: 10px auto 0 auto;
@@ -44,11 +45,11 @@ const ConcreteInfo = styled(theme.universalComponent.DivTextContainer)<{
 `;
 
 interface SummaryProps {
-  evaluationData: HexagonData[];
+  selectedEvaluation: evaluationData[];
   selectedId: (number | null)[];
 }
 
-function sortScoresBySubject(scores: HexagonData): number[] {
+function sortScoresBySubject(scores: any): number[] {
   const sortedScores = SUBJECT_SHOW_ORDER.map((subject) => {
     const subjectScore = scores[subject];
     return subjectScore;
@@ -62,14 +63,14 @@ const MIDDLE = 1;
 const HIGH = 2;
 
 export default function EvaluationSummary({
-  evaluationData,
+  selectedEvaluation,
   selectedId,
 }: SummaryProps) {
   let result: JSX.Element[] = [];
 
   function showResult(order: number, idIndex: number) {
-    evaluationData.map((summary, index) => {
-      if (evaluationData == null) {
+    selectedEvaluation.map((summary, index) => {
+      if (selectedEvaluation == null) {
         return null;
       }
 
@@ -116,7 +117,7 @@ export default function EvaluationSummary({
   }
 
   return <>{isAllSelectedIdNull(selectedId) 
-    ? showResult(0, 0)
+    ? showResult(0, indexOfExistData(selectedEvaluation))
     : selectedId.filter((id) => id !== null).map((id, index) => 
         showResult(selectedId.indexOf(id), index))}</>;
 }
