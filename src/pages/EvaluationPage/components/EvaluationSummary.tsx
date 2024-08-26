@@ -68,7 +68,7 @@ export default function EvaluationSummary({
 }: SummaryProps) {
   let result: JSX.Element[] = [];
 
-  function showResult(order: number, idIndex: number) {
+  function showResult(order: number, existIndex: number) {
     selectedEvaluation.map((summary, index) => {
       if (selectedEvaluation == null) {
         return null;
@@ -113,7 +113,7 @@ export default function EvaluationSummary({
       );
     });
 
-    return result[idIndex];
+    return result[existIndex];
   }
 
   return <>{isAllSelectedIdNull(selectedId) 

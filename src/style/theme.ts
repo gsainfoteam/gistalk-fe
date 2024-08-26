@@ -91,11 +91,11 @@ export const opacity = {
 }
 
 export const inputSize = {
-  small: css`18px`,
-  big: css`20px`
+  small: "18px",
+  big: "20px"
 }
 
 export const borderRadius = {
-  none: css`0px`,
-  circle: css`10px`
+  none: "0px",
+  circle: "10px"
 }
