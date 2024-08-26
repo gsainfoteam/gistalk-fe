@@ -64,18 +64,13 @@ const Upper = styled.div`
 const SummaryWrapper = styled.div`
   position: relative;
   height: 80px;
-
-  &:hover .barWrapper {
-    opacity: 0;
-    transition: opacity 0.1s ease;
-  }
 `;
 
 const SummaryScroll = styled.div`
   height: 80px;
   width: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
 
   &::-webkit-scrollbar {
     width: 7px;
@@ -90,27 +85,21 @@ const SummaryScroll = styled.div`
   }
 `;
 
-const fade = keyframes`
+const scrollFade = keyframes`
   0% {
     opacity: 1;
   }
-  15% {
-    opacity: 0;
-  }
-  85% {
-    opacity: 0;
-  }
   100% {
-    opacity: 1;
+    opacity: 0;
   }
 `;
 
 const ScrollBarWrapper = styled.div<{ isFade?: boolean }>`
   width: 7px;
   height: 100%;
-  transition: opacity 0.5s ease;
-  animation-name: ${(props) => (props.isFade ? fade : null)};
-  animation-duration: 3s;
+  opacity: ${(props) => !props.isFade ? 1 : 0 /**isFade가 false일 때 opacity 0이 실행되지 않도록 구현*/};
+  animation-name: ${(props) => (props.isFade ? scrollFade : null)};
+  animation-duration: 1s;
   position: absolute;
   top: 0;
   right: 0;
@@ -249,6 +238,7 @@ export function EvaluationPage() {
 
         <Upper>
           <SummaryWrapper>
+            <ScrollBarWrapper className="barWrapper" isFade={isFade} />
             <SummaryScroll>
             {selectedEvaluation && (
               <EvaluationSummary 
@@ -256,7 +246,6 @@ export function EvaluationPage() {
                 selectedId={selectedId}
               />
               )}
-              <ScrollBarWrapper className="barWrapper" isFade={isFade} />
             </SummaryScroll>
           </SummaryWrapper>
           <OneLineReviewText
