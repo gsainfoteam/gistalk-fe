@@ -12,6 +12,7 @@ interface IProps {
   selectedId: (number | null)[];
   handleCheckboxChange: (id: number, profNumber: number) => void;
   isWrite: boolean;
+  evaluationEmptyList: boolean[];
 }
 
 const TitleWrap = styled.div<{ color: string; bgColor: string }>`
@@ -66,6 +67,7 @@ export default function Title({
   selectedId,
   handleCheckboxChange,
   isWrite, //WriteReviewPage인지 EvaluationPage인지 구별해주는 boolean.
+  evaluationEmptyList,
 }: IProps) {
   const professorInfoList = extractProfessors(sectionInfo);
 
@@ -89,8 +91,9 @@ export default function Title({
                 id={professorInfo.id}
                 selectedId={selectedId}
                 onCheckboxChange={handleCheckboxChange}
-                profNumber={index}
+                profIndex={index}
                 isWrite={isWrite}
+                evaluationEmptyList={evaluationEmptyList}
               />
             )
           )}

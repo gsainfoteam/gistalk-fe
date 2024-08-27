@@ -221,7 +221,7 @@ export function EvaluationPage() {
     <>
       <NavigationHeader text={"강의평"} isNavigateHome={true} />
       <Wrap>
-        {!isLectureInfoLoading && lectureInfo && (
+        {!isLectureInfoLoading && lectureInfo && averageEvaluation && (
           <Title
             handleCheckboxChange={handleCheckboxChange}
             subjectTitle={lectureInfo.name}
@@ -229,6 +229,7 @@ export function EvaluationPage() {
             subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
             selectedId={selectedId}
             isWrite={false}
+            evaluationEmptyList={makeIsEvaluationEmpty(averageEvaluation)}
           />
         )}
 
