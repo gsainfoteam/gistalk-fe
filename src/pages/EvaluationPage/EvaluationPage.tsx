@@ -99,7 +99,7 @@ const ScrollBarWrapper = styled.div<{ isFade?: boolean }>`
   height: 100%;
   opacity: ${(props) => !props.isFade ? 1 : 0 /**isFade가 false일 때 opacity 0이 실행되지 않도록 구현*/};
   animation-name: ${(props) => (props.isFade ? scrollFade : null)};
-  animation-duration: 1s;
+  animation-duration: 0.5s;
   position: absolute;
   top: 0;
   right: 0;
@@ -238,15 +238,14 @@ export function EvaluationPage() {
 
         <Upper>
           <SummaryWrapper>
-            <ScrollBarWrapper className="barWrapper" isFade={isFade} />
+          {selectedEvaluation && (
             <SummaryScroll>
-            {selectedEvaluation && (
               <EvaluationSummary 
                 selectedEvaluation={selectedEvaluation ?? null} 
                 selectedId={selectedId}
               />
-              )}
-            </SummaryScroll>
+              <ScrollBarWrapper className="barWrapper" isFade={isFade} />
+            </SummaryScroll>)}
           </SummaryWrapper>
           <OneLineReviewText
             fontSize={18}
