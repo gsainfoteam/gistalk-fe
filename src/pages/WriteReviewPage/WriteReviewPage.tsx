@@ -26,7 +26,7 @@ import {
   Circle,
 } from "./WriteReviewPage.styled";
 import ReactSelect from "react-select";
-import { convertLectureCodeToList, makeSelectedIdNull } from "@/utils";
+import { convertLectureCodeToList, extractProfessors } from "@/utils";
 import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
@@ -87,8 +87,6 @@ export function WriteReviewPage() {
     setText(event.target.value);
 
   const handleCheckboxChange = (id: number, profNumber: number) => {
-    makeSelectedIdNull(profNumber, selectedId);
-
     const _selectedId = selectedId;
     _selectedId[profNumber] = id;
     selectedId.map((select, index) => _selectedId[index] = select === id ? id : null);
@@ -107,6 +105,10 @@ export function WriteReviewPage() {
   });
 
   const { data: lectureInfo } = { ...lectureInfoData };
+  useEffect(() => { //처음 selectedId 모두 null로 설정하기
+    !isLectureInfoLoading && 
+      setSelectedId(extractProfessors(lectureInfo.LectureSection).map(() => null));
+  }, [lectureInfo]);
 
   const checkValidation = () => {
     if (clickedId === null) {

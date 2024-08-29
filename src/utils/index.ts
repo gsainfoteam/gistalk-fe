@@ -156,12 +156,3 @@ export const convertSemesterToString = (semester: number) => {
       return "ALL";
   }
 };
-
-/**
- * 처음 selectedId를 설정할 때 중간에 undefined를 null로 바꿔줌
- */
-export const makeSelectedIdNull = (profNumber: number, selectedId: (number | null)[]) => {
-  for(let k = 0; k < profNumber; k++) { 
-    selectedId[k] = selectedId[k] ? selectedId[k] : null;
-  }
-};

@@ -1,4 +1,4 @@
-import { LectureSectionInfo, recordInfo } from "@/Interfaces/interfaces";
+import { LectureSectionInfo, professorInfo, recordInfo } from "@/Interfaces/interfaces";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { extractProfessors } from "@/utils";
 

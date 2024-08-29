@@ -18,7 +18,7 @@ import {
 } from "@/apis/lectures";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
-import { concatProfessorNames, convertLectureCodeToList, extractEvaluationData, extractProfessors, makeSelectedIdNull } from "@/utils";
+import { concatProfessorNames, convertLectureCodeToList, extractEvaluationData, extractProfessors } from "@/utils";
 import { recordInfo } from "@/Interfaces/interfaces";
 import Card from "@components/Card";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
@@ -77,7 +77,7 @@ const SummaryScroll = styled.div`
     height: 10px;
   }
   &::-webkit-scrollbar-thumb {
-    background: #b1b8c0;
+    background: ${theme.colors.grayStroke};
     border-radius: 10px;
   }
   &::-webkit-scrollbar-track {
@@ -109,8 +109,6 @@ export function EvaluationPage() {
   const navigate = useNavigate();
 
   const handleCheckboxChange = (id: number, profNumber: number) => {
-    makeSelectedIdNull(profNumber, selectedId);
-
     const _selectedId = selectedId;
 
     setIsProfEmpty(false);
@@ -163,7 +161,13 @@ export function EvaluationPage() {
   });
 
   const { data: lectureInfo } = { ...lectureInfoData };
-  if (!isLectureInfoLoading && lectureInfo) spliceEmptyProfLectureInfo(lectureInfo.LectureSection);
+  if (!isLectureInfoLoading && lectureInfo) {
+    spliceEmptyProfLectureInfo(lectureInfo.LectureSection);
+  }
+  useEffect(() => { //처음 selectedId 모두 null로 설정하기
+    !isLectureInfoLoading && 
+      setSelectedId(extractProfessors(lectureInfo.LectureSection).map(() => null));
+  }, [lectureInfo]);
 
   const reviewList = !isEvaluationLoading 
     ? evaluationData.map((test) => test !== undefined && test.data) 
@@ -183,6 +187,7 @@ export function EvaluationPage() {
 
   const isDataEmpty = 
     selectedEvaluation && selectedReview && //다른 데이터들이 전부 로딩이 끝나면 실행
+    averageEvaluation &&
     (isProfEmpty ||
     makeIsEvaluationEmpty(averageEvaluation).every((empty) => empty))
 
