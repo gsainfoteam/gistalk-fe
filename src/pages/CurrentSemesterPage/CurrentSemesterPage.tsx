@@ -57,20 +57,17 @@ export function CurrentSemesterPage() {
     }
   };
 
+  const filteredLectureList = !isLoading ? filterLectureList(
+    lectureList,
+    departmentOption,
+    searchTextEnter
+    ) : undefined;
+
+  const currentSemesterLectureList = filteredLectureList ?
+    filterLectureByYearSemester(filteredLectureList) : null;
+
   /**Search 페이지의 강의 리스트 */
   function DisplayItemList() {
-    if (isLoading) {
-      return null;
-    }
-    const filteredLectureList = filterLectureList(
-      lectureList,
-      departmentOption,
-      searchTextEnter
-    );
-
-    const currentSemesterLectureList =
-      filterLectureByYearSemester(filteredLectureList);
-
     if (
       currentSemesterLectureList === null ||
       currentSemesterLectureList === undefined
@@ -103,7 +100,7 @@ export function CurrentSemesterPage() {
   return (
     <>
       <SearchBar
-        data={lectureList}
+        data={currentSemesterLectureList}
         setSearchText={setSearchText}
         searchText={searchText}
         setSearchTextEnter={setSearchTextEnter}

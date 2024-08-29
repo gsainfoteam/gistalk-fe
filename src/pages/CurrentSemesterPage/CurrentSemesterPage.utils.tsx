@@ -51,13 +51,17 @@ export const filterLectureByYearSemester = (
     return null;
   }
 
-  const filteredLectureArray = lectureList.map((lecture) => ({
-    ...lecture,
-    LectureSection: lecture.LectureSection.filter(
-      (section) =>
-        section.year === CURRENT_YEAR && section.semester === CURRENT_SEMESTER
-    ),
-  }));
+
+  const filteredLectureArray = lectureList.filter((lecture) => 
+    lecture.LectureSection.some((section) => 
+      section.year === CURRENT_YEAR && section.semester === CURRENT_SEMESTER)).map((lecture) => 
+        ({
+          ...lecture,
+          LectureSection: lecture.LectureSection.filter(
+            (section) =>
+              section.year === CURRENT_YEAR && section.semester === CURRENT_SEMESTER
+          ),
+        }));
 
   return filteredLectureArray;
 };
