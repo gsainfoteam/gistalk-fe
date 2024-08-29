@@ -12,7 +12,7 @@ interface IProps {
   selectedId: (number | null)[];
   handleCheckboxChange: (id: number, profNumber: number) => void;
   isWrite: boolean;
-  evaluationEmptyList: boolean[];
+  evaluationEmptyList?: boolean[];
 }
 
 const TitleWrap = styled.div<{ color: string; bgColor: string }>`

@@ -63,17 +63,14 @@ const Upper = styled.div`
 
 const SummaryWrapper = styled.div`
   position: relative;
-
-  &:hover .barWrapper {
-    opacity: 0;
-    transition: opacity 0.1s ease;
-  }
+  height: 80px;
 `;
 
 const SummaryScroll = styled.div`
   height: 80px;
+  width: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
 
   &::-webkit-scrollbar {
     width: 7px;
@@ -86,33 +83,6 @@ const SummaryScroll = styled.div`
   &::-webkit-scrollbar-track {
     border-radius: 10px;
   }
-`;
-
-const boxFade = keyframes`
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
-
-const ScrollBarWrapper = styled.div<{ isFade?: boolean }>`
-  width: 7px;
-  height: 100%;
-  opacity: 1;
-  transition: opacity 0.5s ease;
-  animation-name: ${(props) => (props.isFade ? boxFade : null)};
-  animation-duration: 2s;
-
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  background: white;
 `;
 
 /** '강의평 쓰러가기' 버튼, 가로로 꽉 차야 함 */
@@ -134,7 +104,7 @@ let averageEvaluation: evaluationData[];
 export function EvaluationPage() {
   const isValidToken = useCheckValidToken();
   const [selectedId, setSelectedId] = useState<(number | null)[]>([null]);
-  const [isFade, setIsFade] = useState(false);
+  const [isProfEmpty, setIsProfEmpty] = useState(false);
 
   const navigate = useNavigate();
 
@@ -142,12 +112,17 @@ export function EvaluationPage() {
     makeSelectedIdNull(profNumber, selectedId);
 
     const _selectedId = selectedId;
-    _selectedId[profNumber] = id === selectedId[profNumber] ? null : id;
-    setSelectedId([..._selectedId]);
 
-    selectedId[profNumber] != null ? (
-    document.addEventListener('mousedown', () => setIsFade(false)), //마우스 클릭하면 무조건 crollBar 반짝임
-    document.addEventListener('mouseup', () => setIsFade(true))) : null;
+    setIsProfEmpty(false);
+    if (makeIsEvaluationEmpty(averageEvaluation)[profNumber]) {
+      setTimeout(() => {setIsProfEmpty(true);}, 50);
+      _selectedId[profNumber] = null;
+      setSelectedId([..._selectedId]);
+    }
+    else {
+      _selectedId[profNumber] = id === selectedId[profNumber] ? null : id;
+      setSelectedId([..._selectedId]);
+    }
   };
 
   useEffect(() => {
@@ -206,10 +181,9 @@ export function EvaluationPage() {
 
   isAllSelectedIdNull(selectedId) && selectedEvaluation ? averageEvaluation = selectedEvaluation : null;
 
-  const isEvaluationEmpty = 
-    averageEvaluation &&
-    (selectedId.filter((id) => id !== null).some((id) => 
-      makeIsEvaluationEmpty(averageEvaluation)[selectedId.indexOf(id)]) ||
+  const isDataEmpty = 
+    selectedEvaluation && selectedReview && //다른 데이터들이 전부 로딩이 끝나면 실행
+    (isProfEmpty ||
     makeIsEvaluationEmpty(averageEvaluation).every((empty) => empty))
 
   const isReviewNotExist = //교수자가 선택되지 않았을 땐 전체 리뷰의 존재를 판단하고 선택됐을 땐 선택된 리뷰를 판단
@@ -233,8 +207,11 @@ export function EvaluationPage() {
           />
         )}
 
-        {isEvaluationEmpty &&
-        <Card>
+        {isDataEmpty && 
+        <Card 
+          isProfEmpty={isProfEmpty} 
+          isAllEmpty={makeIsEvaluationEmpty(averageEvaluation).every((empty) => empty)}
+          >
           데이터가 없습니다.
         </Card>}
 
@@ -248,15 +225,13 @@ export function EvaluationPage() {
 
         <Upper>
           <SummaryWrapper>
+          {selectedEvaluation && (
             <SummaryScroll>
-            {selectedEvaluation && (
               <EvaluationSummary 
                 selectedEvaluation={selectedEvaluation ?? null} 
                 selectedId={selectedId}
               />
-              )}
-              <ScrollBarWrapper className="barWrapper" isFade={isFade} />
-            </SummaryScroll>
+            </SummaryScroll>)}
           </SummaryWrapper>
           <OneLineReviewText
             fontSize={18}

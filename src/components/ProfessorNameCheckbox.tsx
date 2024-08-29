@@ -9,7 +9,7 @@ interface CheckboxProps {
   onCheckboxChange: (id: number, profNumber: number) => void;
   profIndex: number;
   isWrite: boolean;
-  evaluationEmptyList: boolean[];
+  evaluationEmptyList?: boolean[];
 }
 
 const CheckboxContainer = styled.label<{ 
@@ -75,7 +75,7 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
     color={theme.RadarColor(opacity.background)[profIndex]} 
     vividColor={theme.RadarColor(opacity.true)[profIndex]}
     isWrite={isWrite}
-    isEvaluationEmpty={evaluationEmptyList[profIndex]}
+    isEvaluationEmpty={evaluationEmptyList === undefined ? false : evaluationEmptyList[profIndex]}
     >
       <CheckboxInput
         type="checkbox"
@@ -83,9 +83,12 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
         color={theme.RadarColor(opacity.none)[profIndex]}
         onChange={toggleCheckbox}
         isWrite={isWrite}
-        isEvaluationEmpty={evaluationEmptyList[profIndex]}
+        isEvaluationEmpty={evaluationEmptyList === undefined ? false : evaluationEmptyList[profIndex]}
       />
-      <CheckboxText isEvaluationEmpty={evaluationEmptyList[profIndex]}>{text}</CheckboxText>
+      <CheckboxText isEvaluationEmpty=
+        {evaluationEmptyList === undefined ? false : evaluationEmptyList[profIndex]}>
+          {text}
+      </CheckboxText>
     </CheckboxContainer>
   );
 };
