@@ -115,7 +115,6 @@ export function SearchBar({
     setSearchTextEnter("");
     setSearchParams("?tab=currentSemester");
   };
-  console.log(searchText);
 
   /**검색 아이콘 -> 검색어가 입력되면 취소 아이콘 */
   function ResponsiveSvg() {
@@ -129,7 +128,7 @@ export function SearchBar({
       return (
         <SearchBtnWrap
           bgColor={theme.colors.white}
-          onClick={() => {deleteText}}
+          onClick={() => {deleteText()}}
         >
           <CancelSvg size={25} src={Cancel_Svg} />
         </SearchBtnWrap>
@@ -157,7 +156,7 @@ export function SearchBar({
             key={item.id}
             to={`/evaluation/${item.id}`}
             style={{ textDecoration: "none" }}
-            onClick={deleteText}
+            onClick={() => deleteText()}
           >
             <SearchItem>
               <p>
