@@ -63,7 +63,7 @@ export function CurrentSemesterPage() {
     searchTextEnter
     ) : undefined;
 
-  const currentSemesterLectureList = filteredLectureList ?
+  const currentSemesterLectureList = filteredLectureList ? //SearchBar의 styled-components의 every로 인해 데이터 없을 시 null 할당
     filterLectureByYearSemester(filteredLectureList) : null;
 
   /**Search 페이지의 강의 리스트 */
