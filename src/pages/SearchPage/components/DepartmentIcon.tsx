@@ -7,7 +7,7 @@ interface IProps {
   text: string;
   color: string;
   isChecked: boolean;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 const IconFrame = styled.div<{ color: string; isLoading: boolean; }>`
@@ -51,7 +51,7 @@ export default function DepartmentIcon({ text, color, isChecked, isLoading }: IP
 
   return (
     <>
-      <IconFrame color={color} isLoading={isLoading}>
+      <IconFrame color={color} isLoading={isLoading ?? false}>
         {departmentSVG.length > 0 ? (
           <Svg src={departmentSVG[0].icon} size={20}></Svg>
         ) : (
