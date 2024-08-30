@@ -44,8 +44,10 @@ export function WriteReviewGuidePage() {
 
   /**Search 페이지의 강의 리스트 */
   function DisplayItemList() {
+    const skeletonNumber = new Array(9).fill(null);
     if (isLectureListLoading) {
-      return null;
+      return skeletonNumber.map((skeleton, index) => 
+        <SearchCard isLoading={isLectureListLoading} key={index}/>);
     }
     const filteredLectureList = filterLectureList(
       lectureList,
@@ -92,7 +94,7 @@ export function WriteReviewGuidePage() {
           isSearchWrite={true}
         />
 
-        {!isLectureListLoading && <ItemList>{DisplayItemList()}</ItemList>}
+        <ItemList>{DisplayItemList()}</ItemList>
       </Wrapper>
     </>
   );
