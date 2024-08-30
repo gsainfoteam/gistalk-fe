@@ -65,6 +65,7 @@ export function WriteReviewGuidePage() {
             subjectCode={item.LectureCode}
             professorName={professorNames}
             subjectName={item.name}
+            isLoading={isLectureListLoading}
           />
         </StyledLink>
       );

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { departmentOptionAtom } from "@/store";
 import { theme } from "@/style/theme";
-import SearchCard from "@/pages/SearchPage/components/SearchCard";
+import SearchCard from "./components/SearchCard";
 import Filter_Svg from "@assets/svgs/tune.svg";
 import CatBlankList_Svg from "@assets/svgs/catBlankList.svg";
 import { lectureInfo } from "@/Interfaces/interfaces";
@@ -59,8 +59,10 @@ export function CurrentSemesterPage() {
 
   /**Search 페이지의 강의 리스트 */
   function DisplayItemList() {
+    const skeletonNumber = new Array(9).fill(null);
     if (isLoading) {
-      return null;
+      return skeletonNumber.map((skeleton, index) => 
+        <SearchCard isLoading={isLoading} key={index}/>);
     }
     const filteredLectureList = filterLectureList(
       lectureList,
@@ -93,6 +95,7 @@ export function CurrentSemesterPage() {
               subjectCode={lecture.LectureCode}
               professorName={professorNames}
               subjectName={lecture.name}
+              isLoading={isLoading}
             />
           </StyledLink> // 강의평가 페이지로 이동
         );
@@ -123,7 +126,7 @@ export function CurrentSemesterPage() {
       </OptionBtnWrap>
       {/**case 1: 아무것도 선택되지 않은 경우, 전체 출력/ case 2: 선택된 것이 있는 경우 includes로 필터링하여 출력*/}
       <ItemList>
-        {!isLoading && DisplayItemList()}
+        {DisplayItemList()}
         {DisplayItemList() === null ? (
           <BlankWrap>
             <BlankSvg size={160} src={CatBlankList_Svg} />

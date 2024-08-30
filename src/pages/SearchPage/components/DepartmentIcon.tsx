@@ -7,9 +7,10 @@ interface IProps {
   text: string;
   color: string;
   isChecked: boolean;
+  isLoading: boolean;
 }
 
-const IconFrame = styled.div<{ color: string }>`
+const IconFrame = styled.div<{ color: string; isLoading: boolean; }>`
   width: 40px;
   height: 40px;
   border-radius: 25px;
@@ -17,6 +18,7 @@ const IconFrame = styled.div<{ color: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: ${(props) => props.isLoading ? 0 : 1};
 
   position: relative;
   p {
@@ -44,12 +46,12 @@ const CheckedSvg = styled(theme.universalComponent.SvgIcon)`
 `;
 
 /** 임시 분과 아이콘 (text는 아이콘 안에 들어갈 텍스트 두 글자, color은 아이콘 색깔) */
-export default function DepartmentIcon({ text, color, isChecked }: IProps) {
+export default function DepartmentIcon({ text, color, isChecked, isLoading }: IProps) {
   const departmentSVG = departmentSVGList.filter((item) => item.name === text);
 
   return (
     <>
-      <IconFrame color={color}>
+      <IconFrame color={color} isLoading={isLoading}>
         {departmentSVG.length > 0 ? (
           <Svg src={departmentSVG[0].icon} size={20}></Svg>
         ) : (

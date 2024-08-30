@@ -1,25 +1,30 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { theme } from "@/style/theme";
-import { major, minor, underG } from "@/constants/StdSet";
 import { convertLectureCodeToList } from "@/utils";
 import useSubjectCode from "@/hooks/useSubjectCode";
 import { LectureCode } from "@/Interfaces/interfaces";
-import DepartmentIcon from "./DepartmentIcon";
+import DepartmentIcon from "@/pages/SearchPage/components/DepartmentIcon";
+import { showSkeleton, skeletonGradient } from "@/pages/skeletonComponents/Keyframes";
+import { IconWrap, SkeletonDiv, ProfCodeBox } from "@/pages/skeletonComponents/SearchPageBoxes.styled";
 
 interface IProps {
-  subjectCode: LectureCode[];
-  professorName: string;
-  subjectName: string;
+  subjectCode?: LectureCode[];
+  professorName?: string;
+  subjectName?: string;
+  isLoading: boolean;
 }
 
-const SearchCardWrap = styled.div<{ hoverColor: string }>`
-  width: 100%;
+const SearchCardWrap = styled.div<{ hoverColor: string; isSkeleton: boolean; }>`
   margin-bottom: 3px;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
-  :active {
-    background-color: ${(props) => props.hoverColor};
-  }
+  ${(props) => !props.isSkeleton &&
+  `:hover {
+    background-color: ${props.hoverColor};
+    transition: 0.2s;
+    transform: scale(0.96);`
+  }}
 `;
 
 const CardContentWrap = styled.div<{ color: string }>`
@@ -59,31 +64,40 @@ export default function SearchCard({
   subjectCode,
   professorName,
   subjectName,
+  isLoading,
 }: IProps) {
-  const lectureCodeList = convertLectureCodeToList(subjectCode); //lecture_code가 string list로 되어있어서 배열로 변경
-  const targetLectureCode = useSubjectCode(lectureCodeList);
+  const lectureCodeList = subjectCode 
+    ? convertLectureCodeToList(subjectCode) //lecture_code가 string list로 되어있어서 배열로 변경
+    : undefined;
+  const targetLectureCode = lectureCodeList 
+    ? useSubjectCode(lectureCodeList)
+    : undefined;
 
-  if (targetLectureCode === undefined) {
-    return <></>;
-  }
-
-  const division = targetLectureCode.slice(0, 2);
+  const division = targetLectureCode 
+    ? targetLectureCode.slice(0, 2)
+    : undefined;
 
   return (
-    <SearchCardWrap hoverColor={theme.colors.inputBg}>
-      <DepartmentIcon
-        text={division}
-        color={theme.colors["gray-50"]}
-        isChecked={false}
-      />
+    <SearchCardWrap hoverColor={theme.colors.inputBg} isSkeleton={isLoading}>
+      <IconWrap isSkeleton={isLoading}>
+        <DepartmentIcon
+          text={division ?? ""}
+          color={theme.colors["gray-50"]}
+          isChecked={false}
+          isLoading={isLoading}
+        />
+      </IconWrap>
       <CardContentWrap color={theme.colors.primaryText}>
-        <div>{subjectName}</div>
+        <SkeletonDiv isSkeleton={isLoading}>{subjectName ?? <>&nbsp;</>}</SkeletonDiv>
         {/* 과목 이름 */}
-
-        <p>
-          <span>{professorName}</span> {/* 교수 이름 */}&nbsp; |&nbsp; &nbsp;
-          {lectureCodeList.join(", ")} {/* 과목 코드 */}
-        </p>
+        <ProfCodeBox isSkeleton={isLoading}>
+          {!isLoading 
+          ? <>
+            <span>{professorName}</span> &nbsp; |&nbsp; &nbsp;
+            {(lectureCodeList ?? [""]).join(", ")} 
+          </>
+          : <>&nbsp;</>}
+        </ProfCodeBox>
       </CardContentWrap>
     </SearchCardWrap>
   );
