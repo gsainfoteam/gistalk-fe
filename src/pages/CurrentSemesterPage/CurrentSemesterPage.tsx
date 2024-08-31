@@ -51,7 +51,7 @@ export function CurrentSemesterPage() {
 
   const { data: lectureList } = { ...data };
 
-  useTabParam(CURRENT_SEMESTER_TAB);
+  useTabParam(CURRENT_SEMESTER_TAB, searchText);
   /**검색바에 입력된 글자가 Enter를 눌러야 SearchList에 적용될 수 있도록 하는 enterSearchText*/
 
   const filteredLectureList = !isLoading ? filterLectureList(
