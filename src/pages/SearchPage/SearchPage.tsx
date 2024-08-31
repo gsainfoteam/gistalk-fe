@@ -49,7 +49,7 @@ export function SearchPage() {
 
   /**Search 페이지의 강의 리스트 */
   function DisplayItemList() {
-    const skeletonNumber = new Array(9).fill(null);
+    const skeletonNumber = new Array(550).fill(null); //550개의 임의의 skeleton 로드
     if (isLoading) {
       return skeletonNumber.map((skeleton, index) => 
         <SearchCard isLoading={isLoading} key={index}/>);
