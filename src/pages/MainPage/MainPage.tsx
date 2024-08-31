@@ -13,6 +13,7 @@ import { MockSearchBar } from "./components/MockSearchBar";
 import useTabParam from "@/hooks/useTabParam";
 import { GuideWritingReview } from "./components/GuideWritingReview";
 import MoveGuideCard from "@components/MoveGuideCard";
+import { SkeletonDiv } from "../skeletonComponents/Skeleton.styled";
 
 export default function MainPage() {
   useTabParam();
@@ -30,9 +31,13 @@ export default function MainPage() {
       return (
         skeletonNumber.map((skeleton, index) =>
           <Card key={index} isSkeleton={isLoading}>
+            <div style={{display: "flex", alignItems: "center"}}>
               <LectureInformationWrapper isSkeleton={isLoading}>
                 &nbsp;
               </LectureInformationWrapper>
+              &ensp;
+              <SkeletonDiv isSkeleton={isLoading} widthSize="150px" heightSize="20px"/>
+            </div>
               <RecommendWrapper isSkeleton={isLoading}>
                 &nbsp;
               </RecommendWrapper>

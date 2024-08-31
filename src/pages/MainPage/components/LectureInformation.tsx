@@ -8,7 +8,7 @@ export const LectureInformationWrapper = styled.div<{isSkeleton?: boolean;}>`
   flex-wrap: wrap;
 
   ${(props) => showSkeleton(props.isSkeleton ?? false)};
-  ${(props) => props.isSkeleton && "width: 50%"};
+  ${(props) => props.isSkeleton && "width: 20%"};
 `;
 
 const LectureNameText = styled.span`
