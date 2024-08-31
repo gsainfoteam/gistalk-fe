@@ -10,11 +10,20 @@ import { SearchBar } from "../SearchPage/components/SearchBar";
 import { useSearch } from "@/hooks/useSearch";
 import Card from "@components/Card";
 import TitleWithDescription from "@components/TitleWithDescription";
-import { ItemList } from "../SearchPage/SearchPage.styled";
 import { filterLectureList } from "../SearchPage/SearchPage.const";
 import { lectureInfo } from "@/Interfaces/interfaces";
 import { StyledLink } from "@components/StyledLink";
 import SearchCard from "../SearchPage/components/SearchCard";
+import {
+  BlankSvg,
+  BlankText,
+  BlankWrap,
+  FilterSvg,
+  ItemList,
+  OptionBtnWrap,
+} from "../SearchPage/SearchPage.styled";
+import CatBlankList_Svg from "@assets/svgs/catBlankList.svg";
+import { theme } from "@/style/theme";
 
 export function WriteReviewGuidePage() {
   const {
@@ -86,8 +95,17 @@ export function WriteReviewGuidePage() {
           clearSearchText={clearSearchText}
           isSearchWrite={true}
         />
-
-        {!isLectureListLoading && <ItemList>{DisplayItemList()}</ItemList>}
+        <ItemList>
+          {!isLectureListLoading && DisplayItemList()}
+          {DisplayItemList() === null ? (
+            <BlankWrap>
+              <BlankSvg size={160} src={CatBlankList_Svg} />
+              <BlankText fontSize={16} color={theme.colors.secondaryText}>
+                검색 결과가 존재하지 않습니다.
+              </BlankText>
+            </BlankWrap>
+          ) : null}
+        </ItemList>
       </Wrapper>
     </>
   );
