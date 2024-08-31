@@ -4,23 +4,30 @@ import { theme } from "@/style/theme";
 import { LectureSectionInfo, professorInfo } from "@/Interfaces/interfaces";
 import ProfessorNameCheckbox from "./ProfessorNameCheckbox";
 import { extractProfessors } from "@/utils";
+import { showSkeleton } from "@/pages/skeletonComponents/Keyframes";
+import { SkeletonDiv } from "@/pages/skeletonComponents/Skeleton.styled";
 
 interface IProps {
-  subjectTitle: string;
-  sectionInfo: LectureSectionInfo[];
-  subjectCode: string[];
+  subjectTitle: string | undefined;
+  sectionInfo: LectureSectionInfo[] | undefined;
+  subjectCode: string[] | undefined;
   selectedId: (number | null)[];
   handleCheckboxChange: (id: number, profNumber: number) => void;
   isWrite: boolean;
+  isLoading: boolean;
 }
 
-const TitleWrap = styled.div<{ color: string; bgColor: string }>`
+const TitleWrap = styled.div<{ 
+  color: string; 
+  bgColor: string; 
+  isBottomBorder: boolean;
+  }>`
   width: 100%;
   margin: 0 auto 0 auto;
 
   padding-top: 13px;
   padding-bottom: 13px;
-  border-bottom: ${(props) => props.color} 1.5px solid;
+  border-bottom: ${(props) => props.isBottomBorder ? props.color : "white"} 1.5px solid;
   border-radius: 0;
   background-color: ${(props) => props.bgColor};
 
@@ -34,7 +41,7 @@ const TitleWrap = styled.div<{ color: string; bgColor: string }>`
 `;
 
 /** 과목 이름과 코드를 감싸는 div. 과목과 이름이 같은 형태라서 재사용함 */
-const SubjectTitle = styled(theme.universalComponent.DivTextContainer)`
+const SubjectTitle = styled(theme.universalComponent.DivTextContainer)<{isSkeleton?: boolean;}>`
   font-family: NSBold;
   word-break: keep-all;
   margin-bottom: 3px;
@@ -44,6 +51,8 @@ const SubjectTitle = styled(theme.universalComponent.DivTextContainer)`
     font-family: NSRegular;
     color: ${theme.colors.secondaryText};
   }
+
+  ${(props) => showSkeleton(props.isSkeleton ?? false)};
 `;
 
 const CheckboxContainer = styled.div`
@@ -66,22 +75,29 @@ export default function Title({
   selectedId,
   handleCheckboxChange,
   isWrite, //WriteReviewPage인지 EvaluationPage인지 구별해주는 boolean.
+  isLoading,
 }: IProps) {
-  const professorInfoList = extractProfessors(sectionInfo);
+  const professorInfoList = !isLoading && sectionInfo ? extractProfessors(sectionInfo) : undefined;
 
   return (
-    <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
-      <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
-        {subjectTitle || "ERR"} <span> {subjectCode.join(", ") || "ERR"}</span>
+    <TitleWrap 
+      color={theme.colors.grayStroke} 
+      bgColor={theme.colors.white} 
+      isBottomBorder={!isLoading}
+      >
+      <SubjectTitle fontSize={20} color={theme.colors.primaryText} isSkeleton={isLoading}>
+        {isLoading ? <>&nbsp;</> : subjectTitle || "ERR"} 
+        <span> {isLoading ? <>&nbsp;</> : subjectCode?.join(", ") || "ERR"}</span>
         {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}
       </SubjectTitle>
       <div>
         <CheckboxContainer>
-          <SubjectTitle fontSize={14} color={theme.colors.secondaryText}>
-            교수자
+          <SubjectTitle fontSize={14} color={theme.colors.secondaryText} isSkeleton={isLoading}>
+          {isLoading ? <div>&emsp;&emsp;&ensp;</div> : <>교수자</>}
           </SubjectTitle>
 
-          {professorInfoList.map(
+          {professorInfoList 
+          ? professorInfoList.map(
             (professorInfo: professorInfo, index: number) => (
               <ProfessorNameCheckbox
                 key={professorInfo.id}
@@ -93,7 +109,8 @@ export default function Title({
                 isWrite={isWrite}
               />
             )
-          )}
+          )
+          : <SkeletonDiv isSkeleton={isLoading} widthSize="300px" heightSize="25px"/>}
         </CheckboxContainer>
       </div>
     </TitleWrap>

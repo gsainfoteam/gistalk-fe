@@ -7,9 +7,12 @@ import RecommendationStatus from "@components/RecommendationStatus";
 import { NOT_RECOMMEND, RECOMMEND } from "@/constants/recommand";
 import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 import { useParams } from "react-router-dom";
+import { SkeletonDiv } from "@/pages/skeletonComponents/Skeleton.styled";
+import { showSkeleton } from "@/pages/skeletonComponents/Keyframes";
 
 interface IProps {
-  replyData: recordInfo;
+  replyData?: recordInfo;
+  isLoading?: boolean;
 }
 
 /** 전체 Wrap */
@@ -45,43 +48,52 @@ const ProfessorText = styled(theme.universalComponent.DivTextContainer)`
 `;
 
 /** 댓글 내용 Wrap */
-const ContentWrap = styled(theme.universalComponent.DivTextContainer)`
+const ContentWrap = styled(theme.universalComponent.DivTextContainer)<{isSkeleton: boolean}>`
   font-family: NSRegular;
   word-break: break-all;
+
+  ${(props) => showSkeleton(props.isSkeleton)};
 `;
 
 const semester = ["봄", "여름", "가을", "겨울"];
 
-export default function Reply({ replyData }: IProps) {
-  const isRecommend =
+export default function Reply({ replyData, isLoading }: IProps) {
+  const isRecommend = isLoading ? undefined : replyData && (
     replyData.recommendation == NOT_RECOMMEND
       ? "false"
       : replyData.recommendation == RECOMMEND
       ? "true"
-      : "none"; // "true" or "false" or "none
+      : "none"); // "true" or "false" or "none
 
-  const semesterId = convertSemesterToNumber(replyData.semester);
+  const semesterId = isLoading ? undefined : replyData && convertSemesterToNumber(replyData.semester);
   return (
     <Wrap>
       <InfoWrap>
         <LeftWrap>
-          <RecommendationStatus like={isRecommend} />
+          {isRecommend 
+            ? <RecommendationStatus like={isRecommend} /> 
+            : <SkeletonDiv isSkeleton={isLoading ?? false} widthSize="45px" heightSize="20px"/>}
           <ProfessorText fontSize={13} color={theme.colors.primaryText}>
-            {convertProfessorNameToString(replyData.LectureSection.Professor).join(", ")}{" "}
+            {replyData 
+              ? convertProfessorNameToString(replyData.LectureSection.Professor).join(", ")
+              : <SkeletonDiv isSkeleton={isLoading ?? false} widthSize="35px" heightSize="20px"/>}{" "}
           </ProfessorText>
           <SemesterText fontSize={13} color={theme.colors.secondaryText}>
-            {replyData.year}년{" "}
-            {semesterId != 0 && `${semester[semesterId - 1]}학기`}
+            {replyData 
+              ? <>{replyData.year}년{" "}</>
+              : <SkeletonDiv isSkeleton={isLoading ?? false} widthSize="85px" heightSize="20px"/>}
+            {semesterId != 0 && semesterId && `${semester[semesterId - 1]}학기`}
           </SemesterText>
         </LeftWrap>
+        {replyData && 
         <LikeButton
           like={replyData._count.RecordLike}
           recordId={replyData.id}
           isLiked={replyData.isLiked}
-        />
+        />}
       </InfoWrap>
-      <ContentWrap fontSize={13} color={theme.colors.primaryText}>
-        {replyData.review}
+      <ContentWrap fontSize={13} color={theme.colors.primaryText} isSkeleton={isLoading ?? false}>
+        {replyData ? replyData.review : <>&nbsp;<br />&nbsp;</>}
       </ContentWrap>
     </Wrap>
   );

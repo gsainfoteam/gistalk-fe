@@ -5,7 +5,7 @@ import useSubjectCode from "@/hooks/useSubjectCode";
 import { LectureCode } from "@/Interfaces/interfaces";
 import DepartmentIcon from "@/pages/SearchPage/components/DepartmentIcon";
 import { showSkeleton, skeletonGradient } from "@/pages/skeletonComponents/Keyframes";
-import { IconWrap, SkeletonDiv, ProfCodeBox } from "@/pages/skeletonComponents/SearchPageBoxes.styled";
+import { IconWrap, SkeletonDiv, ProfCodeBox } from "@/pages/skeletonComponents/Skeleton.styled";
 
 interface IProps {
   subjectCode?: LectureCode[];
