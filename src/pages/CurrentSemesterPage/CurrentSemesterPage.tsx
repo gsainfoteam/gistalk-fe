@@ -54,25 +54,25 @@ export function CurrentSemesterPage() {
   useTabParam(CURRENT_SEMESTER_TAB, searchText);
   /**검색바에 입력된 글자가 Enter를 눌러야 SearchList에 적용될 수 있도록 하는 enterSearchText*/
 
-  const filteredLectureList = !isLoading ? filterLectureList(
-    lectureList,
-    departmentOption,
-    searchTextEnter
-    ) : undefined;
+  const currentSemesterLectureList = !isLoading ? filterLectureByYearSemester(lectureList) : undefined;
 
-  const currentSemesterLectureList = filteredLectureList ? //SearchBar의 styled-components의 every로 인해 데이터 없을 시 null 할당
-    filterLectureByYearSemester(filteredLectureList) : null;
+  const filteredCurrentLectureList = currentSemesterLectureList 
+    ? filterLectureList(
+      currentSemesterLectureList,
+    departmentOption,
+    searchTextEnter) 
+    : null; //SearchBar의 styled-components의 every로 인해 데이터 없을 시 null 할당
 
   /**Search 페이지의 강의 리스트 */
   function DisplayItemList() {
     if (
-      currentSemesterLectureList === null ||
-      currentSemesterLectureList === undefined
+      filteredCurrentLectureList === null ||
+      filteredCurrentLectureList === undefined
     ) {
       return null;
     }
 
-    return currentSemesterLectureList.map((lecture: lectureInfo) => {
+    return filteredCurrentLectureList.map((lecture: lectureInfo) => {
       const professorNames = concatProfessorNames(lecture.LectureSection);
 
         return (
@@ -93,7 +93,7 @@ export function CurrentSemesterPage() {
   return (
     <>
       <SearchBar
-        data={currentSemesterLectureList}
+        data={filteredCurrentLectureList}
         setSearchText={setSearchText}
         searchText={searchText}
         enterSearchText={enterSearchText}
