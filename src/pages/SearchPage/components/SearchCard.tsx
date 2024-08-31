@@ -93,8 +93,8 @@ export default function SearchCard({
         <ProfCodeBox isSkeleton={isLoading}>
           {!isLoading 
           ? <>
-            <span>{professorName}</span> &nbsp; |&nbsp; &nbsp;
-            {(lectureCodeList ?? [""]).join(", ")} 
+            <span>{professorName}</span> {/* 교수 이름 */} &nbsp; |&nbsp; &nbsp;
+            {(lectureCodeList ?? [""]).join(", ")} {/* 과목 코드 */}
           </>
           : <>&nbsp;</>}
         </ProfCodeBox>
