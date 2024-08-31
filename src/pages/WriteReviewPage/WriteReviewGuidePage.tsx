@@ -27,10 +27,6 @@ export function WriteReviewGuidePage() {
 
   localStorage.removeItem(REDIRECT_PATH); // 로그인 페이지에서 리다이렉션 링크가 걸려 들어온 경우 제거
 
-  useEffect(() => {
-    window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
-  }, []);
-
   const {
     isLoading: isLectureListLoading,
     data: lectureListData,

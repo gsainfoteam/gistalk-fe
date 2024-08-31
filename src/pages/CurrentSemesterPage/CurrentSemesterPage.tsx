@@ -1,4 +1,4 @@
-import { useState, KeyboardEvent } from "react";
+import { useState, KeyboardEvent, useEffect } from "react";
 import { useAtom } from "jotai";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -30,17 +30,19 @@ import {
   filterLectureByYearSemester,
   filterLectureList,
 } from "./CurrentSemesterPage.utils";
+import { useSearch } from "@/hooks/useSearch";
 
 export function CurrentSemesterPage() {
-  const [searchTextParams, setSearchTextParams] = useSearchParams();
-  const query = searchTextParams.get("keyword") ?? ""; // test
-
   const [sortOpen, setSortOpen] = useState(false);
   const [departmentOpen, setDepartmentOpen] = useState(false);
   const departmentOption = useAtom(departmentOptionAtom)[0];
-
-  const [searchText, setSearchText] = useState(query); //search bar에 들어가는 단어
-  const [searchTextEnter, setSearchTextEnter] = useState(query); // 엔터를 눌러서 검색 기준이 되는 단어
+  const {
+    searchText,
+    setSearchText,
+    searchTextEnter,
+    enterSearchText,
+    clearSearchText,
+  } = useSearch();
 
   const { isLoading, data, isError, error } = useQuery({
     queryKey: ["getEvaluationList"],
@@ -51,11 +53,6 @@ export function CurrentSemesterPage() {
 
   useTabParam(CURRENT_SEMESTER_TAB);
   /**검색바에 입력된 글자가 Enter를 눌러야 SearchList에 적용될 수 있도록 하는 enterSearchText*/
-  const enterSearchText = (e: KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") {
-      setSearchTextEnter(searchText);
-    }
-  };
 
   const filteredLectureList = !isLoading ? filterLectureList(
     lectureList,
@@ -103,9 +100,9 @@ export function CurrentSemesterPage() {
         data={currentSemesterLectureList}
         setSearchText={setSearchText}
         searchText={searchText}
-        setSearchTextEnter={setSearchTextEnter}
         enterSearchText={enterSearchText}
         searchTextEnter={searchTextEnter}
+        clearSearchText={clearSearchText}
       />
       <OptionBtnWrap color={theme.colors.secondaryText} fontSize={14}>
         {/* <div onClick={() => setSortOpen(true)}>
