@@ -80,10 +80,10 @@ export default function EvaluationSummary({
       <ConcreteInfoGrid key={existIndex}>
       {skeletonNumber.map((skeleton, index) => 
         <ConcreteInfo key={index} color={theme.colors.secondaryText} fontSize={15}>
-          <SkeletonDiv widthSize="50px" heightSize="18px"/>
+          <SkeletonDiv widthSize="50px" heightSize="16px"/>
           {index === 4 || index === 5 
-            ? <SkeletonDiv widthSize="80px" heightSize="18px"/> 
-            : <SkeletonDiv widthSize="40px" heightSize="18px"/>}
+            ? <SkeletonDiv widthSize="80px" heightSize="16px"/> 
+            : <SkeletonDiv widthSize="40px" heightSize="16px"/>}
         </ConcreteInfo>)}
       </ConcreteInfoGrid>
       )
