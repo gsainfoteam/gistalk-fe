@@ -77,7 +77,7 @@ export default function EvaluationSummary({
       const skeletonNumber = new Array(6).fill(null); //skeleton을 위한 6개의 배열
 
       return (
-      <ConcreteInfoGrid>
+      <ConcreteInfoGrid key={existIndex}>
       {skeletonNumber.map((skeleton, index) => 
         <ConcreteInfo key={index} color={theme.colors.secondaryText} fontSize={15}>
           <SkeletonDiv widthSize="50px" heightSize="18px"/>
