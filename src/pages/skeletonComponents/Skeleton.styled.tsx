@@ -11,4 +11,4 @@ export const SkeletonDiv = styled.div<{
   animation: ${skeletonGradient} 1.5s infinite ease-in-out;
 `;
 
-export const skeletonReview = new Array(2).fill(null); //skeleton을 위한 6개의 배열
+export const skeletonReview = new Array(2).fill(null); //Reply의 skeleton을 위한 2개의 배열

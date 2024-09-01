@@ -4,8 +4,6 @@ import { theme } from "@/style/theme";
 import { LectureSectionInfo, professorInfo } from "@/Interfaces/interfaces";
 import ProfessorNameCheckbox from "./ProfessorNameCheckbox";
 import { extractProfessors } from "@/utils";
-import { showSkeleton } from "@/pages/skeletonComponents/Keyframes";
-import { SkeletonDiv } from "@/pages/skeletonComponents/Skeleton.styled";
 import { TitleSkeleton } from "@/pages/skeletonComponents/Title.skeleton";
 
 interface IProps {

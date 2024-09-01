@@ -13,7 +13,6 @@ import { MockSearchBar } from "./components/MockSearchBar";
 import useTabParam from "@/hooks/useTabParam";
 import { GuideWritingReview } from "./components/GuideWritingReview";
 import MoveGuideCard from "@components/MoveGuideCard";
-import { SkeletonDiv } from "../skeletonComponents/Skeleton.styled";
 import { MainPageSkeleton } from "../skeletonComponents/MainPage.skeleton";
 
 export default function MainPage() {

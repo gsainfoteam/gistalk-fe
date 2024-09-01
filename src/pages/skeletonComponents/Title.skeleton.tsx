@@ -1,13 +1,45 @@
-import { SkeletonDiv } from "./Skeleton.styled";
+import styled from "styled-components";
+import { skeletonGradient } from "./Keyframes";
+
+const Title = styled.div`
+  width: 70%;
+  height: 30px;
+  margin-bottom: 6px;
+
+  animation: ${skeletonGradient} 1.5s infinite ease-in-out;
+`;
+
+const ProfWrap = styled.span`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+`;
+
+const Professor = styled.div`
+  width: 40px;
+  height: 18px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+
+  animation: ${skeletonGradient} 1.5s infinite ease-in-out;
+`;
+
+const ProfContent = styled.div`
+  width: 80%;
+  height: 25px;
+  margin-bottom: 6px;
+
+  animation: ${skeletonGradient} 1.5s infinite ease-in-out;
+`;
 
 export function TitleSkeleton() {
   return (
     <>
-        <SkeletonDiv widthSize="70%" heightSize="30px" />
-        <div style={{display: "flex", justifyContent: "start"}}>
-            <SkeletonDiv widthSize="40px" heightSize="18px" style={{marginRight: "6px"}} />
-            <SkeletonDiv widthSize="80%" heightSize="25px"/>
-        </div>
+        <Title />
+        <ProfWrap>
+          <Professor />
+          <ProfContent />
+        </ProfWrap>
     </>
   )
 }

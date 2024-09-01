@@ -15,7 +15,7 @@ const SkeletonHexagon = styled.div`
     top: -40px;
     border-style: solid;
     border-width: 0 65px 40px 65px;
-    ${(props) => showHexSkeleton(true)};
+    ${showHexSkeleton(true)};
   }
   
   &::after {
@@ -26,10 +26,10 @@ const SkeletonHexagon = styled.div`
     top: 75px;
     border-style: solid;
     border-width: 40px 65px 0 65px;
-    ${(props) => showHexSkeleton(false)};
+    ${showHexSkeleton(false)};
   }
 
-  ${(props) => showSkeleton()};
+  ${showSkeleton()};
 `;
 
 export function HexagonSkeleton() {

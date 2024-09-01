@@ -6,9 +6,6 @@ import LikeButton from "./LikeButton";
 import RecommendationStatus from "@components/RecommendationStatus";
 import { NOT_RECOMMEND, RECOMMEND } from "@/constants/recommand";
 import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
-import { useParams } from "react-router-dom";
-import { SkeletonDiv } from "@/pages/skeletonComponents/Skeleton.styled";
-import { showSkeleton } from "@/pages/skeletonComponents/Keyframes";
 import { ReplySkeleton } from "@/pages/skeletonComponents/Reply.skeleton";
 
 interface IProps {
