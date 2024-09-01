@@ -25,9 +25,14 @@ export default function MainPage() {
   });
 
   function DisplayRecentList() {
+    const skeletonNumber = new Array(4).fill(null);
+
     if (isLoading && !data) {
       return (
-        MainPageSkeleton(isLoading)
+        skeletonNumber.map((skeleton, index) =>
+          <Card key={index} isSkeleton={isLoading}>
+            {MainPageSkeleton}
+          </Card>)
       );
     }
 

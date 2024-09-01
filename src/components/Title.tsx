@@ -82,7 +82,7 @@ export default function Title({
       bgColor={theme.colors.white} 
       isBottomBorder={!isLoading}
       >
-      {isLoading ? TitleSkeleton() : <>
+      {isLoading ? TitleSkeleton : <>
           <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
           {subjectTitle || "ERR"} <span>{subjectCode?.join(", ") || "ERR"}</span>
           {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}

@@ -63,7 +63,9 @@ export function CurrentSemesterPage() {
     const skeletonNumber = new Array(300).fill(null); //300개의 임의의 skeleton 로딩
     if (isLoading) {
       return skeletonNumber.map((skeleton, index) => 
-        <SearchCardSkeleton key={index}/>);
+        <div key={index}>
+          {SearchCardSkeleton}
+        </div>);
     }
     const filteredLectureList = filterLectureList(
       lectureList,

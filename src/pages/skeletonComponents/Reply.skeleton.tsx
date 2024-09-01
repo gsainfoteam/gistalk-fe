@@ -30,8 +30,7 @@ const SemesterSkeleton = styled.div`
   animation: ${skeletonGradient} 1.5s infinite ease-in-out;
 `;
 
-export function ReplySkeleton() {
-    return (
+export const ReplySkeleton =
         <>
           <InfoWrap>
             <RecommendSkeleton />&ensp;
@@ -41,6 +40,4 @@ export function ReplySkeleton() {
           <SkeletonDiv>
             &nbsp;<br />&nbsp;
           </SkeletonDiv>
-        </>
-    )
-}
+        </>;

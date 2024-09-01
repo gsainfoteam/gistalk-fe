@@ -32,8 +32,4 @@ const SkeletonHexagon = styled.div`
   ${showSkeleton()};
 `;
 
-export function HexagonSkeleton() {
-  return (
-    <SkeletonHexagon />
-  )
-};
+export const HexagonSkeleton = <SkeletonHexagon />;

@@ -249,7 +249,7 @@ export function EvaluationPage() {
             HexData={selectedEvaluation ?? null} 
             selectedId={selectedId} />
             )
-          : <HexagonSkeleton />}
+          : HexagonSkeleton}
         </GraphWrap>
 
         <Upper>

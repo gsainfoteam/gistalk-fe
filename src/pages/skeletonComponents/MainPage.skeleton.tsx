@@ -36,23 +36,17 @@ const Content = styled.div`
   animation: ${skeletonGradient} 1.5s infinite ease-in-out;
 `;
 
-export function MainPageSkeleton(isLoading: boolean) {
-  const skeletonNumber = new Array(4).fill(null);
-  return (
-    skeletonNumber.map((skeleton, index) =>
-        <Card key={index} isSkeleton={isLoading}>
-          <UpComponentWrap>
-            <Title>
-              &nbsp;
-            </Title>
-            &ensp;
-            <SubTitle />
-          </UpComponentWrap>
-            <Recommend>
-              &nbsp;
-            </Recommend>
-          <Content>&nbsp;</Content>
-        </Card> 
-      )
-  )
-}
+export const MainPageSkeleton =
+<>
+    <UpComponentWrap>
+    <Title>
+        &nbsp;
+    </Title>
+    &ensp;
+    <SubTitle />
+    </UpComponentWrap>
+    <Recommend>
+        &nbsp;
+    </Recommend>
+    <Content>&nbsp;</Content>
+</>;

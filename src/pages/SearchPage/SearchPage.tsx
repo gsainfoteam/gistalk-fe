@@ -53,7 +53,9 @@ export function SearchPage() {
     const skeletonNumber = new Array(550).fill(null); //550개의 임의의 skeleton 로드
     if (isLoading) {
       return skeletonNumber.map((skeleton, index) => 
-        <SearchCardSkeleton key={index}/>);
+        <div key={index}>
+          {SearchCardSkeleton}
+        </div>);
     }
     const filteredLectureList = filterLectureList(
       lectureList,

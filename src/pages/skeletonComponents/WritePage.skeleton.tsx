@@ -82,9 +82,9 @@ const Submit = styled.div`
   animation: ${skeletonGradient} 1.5s infinite ease-in-out;
 `;
 
-export function WritePageSkeleton() {
-  const skeletonNumber = new Array(8).fill(null); //skeleton component를 위한 8개의 null이 있는 배열
-  return (
+const skeletonNumber = new Array(8).fill(null); //skeleton component를 위한 8개의 null이 있는 배열
+
+export const WritePageSkeleton = 
     <>{
     skeletonNumber.map((skeleton, index) => 
         <QuestionWrap key={index} index={index}>
@@ -109,6 +109,4 @@ export function WritePageSkeleton() {
         <ReviewSubTitle />
         <WriteReview />
         <Submit />
-    </>
-  )
-}
+    </>;

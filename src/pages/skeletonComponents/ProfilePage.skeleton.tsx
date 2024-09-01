@@ -20,11 +20,19 @@ const Content = styled.div`
   animation: ${skeletonGradient} 1.5s infinite ease-in-out;
 `;
 
-export function ProfilePageSkeleton() {
-  return (
+const Name = styled.div`
+  width: 180px;
+  height: 40px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+
+  animation: ${skeletonGradient} 1.5s infinite ease-in-out;
+`;
+
+export const ProfilePageSkeleton =
     <>
         <Title />
         <Content />
     </>
-  )
-}
+
+export const ProfileNameSkeleton = <Name />;

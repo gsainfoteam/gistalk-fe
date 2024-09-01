@@ -41,8 +41,7 @@ const Subtitle = styled.div`
   animation: ${skeletonGradient} 1.5s infinite ease-in-out;
 `;
 
-export function SearchCardSkeleton() {
-    return (
+export const SearchCardSkeleton = 
         <WholeWrap>
           <DepartmentCircle />&ensp;
           <ContentWrap>
@@ -50,5 +49,3 @@ export function SearchCardSkeleton() {
             <Subtitle />
           </ContentWrap>
         </WholeWrap>
-    )
-}

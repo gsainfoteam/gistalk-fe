@@ -17,7 +17,7 @@ import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 import useTabParam from "@/hooks/useTabParam";
 import MoveGuideCard from "@components/MoveGuideCard";
 import { SkeletonDiv } from "./skeletonComponents/Skeleton.styled";
-import { ProfilePageSkeleton } from "./skeletonComponents/ProfilePage.skeleton";
+import { ProfileNameSkeleton, ProfilePageSkeleton } from "./skeletonComponents/ProfilePage.skeleton";
 
 const TitleWrap = styled.div`
   display: flex;
@@ -171,7 +171,7 @@ export default function ProfilePage() {
                   <span>{userInfo.name}</span> 님, 안녕하세요
                 </>
               )
-              : <SkeletonDiv widthSize="180px" heightSize="25px" />}
+              : ProfileNameSkeleton}
             </SubjectTitle>
           </TitleWrap>
           <ContentWrap>
@@ -224,7 +224,7 @@ export default function ProfilePage() {
                   </div>
                 ))}
             </MyEvaluationContainer>}
-            {isUserEvaluationLoading && ProfilePageSkeleton()}
+            {isUserEvaluationLoading && ProfilePageSkeleton}
           </ContentWrap>
         </>
       ) : (

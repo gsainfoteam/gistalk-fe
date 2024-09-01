@@ -64,7 +64,7 @@ export default function Reply({ replyData, isLoading }: IProps) {
   const semesterId = replyData && !isLoading ? convertSemesterToNumber(replyData.semester) : undefined;
   return (
     <Wrap>
-      {isLoading ? ReplySkeleton() 
+      {isLoading ? ReplySkeleton
       : isRecommend && replyData && 
         <><InfoWrap>
         <LeftWrap>

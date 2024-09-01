@@ -196,7 +196,7 @@ export function WriteReviewPage() {
         isLoading={isLectureInfoLoading}
         />
         {isLectureInfoLoading 
-          ? WritePageSkeleton()
+          ? WritePageSkeleton
           : <Form onSubmit={handleSubmit}>
           <FormField>
             <Label>수강 년도</Label>

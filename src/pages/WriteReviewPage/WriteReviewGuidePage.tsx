@@ -48,7 +48,9 @@ export function WriteReviewGuidePage() {
     const skeletonNumber = new Array(500).fill(null);
     if (isLectureListLoading) {
       return skeletonNumber.map((skeleton, index) => 
-        <SearchCardSkeleton key={index}/>);
+        <div key={index}>
+          {SearchCardSkeleton}
+        </div>);
     }
     const filteredLectureList = filterLectureList(
       lectureList,
