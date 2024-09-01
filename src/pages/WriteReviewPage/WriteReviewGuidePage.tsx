@@ -15,6 +15,7 @@ import { filterLectureList } from "../SearchPage/SearchPage.const";
 import { lectureInfo } from "@/Interfaces/interfaces";
 import { StyledLink } from "@components/StyledLink";
 import SearchCard from "../SearchPage/components/SearchCard";
+import { SearchCardSkeleton } from "../skeletonComponents/SearchCard.skeleton";
 
 export function WriteReviewGuidePage() {
   const {
@@ -47,7 +48,7 @@ export function WriteReviewGuidePage() {
     const skeletonNumber = new Array(500).fill(null);
     if (isLectureListLoading) {
       return skeletonNumber.map((skeleton, index) => 
-        <SearchCard isLoading={isLectureListLoading} key={index}/>);
+        <SearchCardSkeleton key={index}/>);
     }
     const filteredLectureList = filterLectureList(
       lectureList,
@@ -67,7 +68,6 @@ export function WriteReviewGuidePage() {
             subjectCode={item.LectureCode}
             professorName={professorNames}
             subjectName={item.name}
-            isLoading={isLectureListLoading}
           />
         </StyledLink>
       );

@@ -9,6 +9,7 @@ import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 import { useParams } from "react-router-dom";
 import { SkeletonDiv } from "@/pages/skeletonComponents/Skeleton.styled";
 import { showSkeleton } from "@/pages/skeletonComponents/Keyframes";
+import { ReplySkeleton } from "@/pages/skeletonComponents/Reply.skeleton";
 
 interface IProps {
   replyData?: recordInfo;
@@ -48,11 +49,9 @@ const ProfessorText = styled(theme.universalComponent.DivTextContainer)`
 `;
 
 /** 댓글 내용 Wrap */
-const ContentWrap = styled(theme.universalComponent.DivTextContainer)<{isSkeleton: boolean}>`
+const ContentWrap = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSRegular;
   word-break: break-all;
-
-  ${(props) => showSkeleton(props.isSkeleton)};
 `;
 
 const semester = ["봄", "여름", "가을", "겨울"];
@@ -65,36 +64,32 @@ export default function Reply({ replyData, isLoading }: IProps) {
       ? "true"
       : "none"); // "true" or "false" or "none
 
-  const semesterId = isLoading ? undefined : replyData && convertSemesterToNumber(replyData.semester);
+  const semesterId = replyData && !isLoading ? convertSemesterToNumber(replyData.semester) : undefined;
   return (
     <Wrap>
-      <InfoWrap>
+      {isLoading ? ReplySkeleton() 
+      : isRecommend && replyData && 
+        <><InfoWrap>
         <LeftWrap>
-          {isRecommend 
-            ? <RecommendationStatus like={isRecommend} /> 
-            : <SkeletonDiv widthSize="45px" heightSize="20px"/>}
+          <RecommendationStatus like={isRecommend} />
           <ProfessorText fontSize={13} color={theme.colors.primaryText}>
-            {replyData 
-              ? convertProfessorNameToString(replyData.LectureSection.Professor).join(", ")
-              : <SkeletonDiv widthSize="35px" heightSize="20px"/>}{" "}
+            {convertProfessorNameToString(replyData.LectureSection.Professor).join(", ")}
+            {" "}
           </ProfessorText>
           <SemesterText fontSize={13} color={theme.colors.secondaryText}>
-            {replyData 
-              ? <>{replyData.year}년{" "}</>
-              : <SkeletonDiv widthSize="85px" heightSize="20px"/>}
-            {semesterId != 0 && semesterId && `${semester[semesterId - 1]}학기`}
+            {replyData.year}년{" "}
+            {semesterId !== 0 && semesterId && `${semester[semesterId - 1]}학기`}
           </SemesterText>
         </LeftWrap>
-        {replyData && 
         <LikeButton
           like={replyData._count.RecordLike}
           recordId={replyData.id}
           isLiked={replyData.isLiked}
-        />}
+        />
       </InfoWrap>
-      <ContentWrap fontSize={13} color={theme.colors.primaryText} isSkeleton={isLoading ?? false}>
-        {replyData ? replyData.review : <>&nbsp;<br />&nbsp;</>}
-      </ContentWrap>
+      <ContentWrap fontSize={13} color={theme.colors.primaryText}>
+        {replyData.review}
+      </ContentWrap></>}
     </Wrap>
   );
 }

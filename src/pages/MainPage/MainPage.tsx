@@ -14,6 +14,7 @@ import useTabParam from "@/hooks/useTabParam";
 import { GuideWritingReview } from "./components/GuideWritingReview";
 import MoveGuideCard from "@components/MoveGuideCard";
 import { SkeletonDiv } from "../skeletonComponents/Skeleton.styled";
+import { MainPageSkeleton } from "../skeletonComponents/MainPage.skeleton";
 
 export default function MainPage() {
   useTabParam();
@@ -25,26 +26,10 @@ export default function MainPage() {
   });
 
   function DisplayRecentList() {
-    const skeletonNumber = new Array(4).fill(null);
-
     if (isLoading && !data) {
       return (
-        skeletonNumber.map((skeleton, index) =>
-          <Card key={index} isSkeleton={isLoading}>
-            <div style={{display: "flex", alignItems: "center"}}>
-              <SkeletonDiv widthSize="20%">
-                &nbsp;
-              </SkeletonDiv>
-              &ensp;
-              <SkeletonDiv widthSize="150px" heightSize="20px"/>
-            </div>
-              <SkeletonDiv widthSize="15%">
-                &nbsp;
-              </SkeletonDiv>
-            <SkeletonDiv style={{marginTop: "6px"}}>&nbsp;</SkeletonDiv>
-          </Card> 
-        )
-      )
+        MainPageSkeleton(isLoading)
+      );
     }
 
     return (

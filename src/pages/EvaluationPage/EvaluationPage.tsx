@@ -25,7 +25,8 @@ import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { getLectureEachEvaluation } from "@/apis/records";
 import { NoComment } from "./components/NoComment";
 import { isAllSelectedIdNull, makeIsEvaluationEmpty, makeReviewData, spliceSameReviewAsOne, reviewAmount, spliceEmptyProfLectureInfo, spliceEmptyProfReviewList } from "./EvaluationPage.util";
-import { SkeletonDiv, SkeletonHexagon, skeletonReview } from "../skeletonComponents/Skeleton.styled";
+import { SkeletonDiv, skeletonReview } from "../skeletonComponents/Skeleton.styled";
+import { HexagonSkeleton } from "../skeletonComponents/Hexagon.skeleton";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -248,7 +249,7 @@ export function EvaluationPage() {
             HexData={selectedEvaluation ?? null} 
             selectedId={selectedId} />
             )
-          : <SkeletonHexagon isSkeleton={skeletonLoading}/>}
+          : <HexagonSkeleton />}
         </GraphWrap>
 
         <Upper>

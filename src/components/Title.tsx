@@ -6,6 +6,7 @@ import ProfessorNameCheckbox from "./ProfessorNameCheckbox";
 import { extractProfessors } from "@/utils";
 import { showSkeleton } from "@/pages/skeletonComponents/Keyframes";
 import { SkeletonDiv } from "@/pages/skeletonComponents/Skeleton.styled";
+import { TitleSkeleton } from "@/pages/skeletonComponents/Title.skeleton";
 
 interface IProps {
   subjectTitle: string | undefined;
@@ -41,7 +42,7 @@ const TitleWrap = styled.div<{
 `;
 
 /** 과목 이름과 코드를 감싸는 div. 과목과 이름이 같은 형태라서 재사용함 */
-const SubjectTitle = styled(theme.universalComponent.DivTextContainer)<{isSkeleton?: boolean;}>`
+const SubjectTitle = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
   word-break: keep-all;
   margin-bottom: 3px;
@@ -51,8 +52,6 @@ const SubjectTitle = styled(theme.universalComponent.DivTextContainer)<{isSkelet
     font-family: NSRegular;
     color: ${theme.colors.secondaryText};
   }
-
-  ${(props) => showSkeleton(props.isSkeleton ?? false)};
 `;
 
 const CheckboxContainer = styled.div`
@@ -85,34 +84,33 @@ export default function Title({
       bgColor={theme.colors.white} 
       isBottomBorder={!isLoading}
       >
-      <SubjectTitle fontSize={20} color={theme.colors.primaryText} isSkeleton={isLoading}>
-        {isLoading ? <>&nbsp;</> : subjectTitle || "ERR"} 
-        <span> {isLoading ? <>&nbsp;</> : subjectCode?.join(", ") || "ERR"}</span>
-        {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}
-      </SubjectTitle>
-      <div>
-        <CheckboxContainer>
-          <SubjectTitle fontSize={14} color={theme.colors.secondaryText} isSkeleton={isLoading}>
-          {isLoading ? <div>&emsp;&emsp;&ensp;</div> : <>교수자</>}
+      {isLoading ? TitleSkeleton() : <>
+          <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
+          {subjectTitle || "ERR"} <span>{subjectCode?.join(", ") || "ERR"}</span>
+          {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}
           </SubjectTitle>
+          <div>
+            <CheckboxContainer>
+              <SubjectTitle fontSize={14} color={theme.colors.secondaryText}>
+                교수자
+              </SubjectTitle>
 
-          {professorInfoList 
-          ? professorInfoList.map(
-            (professorInfo: professorInfo, index: number) => (
-              <ProfessorNameCheckbox
-                key={professorInfo.id}
-                text={professorInfo.name}
-                id={professorInfo.id}
-                selectedId={selectedId}
-                onCheckboxChange={handleCheckboxChange}
-                profNumber={index}
-                isWrite={isWrite}
-              />
-            )
-          )
-          : <SkeletonDiv widthSize="300px" heightSize="25px"/>}
-        </CheckboxContainer>
-      </div>
+              {professorInfoList && professorInfoList.map(
+                (professorInfo: professorInfo, index: number) => (
+                  <ProfessorNameCheckbox
+                    key={professorInfo.id}
+                    text={professorInfo.name}
+                    id={professorInfo.id}
+                    selectedId={selectedId}
+                    onCheckboxChange={handleCheckboxChange}
+                    profNumber={index}
+                    isWrite={isWrite}
+                  />
+                )
+              )}
+            </CheckboxContainer>
+          </div>
+        </>}
     </TitleWrap>
   );
 }

@@ -18,12 +18,10 @@ export const skeletonGradient = keyframes`
 /**
  * skeleton의 배경색 animation
  * 
- * @param isSkeleton -loading이면 true 반환
  * @returns -animation 반환
  */
-export const showSkeleton = ( isSkeleton: boolean ) => {
-  if (isSkeleton)
-    return css`animation: ${skeletonGradient} 1.5s infinite ease-in-out`
+export const showSkeleton = () => {
+  return css`animation: ${skeletonGradient} 1.5s infinite ease-in-out`
 };
 
 const skeletonHexGradient = (isUpComponent: boolean) => {
@@ -54,11 +52,9 @@ const skeletonHexGradient = (isUpComponent: boolean) => {
 /**
  * Hexagon의 skeleton animation
  * 
- * @param isSkeleton -loading이면 true 반환
  * @param isUpComponent -Hexagon 윗부분이면 true 반환
  * @returns 
  */
-export const showHexSkeleton = ( isSkeleton: boolean, isUpComponent: boolean ) => {
-  if (isSkeleton)
-    return css`animation: ${skeletonHexGradient(isUpComponent)} 1.5s infinite ease-in-out`
+export const showHexSkeleton = ( isUpComponent: boolean ) => {
+  return css`animation: ${skeletonHexGradient(isUpComponent)} 1.5s infinite ease-in-out`
 }

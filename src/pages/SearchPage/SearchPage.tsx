@@ -25,6 +25,7 @@ import { getLectureList } from "@/apis/lectures";
 import { StyledLink } from "@components/StyledLink";
 import { concatProfessorNames } from "@/utils";
 import { useSearch } from "@/hooks/useSearch";
+import { SearchCardSkeleton } from "../skeletonComponents/SearchCard.skeleton";
 
 export function SearchPage() {
   const [sortOpen, setSortOpen] = useState(false);
@@ -52,7 +53,7 @@ export function SearchPage() {
     const skeletonNumber = new Array(550).fill(null); //550개의 임의의 skeleton 로드
     if (isLoading) {
       return skeletonNumber.map((skeleton, index) => 
-        <SearchCard isLoading={isLoading} key={index}/>);
+        <SearchCardSkeleton key={index}/>);
     }
     const filteredLectureList = filterLectureList(
       lectureList,
@@ -72,7 +73,6 @@ export function SearchPage() {
             subjectCode={item.LectureCode}
             professorName={professorNames}
             subjectName={item.name}
-            isLoading={isLoading}
           />
         </StyledLink>
       );

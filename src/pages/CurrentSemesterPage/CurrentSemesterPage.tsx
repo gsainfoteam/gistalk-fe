@@ -30,6 +30,7 @@ import {
   filterLectureByYearSemester,
   filterLectureList,
 } from "./CurrentSemesterPage.utils";
+import { SearchCardSkeleton } from "../skeletonComponents/SearchCard.skeleton";
 
 export function CurrentSemesterPage() {
   const [searchTextParams, setSearchTextParams] = useSearchParams();
@@ -62,7 +63,7 @@ export function CurrentSemesterPage() {
     const skeletonNumber = new Array(300).fill(null); //300개의 임의의 skeleton 로딩
     if (isLoading) {
       return skeletonNumber.map((skeleton, index) => 
-        <SearchCard isLoading={isLoading} key={index}/>);
+        <SearchCardSkeleton key={index}/>);
     }
     const filteredLectureList = filterLectureList(
       lectureList,
@@ -95,7 +96,6 @@ export function CurrentSemesterPage() {
               subjectCode={lecture.LectureCode}
               professorName={professorNames}
               subjectName={lecture.name}
-              isLoading={isLoading}
             />
           </StyledLink> // 강의평가 페이지로 이동
         );
