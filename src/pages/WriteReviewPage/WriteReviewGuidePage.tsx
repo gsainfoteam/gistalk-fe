@@ -44,7 +44,7 @@ export function WriteReviewGuidePage() {
 
   /**Search 페이지의 강의 리스트 */
   function DisplayItemList() {
-    const skeletonNumber = new Array(9).fill(null);
+    const skeletonNumber = new Array(500).fill(null);
     if (isLectureListLoading) {
       return skeletonNumber.map((skeleton, index) => 
         <SearchCard isLoading={isLectureListLoading} key={index}/>);

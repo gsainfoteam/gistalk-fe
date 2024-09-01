@@ -110,7 +110,7 @@ export default function Title({
               />
             )
           )
-          : <SkeletonDiv isSkeleton={isLoading} widthSize="300px" heightSize="25px"/>}
+          : <SkeletonDiv widthSize="300px" heightSize="25px"/>}
         </CheckboxContainer>
       </div>
     </TitleWrap>

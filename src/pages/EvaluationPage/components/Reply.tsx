@@ -72,16 +72,16 @@ export default function Reply({ replyData, isLoading }: IProps) {
         <LeftWrap>
           {isRecommend 
             ? <RecommendationStatus like={isRecommend} /> 
-            : <SkeletonDiv isSkeleton={isLoading ?? false} widthSize="45px" heightSize="20px"/>}
+            : <SkeletonDiv widthSize="45px" heightSize="20px"/>}
           <ProfessorText fontSize={13} color={theme.colors.primaryText}>
             {replyData 
               ? convertProfessorNameToString(replyData.LectureSection.Professor).join(", ")
-              : <SkeletonDiv isSkeleton={isLoading ?? false} widthSize="35px" heightSize="20px"/>}{" "}
+              : <SkeletonDiv widthSize="35px" heightSize="20px"/>}{" "}
           </ProfessorText>
           <SemesterText fontSize={13} color={theme.colors.secondaryText}>
             {replyData 
               ? <>{replyData.year}년{" "}</>
-              : <SkeletonDiv isSkeleton={isLoading ?? false} widthSize="85px" heightSize="20px"/>}
+              : <SkeletonDiv widthSize="85px" heightSize="20px"/>}
             {semesterId != 0 && semesterId && `${semester[semesterId - 1]}학기`}
           </SemesterText>
         </LeftWrap>

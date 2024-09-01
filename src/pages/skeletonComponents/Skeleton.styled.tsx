@@ -1,13 +1,14 @@
 import styled from "styled-components";
-import { showHexSkeleton, showSkeleton } from "./Keyframes";
+import { showHexSkeleton, showSkeleton, skeletonGradient } from "./Keyframes";
 
-export const SkeletonDiv = styled.div<{ 
-  isSkeleton: boolean; 
+export const SkeletonDiv = styled.div<{
   widthSize?: string; 
   heightSize?: string
   }>`
-  ${(props) => showSkeleton(props.isSkeleton)};
   ${(props) => `width: ${props.widthSize}; height: ${props.heightSize};`};
+  margin-bottom: 6px;
+
+  animation: ${skeletonGradient} 1.5s infinite ease-in-out;
 `;
 
 export const ProfCodeBox = styled.p<{ isSkeleton: boolean }>`

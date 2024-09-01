@@ -32,6 +32,8 @@ import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
 import { AxiosError, isAxiosError } from "axios";
+import { SkeletonDiv } from "../skeletonComponents/Skeleton.styled";
+import { WritePageSkeleton } from "../skeletonComponents/WritePage.skeleton";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -180,23 +182,61 @@ export function WriteReviewPage() {
       addEvaluationMutate.mutate();
     }
   };
+  const skeletonNumber = new Array(8).fill(null); //skeleton component를 위한 8개의 null이 있는 배열
 
   return (
     <>
       <NavigationHeader text={"강의평 작성"} />
       <Wrapper>
-        {!isLectureInfoLoading && lectureInfo && (
-          <Title
-            handleCheckboxChange={handleCheckboxChange}
-            subjectTitle={lectureInfo.name}
-            sectionInfo={lectureInfo.LectureSection}
-            subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
-            selectedId={selectedId}
-            isWrite={true}
-          />
-        )}
-
-        <Form onSubmit={handleSubmit}>
+        <Title
+        handleCheckboxChange={handleCheckboxChange}
+        subjectTitle={lectureInfo?.name}
+        sectionInfo={lectureInfo?.LectureSection}
+        subjectCode={lectureInfo ? convertLectureCodeToList(lectureInfo?.LectureCode) : undefined}
+        selectedId={selectedId}
+        isWrite={true}
+        isLoading={isLectureInfoLoading}
+        />
+        {isLectureInfoLoading 
+          ? <>{
+            skeletonNumber.map((skeleton, index) => 
+                <div key={index} style={{marginBottom: `${index === 1 ? "30px" : "5px"}`}}>
+                    <br />
+                    <SkeletonDiv 
+                    widthSize="80px"
+                    heightSize="20px"/>
+                    <SkeletonDiv heightSize="30px">
+                    &nbsp;
+                    </SkeletonDiv>
+                    {index > 1 && 
+                    <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
+                    <SkeletonDiv widthSize="400px" heightSize="50px" />
+                    </div>
+                    }
+                </div>)
+                }
+                <SkeletonDiv 
+                widthSize="80px"
+                heightSize="20px"/>
+                <div style={{width: "100%", display: "flex", justifyContent: "space-between"}}>
+                    <SkeletonDiv widthSize="100px" heightSize="25px"/>
+                    <SkeletonDiv widthSize="100px" heightSize="25px"/>
+                    <SkeletonDiv widthSize="100px" heightSize="25px"/>
+                </div>
+                <SkeletonDiv 
+                widthSize="80px"
+                heightSize="20px"
+                style={{marginTop: "40px"}} />
+                <SkeletonDiv widthSize="250px" heightSize="30px" />
+                <SkeletonDiv
+                widthSize="100%"
+                heightSize="200px"/>
+                <SkeletonDiv
+                heightSize="50px"
+                widthSize="100%"
+                style={{marginTop: "40px"}} />
+            </>
+          : <Form onSubmit={handleSubmit}>
           <FormField>
             <Label>수강 년도</Label>
             <ReactSelect
@@ -273,7 +313,7 @@ export function WriteReviewPage() {
           <Button disabled={isMutating > 0} type="submit">
             강의평가 제출
           </Button>
-        </Form>
+        </Form>}
       </Wrapper>
     </>
   );

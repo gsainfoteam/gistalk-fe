@@ -271,8 +271,8 @@ export function EvaluationPage() {
           >
             {skeletonLoading 
               ? <div style={{display: "flex", alignItems: "center"}}>
-                  <SkeletonDiv isSkeleton={skeletonLoading} widthSize="50px" heightSize="25px"/>
-                  &nbsp; <SkeletonDiv isSkeleton={skeletonLoading} widthSize="180px" heightSize="20px"/>
+                  <SkeletonDiv widthSize="50px" heightSize="25px"/>
+                  &nbsp; <SkeletonDiv widthSize="180px" heightSize="20px"/>
                 </div>
               : <>한줄평</>}
             {reviewList && selectedEvaluation &&

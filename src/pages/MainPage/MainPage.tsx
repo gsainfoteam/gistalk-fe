@@ -7,7 +7,7 @@ import { recordInfo } from "@/Interfaces/interfaces";
 import { getRecentEvaluation } from "@/apis/records";
 import { NOT_RECOMMEND, RECOMMEND } from "@/constants/recommand";
 import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
-import LectureInformation, { LectureInformationWrapper, RecommendWrapper } from "./components/LectureInformation";
+import LectureInformation from "./components/LectureInformation";
 import LectureReview from "./components/LectureReview";
 import { MockSearchBar } from "./components/MockSearchBar";
 import useTabParam from "@/hooks/useTabParam";
@@ -32,16 +32,16 @@ export default function MainPage() {
         skeletonNumber.map((skeleton, index) =>
           <Card key={index} isSkeleton={isLoading}>
             <div style={{display: "flex", alignItems: "center"}}>
-              <LectureInformationWrapper isSkeleton={isLoading}>
+              <SkeletonDiv widthSize="20%">
                 &nbsp;
-              </LectureInformationWrapper>
+              </SkeletonDiv>
               &ensp;
-              <SkeletonDiv isSkeleton={isLoading} widthSize="150px" heightSize="20px"/>
+              <SkeletonDiv widthSize="150px" heightSize="20px"/>
             </div>
-              <RecommendWrapper isSkeleton={isLoading}>
+              <SkeletonDiv widthSize="15%">
                 &nbsp;
-              </RecommendWrapper>
-            <LectureReview isSkeleton={isLoading}>&nbsp;</LectureReview>
+              </SkeletonDiv>
+            <SkeletonDiv style={{marginTop: "6px"}}>&nbsp;</SkeletonDiv>
           </Card> 
         )
       )

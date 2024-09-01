@@ -1,14 +1,10 @@
-import { showSkeleton } from "@/pages/skeletonComponents/Keyframes";
 import RecommendationStatus from "@components/RecommendationStatus";
 import styled from "styled-components";
 
-export const LectureInformationWrapper = styled.div<{isSkeleton?: boolean;}>`
+const LectureInformationWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-
-  ${(props) => showSkeleton(props.isSkeleton ?? false)};
-  ${(props) => props.isSkeleton && "width: 20%"};
 `;
 
 const LectureNameText = styled.span`
@@ -28,11 +24,8 @@ const CourseTakenTimeText = styled.span`
   color: #959595;
 `;
 
-export const RecommendWrapper = styled.div<{isSkeleton?: boolean;}>`
+const RecommendWrapper = styled.div`
   margin-top: 5px;
-
-  ${(props) => showSkeleton(props.isSkeleton ?? false)};
-  ${(props) => props.isSkeleton && "width: 15%"};
 `;
 
 interface LectureInformationProps {
