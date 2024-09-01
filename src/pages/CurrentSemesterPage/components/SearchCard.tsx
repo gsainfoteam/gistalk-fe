@@ -88,7 +88,8 @@ export default function SearchCard({
         />
       </IconWrap>
       <CardContentWrap color={theme.colors.primaryText}>
-        <SkeletonDiv>{subjectName ?? <>&nbsp;</>}</SkeletonDiv>
+      {subjectName ? <div>{subjectName}</div>
+        : <SkeletonDiv>&nbsp;</SkeletonDiv>}
         {/* 과목 이름 */}
         <ProfCodeBox isSkeleton={isLoading}>
           {!isLoading 
