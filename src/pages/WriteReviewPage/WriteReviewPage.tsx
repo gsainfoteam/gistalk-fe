@@ -106,7 +106,7 @@ export function WriteReviewPage() {
 
   const { data: lectureInfo } = { ...lectureInfoData };
   useEffect(() => { //처음 selectedId 모두 null로 설정하기
-    !isLectureInfoLoading && 
+    if(!isLectureInfoLoading)
       setSelectedId(extractProfessors(lectureInfo.LectureSection).map(() => null));
   }, [lectureInfo]);
 

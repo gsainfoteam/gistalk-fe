@@ -112,7 +112,7 @@ export function EvaluationPage() {
     const _selectedId = selectedId;
 
     setIsProfEmpty(false);
-    if (makeIsEvaluationEmpty(averageEvaluation)[profNumber]) {
+    if (isReviewEmptyList[profNumber]) {
       setTimeout(() => {setIsProfEmpty(true);}, 50);
       _selectedId[profNumber] = null;
       setSelectedId([..._selectedId]);
@@ -165,7 +165,7 @@ export function EvaluationPage() {
     spliceEmptyProfLectureInfo(lectureInfo.LectureSection);
   }
   useEffect(() => { //처음 selectedId 모두 null로 설정하기
-    !isLectureInfoLoading && 
+    if(!isLectureInfoLoading)
       setSelectedId(extractProfessors(lectureInfo.LectureSection).map(() => null));
   }, [lectureInfo]);
 
@@ -184,12 +184,13 @@ export function EvaluationPage() {
       : undefined;
 
   isAllSelectedIdNull(selectedId) && selectedEvaluation ? averageEvaluation = selectedEvaluation : null;
+  const isReviewEmptyList = makeIsEvaluationEmpty(averageEvaluation);
 
   const isDataEmpty = 
     selectedEvaluation && selectedReview && //다른 데이터들이 전부 로딩이 끝나면 실행
     averageEvaluation &&
     (isProfEmpty ||
-    makeIsEvaluationEmpty(averageEvaluation).every((empty) => empty))
+    isReviewEmptyList.every((empty) => empty))
 
   const isReviewNotExist = //교수자가 선택되지 않았을 땐 전체 리뷰의 존재를 판단하고 선택됐을 땐 선택된 리뷰를 판단
     selectedEvaluation &&
@@ -208,14 +209,14 @@ export function EvaluationPage() {
             subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
             selectedId={selectedId}
             isWrite={false}
-            evaluationEmptyList={makeIsEvaluationEmpty(averageEvaluation)}
+            evaluationEmptyList={isReviewEmptyList}
           />
         )}
 
         {isDataEmpty && 
         <Card 
           isProfEmpty={isProfEmpty} 
-          isAllEmpty={makeIsEvaluationEmpty(averageEvaluation).every((empty) => empty)}
+          isAllEmpty={isReviewEmptyList.every((empty) => empty)}
           >
           데이터가 없습니다.
         </Card>}
