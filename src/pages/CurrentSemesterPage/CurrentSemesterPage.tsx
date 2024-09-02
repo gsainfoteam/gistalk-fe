@@ -54,13 +54,16 @@ export function CurrentSemesterPage() {
   useTabParam(CURRENT_SEMESTER_TAB, searchText);
   /**검색바에 입력된 글자가 Enter를 눌러야 SearchList에 적용될 수 있도록 하는 enterSearchText*/
 
-  const currentSemesterLectureList = !isLoading ? filterLectureByYearSemester(lectureList) : undefined;
+  const currentSemesterLectureList = !isLoading
+    ? filterLectureByYearSemester(lectureList)
+    : undefined;
 
-  const filteredCurrentLectureList = currentSemesterLectureList 
+  const filteredCurrentLectureList = currentSemesterLectureList
     ? filterLectureList(
-      currentSemesterLectureList,
-    departmentOption,
-    searchTextEnter) 
+        currentSemesterLectureList,
+        departmentOption,
+        searchTextEnter
+      )
     : null; //SearchBar의 styled-components의 every로 인해 데이터 없을 시 null 할당
 
   /**Search 페이지의 강의 리스트 */
@@ -75,19 +78,16 @@ export function CurrentSemesterPage() {
     return filteredCurrentLectureList.map((lecture: lectureInfo) => {
       const professorNames = concatProfessorNames(lecture.LectureSection);
 
-        return (
-          <StyledLink
-            key={`${lecture.id}`}
-            to={`/evaluation/${lecture.id}`}
-          >
-            <SearchCard
-              subjectCode={lecture.LectureCode}
-              professorName={professorNames}
-              subjectName={lecture.name}
-            />
-          </StyledLink> // 강의평가 페이지로 이동
-        );
-      });
+      return (
+        <StyledLink key={`${lecture.id}`} to={`/evaluation/${lecture.id}`}>
+          <SearchCard
+            subjectCode={lecture.LectureCode}
+            professorName={professorNames}
+            subjectName={lecture.name}
+          />
+        </StyledLink> // 강의평가 페이지로 이동
+      );
+    });
   }
 
   return (
