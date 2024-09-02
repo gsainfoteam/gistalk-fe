@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 import { theme } from "@/style/theme";
 import { LectureSectionInfo, professorInfo } from "@/Interfaces/interfaces";
-import ProfessorNameCheckbox from "./ProfessorNameCheckbox";
 import { extractProfessors } from "@/utils";
+import ProfessorList from "./ProfessorList";
 
 interface IProps {
   subjectTitle: string;
@@ -12,6 +12,7 @@ interface IProps {
   selectedId: (number | null)[];
   handleCheckboxChange: (id: number, profNumber: number) => void;
   isWrite: boolean;
+  showProfessor?: boolean;
 }
 
 const TitleWrap = styled.div<{ color: string; bgColor: string }>`
@@ -46,14 +47,6 @@ const SubjectTitle = styled(theme.universalComponent.DivTextContainer)`
   }
 `;
 
-const CheckboxContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px;
-`;
-
 /** 강의평가가 표시되는 title
  * @param subjectTitle 과목 이름
  * @param professorName 교수 이름
@@ -66,6 +59,7 @@ export default function Title({
   selectedId,
   handleCheckboxChange,
   isWrite, //WriteReviewPage인지 EvaluationPage인지 구별해주는 boolean.
+  showProfessor = true,
 }: IProps) {
   const professorInfoList = extractProfessors(sectionInfo);
 
@@ -75,27 +69,14 @@ export default function Title({
         {subjectTitle || "ERR"} <span> {subjectCode.join(", ") || "ERR"}</span>
         {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}
       </SubjectTitle>
-      <div>
-        <CheckboxContainer>
-          <SubjectTitle fontSize={14} color={theme.colors.secondaryText}>
-            교수자
-          </SubjectTitle>
-
-          {professorInfoList.map(
-            (professorInfo: professorInfo, index: number) => (
-              <ProfessorNameCheckbox
-                key={professorInfo.id}
-                text={professorInfo.name}
-                id={professorInfo.id}
-                selectedId={selectedId}
-                onCheckboxChange={handleCheckboxChange}
-                profNumber={index}
-                isWrite={isWrite}
-              />
-            )
-          )}
-        </CheckboxContainer>
-      </div>
+      {showProfessor && (
+        <ProfessorList
+          professorInfoList={professorInfoList}
+          selectedId={selectedId}
+          handleCheckboxChange={handleCheckboxChange}
+          isWrite={isWrite}
+        />
+      )}
     </TitleWrap>
   );
 }

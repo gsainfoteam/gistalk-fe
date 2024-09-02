@@ -37,6 +37,8 @@ import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
 import { AxiosError, isAxiosError } from "axios";
+import ProfessorList from "@components/ProfessorList";
+import Card from "@components/Card";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -192,21 +194,16 @@ export function WriteReviewPage() {
   const SELECTED_YEAR = selectedValues.year?.value;
   const SELECTED_SEMESTER = selectedValues.semester?.value;
 
-  if (
-    !isLectureInfoLoading &&
-    lectureInfo &&
-    SELECTED_YEAR &&
-    SELECTED_SEMESTER
-  ) {
-    //year, semester에 해당하는 걸로 필터링
-    const filteredProfessorInfoList = lectureInfo.LectureSection.filter(
-      (section) =>
-        section.year === SELECTED_YEAR &&
-        section.semester === convertSemesterToString(SELECTED_SEMESTER)
-    );
+  //year, semester에 해당하는 걸로 필터링
+  const filteredProfessorInfoList = lectureInfo
+    ? []
+    : lectureInfo.LectureSection.filter(
+        (section) =>
+          section.year === SELECTED_YEAR &&
+          section.semester === convertSemesterToString(SELECTED_SEMESTER)
+      );
 
-    console.log(filteredProfessorInfoList);
-  }
+  const extractProfessor = extractProfessors(filteredProfessorInfoList);
 
   return (
     <>
@@ -220,6 +217,7 @@ export function WriteReviewPage() {
             subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
             selectedId={selectedId}
             isWrite={true}
+            showProfessor={false}
           />
         )}
 
@@ -247,6 +245,28 @@ export function WriteReviewPage() {
               }
             />
           </FormField>
+
+          <FormField>
+            {SELECTED_SEMESTER && SELECTED_YEAR ? (
+              extractProfessor.length === 0 ? (
+                <Card>선택한 년도와 학기에 강의가 개설되지 않았습니다.</Card>
+              ) : (
+                <>
+                  <Label>교수자를 선택해주세요.</Label>
+
+                  <ProfessorList
+                    professorInfoList={extractProfessor}
+                    selectedId={selectedId}
+                    handleCheckboxChange={handleCheckboxChange}
+                    isWrite={true}
+                  />
+                </>
+              )
+            ) : (
+              <Card>강의평을 쓰고자 하는 년도와 학기를 선택해주세요.</Card>
+            )}
+          </FormField>
+
           {RATING_QUESTIONS.map((question, index) => (
             <FormField key={index}>
               <Label>{question.question}</Label>
