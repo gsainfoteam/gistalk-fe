@@ -232,7 +232,9 @@ export function EvaluationPage() {
             handleCheckboxChange={handleCheckboxChange}
             subjectTitle={lectureInfo?.name}
             sectionInfo={lectureInfo?.LectureSection}
-            subjectCode={lectureInfo ? convertLectureCodeToList(lectureInfo?.LectureCode) : undefined}
+            subjectCode={lectureInfo 
+              ? convertLectureCodeToList(lectureInfo?.LectureCode) 
+              : undefined}
             selectedId={selectedId}
             isWrite={false}
             isLoading={isLectureInfoLoading}
