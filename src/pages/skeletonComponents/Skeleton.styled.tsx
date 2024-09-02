@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { showHexSkeleton, showSkeleton, skeletonGradient } from "./Keyframes";
+import { skeletonGradient } from "./Keyframes";
 
 export const SkeletonDiv = styled.div<{
   widthSize?: string; 

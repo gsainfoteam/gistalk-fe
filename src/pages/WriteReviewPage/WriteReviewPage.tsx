@@ -195,9 +195,7 @@ export function WriteReviewPage() {
         isWrite={true}
         isLoading={isLectureInfoLoading}
         />
-        {isLectureInfoLoading 
-          ? WritePageSkeleton
-          : <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <FormField>
             <Label>수강 년도</Label>
             <ReactSelect
@@ -274,7 +272,7 @@ export function WriteReviewPage() {
           <Button disabled={isMutating > 0} type="submit">
             강의평가 제출
           </Button>
-        </Form>}
+        </Form>
       </Wrapper>
     </>
   );
