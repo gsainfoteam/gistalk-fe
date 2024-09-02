@@ -88,13 +88,18 @@ export interface LectureSectionInfo {
   id: number;
   lectureId: number;
   Professor: professorInfo[];
+  year: number;
+  semester: string;
+  capacity: number;
+  registrationCount: number;
+  fullCapacityTime: number;
 }
 
 export interface RecordLectureSectionInfo extends LectureSectionInfo {
   Lecture: lecture;
 }
 
-interface evaluationData {
+export interface evaluationData {
   /**난이도*/
   difficulty: number;
   /**강의력 */

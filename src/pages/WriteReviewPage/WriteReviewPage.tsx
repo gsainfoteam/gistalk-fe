@@ -26,7 +26,7 @@ import {
   Circle,
 } from "./WriteReviewPage.styled";
 import ReactSelect from "react-select";
-import { convertLectureCodeToList } from "@/utils";
+import { convertLectureCodeToList, makeSelectedIdNull } from "@/utils";
 import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
@@ -89,12 +89,12 @@ export function WriteReviewPage() {
     setText(event.target.value);
 
   const handleCheckboxChange = (id: number, profNumber: number) => {
-    setClickedId(id === selectedId[profNumber] ? null : id);
+    makeSelectedIdNull(profNumber, selectedId);
+
     const _selectedId = selectedId;
     _selectedId[profNumber] = id;
-    selectedId.map(
-      (select, index) => (_selectedId[index] = select === id ? id : null)
-    );
+    selectedId.map((select, index) => _selectedId[index] = select === id ? id : null);
+    setClickedId(_selectedId[profNumber]);
     setSelectedId([..._selectedId]);
   };
 

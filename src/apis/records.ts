@@ -14,19 +14,18 @@ export const getRecentEvaluation = () => {
 };
 export const getLectureEachEvaluation = (
   lectureId: number,
-  sectionId: number | null
+  professorId: number | null
 ) => {
   const params = {
     lectureId: lectureId,
-    sectionId: sectionId,
-    type: "evaluation",
+    professorId: professorId,
+    type: `${professorId ? "professor" : "evaluation"}`,
   };
 
   return axiosInstance.get(`/record`, {
     params: params,
   });
 };
-export const getLikeStatus = (recordId: string, currentUser: number) => {};
 
 export const postLectureEvaluation = (
   review: string,
