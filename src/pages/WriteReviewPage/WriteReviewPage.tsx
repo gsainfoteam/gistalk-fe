@@ -32,7 +32,6 @@ import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
 import { AxiosError, isAxiosError } from "axios";
-import { WritePageSkeleton } from "../skeletonComponents/WritePage.skeleton";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
