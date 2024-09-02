@@ -15,6 +15,18 @@ export const skeletonGradient = keyframes`
   }
 `;
 
+export const skeletonCardGradient = keyframes`
+  0% {
+    background-color: rgba(247,249,251,0.6);
+  }
+  50% {
+    background-color: rgba(247,249,251,0.8);
+  }
+  100% {
+    background-color: rgba(247,249,251,0.6);
+  }
+`;
+
 /**
  * skeleton의 배경색 animation
  * 

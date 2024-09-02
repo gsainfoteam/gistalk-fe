@@ -1,7 +1,7 @@
-import { showSkeleton } from "@/pages/skeletonComponents/Keyframes";
+import { showSkeleton, skeletonCardGradient, skeletonGradient } from "@/pages/skeletonComponents/Keyframes";
 import { theme } from "@/style/theme";
 import { ReactNode } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 // Styles for the container
 const CardContainer = styled.div<{ isInteractive: boolean; isWhite: boolean; }>`
@@ -18,7 +18,8 @@ const CardContainer = styled.div<{ isInteractive: boolean; isWhite: boolean; }>`
         transition: 0.2s;
       }
     `}
-  ${(props) => props.isWhite && "background: white;"};
+  ${(props) => props.isWhite && 
+    css`animation: ${skeletonCardGradient} 1.5s infinite ease-in-out;`};
 `;
 
 /**
