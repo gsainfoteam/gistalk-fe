@@ -26,7 +26,12 @@ import {
   Circle,
 } from "./WriteReviewPage.styled";
 import ReactSelect from "react-select";
-import { convertLectureCodeToList, makeSelectedIdNull } from "@/utils";
+import {
+  convertLectureCodeToList,
+  convertSemesterToString,
+  extractProfessors,
+  makeSelectedIdNull,
+} from "@/utils";
 import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
@@ -56,7 +61,7 @@ export function WriteReviewPage() {
   });
   const [recommendation, setRecommendation] = useState(-1); // 0 비추천, 1 추천, 2 보통 (왜 반대지?)
   const [text, setText] = useState("");
-  const [selectedId, setSelectedId] = useState<(number | null)[]>([null]); //교수들을 화면에 나오는 순서대로 배열로 나타냄, 클릭하면 그 위치에 sectionId를 저장함. 
+  const [selectedId, setSelectedId] = useState<(number | null)[]>([null]); //교수들을 화면에 나오는 순서대로 배열로 나타냄, 클릭하면 그 위치에 sectionId를 저장함.
   const [clickedId, setClickedId] = useState<number | null>(null); //현재 클릭한 교수의 sectionId
 
   const params = useParams() as { id: string };
@@ -91,7 +96,9 @@ export function WriteReviewPage() {
 
     const _selectedId = selectedId;
     _selectedId[profNumber] = id;
-    selectedId.map((select, index) => _selectedId[index] = select === id ? id : null);
+    selectedId.map(
+      (select, index) => (_selectedId[index] = select === id ? id : null)
+    );
     setClickedId(_selectedId[profNumber]);
     setSelectedId([..._selectedId]);
   };
@@ -142,7 +149,6 @@ export function WriteReviewPage() {
   };
 
   //TODO: 토큰 만료 상황 대비해서 로그인 페이지로 리다이렉트
-
   const addEvaluationMutate = useMutation({
     mutationFn: () =>
       postLectureEvaluation(
@@ -180,6 +186,27 @@ export function WriteReviewPage() {
       addEvaluationMutate.mutate();
     }
   };
+
+  // selectedValues.year?.value, selectedValues.semester?.value 를 저장
+
+  const SELECTED_YEAR = selectedValues.year?.value;
+  const SELECTED_SEMESTER = selectedValues.semester?.value;
+
+  if (
+    !isLectureInfoLoading &&
+    lectureInfo &&
+    SELECTED_YEAR &&
+    SELECTED_SEMESTER
+  ) {
+    //year, semester에 해당하는 걸로 필터링
+    const filteredProfessorInfoList = lectureInfo.LectureSection.filter(
+      (section) =>
+        section.year === SELECTED_YEAR &&
+        section.semester === convertSemesterToString(SELECTED_SEMESTER)
+    );
+
+    console.log(filteredProfessorInfoList);
+  }
 
   return (
     <>
