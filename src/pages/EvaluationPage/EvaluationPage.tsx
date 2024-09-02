@@ -26,7 +26,6 @@ import { getLectureEachEvaluation } from "@/apis/records";
 import { NoComment } from "./components/NoComment";
 import { isAllSelectedIdNull, makeIsEvaluationEmpty, makeReviewData, spliceSameReviewAsOne, reviewAmount, spliceEmptyProfLectureInfo, spliceEmptyProfReviewList } from "./EvaluationPage.util";
 import { SkeletonDiv, skeletonReview } from "../skeletonComponents/Skeleton.styled";
-import { HexagonSkeleton } from "../skeletonComponents/Hexagon.skeleton";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -236,7 +235,7 @@ export function EvaluationPage() {
             subjectCode={lectureInfo ? convertLectureCodeToList(lectureInfo?.LectureCode) : undefined}
             selectedId={selectedId}
             isWrite={false}
-            isLoading={skeletonLoading}
+            isLoading={isLectureInfoLoading}
           />
         {isEvaluationEmpty && !skeletonLoading &&
         <Card>
@@ -249,7 +248,7 @@ export function EvaluationPage() {
             HexData={selectedEvaluation ?? null} 
             selectedId={selectedId} />
             )
-          : HexagonSkeleton}
+          : <SkeletonDiv widthSize="100%" heightSize="180px" />}
         </GraphWrap>
 
         <Upper>

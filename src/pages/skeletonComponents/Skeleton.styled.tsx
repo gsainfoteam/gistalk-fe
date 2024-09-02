@@ -3,7 +3,7 @@ import { showHexSkeleton, showSkeleton, skeletonGradient } from "./Keyframes";
 
 export const SkeletonDiv = styled.div<{
   widthSize?: string; 
-  heightSize?: string
+  heightSize?: string;
   }>`
   ${(props) => `width: ${props.widthSize}; height: ${props.heightSize};`};
   margin-bottom: 6px;
