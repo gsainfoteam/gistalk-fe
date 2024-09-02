@@ -32,6 +32,7 @@ import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
 import { AxiosError, isAxiosError } from "axios";
+import { lectureInfo, LectureSectionInfo } from "@/Interfaces/interfaces";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -143,12 +144,20 @@ export function WriteReviewPage() {
 
   //TODO: 토큰 만료 상황 대비해서 로그인 페이지로 리다이렉트
 
+  const season = ["SPRING", "SUMMER", "FALL", "WINTER"];
+  const sectionId = !isLectureInfoLoading 
+    ? lectureInfo.LectureSection.find((lecture: LectureSectionInfo) => 
+      lecture.year === selectedValues.year?.value && 
+      lecture.semester === season[selectedValues.semester?.value - 1] &&  
+      lecture.Professor.find((prof) => prof.id === clickedId))?.id
+    : undefined;
+
   const addEvaluationMutate = useMutation({
     mutationFn: () =>
       postLectureEvaluation(
         text,
         id,
-        clickedId,
+        sectionId,
         selectedValues.semester ? (selectedValues.semester as Option).value : 0,
         selectedValues.year ? (selectedValues.year as Option).label : "2000",
         recommendation,
