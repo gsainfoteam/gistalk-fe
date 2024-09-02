@@ -1,4 +1,4 @@
-import { lectureInfo } from "@/Interfaces/interfaces";
+import { lectureInfo, LectureSectionInfo } from "@/Interfaces/interfaces";
 import { concatProfessorNames } from "@/utils";
 
 const CURRENT_YEAR = 2024;
