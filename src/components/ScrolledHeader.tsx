@@ -67,6 +67,7 @@ export default function ScrolledHeader({ title, professor }: IProps) {
     animate = true;
   }
 
+  if (scroll >  150) //NavigationHeader가 덮어지지 않도록 변경
   return (
     <Wrap
       scroll={scroll}
@@ -87,4 +88,5 @@ export default function ScrolledHeader({ title, professor }: IProps) {
       </Title>
     </Wrap>
   );
+  else return (<></>);
 }
