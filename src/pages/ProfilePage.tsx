@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { FaArrowRightLong } from "react-icons/fa6";
 
 import { theme } from "@/style/theme";
 import NavigationArrow_Svg from "../assets/svgs/navigationArrow.svg";
@@ -11,13 +10,14 @@ import {
   ACCESS_TOKEN_EXPIRED_TIME,
 } from "@/constants/localStorageKeys";
 import { StyledLink } from "@components/StyledLink";
-import Card from "@components/Card";
 import { recordInfo } from "@/Interfaces/interfaces";
 import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 import useTabParam from "@/hooks/useTabParam";
 import MoveGuideCard from "@components/MoveGuideCard";
-import { SkeletonDiv } from "./skeletonComponents/Skeleton.styled";
-import { ProfileNameSkeleton, ProfilePageSkeleton } from "./skeletonComponents/ProfilePage.skeleton";
+import {
+  ProfileNameSkeleton,
+  ProfilePageSkeleton,
+} from "./skeletonComponents/ProfilePage.skeleton";
 
 const TitleWrap = styled.div`
   display: flex;
@@ -54,6 +54,7 @@ const Subject = styled.div`
 
 const SubjectName = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSRegular;
+  text-align: left;
 `;
 const ProfessorName = styled(theme.universalComponent.DivTextContainer)`
   margin-left: 1em;
@@ -95,6 +96,12 @@ const LoginGuideText = styled.div`
   color: ${theme.colors.primary};
   text-decoration: underline;
   cursor: pointer;
+`;
+
+const SubjectTextWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 `;
 
 const MENU_TEXT = [
@@ -170,60 +177,72 @@ export default function ProfilePage() {
                 <>
                   <span>{userInfo.name}</span> 님, 안녕하세요
                 </>
-              )
-              : ProfileNameSkeleton}
+              ) : (
+                ProfileNameSkeleton
+              )}
             </SubjectTitle>
           </TitleWrap>
           <ContentWrap>
-          {!isUserEvaluationLoading && 
-            <MyEvaluationContainer>
-              <MyReviewsText fontSize={16} color={theme.colors.primaryText}>
-                작성한 강의평
-              </MyReviewsText>
+            {!isUserEvaluationLoading && (
+              <MyEvaluationContainer>
+                <MyReviewsText fontSize={16} color={theme.colors.primaryText}>
+                  작성한 강의평
+                </MyReviewsText>
 
-              {!isUserEvaluationLoading && userEvaluations.length === 0 && (
-                <div>작성한 강의평이 없습니다.</div>
-              )}
+                {!isUserEvaluationLoading && userEvaluations.length === 0 && (
+                  <div>작성한 강의평이 없습니다.</div>
+                )}
 
-              {!isUserEvaluationLoading &&
-                Object.entries(groupedData).map(([year, semesters]) => (
-                  <div key={year}>
-                    {Object.entries(semesters).map(([semester, subjects]) => (
-                      <SemesterEvaluationWrap key={`${year}-${semester}`}>
-                        <Semester fontSize={14} color={theme.colors.primary}>
-                          {year}년{" "}
-                          {semesterArray[convertSemesterToNumber(semester) - 1]}
-                          학기
-                        </Semester>
-                        {subjects.map((subject, index) => (
-                          <StyledLink
-                            key={subject.id}
-                            to={`/evaluation/${subject.LectureSection.Lecture.id}`}
-                          >
-                            <Subject>
-                              <SubjectName
-                                fontSize={16}
-                                color={theme.colors.primaryText}
-                              >
-                                {subject.LectureSection.Lecture.name}
-                              </SubjectName>
-                              <ProfessorName
-                                fontSize={14}
-                                color={theme.colors.grayStroke}
-                              >
-                                {convertProfessorNameToString(
-                                  subject.LectureSection.Professor
-                                )}
-                              </ProfessorName>
-                              <ArrowIcon size={12} src={NavigationArrow_Svg} />
-                            </Subject>
-                          </StyledLink>
-                        ))}
-                      </SemesterEvaluationWrap>
-                    ))}
-                  </div>
-                ))}
-            </MyEvaluationContainer>}
+                {!isUserEvaluationLoading &&
+                  Object.entries(groupedData).map(([year, semesters]) => (
+                    <div key={year}>
+                      {Object.entries(semesters).map(([semester, subjects]) => (
+                        <SemesterEvaluationWrap key={`${year}-${semester}`}>
+                          <Semester fontSize={14} color={theme.colors.primary}>
+                            {year}년{" "}
+                            {
+                              semesterArray[
+                                convertSemesterToNumber(semester) - 1
+                              ]
+                            }
+                            학기
+                          </Semester>
+                          {subjects.map((subject, index) => (
+                            <StyledLink
+                              key={subject.id}
+                              to={`/evaluation/${subject.LectureSection.Lecture.id}`}
+                            >
+                              <Subject>
+                                <SubjectTextWrap>
+                                  <SubjectName
+                                    fontSize={16}
+                                    color={theme.colors.primaryText}
+                                  >
+                                    {subject.LectureSection.Lecture.name}
+                                  </SubjectName>
+                                  <ProfessorName
+                                    fontSize={14}
+                                    color={theme.colors.grayStroke}
+                                  >
+                                    {convertProfessorNameToString(
+                                      subject.LectureSection.Professor
+                                    ).join(", ")}
+                                  </ProfessorName>
+                                </SubjectTextWrap>
+
+                                <ArrowIcon
+                                  size={12}
+                                  src={NavigationArrow_Svg}
+                                />
+                              </Subject>
+                            </StyledLink>
+                          ))}
+                        </SemesterEvaluationWrap>
+                      ))}
+                    </div>
+                  ))}
+              </MyEvaluationContainer>
+            )}
             {isUserEvaluationLoading && ProfilePageSkeleton}
           </ContentWrap>
         </>
