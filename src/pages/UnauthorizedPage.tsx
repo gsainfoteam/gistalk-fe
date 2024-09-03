@@ -24,7 +24,7 @@ const Title = styled.h2`
   font-family: "NSBold", sans-serif;
 `;
 
-const Message = styled.p`
+const Message = styled.div`
   font-size: 1rem;
   color: #666666;
   font-family: "NSMedium", sans-serif;
