@@ -29,9 +29,11 @@ export const skeletonCardGradient = keyframes`
 
 /**
  * skeleton의 배경색 animation
- * 
+ *
  * @returns -animation 반환
  */
 export const showSkeleton = () => {
-  return css`animation: ${skeletonGradient} 1.5s infinite ease-in-out`
+  return css`
+    animation: ${skeletonGradient} 1.5s infinite ease-in-out;
+  `;
 };

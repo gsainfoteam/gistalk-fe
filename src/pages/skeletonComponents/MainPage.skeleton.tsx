@@ -36,17 +36,14 @@ const Content = styled.div`
   animation: ${skeletonGradient} 1.5s infinite ease-in-out;
 `;
 
-export const MainPageSkeleton =
-<>
+export const MainPageSkeleton = (
+  <>
     <UpComponentWrap>
-    <Title>
-        &nbsp;
-    </Title>
-    &ensp;
-    <SubTitle />
+      <Title>&nbsp;</Title>
+      &ensp;
+      <SubTitle />
     </UpComponentWrap>
-    <Recommend>
-        &nbsp;
-    </Recommend>
+    <Recommend>&nbsp;</Recommend>
     <Content>&nbsp;</Content>
-</>;
+  </>
+);

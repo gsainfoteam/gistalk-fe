@@ -29,10 +29,11 @@ const Name = styled.div`
   animation: ${skeletonGradient} 1.5s infinite ease-in-out;
 `;
 
-export const ProfilePageSkeleton =
-    <>
-        <Title />
-        <Content />
-    </>
+export const ProfilePageSkeleton = (
+  <>
+    <Title />
+    <Content />
+  </>
+);
 
 export const ProfileNameSkeleton = <Name />;

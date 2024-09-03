@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { skeletonGradient } from "./Keyframes";
 
 export const SkeletonDiv = styled.div<{
-  widthSize?: string; 
+  widthSize?: string;
   heightSize?: string;
-  }>`
+}>`
   ${(props) => `width: ${props.widthSize}; height: ${props.heightSize};`};
   margin-bottom: 6px;
 

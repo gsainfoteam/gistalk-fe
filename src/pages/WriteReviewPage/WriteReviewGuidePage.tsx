@@ -47,10 +47,9 @@ export function WriteReviewGuidePage() {
   function DisplayItemList() {
     const skeletonNumber = new Array(500).fill(null);
     if (isLectureListLoading) {
-      return skeletonNumber.map((skeleton, index) => 
-        <div key={index}>
-          {SearchCardSkeleton}
-        </div>);
+      return skeletonNumber.map((skeleton, index) => (
+        <div key={index}>{SearchCardSkeleton}</div>
+      ));
     }
     const filteredLectureList = filterLectureList(
       lectureList,
