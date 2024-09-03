@@ -79,7 +79,7 @@ export default function Title({
       isBottomBorder={!isLoading}
     >
       {isLoading ? (
-        TitleSkeleton
+        <TitleSkeleton />
       ) : (
         <>
           <SubjectTitle fontSize={20} color={theme.colors.primaryText}>

@@ -1,4 +1,3 @@
-import Card from "@components/Card";
 import styled from "styled-components";
 import { skeletonGradient } from "./Keyframes";
 
@@ -36,14 +35,16 @@ const Content = styled.div`
   animation: ${skeletonGradient} 1.5s infinite ease-in-out;
 `;
 
-export const MainPageSkeleton = (
-  <>
-    <UpComponentWrap>
-      <Title>&nbsp;</Title>
-      &ensp;
-      <SubTitle />
-    </UpComponentWrap>
-    <Recommend>&nbsp;</Recommend>
-    <Content>&nbsp;</Content>
-  </>
-);
+export function MainPageSkeleton() {
+  return (
+    <>
+      <UpComponentWrap>
+        <Title>&nbsp;</Title>
+        &ensp;
+        <SubTitle />
+      </UpComponentWrap>
+      <Recommend>&nbsp;</Recommend>
+      <Content>&nbsp;</Content>
+    </>
+  );
+}

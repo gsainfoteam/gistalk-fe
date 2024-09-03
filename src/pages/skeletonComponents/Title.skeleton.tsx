@@ -32,12 +32,14 @@ const ProfContent = styled.div`
   animation: ${skeletonGradient} 1.5s infinite ease-in-out;
 `;
 
-export const TitleSkeleton = (
-  <>
-    <Title />
-    <ProfWrap>
-      <Professor />
-      <ProfContent />
-    </ProfWrap>
-  </>
-);
+export function TitleSkeleton() {
+  return (
+    <>
+      <Title />
+      <ProfWrap>
+        <Professor />
+        <ProfContent />
+      </ProfWrap>
+    </>
+  );
+}

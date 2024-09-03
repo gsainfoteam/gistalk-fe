@@ -54,39 +54,54 @@ const ContentWrap = styled(theme.universalComponent.DivTextContainer)`
 const semester = ["봄", "여름", "가을", "겨울"];
 
 export default function Reply({ replyData, isLoading }: IProps) {
-  const isRecommend = isLoading ? undefined : replyData && (
-    replyData.recommendation == NOT_RECOMMEND
-      ? "false"
-      : replyData.recommendation == RECOMMEND
-      ? "true"
-      : "none"); // "true" or "false" or "none
+  const isRecommend = isLoading
+    ? undefined
+    : replyData &&
+      (replyData.recommendation == NOT_RECOMMEND
+        ? "false"
+        : replyData.recommendation == RECOMMEND
+        ? "true"
+        : "none"); // "true" or "false" or "none
 
-  const semesterId = replyData && !isLoading ? convertSemesterToNumber(replyData.semester) : undefined;
+  const semesterId =
+    replyData && !isLoading
+      ? convertSemesterToNumber(replyData.semester)
+      : undefined;
   return (
     <Wrap>
-      {isLoading ? ReplySkeleton
-      : isRecommend && replyData && 
-        <><InfoWrap>
-        <LeftWrap>
-          <RecommendationStatus like={isRecommend} />
-          <ProfessorText fontSize={13} color={theme.colors.primaryText}>
-            {convertProfessorNameToString(replyData.LectureSection.Professor).join(", ")}
-            {" "}
-          </ProfessorText>
-          <SemesterText fontSize={13} color={theme.colors.secondaryText}>
-            {replyData.year}년{" "}
-            {semesterId !== 0 && semesterId && `${semester[semesterId - 1]}학기`}
-          </SemesterText>
-        </LeftWrap>
-        <LikeButton
-          like={replyData._count.RecordLike}
-          recordId={replyData.id}
-          isLiked={replyData.isLiked}
-        />
-      </InfoWrap>
-      <ContentWrap fontSize={13} color={theme.colors.primaryText}>
-        {replyData.review}
-      </ContentWrap></>}
+      {isLoading ? (
+        <ReplySkeleton />
+      ) : (
+        isRecommend &&
+        replyData && (
+          <>
+            <InfoWrap>
+              <LeftWrap>
+                <RecommendationStatus like={isRecommend} />
+                <ProfessorText fontSize={13} color={theme.colors.primaryText}>
+                  {convertProfessorNameToString(
+                    replyData.LectureSection.Professor
+                  ).join(", ")}{" "}
+                </ProfessorText>
+                <SemesterText fontSize={13} color={theme.colors.secondaryText}>
+                  {replyData.year}년{" "}
+                  {semesterId !== 0 &&
+                    semesterId &&
+                    `${semester[semesterId - 1]}학기`}
+                </SemesterText>
+              </LeftWrap>
+              <LikeButton
+                like={replyData._count.RecordLike}
+                recordId={replyData.id}
+                isLiked={replyData.isLiked}
+              />
+            </InfoWrap>
+            <ContentWrap fontSize={13} color={theme.colors.primaryText}>
+              {replyData.review}
+            </ContentWrap>
+          </>
+        )
+      )}
     </Wrap>
   );
 }
