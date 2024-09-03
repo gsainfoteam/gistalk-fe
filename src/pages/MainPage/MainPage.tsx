@@ -13,6 +13,7 @@ import { MockSearchBar } from "./components/MockSearchBar";
 import useTabParam from "@/hooks/useTabParam";
 import { GuideWritingReview } from "./components/GuideWritingReview";
 import MoveGuideCard from "@components/MoveGuideCard";
+import { MainPageSkeleton } from "../skeletonComponents/MainPage.skeleton";
 
 export default function MainPage() {
   useTabParam();
@@ -22,6 +23,51 @@ export default function MainPage() {
     queryFn: getRecentEvaluation,
     retry: 0,
   });
+
+  function DisplayRecentList() {
+    const skeletonNumber = new Array(4).fill(null);
+
+    if (isLoading && !data) {
+      return (
+        skeletonNumber.map((skeleton, index) =>
+          <Card key={index} isSkeleton={isLoading}>
+            {MainPageSkeleton}
+          </Card>)
+      );
+    }
+
+    return (
+      recentEvaluation.map((evaluation: recordInfo) => (
+        <StyledLink
+          to={`/evaluation/${evaluation.LectureSection.Lecture.id}`}
+          key={evaluation.id}
+        >
+          <Card isInteractive={true}>
+            <LectureInformation
+              LectureName={evaluation.LectureSection.Lecture.name}
+              ProfessorName={convertProfessorNameToString(
+                evaluation.LectureSection.Professor
+              ).join(", ")}
+              CourseTakenYear={parseInt(
+                evaluation.year.toString().substring(0, 4)
+              )}
+              CourseTakenSemester={convertSemesterToNumber(
+                evaluation.semester
+              )}
+              CourseRecommendation={
+                evaluation.recommendation === RECOMMEND
+                  ? true
+                  : evaluation.recommendation === NOT_RECOMMEND
+                  ? false
+                  : null
+              }
+            />
+            <LectureReview>{evaluation.review}</LectureReview>
+          </Card>
+        </StyledLink>
+      ))
+    );
+  }
 
   const { data: recentEvaluation } = { ...data };
   return (
@@ -42,37 +88,7 @@ export default function MainPage() {
       </StyledLink>
 
       <WithTitleAndDescription title={"최근 올라온 강의평가"}>
-        {!isLoading &&
-          data &&
-          recentEvaluation.map((evaluation: recordInfo) => (
-            <StyledLink
-              to={`/evaluation/${evaluation.LectureSection.Lecture.id}`}
-              key={evaluation.id}
-            >
-              <Card isInteractive={true}>
-                <LectureInformation
-                  LectureName={evaluation.LectureSection.Lecture.name}
-                  ProfessorName={convertProfessorNameToString(
-                    evaluation.LectureSection.Professor
-                  ).join(", ")}
-                  CourseTakenYear={parseInt(
-                    evaluation.year.toString().substring(0, 4)
-                  )}
-                  CourseTakenSemester={convertSemesterToNumber(
-                    evaluation.semester
-                  )}
-                  CourseRecommendation={
-                    evaluation.recommendation === RECOMMEND
-                      ? true
-                      : evaluation.recommendation === NOT_RECOMMEND
-                      ? false
-                      : null
-                  }
-                />
-                <LectureReview>{evaluation.review}</LectureReview>
-              </Card>
-            </StyledLink>
-          ))}
+        {DisplayRecentList()}
       </WithTitleAndDescription>
     </>
   );

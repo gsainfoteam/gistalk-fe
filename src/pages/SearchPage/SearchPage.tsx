@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { departmentOptionAtom, sortOptionAtom } from "@/store";
 import { theme } from "@/style/theme";
-import SearchCard from "@/pages/SearchPage/components/SearchCard";
+import SearchCard from "./components/SearchCard";
 import Filter_Svg from "@assets/svgs/tune.svg";
 import CatBlankList_Svg from "@assets/svgs/catBlankList.svg";
 import { lectureInfo } from "@/Interfaces/interfaces";
@@ -25,6 +25,7 @@ import { getLectureList } from "@/apis/lectures";
 import { StyledLink } from "@components/StyledLink";
 import { concatProfessorNames } from "@/utils";
 import { useSearch } from "@/hooks/useSearch";
+import { SearchCardSkeleton } from "../skeletonComponents/SearchCard.skeleton";
 
 export function SearchPage() {
   const [sortOpen, setSortOpen] = useState(false);
@@ -49,8 +50,12 @@ export function SearchPage() {
 
   /**Search 페이지의 강의 리스트 */
   function DisplayItemList() {
+    const skeletonNumber = new Array(550).fill(null); //550개의 임의의 skeleton 로드
     if (isLoading) {
-      return null;
+      return skeletonNumber.map((skeleton, index) => 
+        <div key={index}>
+          {SearchCardSkeleton}
+        </div>);
     }
     const filteredLectureList = filterLectureList(
       lectureList,
@@ -101,7 +106,7 @@ export function SearchPage() {
       </OptionBtnWrap>
       {/**case 1: 아무것도 선택되지 않은 경우, 전체 출력/ case 2: 선택된 것이 있는 경우 includes로 필터링하여 출력*/}
       <ItemList>
-        {!isLoading && DisplayItemList()}
+        {DisplayItemList()}
         {DisplayItemList() === null ? (
           <BlankWrap>
             <BlankSvg size={160} src={CatBlankList_Svg} />

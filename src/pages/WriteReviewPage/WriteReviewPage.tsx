@@ -187,17 +187,15 @@ export function WriteReviewPage() {
     <>
       <NavigationHeader text={"강의평 작성"} />
       <Wrapper>
-        {!isLectureInfoLoading && lectureInfo && (
-          <Title
-            handleCheckboxChange={handleCheckboxChange}
-            subjectTitle={lectureInfo.name}
-            sectionInfo={lectureInfo.LectureSection}
-            subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
-            selectedId={selectedId}
-            isWrite={true}
-          />
-        )}
-
+        <Title
+        handleCheckboxChange={handleCheckboxChange}
+        subjectTitle={lectureInfo?.name}
+        sectionInfo={lectureInfo?.LectureSection}
+        subjectCode={lectureInfo ? convertLectureCodeToList(lectureInfo?.LectureCode) : undefined}
+        selectedId={selectedId}
+        isWrite={true}
+        isLoading={isLectureInfoLoading}
+        />
         <Form onSubmit={handleSubmit}>
           <FormField>
             <Label>수강 년도</Label>

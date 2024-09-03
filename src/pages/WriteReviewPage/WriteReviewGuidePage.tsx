@@ -16,6 +16,7 @@ import { SearchBar } from "../SearchPage/components/SearchBar";
 import { ItemList } from "../SearchPage/SearchPage.styled";
 import { filterLectureList } from "../SearchPage/SearchPage.const";
 import SearchCard from "../SearchPage/components/SearchCard";
+import { SearchCardSkeleton } from "../skeletonComponents/SearchCard.skeleton";
 import { Wrapper } from "./WriteReviewPage.styled";
 
 export function WriteReviewGuidePage() {
@@ -46,8 +47,11 @@ export function WriteReviewGuidePage() {
 
   /**Search 페이지의 강의 리스트 */
   function DisplayItemList() {
+    const skeletonNumber = new Array(500).fill(null);
     if (isLectureListLoading) {
-      return null;
+      return skeletonNumber.map((skeleton, index) => (
+        <div key={index}>{SearchCardSkeleton}</div>
+      ));
     }
     const filteredLectureList = filterLectureList(
       lectureList,
@@ -92,7 +96,7 @@ export function WriteReviewGuidePage() {
           isSearchWrite={true}
         />
 
-        {!isLectureListLoading && <ItemList>{DisplayItemList()}</ItemList>}
+        <ItemList>{DisplayItemList()}</ItemList>
       </Wrapper>
     </>
   );

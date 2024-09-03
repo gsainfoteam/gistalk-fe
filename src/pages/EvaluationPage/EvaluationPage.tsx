@@ -25,6 +25,7 @@ import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { getLectureEachEvaluation } from "@/apis/records";
 import { NoComment } from "./components/NoComment";
 import { isAllSelectedIdNull, makeIsEvaluationEmpty, makeReviewData, spliceSameReviewAsOne, reviewAmount, spliceEmptyProfLectureInfo, spliceEmptyProfReviewList } from "./EvaluationPage.util";
+import { SkeletonDiv, skeletonReview } from "../skeletonComponents/Skeleton.styled";
 
 const Wrap = styled.div`
   margin: 0 auto;
@@ -35,16 +36,20 @@ const Wrap = styled.div`
 
 /** 방사형 그래프인 Hexagon component를 감싸는 div */
 const GraphWrap = styled.div`
-  position: relative;
-  top: -30px;
+  width: 100%;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const OneLineReviewText = styled(theme.universalComponent.DivTextContainer)<{
   borderColor: string;
+  isSkeleton: boolean;
 }>`
   height: 42px;
   font-family: NSRegular;
-  border-bottom: 1.5px solid ${(props) => props.borderColor};
+  border-bottom: 1.5px solid ${(props) => props.isSkeleton ? "white" : props.borderColor};
   border-radius: 0;
   margin: 20px auto 0 auto;
   line-height: 42px;
@@ -55,10 +60,10 @@ const OneLineReviewText = styled(theme.universalComponent.DivTextContainer)<{
   }
 `;
 
-/** Hexagon position 처리 때문에 밀려난 부분들 싹 다 위로 올리는 컴포넌트 */
+/** Hexagon 때문에 밀려난 부분들 싹 다 위로 올리는 컴포넌트 */
 const Upper = styled.div`
-  position: relative;
   top: -70px;
+  margin-bottom: 100px;
 `;
 
 const SummaryWrapper = styled.div`
@@ -217,53 +222,62 @@ export function EvaluationPage() {
     selectedEvaluation.every((value) => 
     Object.values(value).every((content) => content === null));
 
+  const skeletonLoading = !selectedEvaluation ? true : false;
+
   return (
     <>
       <NavigationHeader text={"강의평"} isNavigateHome={true} />
       <Wrap>
-        {!isLectureInfoLoading && lectureInfo && (
           <Title
             handleCheckboxChange={handleCheckboxChange}
-            subjectTitle={lectureInfo.name}
-            sectionInfo={lectureInfo.LectureSection}
-            subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
+            subjectTitle={lectureInfo?.name}
+            sectionInfo={lectureInfo?.LectureSection}
+            subjectCode={lectureInfo 
+              ? convertLectureCodeToList(lectureInfo?.LectureCode) 
+              : undefined}
             selectedId={selectedId}
             isWrite={false}
+            isLoading={isLectureInfoLoading}
           />
-        )}
-
-        {isEvaluationEmpty &&
+        {isEvaluationEmpty && !skeletonLoading &&
         <Card>
           데이터가 없습니다.
         </Card>}
 
         <GraphWrap>
-        {selectedEvaluation && (
+        {selectedEvaluation ? (
           <Hexagon 
             HexData={selectedEvaluation ?? null} 
             selectedId={selectedId} />
-            )}
+            )
+          : <SkeletonDiv widthSize="100%" heightSize="180px" />}
         </GraphWrap>
 
         <Upper>
           <SummaryWrapper>
             <SummaryScroll>
-            {selectedEvaluation && (
               <EvaluationSummary 
-                selectedEvaluation={selectedEvaluation ?? null} 
+                selectedEvaluation={selectedEvaluation ?? undefined} 
                 selectedId={selectedId}
+                isLoading={skeletonLoading}
               />
-              )}
               <ScrollBarWrapper className="barWrapper" isFade={isFade} />
             </SummaryScroll>
           </SummaryWrapper>
+
           <OneLineReviewText
             fontSize={18}
             color={theme.colors.primaryText}
             borderColor={theme.colors.grayStroke}
+            isSkeleton={skeletonLoading}
           >
-            한줄평
-            {reviewList &&
+            {skeletonLoading 
+              ? <div style={{display: "flex", alignItems: "center"}}>
+                  <SkeletonDiv widthSize="50px" heightSize="25px"/>
+                  &nbsp; <SkeletonDiv widthSize="180px" heightSize="20px"/>
+                </div>
+              : <>한줄평</>}
+            {reviewList && selectedEvaluation &&
               (isAllSelectedIdNull(selectedId) ? ( 
                 <span>
                   {" "}
@@ -275,6 +289,9 @@ export function EvaluationPage() {
               ))}
           </OneLineReviewText>
 
+          {skeletonLoading && 
+            skeletonReview.map((skeleton, index) => <Reply key={index} isLoading={skeletonLoading} />)
+          }
           {isAllSelectedIdNull(selectedId)
             ? isReviewNotExist 
               ? <NoComment />
@@ -321,7 +338,7 @@ export function EvaluationPage() {
         </StyledLink>
       )}
 
-      {!isLectureInfoLoading && lectureInfo && (
+      {selectedEvaluation && (
         <ScrolledHeader
           professor={concatProfessorNames(lectureInfo.LectureSection)}
           title={lectureInfo.name}
