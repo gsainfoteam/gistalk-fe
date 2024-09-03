@@ -247,6 +247,7 @@ export function EvaluationPage() {
 
   const skeletonLoading = !selectedEvaluation ? true : false;
 
+  console.log(selectedReview);
   return (
     <>
       <NavigationHeader text={"강의평"} isNavigateHome={true} />
@@ -344,11 +345,9 @@ export function EvaluationPage() {
           ) : (
             selectedReview &&
             selectedReview.map((select, index) => (
-              <div key={selectedId[index]}>
-                {select.map((review: recordInfo) => (
+                select.map((review: recordInfo) => (
                   <Reply key={review.id} replyData={review} />
-                ))}
-              </div>
+                ))
             ))
           )}
         </Upper>
