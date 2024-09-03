@@ -4,24 +4,31 @@ import { theme } from "@/style/theme";
 import { LectureSectionInfo, professorInfo } from "@/Interfaces/interfaces";
 import { extractProfessors } from "@/utils";
 import ProfessorList from "./ProfessorList";
+import { TitleSkeleton } from "@/pages/skeletonComponents/Title.skeleton";
 
 interface IProps {
-  subjectTitle: string;
-  sectionInfo: LectureSectionInfo[];
-  subjectCode: string[];
+  subjectTitle: string | undefined;
+  sectionInfo: LectureSectionInfo[] | undefined;
+  subjectCode: string[] | null;
   selectedId: (number | null)[];
   handleCheckboxChange: (id: number, profNumber: number) => void;
   isWrite: boolean;
   showProfessor?: boolean;
+  isLoading: boolean;
 }
 
-const TitleWrap = styled.div<{ color: string; bgColor: string }>`
+const TitleWrap = styled.div<{
+  color: string;
+  bgColor: string;
+  isBottomBorder: boolean;
+}>`
   width: 100%;
   margin: 0 auto 0 auto;
 
   padding-top: 13px;
   padding-bottom: 13px;
-  border-bottom: ${(props) => props.color} 1.5px solid;
+  border-bottom: ${(props) => (props.isBottomBorder ? props.color : "white")}
+    1.5px solid;
   border-radius: 0;
   background-color: ${(props) => props.bgColor};
 
@@ -60,22 +67,35 @@ export default function Title({
   handleCheckboxChange,
   isWrite, //WriteReviewPage인지 EvaluationPage인지 구별해주는 boolean.
   showProfessor = true,
+  isLoading,
 }: IProps) {
-  const professorInfoList = extractProfessors(sectionInfo);
+  const professorInfoList =
+    !isLoading && sectionInfo ? extractProfessors(sectionInfo) : [];
 
   return (
-    <TitleWrap color={theme.colors.grayStroke} bgColor={theme.colors.white}>
-      <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
-        {subjectTitle || "ERR"} <span> {subjectCode.join(", ") || "ERR"}</span>
-        {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}
-      </SubjectTitle>
-      {showProfessor && (
-        <ProfessorList
-          professorInfoList={professorInfoList}
-          selectedId={selectedId}
-          handleCheckboxChange={handleCheckboxChange}
-          isWrite={isWrite}
-        />
+    <TitleWrap
+      color={theme.colors.grayStroke}
+      bgColor={theme.colors.white}
+      isBottomBorder={!isLoading}
+    >
+      {isLoading ? (
+        TitleSkeleton
+      ) : (
+        <>
+          <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
+            {subjectTitle || "ERR"}{" "}
+            <span>{subjectCode?.join(", ") || "ERR"}</span>
+            {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}
+          </SubjectTitle>
+          {showProfessor && (
+            <ProfessorList
+              professorInfoList={professorInfoList}
+              selectedId={selectedId}
+              handleCheckboxChange={handleCheckboxChange}
+              isWrite={isWrite}
+            />
+          )}
+        </>
       )}
     </TitleWrap>
   );

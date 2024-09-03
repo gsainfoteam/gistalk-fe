@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ReactSelect from "react-select";
+import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 
 import NavigationHeader from "@components/NavigationHeader";
 import Title from "@components/Title";
@@ -25,19 +27,17 @@ import {
   RadioCheckText,
   Circle,
 } from "./WriteReviewPage.styled";
-import ReactSelect from "react-select";
 import {
   convertLectureCodeToList,
   convertSemesterToString,
   extractProfessors,
   makeSelectedIdNull,
 } from "@/utils";
-import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
-import { AxiosError, isAxiosError } from "axios";
-import { lectureInfo, LectureSectionInfo } from "@/Interfaces/interfaces";
+import { isAxiosError } from "axios";
+import { LectureSectionInfo } from "@/Interfaces/interfaces";
 import ProfessorList from "@components/ProfessorList";
 import Card from "@components/Card";
 
@@ -55,7 +55,6 @@ interface SelectedValues {
   year: Option | null;
   semester: Option | null;
 }
-
 export function WriteReviewPage() {
   const [ratings, setRatings] = useState(initialRatings);
   const [selectedValues, setSelectedValues] = useState<SelectedValues>({
@@ -158,12 +157,15 @@ export function WriteReviewPage() {
   const SELECTED_YEAR = selectedValues.year?.value;
   const SELECTED_SEMESTER = selectedValues.semester?.value;
 
-  const sectionId = !isLectureInfoLoading && SELECTED_SEMESTER
-    ? lectureInfo.LectureSection.find((lecture: LectureSectionInfo) => 
-      lecture.year === SELECTED_YEAR &&
-      lecture.semester === convertSemesterToString(SELECTED_SEMESTER) &&  
-      lecture.Professor.find((prof) => prof.id === clickedId))?.id
-    : undefined;
+  const sectionId =
+    !isLectureInfoLoading && SELECTED_SEMESTER
+      ? lectureInfo.LectureSection.find(
+          (lecture: LectureSectionInfo) =>
+            lecture.year === SELECTED_YEAR &&
+            lecture.semester === convertSemesterToString(SELECTED_SEMESTER) &&
+            lecture.Professor.find((prof) => prof.id === clickedId)
+        )?.id
+      : undefined;
 
   const addEvaluationMutate = useMutation({
     mutationFn: () =>
@@ -204,13 +206,14 @@ export function WriteReviewPage() {
   };
 
   //year, semester에 해당하는 걸로 필터링
-  const filteredProfessorInfoList = lectureInfo && SELECTED_SEMESTER
-    ? lectureInfo.LectureSection.filter(
-        (section: LectureSectionInfo) =>
-          section.year === SELECTED_YEAR &&
-          section.semester === convertSemesterToString(SELECTED_SEMESTER)
-      )
-    : [];
+  const filteredProfessorInfoList =
+    lectureInfo && SELECTED_SEMESTER
+      ? lectureInfo.LectureSection.filter(
+          (section: LectureSectionInfo) =>
+            section.year === SELECTED_YEAR &&
+            section.semester === convertSemesterToString(SELECTED_SEMESTER)
+        )
+      : [];
 
   const extractProfessor = extractProfessors(filteredProfessorInfoList);
 
@@ -218,17 +221,20 @@ export function WriteReviewPage() {
     <>
       <NavigationHeader text={"강의평 작성"} />
       <Wrapper>
-        {!isLectureInfoLoading && lectureInfo && (
-          <Title
-            handleCheckboxChange={handleCheckboxChange}
-            subjectTitle={lectureInfo.name}
-            sectionInfo={lectureInfo.LectureSection}
-            subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
-            selectedId={selectedId}
-            isWrite={true}
-            showProfessor={false}
-          />
-        )}
+        <Title
+          handleCheckboxChange={handleCheckboxChange}
+          subjectTitle={lectureInfo?.name}
+          sectionInfo={lectureInfo?.LectureSection}
+          subjectCode={
+            lectureInfo
+              ? convertLectureCodeToList(lectureInfo?.LectureCode)
+              : null
+          }
+          selectedId={selectedId}
+          isWrite={true}
+          isLoading={isLectureInfoLoading}
+          showProfessor={false}
+        />
 
         <Form onSubmit={handleSubmit}>
           <FormField>

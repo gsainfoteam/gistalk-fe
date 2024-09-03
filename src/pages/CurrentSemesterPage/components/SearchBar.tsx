@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, KeyboardEvent, Dispatch } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -13,6 +13,7 @@ import {
   SearchItem,
 } from "../CurrentSemesterPage.styled";
 import { concatProfessorNames } from "@/utils";
+import { useSearch } from "@/hooks/useSearch";
 
 export const SearchSvg = styled(theme.universalComponent.SvgIcon)`
   display: block;
@@ -88,18 +89,17 @@ export function SearchBar({
   data,
   setSearchText,
   searchText,
-  setSearchTextEnter,
   enterSearchText,
   searchTextEnter,
+  clearSearchText,
 }: {
-  data: lectureInfo[];
-  setSearchText: any;
+  data: lectureInfo[] | null;
+  setSearchText: Dispatch<React.SetStateAction<string>>;
   searchText: string;
-  setSearchTextEnter: any;
-  enterSearchText: any;
+  enterSearchText: (e: KeyboardEvent<HTMLInputElement>) => void;
   searchTextEnter: string;
+  clearSearchText: () => void;
 }) {
-  const [searchParams, setSearchParams] = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
 
@@ -122,11 +122,7 @@ export function SearchBar({
       return (
         <SearchBtnWrap
           bgColor={theme.colors.white}
-          onClick={() => {
-            setSearchText("");
-            setSearchTextEnter("");
-            setSearchParams("");
-          }}
+          onClick={clearSearchText}
         >
           <CancelSvg size={25} src={Cancel_Svg} />
         </SearchBtnWrap>
@@ -152,7 +148,7 @@ export function SearchBar({
         return (
           <Link
             key={item.id}
-            to={`/${item.id}/evaluation`}
+            to={`/evaluation/${item.id}`}
             style={{ textDecoration: "none" }}
           >
             <SearchItem>
@@ -175,11 +171,7 @@ export function SearchBar({
   };
 
   const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchText = (e.target as HTMLInputElement).value;
-    searchParams.set("keyword", searchText);
-
-    setSearchText(searchText);
-    setSearchParams(searchParams);
+    setSearchText((e.target as HTMLInputElement).value);
   };
 
   return (
