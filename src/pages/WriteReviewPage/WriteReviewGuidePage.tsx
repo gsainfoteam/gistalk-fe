@@ -1,21 +1,23 @@
 import { useEffect } from "react";
-import NavigationHeader from "@components/NavigationHeader";
-import { RATING_QUESTIONS } from "./WriteReviewPage.const";
-import { Wrapper } from "./WriteReviewPage.styled";
-import { concatProfessorNames } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
+
+import { concatProfessorNames } from "@/utils";
 import { getLectureList } from "@/apis/lectures";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
-import { SearchBar } from "../SearchPage/components/SearchBar";
 import { useSearch } from "@/hooks/useSearch";
 import Card from "@components/Card";
+import NavigationHeader from "@components/NavigationHeader";
+import { StyledLink } from "@components/StyledLink";
 import TitleWithDescription from "@components/TitleWithDescription";
+import { lectureInfo } from "@/Interfaces/interfaces";
+
+//TODO : SearchPage 컴포넌트 의존성 제거. 공용 컴포넌트로 묶을 수 있도록 수정
+import { SearchBar } from "../SearchPage/components/SearchBar";
 import { ItemList } from "../SearchPage/SearchPage.styled";
 import { filterLectureList } from "../SearchPage/SearchPage.const";
-import { lectureInfo } from "@/Interfaces/interfaces";
-import { StyledLink } from "@components/StyledLink";
 import SearchCard from "../SearchPage/components/SearchCard";
 import { SearchCardSkeleton } from "../skeletonComponents/SearchCard.skeleton";
+import { Wrapper } from "./WriteReviewPage.styled";
 
 export function WriteReviewGuidePage() {
   const {
@@ -74,7 +76,6 @@ export function WriteReviewGuidePage() {
       );
     });
   }
-
   return (
     <>
       <NavigationHeader text={"강의평 작성"} isNavigateHome={true} />
