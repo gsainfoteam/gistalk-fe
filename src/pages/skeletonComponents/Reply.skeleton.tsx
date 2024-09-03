@@ -30,19 +30,21 @@ const SemesterSkeleton = styled.div`
   animation: ${skeletonGradient} 1.5s infinite ease-in-out;
 `;
 
-export const ReplySkeleton = (
-  <>
-    <InfoWrap>
-      <RecommendSkeleton />
-      &ensp;
-      <ProfSkeleton />
-      &ensp;
-      <SemesterSkeleton />
-    </InfoWrap>
-    <SkeletonDiv>
-      &nbsp;
-      <br />
-      &nbsp;
-    </SkeletonDiv>
-  </>
-);
+export function ReplySkeleton() {
+  return (
+    <>
+      <InfoWrap>
+        <RecommendSkeleton />
+        &ensp;
+        <ProfSkeleton />
+        &ensp;
+        <SemesterSkeleton />
+      </InfoWrap>
+      <SkeletonDiv>
+        &nbsp;
+        <br />
+        &nbsp;
+      </SkeletonDiv>
+    </>
+  );
+}

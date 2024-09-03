@@ -52,10 +52,11 @@ export function SearchPage() {
   function DisplayItemList() {
     const skeletonNumber = new Array(550).fill(null); //550개의 임의의 skeleton 로드
     if (isLoading) {
-      return skeletonNumber.map((skeleton, index) => 
+      return skeletonNumber.map((skeleton, index) => (
         <div key={index}>
-          {SearchCardSkeleton}
-        </div>);
+          <SearchCardSkeleton />
+        </div>
+      ));
     }
     const filteredLectureList = filterLectureList(
       lectureList,

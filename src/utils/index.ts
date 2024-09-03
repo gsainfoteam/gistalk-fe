@@ -24,7 +24,7 @@ export const convertLectureCodeToList = (lectureCode: LectureCode[]) => {
  * @returns professorInfo[] 로 flat하게 변환한다.
  */
 export const extractProfessors = (lectureSections: LectureSectionInfo[]) => {
-  const seenIds = new Set(); // Set to track unique IDs
+  const seenIds = new Set(); // 교수진 중복 방지를 위한 id를 저장하는 set를 둔다
   const professorArray = lectureSections.reduce(
     (professors: professorInfo[], section) => {
       if (section.Professor && section.Professor.length > 0) {
@@ -65,56 +65,66 @@ export const convertProfessorNameToString = (
 };
 
 /**
- * 특정 수업의 리뷰 점수를 합산하여 평균을 구한다. 
- * 
- * @param selectedId 
- * @param reviewList 
- * @param isEvaluationLoading 
+ * 특정 수업의 리뷰 점수를 합산하여 평균을 구한다.
+ *
+ * @param selectedId
+ * @param reviewList
+ * @param isEvaluationLoading
  * @returns {evaluationData[]}
  */
 export const extractEvaluationData = (
-  selectedId: (number | null)[], 
+  selectedId: (number | null)[],
   reviewList: recordInfo[][],
-  lectureInfo: lectureInfo) => {
+  lectureInfo: lectureInfo
+) => {
   const professorArray = extractProfessors(lectureInfo.LectureSection);
   let selectedData = professorArray.map(() => new Array());
 
   isAllSelectedIdNull(selectedId)
-    ? professorArray.map((prof, pIndex) => 
-      reviewList[0].map((review: recordInfo) => review.LectureSection.Professor.map((member) => 
-        prof.name === member.name 
-          ? selectedData[pIndex].push(review) 
-          : null)))
-    : selectedData = selectedId.filter((id) => id !== null).map((id) => 
-        reviewList[selectedId.indexOf(id)]);
-    
-  const result = selectedData.map((data) => {
-    return (
-      SUBJECT_SHOW_ORDER.reduce((acc: any, key) => {
-        acc[key] = data === null || data.every((review: recordInfo) => review === undefined) 
-          ? null
-          : data.reduce((avg: number, num: any) => avg += num[key], 0)/data.length; 
-        return acc;}, {})
+    ? professorArray.map((prof, pIndex) =>
+        reviewList[0].map((review: recordInfo) =>
+          review.LectureSection.Professor.map((member) =>
+            prof.name === member.name ? selectedData[pIndex].push(review) : null
+          )
+        )
       )
-    }
+    : (selectedData = selectedId
+        .filter((id) => id !== null)
+        .map((id) => reviewList[selectedId.indexOf(id)]));
+
+  const result = selectedData.map((data) => {
+    return SUBJECT_SHOW_ORDER.reduce((acc: any, key) => {
+      acc[key] =
+        data === null ||
+        data.every((review: recordInfo) => review === undefined)
+          ? null
+          : data.reduce((avg: number, num: any) => (avg += num[key]), 0) /
+            data.length;
+      return acc;
+    }, {});
+  });
+
+  const averageResult = result.map(
+    (
+      review //교수진 개수 만큼 같은 내용의 평균 리뷰 배열로 생성
+    ) =>
+      SUBJECT_SHOW_ORDER.reduce((acc: any, key) => {
+        const scoreSum = result.reduce(
+          (acc, value) => {
+            value[key] !== null
+              ? ((acc[0] += value[key]), acc[1]++)
+              : (acc[0] += 0);
+            return acc;
+          },
+          [0, 0]
+        );
+
+        acc[key] = review[key] !== null ? scoreSum[0] / scoreSum[1] : null;
+        return acc;
+      }, {})
   );
 
-  const averageResult = 
-    result.map((review) => //교수진 개수 만큼 같은 내용의 평균 리뷰 배열로 생성
-      SUBJECT_SHOW_ORDER.reduce((acc: any, key) => {
-        const scoreSum = result.reduce((acc, value) => {
-          value[key] !== null 
-            ? (acc[0] += value[key], acc[1]++)
-            : acc[0] += 0
-          return acc;}, [0, 0]);
-        
-        acc[key] = review[key] !== null ? scoreSum[0]/scoreSum[1] : null;
-        return acc;}, {})
-    );
-
-  return isAllSelectedIdNull(selectedId) 
-    ? averageResult
-    : result;
+  return isAllSelectedIdNull(selectedId) ? averageResult : result;
 };
 
 /**
@@ -160,8 +170,11 @@ export const convertSemesterToString = (semester: number) => {
 /**
  * 처음 selectedId를 설정할 때 중간에 undefined를 null로 바꿔줌
  */
-export const makeSelectedIdNull = (profNumber: number, selectedId: (number | null)[]) => {
-  for(let k = 0; k < profNumber; k++) { 
+export const makeSelectedIdNull = (
+  profNumber: number,
+  selectedId: (number | null)[]
+) => {
+  for (let k = 0; k < profNumber; k++) {
     selectedId[k] = selectedId[k] ? selectedId[k] : null;
   }
 };
