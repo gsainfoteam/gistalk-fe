@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -70,7 +69,7 @@ const ConfirmButton = styled(Button)`
   }
 `;
 
-const unauthorizedPage = () => {
+function UnauthorizedPage() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -91,6 +90,6 @@ const unauthorizedPage = () => {
       </ModalActions>
     </ModalContainer>
   );
-};
+}
 
-export default unauthorizedPage;
+export default UnauthorizedPage;

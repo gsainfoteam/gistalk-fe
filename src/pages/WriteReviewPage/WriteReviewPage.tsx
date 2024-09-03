@@ -33,7 +33,6 @@ import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
 import { isAxiosError } from "axios";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
-import LoginModal from "./components/modal";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
