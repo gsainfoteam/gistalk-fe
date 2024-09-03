@@ -70,7 +70,7 @@ const ConfirmButton = styled(Button)`
   }
 `;
 
-const LoginPage = () => {
+const unauthorizedPage = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -93,4 +93,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default unauthorizedPage;

@@ -7,7 +7,7 @@ import { WriteReviewGuidePage, WriteReviewPage } from "./pages/WriteReviewPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import { SearchPage } from "./pages/SearchPage";
 import { EvaluationPage } from "./pages/EvaluationPage";
-import UnauthorizedPage from "./pages/ErrorPage/UnauthorizedPage";
+import UnauthorizedPage from "./pages/WriteReviewPage/UnauthorizedPage";
 
 //web-app style, max-width
 const DefaultStyle = styled.div`
