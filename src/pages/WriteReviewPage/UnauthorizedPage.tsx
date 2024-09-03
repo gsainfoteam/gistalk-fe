@@ -22,12 +22,14 @@ const Title = styled.h2`
   color: #333333;
   margin-bottom: 8px;
   font-weight: bold;
+  font-family: "NSBold", sans-serif;
 `;
 
 const Message = styled.p`
   font-size: 1rem;
   color: #666666;
   margin-bottom: 20px;
+  font-family: "NSMedium", sans-serif;
 `;
 
 const ModalActions = styled.div`
