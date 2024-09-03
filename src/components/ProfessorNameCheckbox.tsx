@@ -7,16 +7,18 @@ interface CheckboxProps {
   id: number;
   selectedStatus: (number | null)[];
   onCheckboxChange: (id: number, profNumber: number) => void;
-  profNumber: number;
+  profIndex: number;
   isWrite: boolean;
+  evaluationEmptyList?: boolean[];
 }
 
-const CheckboxContainer = styled.label<{
-  isClicked: boolean;
-  color: string;
-  vividColor: string;
-  isWrite: boolean;
-}>`
+const CheckboxContainer = styled.label<{ 
+  isClicked: boolean, 
+  color: string, 
+  vividColor: string, 
+  isWrite: boolean,
+  isEvaluationEmpty: boolean
+  }>`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -25,13 +27,12 @@ const CheckboxContainer = styled.label<{
   padding-top: 2px;
   padding-bottom: 2px;
   gap: 4px;
-  background: ${(props) =>
-    props.isClicked && !props.isWrite ? props.color : theme.colors.white};
-
+  background: ${(props) => !props.isEvaluationEmpty &&
+    ((props.isClicked && !props.isWrite) ? props.color : theme.colors.white)};
   border-radius: 5px;
 `;
 
-const CheckboxInput = styled.input<{ color: string; isWrite: boolean }>`
+const CheckboxInput = styled.input<{ color: string, isWrite: boolean, isEvaluationEmpty: boolean }>`
   appearance: none;
   width: ${(props) => (props.isWrite ? inputSize.big : inputSize.small)};
   height: ${(props) => (props.isWrite ? inputSize.big : inputSize.small)};
@@ -40,18 +41,19 @@ const CheckboxInput = styled.input<{ color: string; isWrite: boolean }>`
     props.isWrite ? borderRadius.circle : borderRadius.none};
   outline: none;
   cursor: pointer;
+  opacity: ${(props) => props.isEvaluationEmpty && opacity.true};
 
-  &:checked {
-    background-color: ${(props) =>
-      props.isWrite ? theme.colors.primary : props.color};
-    border: 1.5px solid
-      ${(props) => (props.isWrite ? theme.colors.primary : props.color)};
-  }
+  ${(props) => !props.isEvaluationEmpty && `
+    &:checked {
+    background-color: ${props.isWrite ? theme.colors.primary : props.color};
+    border: 1.5px solid ${props.isWrite ? theme.colors.primary : props.color};
+    }
+  `}
 `;
 
-const CheckboxText = styled.span`
+const CheckboxText = styled.span<{ isEvaluationEmpty: boolean }>`
   font-size: 15px;
-  color: ${theme.colors.black};
+  color: ${(props) => props.isEvaluationEmpty ? theme.colors.grayStroke : theme.colors.black};
 `;
 
 const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
@@ -59,29 +61,35 @@ const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
   id,
   selectedStatus,
   onCheckboxChange,
-  profNumber,
+  profIndex,
   isWrite,
+  evaluationEmptyList,
 }) => {
-  const isChecked = id === selectedStatus[profNumber];
+  const isChecked = id === selectedStatus[profIndex];
 
   const toggleCheckbox = () => {
-    onCheckboxChange(id, profNumber);
+    onCheckboxChange(id, profIndex);
   };
   return (
     <CheckboxContainer
-      isClicked={isChecked}
-      color={theme.RadarColor(opacity.background)[profNumber]}
-      vividColor={theme.RadarColor(opacity.true)[profNumber]}
-      isWrite={isWrite}
+    isClicked={isChecked} 
+    color={theme.RadarColor(opacity.background)[profIndex]} 
+    vividColor={theme.RadarColor(opacity.true)[profIndex]}
+    isWrite={isWrite}
+    isEvaluationEmpty={evaluationEmptyList === undefined ? false : evaluationEmptyList[profIndex]}
     >
       <CheckboxInput
         type="checkbox"
         checked={isChecked}
-        color={theme.RadarColor(opacity.none)[profNumber]}
+        color={theme.RadarColor(opacity.none)[profIndex]}
         onChange={toggleCheckbox}
         isWrite={isWrite}
+        isEvaluationEmpty={evaluationEmptyList === undefined ? false : evaluationEmptyList[profIndex]}
       />
-      <CheckboxText>{text}</CheckboxText>
+      <CheckboxText isEvaluationEmpty=
+        {evaluationEmptyList === undefined ? false : evaluationEmptyList[profIndex]}>
+          {text}
+      </CheckboxText>
     </CheckboxContainer>
   );
 };

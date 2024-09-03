@@ -18,7 +18,7 @@ import {
   concatProfessorNames,
   convertLectureCodeToList,
   extractEvaluationData,
-  makeSelectedIdNull,
+  extractProfessors,
 } from "@/utils";
 import { recordInfo } from "@/Interfaces/interfaces";
 import Card from "@components/Card";
@@ -81,56 +81,26 @@ const Upper = styled.div`
 
 const SummaryWrapper = styled.div`
   position: relative;
-
-  &:hover .barWrapper {
-    opacity: 0;
-    transition: opacity 0.1s ease;
-  }
+  height: 80px;
 `;
 
 const SummaryScroll = styled.div`
   height: 80px;
+  width: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
 
   &::-webkit-scrollbar {
     width: 7px;
     height: 10px;
   }
   &::-webkit-scrollbar-thumb {
-    background: #b1b8c0;
+    background: ${theme.colors.grayStroke};
     border-radius: 10px;
   }
   &::-webkit-scrollbar-track {
     border-radius: 10px;
   }
-`;
-
-const boxFade = keyframes`
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
-
-const ScrollBarWrapper = styled.div<{ isFade?: boolean }>`
-  width: 7px;
-  height: 100%;
-  opacity: 1;
-  transition: opacity 0.5s ease;
-  animation-name: ${(props) => (props.isFade ? boxFade : null)};
-  animation-duration: 2s;
-
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  background: white;
 `;
 
 /** '강의평 쓰러가기' 버튼, 가로로 꽉 차야 함 */
@@ -152,21 +122,23 @@ let averageEvaluation: evaluationData[];
 export function EvaluationPage() {
   const isValidToken = useCheckValidToken();
   const [selectedId, setSelectedId] = useState<(number | null)[]>([null]);
-  const [isFade, setIsFade] = useState(false);
+  const [isProfEmpty, setIsProfEmpty] = useState(false);
 
   const navigate = useNavigate();
 
   const handleCheckboxChange = (id: number, profNumber: number) => {
-    makeSelectedIdNull(profNumber, selectedId);
-
     const _selectedId = selectedId;
-    _selectedId[profNumber] = id === selectedId[profNumber] ? null : id;
-    setSelectedId([..._selectedId]);
 
-    selectedId[profNumber] != null
-      ? (document.addEventListener("mousedown", () => setIsFade(false)), //마우스 클릭하면 무조건 crollBar 반짝임
-        document.addEventListener("mouseup", () => setIsFade(true)))
-      : null;
+    setIsProfEmpty(false);
+    if (evaluationEmptyList && evaluationEmptyList[profNumber]) {
+      setTimeout(() => {setIsProfEmpty(true);}, 50);
+      _selectedId[profNumber] = null;
+      setSelectedId([..._selectedId]);
+    }
+    else {
+      _selectedId[profNumber] = id === selectedId[profNumber] ? null : id;
+      setSelectedId([..._selectedId]);
+    }
   };
 
   useEffect(() => {
@@ -207,8 +179,13 @@ export function EvaluationPage() {
   });
 
   const { data: lectureInfo } = { ...lectureInfoData };
-  if (!isLectureInfoLoading && lectureInfo)
+  if (!isLectureInfoLoading && lectureInfo) {
     spliceEmptyProfLectureInfo(lectureInfo.LectureSection);
+  }
+  useEffect(() => { //처음 selectedId 모두 null로 설정하기
+    if(!isLectureInfoLoading)
+      setSelectedId(extractProfessors(lectureInfo.LectureSection).map(() => null));
+  }, [lectureInfo]);
 
   const reviewList = !isEvaluationLoading
     ? evaluationData.map((test) => test !== undefined && test.data)
@@ -230,24 +207,16 @@ export function EvaluationPage() {
     ? (averageEvaluation = selectedEvaluation)
     : null;
 
-  const isEvaluationEmpty =
-    averageEvaluation &&
-    (selectedId
-      .filter((id) => id !== null)
-      .some(
-        (id) => makeIsEvaluationEmpty(averageEvaluation)[selectedId.indexOf(id)]
-      ) ||
-      makeIsEvaluationEmpty(averageEvaluation).every((empty) => empty));
+  const evaluationEmptyList = averageEvaluation 
+    ? makeIsEvaluationEmpty(averageEvaluation)
+    : undefined;
 
-  const isReviewNotExist = //교수자가 선택되지 않았을 땐 전체 리뷰의 존재를 판단하고 선택됐을 땐 선택된 리뷰를 판단
-    selectedEvaluation &&
-    selectedEvaluation.every((value) =>
-      Object.values(value).every((content) => content === null)
-    );
+  const isAllEvaluationEmpty = evaluationEmptyList 
+    ? evaluationEmptyList.every((empty) => empty)
+    : undefined;
 
   const skeletonLoading = !selectedEvaluation ? true : false;
 
-  console.log(selectedReview);
   return (
     <>
       <NavigationHeader text={"강의평"} isNavigateHome={true} />
@@ -264,10 +233,14 @@ export function EvaluationPage() {
           selectedStatus={selectedId}
           isWrite={false}
           isLoading={isLectureInfoLoading}
+          evaluationEmptyList={evaluationEmptyList}
         />
-        {isEvaluationEmpty && !skeletonLoading && (
-          <Card>데이터가 없습니다.</Card>
-        )}
+        <Card 
+          isProfEmpty={isProfEmpty} 
+          isAllEmpty={isAllEvaluationEmpty}
+          >
+          데이터가 없습니다.
+        </Card>
 
         <GraphWrap>
           {selectedEvaluation ? (
@@ -282,14 +255,14 @@ export function EvaluationPage() {
 
         <Upper>
           <SummaryWrapper>
+          {selectedEvaluation && (
             <SummaryScroll>
               <EvaluationSummary
                 selectedEvaluation={selectedEvaluation ?? undefined}
                 selectedId={selectedId}
                 isLoading={skeletonLoading}
               />
-              <ScrollBarWrapper className="barWrapper" isFade={isFade} />
-            </SummaryScroll>
+            </SummaryScroll>)}
           </SummaryWrapper>
 
           <OneLineReviewText
@@ -327,7 +300,7 @@ export function EvaluationPage() {
               <Reply key={index} isLoading={skeletonLoading} />
             ))}
           {isAllSelectedIdNull(selectedId) ? (
-            isReviewNotExist ? (
+            isAllEvaluationEmpty ? (
               <NoComment />
             ) : (
               reviewList &&
@@ -340,16 +313,13 @@ export function EvaluationPage() {
             )
           ) : //교수를 선택했을 때
           !isAllSelectedIdNull(selectedId) && //로딩중일 때 "데이터가 없습니다"가 뜨지 않도록 핸들링
-            isReviewNotExist ? (
-            <NoComment />
-          ) : (
             selectedReview &&
             selectedReview.map((select, index) => (
                 select.map((review: recordInfo) => (
                   <Reply key={review.id} replyData={review} />
                 ))
             ))
-          )}
+          }
         </Upper>
       </Wrap>
 

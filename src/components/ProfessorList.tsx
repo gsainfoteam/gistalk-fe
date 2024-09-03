@@ -9,6 +9,7 @@ interface IProps {
   selectedStatus: (number | null)[];
   handleCheckboxChange: (id: number, profNumber: number) => void;
   isWrite: boolean;
+  evaluationEmptyList?: boolean[];
 }
 
 /** 과목 이름과 코드를 감싸는 div. 과목과 이름이 같은 형태라서 재사용함 */
@@ -37,6 +38,7 @@ export default function ProfessorList({
   selectedStatus,
   handleCheckboxChange,
   isWrite, //WriteReviewPage인지 EvaluationPage인지 구별해주는 boolean.
+  evaluationEmptyList,
 }: IProps) {
   return (
     <div>
@@ -53,8 +55,9 @@ export default function ProfessorList({
               id={professorInfo.id}
               selectedStatus={selectedStatus}
               onCheckboxChange={handleCheckboxChange}
-              profNumber={index}
+              profIndex={index}
               isWrite={isWrite}
+              evaluationEmptyList={evaluationEmptyList}
             />
           )
         )}

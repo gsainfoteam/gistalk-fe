@@ -13,6 +13,7 @@ interface IProps {
   selectedStatus?: (number | null)[];
   handleCheckboxChange: (id: number, profNumber: number) => void;
   isWrite: boolean;
+  evaluationEmptyList?: boolean[];
   showProfessor?: boolean;
   isLoading: boolean;
 }
@@ -66,6 +67,7 @@ export default function Title({
   selectedStatus,
   handleCheckboxChange,
   isWrite, //WriteReviewPage인지 EvaluationPage인지 구별해주는 boolean.
+  evaluationEmptyList,
   showProfessor = true,
   isLoading,
 }: IProps) {
@@ -93,6 +95,7 @@ export default function Title({
               selectedStatus={selectedStatus}
               handleCheckboxChange={handleCheckboxChange}
               isWrite={isWrite}
+              evaluationEmptyList={evaluationEmptyList}
             />
           )}
         </>

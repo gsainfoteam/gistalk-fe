@@ -27,7 +27,7 @@ import {
   RadioCheckText,
   Circle,
 } from "./WriteReviewPage.styled";
-import { convertLectureCodeToList, convertSemesterToString } from "@/utils";
+import { convertLectureCodeToList, convertSemesterToString, extractProfessors } from "@/utils";
 import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
