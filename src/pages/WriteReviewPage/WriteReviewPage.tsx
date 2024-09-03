@@ -37,6 +37,7 @@ import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
 import { AxiosError, isAxiosError } from "axios";
+import { lectureInfo, LectureSectionInfo } from "@/Interfaces/interfaces";
 import ProfessorList from "@components/ProfessorList";
 import Card from "@components/Card";
 
@@ -57,7 +58,7 @@ interface SelectedValues {
 
 export function WriteReviewPage() {
   const [ratings, setRatings] = useState(initialRatings);
-  const [selectedValues, setSelectedValues] = useState({
+  const [selectedValues, setSelectedValues] = useState<SelectedValues>({
     year: null,
     semester: null,
   });
@@ -151,12 +152,25 @@ export function WriteReviewPage() {
   };
 
   //TODO: 토큰 만료 상황 대비해서 로그인 페이지로 리다이렉트
+
+  // selectedValues.year?.value, selectedValues.semester?.value 를 저장
+
+  const SELECTED_YEAR = selectedValues.year?.value;
+  const SELECTED_SEMESTER = selectedValues.semester?.value;
+
+  const sectionId = !isLectureInfoLoading && SELECTED_SEMESTER
+    ? lectureInfo.LectureSection.find((lecture: LectureSectionInfo) => 
+      lecture.year === SELECTED_YEAR &&
+      lecture.semester === convertSemesterToString(SELECTED_SEMESTER) &&  
+      lecture.Professor.find((prof) => prof.id === clickedId))?.id
+    : undefined;
+
   const addEvaluationMutate = useMutation({
     mutationFn: () =>
       postLectureEvaluation(
         text,
         id,
-        clickedId,
+        sectionId,
         selectedValues.semester ? (selectedValues.semester as Option).value : 0,
         selectedValues.year ? (selectedValues.year as Option).label : "2000",
         recommendation,
@@ -189,19 +203,14 @@ export function WriteReviewPage() {
     }
   };
 
-  // selectedValues.year?.value, selectedValues.semester?.value 를 저장
-
-  const SELECTED_YEAR = selectedValues.year?.value;
-  const SELECTED_SEMESTER = selectedValues.semester?.value;
-
   //year, semester에 해당하는 걸로 필터링
-  const filteredProfessorInfoList = lectureInfo
-    ? []
-    : lectureInfo.LectureSection.filter(
-        (section) =>
+  const filteredProfessorInfoList = lectureInfo && SELECTED_SEMESTER
+    ? lectureInfo.LectureSection.filter(
+        (section: LectureSectionInfo) =>
           section.year === SELECTED_YEAR &&
           section.semester === convertSemesterToString(SELECTED_SEMESTER)
-      );
+      )
+    : [];
 
   const extractProfessor = extractProfessors(filteredProfessorInfoList);
 
