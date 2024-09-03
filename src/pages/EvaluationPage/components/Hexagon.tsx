@@ -8,10 +8,13 @@ import {
 import styled from "styled-components";
 import { theme } from "@/style/theme";
 
-import { HexLabels, HexagonData } from "../EvaluationPage.const";
+import { HexLabels, HexagonData, evaluationData } from "../EvaluationPage.const";
+import { hexagonRadar } from "./HexagonRadar";
+import { indexOfExistData, isAllSelectedIdNull } from "../EvaluationPage.util";
 
 interface HexagonProps {
-  HexData: HexagonData;
+  HexData: evaluationData[];
+  selectedId: (number | null)[];
 }
 
 const Wrap = styled.div`
@@ -22,47 +25,36 @@ const Wrap = styled.div`
   overflow-y: hidden;
 `;
 
-const EMPTY_DATA = {
-  score: 0,
-  subject: "",
-};
+export default function Hexagon({ HexData, selectedId }: HexagonProps) {
+  
+  const formattedData = HexLabels.map((i) => {
+    const subject = i.subject;
+    const isNegative = subject === "난이도" || subject === "과제량";
+    const adjustedScore = HexData.map((Hex: any) => {
+      const score = Hex[i.key] && isNegative ? 6 - Hex[i.key] : Hex[i.key];
+      return Math.round(score * 10) / 10;
+    });
 
-export default function Hexagon({ HexData }: HexagonProps) {
-  // empty_data로 채워진 길이 6의 배열을 반복문으로 구현한다
-  const emptyData = Array.from({ length: 6 }, (_, i) => {
-    return {
-      ...EMPTY_DATA,
+    let dataKey: any = {
+      subject: `${subject}`,
+      fullMark: 5.0,
     };
+    HexData.map(
+      (Hex, index) => (dataKey[`score${index}`] = adjustedScore[index])
+    );
+
+    return dataKey;
   });
-
-  const formattedData =
-    HexData == null
-      ? emptyData
-      : HexLabels.map((i) => {
-          const subject = i.subject;
-          const isNegative = subject === "난이도" || subject === "과제량";
-          const score =
-            HexData[i.key] && isNegative ? 6 - HexData[i.key] : HexData[i.key];
-
-          //score을 소수점 두 번쨰 자리에서 반올림한다
-          const adjustedScore = Math.round(score * 10) / 10;
-
-          return {
-            subject: `${subject} (${adjustedScore})`,
-            score: adjustedScore,
-            fullMark: 5.0,
-          };
-        });
 
   return (
     <>
       <Wrap>
         <RadarChart
           width={400}
-          height={300}
+          height={250}
           cx="50%"
           cy="50%"
-          outerRadius="50%"
+          outerRadius="60%"
           data={formattedData}
           startAngle={180}
           endAngle={-180}
@@ -73,12 +65,11 @@ export default function Hexagon({ HexData }: HexagonProps) {
             tick={{ fill: theme.colors.secondaryText, fontSize: 13 }}
           />
           <PolarRadiusAxis domain={[0, 5]} angle={90} />
-          <Radar
-            name="Standard"
-            dataKey="score"
-            fill={theme.colors.primary}
-            fillOpacity={0.6}
-          />
+          {isAllSelectedIdNull(selectedId) 
+            ? hexagonRadar(0, indexOfExistData(HexData), selectedId)
+            : selectedId.filter((id) => (id !== null)).map((id, index) => 
+              hexagonRadar(selectedId.indexOf(id), index, selectedId)
+          )}
         </RadarChart>
       </Wrap>
     </>

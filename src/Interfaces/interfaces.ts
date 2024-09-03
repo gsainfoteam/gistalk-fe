@@ -32,6 +32,7 @@ export interface IHexData {
 export interface IHeader {
   prevUrl?: string;
   text: string;
+  isNavigateHome?: boolean;
 }
 
 export interface IButton {
@@ -39,21 +40,6 @@ export interface IButton {
   onClick: () => void;
   color: string;
   background: string;
-}
-
-/** like : 좋아요 누름 / dislike : 싫어요 누름 / none : 둘 다 안 누름 */
-export type pushedLike = "like" | "dislike" | "none";
-
-export interface IReply extends lectureInfo {
-  id: number;
-  review: string;
-  recommendation: string;
-  semester: string;
-  year: number;
-  createdAt: string;
-  userUuid: string;
-  lectureId: number;
-  professorId: number;
 }
 
 export type ISortOption =
@@ -78,65 +64,69 @@ export interface LectureCode {
   lectureId: number;
 }
 
+/** `/lecture` path api 호출에 대해서 사용하는 info  */
 export interface lectureInfo {
   /** 강의 id */
   id: number;
+  /** 강의 이름 */
+  name: string;
   /** 강의 코드, "['GS0000']" 형식이기 때문에 다시 필요한 경우 array로 분리해서 써야 함 */
   LectureCode: LectureCode[];
-  /** 강의 이름 */
-  lectureName: string;
-}
-
-export interface lectureInfoWithProf extends lectureInfo {
-  LectureProfessor: professorInfo[];
+  LectureSection: LectureSectionInfo[];
 }
 
 export interface professorInfo {
-  lectureId: number;
-  professorId: number;
-  professor: {
-    id: number;
-    name: string;
-  };
+  id: number;
+  name: string;
 }
 interface lecture {
   id: number;
-  lectureName: string;
-}
-interface lectureProfessorInfo extends professorInfo {
-  lecture: lecture;
+  name: string;
 }
 
-interface evaluationData {
-  difficulty: number /*난이도*/;
-  skill: number /*강의력 */;
-  helpfulness: number /*유익함 */;
-  interest: number /*흥미도 */;
-  load: number /*과제량 */;
-  generosity: number /* 성적 후한 정도 */;
-}
-
-export interface reviewInfo extends evaluationData {
-  createdAt: string;
+export interface LectureSectionInfo {
   id: number;
   lectureId: number;
-  professorId: number;
-  recommendation: string /*추천*/;
-  review: string;
-  semester: string;
-  userUuid: string;
+  Professor: professorInfo[];
   year: number;
-  lectureProfessor: lectureProfessorInfo;
+  semester: string;
+  capacity: number;
+  registrationCount: number;
+  fullCapacityTime: number;
 }
 
+export interface RecordLectureSectionInfo extends LectureSectionInfo {
+  Lecture: lecture;
+}
+
+export interface evaluationData {
+  /**난이도*/
+  difficulty: number;
+  /**강의력 */
+  skill: number;
+  /**유익함 */
+  helpfulness: number;
+  /** 흥미도 */
+  interest: number;
+  /** 과제량 */
+  load: number;
+  /** 성적 후한 정도 */
+  generosity: number;
+}
+
+/** `/record` path api 호출에 대해서 사용하는 info  */
 export interface recordInfo extends evaluationData {
+  isLiked: Boolean;
+  _count: { RecordLike: number };
   id: number;
   review: string;
-  evaluation: number;
   lectureId: number;
   professorId: number;
-  lectureProfessor: lectureProfessorInfo;
-  recommendation: number;
-  semester: number; //위는 semesterID인데 여기는 semester임
-  year: string;
+  LectureSection: RecordLectureSectionInfo;
+  recommendation: string;
+  sectionId: number;
+  semester: string; //위는 semesterID인데 여기는 semester임
+  year: number;
+  createdAt: string;
+  userUuid: string;
 }

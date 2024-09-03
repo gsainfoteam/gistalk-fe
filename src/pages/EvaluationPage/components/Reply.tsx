@@ -1,14 +1,16 @@
 import { theme } from "@/style/theme";
 import styled from "styled-components";
-import { IReply } from "@/Interfaces/interfaces";
+import { recordInfo } from "@/Interfaces/interfaces";
 
 import LikeButton from "./LikeButton";
 import RecommendationStatus from "@components/RecommendationStatus";
 import { NOT_RECOMMEND, RECOMMEND } from "@/constants/recommand";
-import { convertSemesterToNumber } from "@/utils";
+import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
+import { ReplySkeleton } from "@/pages/skeletonComponents/Reply.skeleton";
 
 interface IProps {
-  replyData: IReply;
+  replyData?: recordInfo;
+  isLoading?: boolean;
 }
 
 /** 전체 Wrap */
@@ -37,6 +39,12 @@ const SemesterText = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSRegular;
 `;
 
+/** 몇 년도 몇 학기인지 표시하는 컴포넌트 */
+const ProfessorText = styled(theme.universalComponent.DivTextContainer)`
+  margin-left: 7px;
+  font-family: NSRegular;
+`;
+
 /** 댓글 내용 Wrap */
 const ContentWrap = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSRegular;
@@ -45,32 +53,55 @@ const ContentWrap = styled(theme.universalComponent.DivTextContainer)`
 
 const semester = ["봄", "여름", "가을", "겨울"];
 
-export default function Reply({ replyData }: IProps) {
-  const isRecommend =
-    replyData.recommendation == NOT_RECOMMEND
-      ? "false"
-      : replyData.recommendation == RECOMMEND
-      ? "true"
-      : "none"; // "true" or "false" or "none
+export default function Reply({ replyData, isLoading }: IProps) {
+  const isRecommend = isLoading
+    ? undefined
+    : replyData &&
+      (replyData.recommendation == NOT_RECOMMEND
+        ? "false"
+        : replyData.recommendation == RECOMMEND
+        ? "true"
+        : "none"); // "true" or "false" or "none
 
-  const semesterId = convertSemesterToNumber(replyData.semester);
-
+  const semesterId =
+    replyData && !isLoading
+      ? convertSemesterToNumber(replyData.semester)
+      : undefined;
   return (
     <Wrap>
-      <InfoWrap>
-        <LeftWrap>
-          <RecommendationStatus like={isRecommend} />
-          <SemesterText fontSize={13} color={theme.colors.secondaryText}>
-            {replyData.year}년{" "}
-            {semesterId != 0 && `${semester[semesterId - 1]}학기`}
-          </SemesterText>
-        </LeftWrap>
-        {/* <LikeButton like={0} dislike={0} /> */}
-      </InfoWrap>
-
-      <ContentWrap fontSize={13} color={theme.colors.primaryText}>
-        {replyData.review}
-      </ContentWrap>
+      {isLoading ? (
+        <ReplySkeleton />
+      ) : (
+        isRecommend &&
+        replyData && (
+          <>
+            <InfoWrap>
+              <LeftWrap>
+                <RecommendationStatus like={isRecommend} />
+                <ProfessorText fontSize={13} color={theme.colors.primaryText}>
+                  {convertProfessorNameToString(
+                    replyData.LectureSection.Professor
+                  ).join(", ")}{" "}
+                </ProfessorText>
+                <SemesterText fontSize={13} color={theme.colors.secondaryText}>
+                  {replyData.year}년{" "}
+                  {semesterId !== 0 &&
+                    semesterId &&
+                    `${semester[semesterId - 1]}학기`}
+                </SemesterText>
+              </LeftWrap>
+              <LikeButton
+                like={replyData._count.RecordLike}
+                recordId={replyData.id}
+                isLiked={replyData.isLiked}
+              />
+            </InfoWrap>
+            <ContentWrap fontSize={13} color={theme.colors.primaryText}>
+              {replyData.review}
+            </ContentWrap>
+          </>
+        )
+      )}
     </Wrap>
   );
 }

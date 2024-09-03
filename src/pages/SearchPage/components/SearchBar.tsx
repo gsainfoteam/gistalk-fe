@@ -1,11 +1,14 @@
-import { theme } from "@/style/theme";
-import { MatchingText, NorthWestSvg, SearchItem } from "../SearchPage.styled";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import NorthWest_Svg from "@assets/svgs/northWest.svg";
-import Cancel_Svg from "@assets/svgs/cancel_Black.svg";
-import Search_Svg from "@assets/svgs/search.svg";
+import { Dispatch, useEffect, useRef, KeyboardEvent } from "react";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-import { lectureInfoWithProf } from "@/Interfaces/interfaces";
+
+import { lectureInfo } from "@/Interfaces/interfaces";
+import { theme } from "@/style/theme";
+import Cancel_Svg from "@assets/svgs/cancel_Black.svg";
+import NorthWest_Svg from "@assets/svgs/northWest.svg";
+import Search_Svg from "@assets/svgs/search.svg";
+import { MatchingText, NorthWestSvg, SearchItem } from "../SearchPage.styled";
+import { concatProfessorNames } from "@/utils";
 
 export const SearchSvg = styled(theme.universalComponent.SvgIcon)`
   display: block;
@@ -77,22 +80,43 @@ export const SearchInput = styled.input<{
   color: ${(props) => props.color};
 `;
 
+/**
+ * 검색바 컴포넌트, hooks에 useSearch를 사용하면 필요한 훅을 사용할 수 있음.
+ * @param data: 강의 정보 데이터
+ * @param setSearchText: 검색어를 설정하는 함수
+ * @param searchText: 검색어
+ * @param searchTextEnter: 엔터를 눌렀을 때 검색어
+ * @param clearSearchText: 검색어를 초기화하는 함수
+ * @param enterSearchText: 검색어 입력시 엔터키를 누르면 검색하는 함수
+ * @param isSearchWrite: 검색창이 평가쓰기인지 검색인지 구분하는 변수, 리다이렉션 경로가 달라짐.
+ */
+
 export function SearchBar({
   data,
   setSearchText,
   searchText,
-  setSearchTextEnter,
-  enterSearchText,
   searchTextEnter,
+  clearSearchText,
+  enterSearchText,
+  isSearchWrite = false,
 }: {
-  data: lectureInfoWithProf[];
-  setSearchText: any;
+  data: lectureInfo[];
+  setSearchText: Dispatch<React.SetStateAction<string>>;
   searchText: string;
-  setSearchTextEnter: any;
-  enterSearchText: any;
+  clearSearchText: () => void;
+  enterSearchText: (e: KeyboardEvent<HTMLInputElement>) => void;
   searchTextEnter: string;
+  isSearchWrite: boolean;
 }) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const location = useLocation();
+
+  /**메인페이지에서 MockSearchBar 클릭해서 넘어올 경우 focus */
+  useEffect(() => {
+    if (location.state != undefined && location.state.focus) {
+      inputRef.current?.focus();
+    }
+  }, [location]);
 
   /**검색 아이콘 -> 검색어가 입력되면 취소 아이콘 */
   function ResponsiveSvg() {
@@ -104,13 +128,7 @@ export function SearchBar({
       );
     } else {
       return (
-        <SearchBtnWrap
-          bgColor={theme.colors.white}
-          onClick={() => {
-            setSearchText("");
-            setSearchTextEnter("");
-          }}
-        >
+        <SearchBtnWrap bgColor={theme.colors.white} onClick={clearSearchText}>
           <CancelSvg size={25} src={Cancel_Svg} />
         </SearchBtnWrap>
       );
@@ -126,27 +144,25 @@ export function SearchBar({
     return data.map((item) => {
       if (
         searchText != "" &&
-        item.lectureName.includes(searchText) &&
-        searchTextEnter != searchText
+        item.name.includes(searchText) &&
+        searchTextEnter != searchText //엔터 쳤을 때는 아래에 나오는 검색 결과를 보도록 유도
       ) {
         //TODO: 원래는 prof 별로 강의를 하나씩 할당하려고 했는데, 현재 prof별로 강의 id가 다르게 배정되지 않아 한 번에 병함
-        const professorNames = item.LectureProfessor.map(
-          (prof) => prof.professor.name
-        ).join(", ");
+        const professorNames = concatProfessorNames(item.LectureSection);
 
         return (
           <Link
             key={item.id}
-            to={`/${item.id}/evaluation`}
+            to={isSearchWrite ? `/write/${item.id}` : `/evaluation/${item.id}`}
             style={{ textDecoration: "none" }}
           >
             <SearchItem>
               <p>
-                <span>{item.lectureName.split(searchText)[0]}</span>
+                <span>{item.name.split(searchText)[0]}</span>
                 <MatchingText color={theme.colors.primary}>
                   {searchText}
                 </MatchingText>
-                <span>{item.lectureName.split(searchText)[1]}</span>
+                <span>{item.name.split(searchText)[1]}</span>
                 <span>- {professorNames}</span>
               </p>
               <NorthWestSvg src={NorthWest_Svg} size={20} />
@@ -160,11 +176,7 @@ export function SearchBar({
   };
 
   const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchText = (e.target as HTMLInputElement).value;
-    searchParams.set("keyword", searchText);
-
-    setSearchText(searchText);
-    setSearchParams(searchParams);
+    setSearchText((e.target as HTMLInputElement).value);
   };
 
   return (
@@ -177,6 +189,7 @@ export function SearchBar({
           onChange={handleSearchText}
           onKeyDown={(e) => enterSearchText(e)}
           value={searchText}
+          ref={inputRef}
         />
         {ResponsiveSvg()}
       </SearchInputWrap>

@@ -15,6 +15,15 @@ export default ({ mode }) => {
           rewrite: (path) => path.replace(/^\/api/, ""),
         },
       },
+      headers: {
+        Origin: `${env.VITE_API_URL}`,
+      },
+      host: "127.0.0.1",
+      port: 5173,
+    },
+    preview: {
+      host: "127.0.0.1",
+      port: 5173,
     },
     plugins: [react(), tsconfigPaths()],
     resolve: {

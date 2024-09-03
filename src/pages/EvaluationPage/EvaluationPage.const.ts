@@ -1,3 +1,6 @@
+import { m } from "framer-motion";
+import { css } from "styled-components";
+
 export interface EvaluationData {
   difficulty: number;
   generosity: number;
@@ -67,11 +70,11 @@ export type SubjectScore = {
 
 export const EVALUATION_TEXT = [
   DIFFICULTY_LABEL,
-  LOTS_LABEL,
+  STRENGTH_LABEL,
   HELPFUL_LABEL,
   INTEREST_LABEL,
+  LOTS_LABEL,
   SATISFY_LABEL,
-  STRENGTH_LABEL,
 ];
 
 /**
@@ -79,9 +82,9 @@ export const EVALUATION_TEXT = [
  */
 export const SUBJECT_SHOW_ORDER = [
   AVERAGE_DIFFICULTY,
-  AVERAGE_LOTS,
+  AVERAGE_STRENGTH,
   AVERAGE_HELPFUL,
   AVERAGE_INTEREST,
+  AVERAGE_LOTS,
   AVERAGE_SATISFY,
-  AVERAGE_STRENGTH,
 ];

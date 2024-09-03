@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ReactSelect from "react-select";
+import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 
 import NavigationHeader from "@components/NavigationHeader";
 import Title from "@components/Title";
@@ -25,12 +27,16 @@ import {
   RadioCheckText,
   Circle,
 } from "./WriteReviewPage.styled";
-import ReactSelect from "react-select";
-import { convertLectureCodeToList } from "@/utils";
-import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
-import { getLectureSingleInfo, postLectureEvaluation } from "@/apis/lectures";
+import { convertLectureCodeToList, convertSemesterToString } from "@/utils";
+import { getLectureSingleInfo } from "@/apis/lectures";
+import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
-import { AxiosError, isAxiosError } from "axios";
+import { isAxiosError } from "axios";
+import { LectureSectionInfo } from "@/Interfaces/interfaces";
+import ProfessorList from "@components/ProfessorList";
+import Card from "@components/Card";
+import { getProfessorData } from "./WriteReviewPage.util";
+import { spliceEmptyProfLectureInfo } from "../EvaluationPage/EvaluationPage.util";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -46,16 +52,15 @@ interface SelectedValues {
   year: Option | null;
   semester: Option | null;
 }
-
 export function WriteReviewPage() {
   const [ratings, setRatings] = useState(initialRatings);
-  const [selectedValues, setSelectedValues] = useState({
+  const [selectedValues, setSelectedValues] = useState<SelectedValues>({
     year: null,
     semester: null,
   });
   const [recommendation, setRecommendation] = useState(-1); // 0 비추천, 1 추천, 2 보통 (왜 반대지?)
   const [text, setText] = useState("");
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [sectionId, setSectionId] = useState<number | null>(null); //현재 클릭한 교수의 sectionId
 
   const params = useParams() as { id: string };
   const id = Number(params.id);
@@ -84,8 +89,8 @@ export function WriteReviewPage() {
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
     setText(event.target.value);
 
-  const handleCheckboxChange = (id: number) => {
-    setSelectedId(id === selectedId ? null : id);
+  const handleCheckboxChange = (id: number, profNumber: number) => {
+    setSectionId(id === sectionId ? null : id);
   };
 
   const {
@@ -101,7 +106,7 @@ export function WriteReviewPage() {
   const { data: lectureInfo } = { ...lectureInfoData };
 
   const checkValidation = () => {
-    if (selectedId === null) {
+    if (sectionId === null) {
       alert("교수자를 선택해주세요");
       return false;
     }
@@ -134,13 +139,17 @@ export function WriteReviewPage() {
   };
 
   //TODO: 토큰 만료 상황 대비해서 로그인 페이지로 리다이렉트
+  // selectedValues.year?.value, selectedValues.semester?.value 를 저장
+
+  const SELECTED_YEAR = selectedValues.year?.value;
+  const SELECTED_SEMESTER = selectedValues.semester?.value;
 
   const addEvaluationMutate = useMutation({
     mutationFn: () =>
       postLectureEvaluation(
         text,
         id,
-        selectedId,
+        sectionId,
         selectedValues.semester ? (selectedValues.semester as Option).value : 0,
         selectedValues.year ? (selectedValues.year as Option).label : "2000",
         recommendation,
@@ -150,7 +159,7 @@ export function WriteReviewPage() {
     onSuccess: (data, variables, context) => {
       alert("강의평가가 성공적으로 등록되었습니다");
 
-      window.location.replace(`/${id}/evaluation`);
+      window.location.replace(`/evaluation/${id}`);
     },
     onError: (error: unknown, variables, context) => {
       if (isAxiosError(error)) {
@@ -173,19 +182,36 @@ export function WriteReviewPage() {
     }
   };
 
+  //year, semester에 해당하는 걸로 필터링
+  const filteredProfessorInfoList =
+    lectureInfo && SELECTED_SEMESTER
+      ? lectureInfo.LectureSection.filter(
+          (section: LectureSectionInfo) =>
+            section.year === SELECTED_YEAR &&
+            section.semester === convertSemesterToString(SELECTED_SEMESTER)
+        )
+      : [];
+  spliceEmptyProfLectureInfo(filteredProfessorInfoList);
+
+  const extractProfessor = getProfessorData(filteredProfessorInfoList);
+
   return (
     <>
       <NavigationHeader text={"강의평 작성"} />
       <Wrapper>
-        {!isLectureInfoLoading && lectureInfo && (
-          <Title
-            handleCheckboxChange={handleCheckboxChange}
-            subjectTitle={lectureInfo.lectureName}
-            professorInfo={lectureInfo.LectureProfessor}
-            subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
-            selectedId={selectedId}
-          />
-        )}
+        <Title
+          handleCheckboxChange={handleCheckboxChange}
+          subjectTitle={lectureInfo?.name}
+          sectionInfo={lectureInfo?.LectureSection}
+          subjectCode={
+            lectureInfo
+              ? convertLectureCodeToList(lectureInfo?.LectureCode)
+              : null
+          }
+          isWrite={true}
+          isLoading={isLectureInfoLoading}
+          showProfessor={false}
+        />
 
         <Form onSubmit={handleSubmit}>
           <FormField>
@@ -211,6 +237,29 @@ export function WriteReviewPage() {
               }
             />
           </FormField>
+
+          <FormField>
+            {SELECTED_SEMESTER && SELECTED_YEAR ? (
+              extractProfessor.length === 0 ? (
+                <Card>선택한 년도와 학기에 강의가 개설되지 않았습니다.</Card>
+              ) : (
+                <>
+                  <Label>교수자를 선택해주세요.</Label>
+                  <ProfessorList
+                    professorInfoList={extractProfessor}
+                    selectedStatus={Array(extractProfessor.length).fill(
+                      sectionId
+                    )}
+                    handleCheckboxChange={handleCheckboxChange}
+                    isWrite={true}
+                  />
+                </>
+              )
+            ) : (
+              <Card>강의평을 쓰고자 하는 년도와 학기를 선택해주세요.</Card>
+            )}
+          </FormField>
+
           {RATING_QUESTIONS.map((question, index) => (
             <FormField key={index}>
               <Label>{question.question}</Label>
