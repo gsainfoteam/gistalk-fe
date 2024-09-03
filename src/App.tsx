@@ -7,6 +7,7 @@ import { WriteReviewGuidePage, WriteReviewPage } from "./pages/WriteReviewPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import { SearchPage } from "./pages/SearchPage";
 import { EvaluationPage } from "./pages/EvaluationPage";
+import UnauthorizedPage from "./pages/ErrorPage/UnauthorizedPage";
 
 //web-app style, max-width
 const DefaultStyle = styled.div`
@@ -25,6 +26,7 @@ function App() {
         <Route path="/write/:id" element={<WriteReviewPage />} />
         <Route path="/write" element={<WriteReviewGuidePage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
         <Route path="/*" element={<EmptyErrorPage />} />
       </Routes>
     </DefaultStyle>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 import NavigationHeader from "@components/NavigationHeader";
 import Title from "@components/Title";
@@ -30,10 +30,10 @@ import { convertLectureCodeToList } from "@/utils";
 import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
-import { ACCESS_TOKEN, REDIRECT_PATH } from "@/constants/localStorageKeys";
-import { AxiosError, isAxiosError } from "axios";
-import { useLogin } from "@/hooks/useLogin";
-import { useRedirect } from "@/hooks/useRedirect";
+import { REDIRECT_PATH } from "@/constants/localStorageKeys";
+import { isAxiosError } from "axios";
+import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
+import LoginModal from "./components/modal";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -49,7 +49,7 @@ interface SelectedValues {
   year: Option | null;
   semester: Option | null;
 }
-
+const isValid = () => {};
 export function WriteReviewPage() {
   const [ratings, setRatings] = useState(initialRatings);
   const [selectedValues, setSelectedValues] = useState({
@@ -64,12 +64,19 @@ export function WriteReviewPage() {
   const params = useParams() as { id: string };
   const id = Number(params.id);
   const isMutating = useIsMutating();
-
+  const isValidToken = useCheckValidToken();
+  const navigate = useNavigate();
   localStorage.removeItem(REDIRECT_PATH); // 로그인 페이지에서 리다이렉션 링크가 걸려 들어온 경우 제거
 
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
   }, []);
+
+  useEffect(() => {
+    if (isValidToken === false) {
+      navigate("/unauthorized", { replace: true });
+    }
+  }, [isValidToken]);
 
   const handleRatingChange = (questionId: number, newRating: number) => {
     setRatings((prevRatings) => ({ ...prevRatings, [questionId]: newRating }));

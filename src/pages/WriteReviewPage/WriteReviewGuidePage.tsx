@@ -14,8 +14,8 @@ import { filterLectureList } from "../SearchPage/SearchPage.const";
 import { lectureInfo } from "@/Interfaces/interfaces";
 import { StyledLink } from "@components/StyledLink";
 import SearchCard from "../SearchPage/components/SearchCard";
-import LoginModal from "./components/modal";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 
 export function WriteReviewGuidePage() {
   const {
@@ -27,21 +27,16 @@ export function WriteReviewGuidePage() {
   } = useSearch();
 
   localStorage.removeItem(REDIRECT_PATH); // 로그인 페이지에서 리다이렉션 링크가 걸려 들어온 경우 제거
-  // 로그인 된 상태인지 확인
-  const loginToken = localStorage.getItem(ACCESS_TOKEN);
-  const [showModal, setShowModal] = useState(false);
+
+  const isValidToken = useCheckValidToken();
+
   const navigate = useNavigate();
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-    navigate("/", { replace: true });
-  };
-
   useEffect(() => {
-    if (loginToken === null) {
-      setShowModal(true);
+    if (isValidToken === false) {
+      navigate("/unauthorized", { replace: true });
     }
-  }, [loginToken]);
+  }, [isValidToken]);
 
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
@@ -85,9 +80,6 @@ export function WriteReviewGuidePage() {
         </StyledLink>
       );
     });
-  }
-  if (showModal) {
-    return <LoginModal show={showModal} onClose={handleCloseModal} />;
   }
   return (
     <>
