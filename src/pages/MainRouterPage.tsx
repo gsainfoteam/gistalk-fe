@@ -7,12 +7,18 @@ import MainPage from "./MainPage/MainPage";
 import ComparePage from "./ComparePage";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import { useSearchParams } from "react-router-dom";
-import { MAIN_TAB, PROFILE_TAB } from "@/constants/pageQueryString";
+import {
+  CURRENT_SEMESTER_TAB,
+  MAIN_TAB,
+  PROFILE_TAB,
+} from "@/constants/pageQueryString";
 import {
   COMPARE_INDEX,
+  CURRENT_SEMESTER_INDEX,
   MAIN_INDEX,
   PROFILE_INDEX,
 } from "@/constants/activeTabIndex";
+import { CurrentSemesterPage } from "./CurrentSemesterPage";
 
 const ContentContainer = styled.div`
   padding: 10px 1rem 4rem 1rem;
@@ -30,6 +36,8 @@ function MainRouterPage() {
       handleTabChange(PROFILE_INDEX);
     } else if (activeTabQuery === MAIN_TAB) {
       handleTabChange(MAIN_INDEX);
+    } else if (activeTabQuery === CURRENT_SEMESTER_TAB) {
+      handleTabChange(CURRENT_SEMESTER_INDEX);
     }
   }, [activeTabQuery]);
 
@@ -45,6 +53,7 @@ function MainRouterPage() {
       <ContentContainer>
         {activeTab === MAIN_INDEX && <MainPage />}
         {activeTab === COMPARE_INDEX && <ComparePage />}
+        {activeTab === CURRENT_SEMESTER_INDEX && <CurrentSemesterPage />}
         {activeTab === PROFILE_INDEX && <ProfilePage />}
       </ContentContainer>
       <NavigationBar activeTab={activeTab} onTabChange={handleTabChange} />
