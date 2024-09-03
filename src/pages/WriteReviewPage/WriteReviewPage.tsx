@@ -36,6 +36,7 @@ import { LectureSectionInfo } from "@/Interfaces/interfaces";
 import ProfessorList from "@components/ProfessorList";
 import Card from "@components/Card";
 import { getProfessorData } from "./WriteReviewPage.util";
+import { spliceEmptyProfLectureInfo } from "../EvaluationPage/EvaluationPage.util";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -190,6 +191,7 @@ export function WriteReviewPage() {
             section.semester === convertSemesterToString(SELECTED_SEMESTER)
         )
       : [];
+  spliceEmptyProfLectureInfo(filteredProfessorInfoList);
 
   const extractProfessor = getProfessorData(filteredProfessorInfoList);
 
