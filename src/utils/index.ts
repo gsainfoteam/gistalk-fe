@@ -24,7 +24,7 @@ export const convertLectureCodeToList = (lectureCode: LectureCode[]) => {
  * @returns professorInfo[] 로 flat하게 변환한다.
  */
 export const extractProfessors = (lectureSections: LectureSectionInfo[]) => {
-  const seenIds = new Set(); // Set to track unique IDs
+  const seenIds = new Set(); // 교수진 중복 방지를 위한 id를 저장하는 set를 둔다
   const professorArray = lectureSections.reduce(
     (professors: professorInfo[], section) => {
       if (section.Professor && section.Professor.length > 0) {

@@ -27,12 +27,7 @@ import {
   RadioCheckText,
   Circle,
 } from "./WriteReviewPage.styled";
-import {
-  convertLectureCodeToList,
-  convertSemesterToString,
-  extractProfessors,
-  makeSelectedIdNull,
-} from "@/utils";
+import { convertLectureCodeToList, convertSemesterToString } from "@/utils";
 import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
@@ -40,6 +35,7 @@ import { isAxiosError } from "axios";
 import { LectureSectionInfo } from "@/Interfaces/interfaces";
 import ProfessorList from "@components/ProfessorList";
 import Card from "@components/Card";
+import { getProfessorData } from "./WriteReviewPage.util";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -63,8 +59,7 @@ export function WriteReviewPage() {
   });
   const [recommendation, setRecommendation] = useState(-1); // 0 비추천, 1 추천, 2 보통 (왜 반대지?)
   const [text, setText] = useState("");
-  const [selectedId, setSelectedId] = useState<(number | null)[]>([null]); //교수들을 화면에 나오는 순서대로 배열로 나타냄, 클릭하면 그 위치에 sectionId를 저장함.
-  const [clickedId, setClickedId] = useState<number | null>(null); //현재 클릭한 교수의 sectionId
+  const [sectionId, setSectionId] = useState<number | null>(null); //현재 클릭한 교수의 sectionId
 
   const params = useParams() as { id: string };
   const id = Number(params.id);
@@ -94,15 +89,7 @@ export function WriteReviewPage() {
     setText(event.target.value);
 
   const handleCheckboxChange = (id: number, profNumber: number) => {
-    makeSelectedIdNull(profNumber, selectedId);
-
-    const _selectedId = selectedId;
-    _selectedId[profNumber] = id;
-    selectedId.map(
-      (select, index) => (_selectedId[index] = select === id ? id : null)
-    );
-    setClickedId(_selectedId[profNumber]);
-    setSelectedId([..._selectedId]);
+    setSectionId(id === sectionId ? null : id);
   };
 
   const {
@@ -118,7 +105,7 @@ export function WriteReviewPage() {
   const { data: lectureInfo } = { ...lectureInfoData };
 
   const checkValidation = () => {
-    if (clickedId === null) {
+    if (sectionId === null) {
       alert("교수자를 선택해주세요");
       return false;
     }
@@ -151,21 +138,10 @@ export function WriteReviewPage() {
   };
 
   //TODO: 토큰 만료 상황 대비해서 로그인 페이지로 리다이렉트
-
   // selectedValues.year?.value, selectedValues.semester?.value 를 저장
 
   const SELECTED_YEAR = selectedValues.year?.value;
   const SELECTED_SEMESTER = selectedValues.semester?.value;
-
-  const sectionId =
-    !isLectureInfoLoading && SELECTED_SEMESTER
-      ? lectureInfo.LectureSection.find(
-          (lecture: LectureSectionInfo) =>
-            lecture.year === SELECTED_YEAR &&
-            lecture.semester === convertSemesterToString(SELECTED_SEMESTER) &&
-            lecture.Professor.find((prof) => prof.id === clickedId)
-        )?.id
-      : undefined;
 
   const addEvaluationMutate = useMutation({
     mutationFn: () =>
@@ -215,7 +191,7 @@ export function WriteReviewPage() {
         )
       : [];
 
-  const extractProfessor = extractProfessors(filteredProfessorInfoList);
+  const extractProfessor = getProfessorData(filteredProfessorInfoList);
 
   return (
     <>
@@ -230,7 +206,6 @@ export function WriteReviewPage() {
               ? convertLectureCodeToList(lectureInfo?.LectureCode)
               : null
           }
-          selectedId={selectedId}
           isWrite={true}
           isLoading={isLectureInfoLoading}
           showProfessor={false}
@@ -268,10 +243,11 @@ export function WriteReviewPage() {
               ) : (
                 <>
                   <Label>교수자를 선택해주세요.</Label>
-
                   <ProfessorList
                     professorInfoList={extractProfessor}
-                    selectedId={selectedId}
+                    selectedStatus={Array(extractProfessor.length).fill(
+                      sectionId
+                    )}
                     handleCheckboxChange={handleCheckboxChange}
                     isWrite={true}
                   />

@@ -6,7 +6,7 @@ import ProfessorNameCheckbox from "./ProfessorNameCheckbox";
 
 interface IProps {
   professorInfoList: professorInfo[];
-  selectedId: (number | null)[];
+  selectedStatus: (number | null)[];
   handleCheckboxChange: (id: number, profNumber: number) => void;
   isWrite: boolean;
 }
@@ -34,7 +34,7 @@ const CheckboxContainer = styled.div`
 
 export default function ProfessorList({
   professorInfoList,
-  selectedId,
+  selectedStatus,
   handleCheckboxChange,
   isWrite, //WriteReviewPage인지 EvaluationPage인지 구별해주는 boolean.
 }: IProps) {
@@ -51,7 +51,7 @@ export default function ProfessorList({
               key={professorInfo.id}
               text={professorInfo.name}
               id={professorInfo.id}
-              selectedId={selectedId}
+              selectedStatus={selectedStatus}
               onCheckboxChange={handleCheckboxChange}
               profNumber={index}
               isWrite={isWrite}

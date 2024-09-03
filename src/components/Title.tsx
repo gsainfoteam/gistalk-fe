@@ -10,7 +10,7 @@ interface IProps {
   subjectTitle: string | undefined;
   sectionInfo: LectureSectionInfo[] | undefined;
   subjectCode: string[] | null;
-  selectedId: (number | null)[];
+  selectedStatus?: (number | null)[];
   handleCheckboxChange: (id: number, profNumber: number) => void;
   isWrite: boolean;
   showProfessor?: boolean;
@@ -63,7 +63,7 @@ export default function Title({
   subjectTitle,
   sectionInfo,
   subjectCode,
-  selectedId,
+  selectedStatus,
   handleCheckboxChange,
   isWrite, //WriteReviewPage인지 EvaluationPage인지 구별해주는 boolean.
   showProfessor = true,
@@ -87,10 +87,10 @@ export default function Title({
             <span>{subjectCode?.join(", ") || "ERR"}</span>
             {/* 비어 있는 string이라면 ERR을 출력하도록 함 */}
           </SubjectTitle>
-          {showProfessor && (
+          {showProfessor && selectedStatus && (
             <ProfessorList
               professorInfoList={professorInfoList}
-              selectedId={selectedId}
+              selectedStatus={selectedStatus}
               handleCheckboxChange={handleCheckboxChange}
               isWrite={isWrite}
             />
