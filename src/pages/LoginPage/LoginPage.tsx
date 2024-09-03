@@ -62,11 +62,9 @@ const Err404Svg = styled(theme.universalComponent.SvgIcon)``;
 const Err404Text = styled(theme.universalComponent.DivTextContainer)`
   font-family: NSBold;
 `;
-
 export default function LoginPage() {
   const redirectPath = useRedirect();
-  const isLogin = useLogin(redirectPath);
-  const { error, isLoading, data } = isLogin;
+  const { error, isLoading, data } = useLogin(redirectPath);
   const SCOPES = [
     { field: "redirect_uri", value: `${window.location.href}` },
     { field: "client_id", value: "gistalk" },
