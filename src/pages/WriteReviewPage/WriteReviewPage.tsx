@@ -180,7 +180,7 @@ export function WriteReviewPage() {
     onSuccess: (data, variables, context) => {
       alert("강의평가가 성공적으로 등록되었습니다");
 
-      window.location.replace(`/${id}/evaluation`);
+      window.location.replace(`/evaluation/${id}`);
     },
     onError: (error: unknown, variables, context) => {
       if (isAxiosError(error)) {
