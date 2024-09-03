@@ -62,19 +62,12 @@ export function WriteReviewPage() {
   const params = useParams() as { id: string };
   const id = Number(params.id);
   const isMutating = useIsMutating();
-  const isValidToken = useCheckValidToken();
-  const navigate = useNavigate();
+
   localStorage.removeItem(REDIRECT_PATH); // 로그인 페이지에서 리다이렉션 링크가 걸려 들어온 경우 제거
 
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
   }, []);
-  //로그인 되어 있지 않을 때 페이지 리다이렉트
-  useEffect(() => {
-    if (isValidToken === false) {
-      navigate("/unauthorized", { replace: true });
-    }
-  }, [isValidToken]);
 
   const handleRatingChange = (questionId: number, newRating: number) => {
     setRatings((prevRatings) => ({ ...prevRatings, [questionId]: newRating }));

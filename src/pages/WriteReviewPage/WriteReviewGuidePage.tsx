@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
-import NavigationHeader from "@components/NavigationHeader";
-import { Wrapper } from "./WriteReviewPage.styled";
-import { concatProfessorNames } from "@/utils";
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+
+import { concatProfessorNames } from "@/utils";
 import { getLectureList } from "@/apis/lectures";
-import { ACCESS_TOKEN, REDIRECT_PATH } from "@/constants/localStorageKeys";
-import { SearchBar } from "../SearchPage/components/SearchBar";
+import { REDIRECT_PATH } from "@/constants/localStorageKeys";
 import { useSearch } from "@/hooks/useSearch";
 import Card from "@components/Card";
+import NavigationHeader from "@components/NavigationHeader";
+import { StyledLink } from "@components/StyledLink";
 import TitleWithDescription from "@components/TitleWithDescription";
+import { lectureInfo } from "@/Interfaces/interfaces";
+
+//TODO : SearchPage 컴포넌트 의존성 제거. 공용 컴포넌트로 묶을 수 있도록 수정
+import { SearchBar } from "../SearchPage/components/SearchBar";
 import { ItemList } from "../SearchPage/SearchPage.styled";
 import { filterLectureList } from "../SearchPage/SearchPage.const";
-import { lectureInfo } from "@/Interfaces/interfaces";
-import { StyledLink } from "@components/StyledLink";
 import SearchCard from "../SearchPage/components/SearchCard";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
+import { Wrapper } from "./WriteReviewPage.styled";
 
 export function WriteReviewGuidePage() {
   const {
@@ -27,16 +28,6 @@ export function WriteReviewGuidePage() {
   } = useSearch();
 
   localStorage.removeItem(REDIRECT_PATH); // 로그인 페이지에서 리다이렉션 링크가 걸려 들어온 경우 제거
-
-  const isValidToken = useCheckValidToken();
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isValidToken === false) {
-      navigate("/unauthorized", { replace: true });
-    }
-  }, [isValidToken]);
 
   useEffect(() => {
     window.scrollTo(0, 0); // 리스트뷰에서 강의평을 들어갈 경우 스크롤 위치가 그대로 남아있는 것을 방지
