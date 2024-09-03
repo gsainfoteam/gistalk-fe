@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 import NavigationHeader from "@components/NavigationHeader";
 import Title from "@components/Title";
@@ -31,7 +31,8 @@ import { useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
-import { AxiosError, isAxiosError } from "axios";
+import { isAxiosError } from "axios";
+import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 
 const initialRatings = RATING_QUESTIONS.reduce((acc, question) => {
   acc[question.id] = 0;
@@ -47,7 +48,6 @@ interface SelectedValues {
   year: Option | null;
   semester: Option | null;
 }
-
 export function WriteReviewPage() {
   const [ratings, setRatings] = useState(initialRatings);
   const [selectedValues, setSelectedValues] = useState({
@@ -56,7 +56,7 @@ export function WriteReviewPage() {
   });
   const [recommendation, setRecommendation] = useState(-1); // 0 비추천, 1 추천, 2 보통 (왜 반대지?)
   const [text, setText] = useState("");
-  const [selectedId, setSelectedId] = useState<(number | null)[]>([null]); //교수들을 화면에 나오는 순서대로 배열로 나타냄, 클릭하면 그 위치에 sectionId를 저장함. 
+  const [selectedId, setSelectedId] = useState<(number | null)[]>([null]); //교수들을 화면에 나오는 순서대로 배열로 나타냄, 클릭하면 그 위치에 sectionId를 저장함.
   const [clickedId, setClickedId] = useState<number | null>(null); //현재 클릭한 교수의 sectionId
 
   const params = useParams() as { id: string };
@@ -91,7 +91,9 @@ export function WriteReviewPage() {
 
     const _selectedId = selectedId;
     _selectedId[profNumber] = id;
-    selectedId.map((select, index) => _selectedId[index] = select === id ? id : null);
+    selectedId.map(
+      (select, index) => (_selectedId[index] = select === id ? id : null)
+    );
     setClickedId(_selectedId[profNumber]);
     setSelectedId([..._selectedId]);
   };
@@ -185,17 +187,15 @@ export function WriteReviewPage() {
     <>
       <NavigationHeader text={"강의평 작성"} />
       <Wrapper>
-        {!isLectureInfoLoading && lectureInfo && (
-          <Title
-            handleCheckboxChange={handleCheckboxChange}
-            subjectTitle={lectureInfo.name}
-            sectionInfo={lectureInfo.LectureSection}
-            subjectCode={convertLectureCodeToList(lectureInfo.LectureCode)}
-            selectedId={selectedId}
-            isWrite={true}
-          />
-        )}
-
+        <Title
+        handleCheckboxChange={handleCheckboxChange}
+        subjectTitle={lectureInfo?.name}
+        sectionInfo={lectureInfo?.LectureSection}
+        subjectCode={lectureInfo ? convertLectureCodeToList(lectureInfo?.LectureCode) : undefined}
+        selectedId={selectedId}
+        isWrite={true}
+        isLoading={isLectureInfoLoading}
+        />
         <Form onSubmit={handleSubmit}>
           <FormField>
             <Label>수강 년도</Label>

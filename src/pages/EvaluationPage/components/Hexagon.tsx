@@ -51,10 +51,10 @@ export default function Hexagon({ HexData, selectedId }: HexagonProps) {
       <Wrap>
         <RadarChart
           width={400}
-          height={300}
+          height={250}
           cx="50%"
           cy="50%"
-          outerRadius="50%"
+          outerRadius="60%"
           data={formattedData}
           startAngle={180}
           endAngle={-180}

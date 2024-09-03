@@ -8,6 +8,7 @@ import {
   SUBJECT_SHOW_ORDER,
 } from "../EvaluationPage.const";
 import { indexOfExistData, isAllSelectedIdNull } from "../EvaluationPage.util";
+import { SkeletonDiv } from "@/pages/skeletonComponents/Skeleton.styled";
 
 const ConcreteInfoGrid = styled.div`
   margin: 10px auto 0 auto;
@@ -21,7 +22,7 @@ const ConcreteInfoGrid = styled.div`
 
 /** 구체적인 수치 보기를 클릭했을 보여주는 info */
 const ConcreteInfo = styled(theme.universalComponent.DivTextContainer)<{
-  colorP: string;
+  colorP?: string;
 }>`
   font-family: NSMedium;
   display: flex;
@@ -45,8 +46,9 @@ const ConcreteInfo = styled(theme.universalComponent.DivTextContainer)<{
 `;
 
 interface SummaryProps {
-  selectedEvaluation: evaluationData[];
+  selectedEvaluation: evaluationData[] | undefined;
   selectedId: (number | null)[];
+  isLoading: boolean;
 }
 
 function sortScoresBySubject(scores: any): number[] {
@@ -65,16 +67,28 @@ const HIGH = 2;
 export default function EvaluationSummary({
   selectedEvaluation,
   selectedId,
+  isLoading,
 }: SummaryProps) {
   let result: JSX.Element[] = [];
 
   function showResult(order: number, existIndex: number) { 
     //existIndex는 교수자 선택 시 교수자의 index 값을, 그 외에는 리뷰가 있는 첫 번째 교수자의 index를 갖는다. 
-    selectedEvaluation.map((summary, index) => {
-      if (selectedEvaluation == null) {
-        return null;
-      }
+    if (!selectedEvaluation) {
+      const skeletonNumber = new Array(6).fill(null); //skeleton을 위한 6개의 배열
 
+      return (
+      <ConcreteInfoGrid key={existIndex}>
+      {skeletonNumber.map((skeleton, index) => 
+        <ConcreteInfo key={index} color={theme.colors.secondaryText} fontSize={15}>
+          <SkeletonDiv widthSize="50px" heightSize="16px"/>
+          {index === 4 || index === 5 
+            ? <SkeletonDiv widthSize="80px" heightSize="16px"/> 
+            : <SkeletonDiv widthSize="40px" heightSize="16px"/>}
+        </ConcreteInfo>)}
+      </ConcreteInfoGrid>
+      )
+    }
+    else selectedEvaluation.map((summary, index) => {
       const data = sortScoresBySubject(summary);
 
       const indexData = data.map((item: number) => {
@@ -118,7 +132,7 @@ export default function EvaluationSummary({
   }
 
   return <>{isAllSelectedIdNull(selectedId) 
-    ? showResult(0, indexOfExistData(selectedEvaluation))
+    ? selectedEvaluation ? showResult(0, indexOfExistData(selectedEvaluation)) : showResult(0,0)
     : selectedId.filter((id) => id !== null).map((id, index) => 
         showResult(selectedId.indexOf(id), index))}</>;
 }

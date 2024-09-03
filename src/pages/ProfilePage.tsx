@@ -16,6 +16,8 @@ import { recordInfo } from "@/Interfaces/interfaces";
 import { convertProfessorNameToString, convertSemesterToNumber } from "@/utils";
 import useTabParam from "@/hooks/useTabParam";
 import MoveGuideCard from "@components/MoveGuideCard";
+import { SkeletonDiv } from "./skeletonComponents/Skeleton.styled";
+import { ProfileNameSkeleton, ProfilePageSkeleton } from "./skeletonComponents/ProfilePage.skeleton";
 
 const TitleWrap = styled.div`
   display: flex;
@@ -164,14 +166,16 @@ export default function ProfilePage() {
         <>
           <TitleWrap>
             <SubjectTitle fontSize={20} color={theme.colors.primaryText}>
-              {!isUserInfoLoading && data && (
+              {!isUserInfoLoading && data ? (
                 <>
                   <span>{userInfo.name}</span> 님, 안녕하세요
                 </>
-              )}
+              )
+              : ProfileNameSkeleton}
             </SubjectTitle>
           </TitleWrap>
           <ContentWrap>
+          {!isUserEvaluationLoading && 
             <MyEvaluationContainer>
               <MyReviewsText fontSize={16} color={theme.colors.primaryText}>
                 작성한 강의평
@@ -219,7 +223,8 @@ export default function ProfilePage() {
                     ))}
                   </div>
                 ))}
-            </MyEvaluationContainer>
+            </MyEvaluationContainer>}
+            {isUserEvaluationLoading && ProfilePageSkeleton}
           </ContentWrap>
         </>
       ) : (

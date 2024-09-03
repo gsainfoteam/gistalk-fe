@@ -16,18 +16,19 @@ const Wrap = styled.div<{ bgColor: string }>`
 
 const NavigationArrowSvg = styled(theme.universalComponent.SvgIcon)`
   margin-left: 13px;
+  cursor: pointer;
 `;
 const NavigationText = styled.div<{ color: string }>`
   flex: 1;
   font-family: NSRegular;
   color: ${(props) => props.color};
   font-size: 20px;
-  padding-right: 30px;
   text-align: center;
 `;
 
 const NavigationHome = styled.div`
   margin-right: 10px;
+  cursor: pointer;
 `;
 
 export default function NavigationHeader(props: IHeader) {

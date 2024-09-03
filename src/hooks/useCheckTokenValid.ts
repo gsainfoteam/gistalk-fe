@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const useCheckValidToken = () => {
-  const navigate = useNavigate();
   const location = useLocation();
 
   const isTokenExist = localStorage.getItem(ACCESS_TOKEN) !== null;
