@@ -1,9 +1,10 @@
-import { KeyboardEvent, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { KeyboardEvent, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export const useSearch = () => {
   const [searchTextParams, setSearchTextParams] = useSearchParams();
-  const query = searchTextParams.get("keyword") ?? ""; // test
+  const navigate = useNavigate();
+  const query = searchTextParams.get("keyword") ?? "";
 
   const [searchText, setSearchText] = useState(query); //search bar에 들어가는 단어
   const [searchTextEnter, setSearchTextEnter] = useState(query); // 엔터를 눌러서 검색 기준이 되는 단어
@@ -20,7 +21,8 @@ export const useSearch = () => {
   const clearSearchText = () => {
     setSearchText("");
     setSearchTextEnter("");
-    setSearchTextParams("");
+    searchTextParams.set("keyword", "");
+    setSearchTextParams(searchTextParams);
   };
 
   return {

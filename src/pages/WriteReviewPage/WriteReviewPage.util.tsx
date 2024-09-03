@@ -1,3 +1,5 @@
+import { LectureSectionInfo, professorInfo } from "@/Interfaces/interfaces";
+
 export const checkValidation = (
   selectedId: number | null,
   selectedValues: { year: number | null; semester: string | null },
@@ -35,4 +37,23 @@ export const checkValidation = (
     return false;
   }
   return true;
+};
+
+/*
+lectureSectionInfo에서 분반 정보를 id로 가지고 교수자명을 name으로 가지는 json 배열을 반환
+*/
+export const getProfessorData = (data: LectureSectionInfo[]) => {
+  const result = data.map((item: LectureSectionInfo) => {
+    return {
+      id: item.id,
+      name: item.Professor.map((prof: professorInfo) => prof.name).join(", "),
+    };
+  });
+
+  //결과물 json array에서 name이 다른 것과 같은 경우에는 배열에서 제거한다.
+  const uniqueResult = result.filter(
+    (item, index, self) => index === self.findIndex((t) => t.name === item.name)
+  );
+
+  return uniqueResult;
 };

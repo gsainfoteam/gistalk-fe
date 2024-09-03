@@ -3,8 +3,9 @@ import { theme } from "@/style/theme";
 
 import NavigationArrow_Svg from "@/assets/svgs/navigationArrow.svg";
 import { IHeader } from "@/Interfaces/interfaces";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaHouse, FaHouseMedical } from "react-icons/fa6";
+import { useEffect } from "react";
 
 const Wrap = styled.div<{ bgColor: string }>`
   display: flex;
@@ -15,18 +16,19 @@ const Wrap = styled.div<{ bgColor: string }>`
 
 const NavigationArrowSvg = styled(theme.universalComponent.SvgIcon)`
   margin-left: 13px;
+  cursor: pointer;
 `;
 const NavigationText = styled.div<{ color: string }>`
   flex: 1;
   font-family: NSRegular;
   color: ${(props) => props.color};
   font-size: 20px;
-  padding-right: 30px;
   text-align: center;
 `;
 
 const NavigationHome = styled.div`
   margin-right: 10px;
+  cursor: pointer;
 `;
 
 export default function NavigationHeader(props: IHeader) {
@@ -37,7 +39,9 @@ export default function NavigationHeader(props: IHeader) {
     <Wrap bgColor={theme.colors.white}>
       <div
         onClick={() => {
-          prevUrl ? navigate(prevUrl) : navigate(-1);
+          prevUrl ? navigate(prevUrl) : location.pathname === "/write" //리뷰 작성하기 페이지에서는 바로 홈으로 이동
+            ? navigate("/")
+            : navigate(-1);
         }}
       >
         <NavigationArrowSvg

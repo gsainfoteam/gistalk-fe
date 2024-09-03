@@ -5,7 +5,7 @@ import styled, { css } from "styled-components";
 interface CheckboxProps {
   text: string;
   id: number;
-  selectedId: (number | null)[];
+  selectedStatus: (number | null)[];
   onCheckboxChange: (id: number, profNumber: number) => void;
   profIndex: number;
   isWrite: boolean;
@@ -34,10 +34,11 @@ const CheckboxContainer = styled.label<{
 
 const CheckboxInput = styled.input<{ color: string, isWrite: boolean, isEvaluationEmpty: boolean }>`
   appearance: none;
-  width: ${(props) => props.isWrite ? inputSize.big : inputSize.small};
-  height: ${(props) => props.isWrite ? inputSize.big : inputSize.small};
+  width: ${(props) => (props.isWrite ? inputSize.big : inputSize.small)};
+  height: ${(props) => (props.isWrite ? inputSize.big : inputSize.small)};
   border: 2px solid ${theme.colors.grayStroke};
-  border-radius: ${(props) => props.isWrite ? borderRadius.circle : borderRadius.none};
+  border-radius: ${(props) =>
+    props.isWrite ? borderRadius.circle : borderRadius.none};
   outline: none;
   cursor: pointer;
   opacity: ${(props) => props.isEvaluationEmpty && opacity.true};
@@ -58,13 +59,13 @@ const CheckboxText = styled.span<{ isEvaluationEmpty: boolean }>`
 const ProfessorNameCheckbox: React.FC<CheckboxProps> = ({
   text,
   id,
-  selectedId,
+  selectedStatus,
   onCheckboxChange,
   profIndex,
   isWrite,
   evaluationEmptyList,
 }) => {
-  const isChecked = id === selectedId[profIndex];
+  const isChecked = id === selectedStatus[profIndex];
 
   const toggleCheckbox = () => {
     onCheckboxChange(id, profIndex);

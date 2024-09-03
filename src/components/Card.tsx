@@ -1,3 +1,4 @@
+import { showSkeleton, skeletonCardGradient, skeletonGradient } from "@/pages/skeletonComponents/Keyframes";
 import { theme } from "@/style/theme";
 import { ReactNode } from "react";
 import styled, { css, keyframes } from "styled-components";
@@ -26,6 +27,7 @@ const CardContainer = styled.div<{
   isInteractive: boolean, 
   isFade: boolean, 
   notFade: boolean; 
+  isLoading: boolean;
   }>`
   border-radius: 10px;
   background: ${theme.colors.cardBackGround};
@@ -49,6 +51,9 @@ const CardContainer = styled.div<{
       place-items: center;
       animation-name: ${props.isFade ? cardFade : null};
       animation-duration: 2s;`}
+      }
+  ${(props) => props.isLoading && 
+    css`animation: ${skeletonCardGradient} 1.5s infinite ease-in-out;`};
 `;
 
 /**
@@ -60,13 +65,15 @@ function Card(
   { children?: ReactNode; 
     isInteractive?: boolean; 
     isProfEmpty?: boolean; 
-    isAllEmpty?: boolean; }) {
-  const { children, isInteractive = false } = props;
+    isAllEmpty?: boolean; 
+    isSkeleton?: boolean;}) {
+  const { children, isInteractive = false, isSkeleton } = props;
   return (
     <CardContainer 
     isInteractive={isInteractive} 
     isFade={props.isProfEmpty ?? false} 
     notFade={props.isAllEmpty ?? true}
+    isLoading={isSkeleton ?? false}
     >{children}</CardContainer>
   );
 }

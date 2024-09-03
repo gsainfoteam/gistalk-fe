@@ -1,11 +1,10 @@
-import { useState, KeyboardEvent } from "react";
+import { useState } from "react";
 import { useAtom } from "jotai";
-import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import { departmentOptionAtom } from "@/store";
 import { theme } from "@/style/theme";
-import SearchCard from "@/pages/SearchPage/components/SearchCard";
+import SearchCard from "./components/SearchCard";
 import Filter_Svg from "@assets/svgs/tune.svg";
 import CatBlankList_Svg from "@assets/svgs/catBlankList.svg";
 import { lectureInfo } from "@/Interfaces/interfaces";
@@ -30,17 +29,20 @@ import {
   filterLectureByYearSemester,
   filterLectureList,
 } from "./CurrentSemesterPage.utils";
+import { useSearch } from "@/hooks/useSearch";
+import { SearchCardSkeleton } from "../skeletonComponents/SearchCard.skeleton";
 
 export function CurrentSemesterPage() {
-  const [searchTextParams, setSearchTextParams] = useSearchParams();
-  const query = searchTextParams.get("keyword") ?? ""; // test
-
   const [sortOpen, setSortOpen] = useState(false);
   const [departmentOpen, setDepartmentOpen] = useState(false);
   const departmentOption = useAtom(departmentOptionAtom)[0];
-
-  const [searchText, setSearchText] = useState(query); //search bar에 들어가는 단어
-  const [searchTextEnter, setSearchTextEnter] = useState(query); // 엔터를 눌러서 검색 기준이 되는 단어
+  const {
+    searchText,
+    setSearchText,
+    searchTextEnter,
+    enterSearchText,
+    clearSearchText,
+  } = useSearch();
 
   const { isLoading, data, isError, error } = useQuery({
     queryKey: ["getEvaluationList"],
@@ -49,18 +51,30 @@ export function CurrentSemesterPage() {
 
   const { data: lectureList } = { ...data };
 
-  useTabParam(CURRENT_SEMESTER_TAB);
+  useTabParam(CURRENT_SEMESTER_TAB, searchText);
   /**검색바에 입력된 글자가 Enter를 눌러야 SearchList에 적용될 수 있도록 하는 enterSearchText*/
-  const enterSearchText = (e: KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") {
-      setSearchTextEnter(searchText);
-    }
-  };
+
+  const currentSemesterLectureList = !isLoading
+    ? filterLectureByYearSemester(lectureList)
+    : undefined;
+
+  const filteredCurrentLectureList = currentSemesterLectureList
+    ? filterLectureList(
+        currentSemesterLectureList,
+        departmentOption,
+        searchTextEnter
+      )
+    : null; //SearchBar의 styled-components의 every로 인해 데이터 없을 시 null 할당
 
   /**Search 페이지의 강의 리스트 */
   function DisplayItemList() {
+    const skeletonNumber = new Array(300).fill(null); //300개의 임의의 skeleton 로딩
     if (isLoading) {
-      return null;
+      return skeletonNumber.map((skeleton, index) => (
+        <div key={index}>
+          <SearchCardSkeleton />
+        </div>
+      ));
     }
     const filteredLectureList = filterLectureList(
       lectureList,
@@ -72,43 +86,36 @@ export function CurrentSemesterPage() {
       filterLectureByYearSemester(filteredLectureList);
 
     if (
-      currentSemesterLectureList === null ||
-      currentSemesterLectureList === undefined
+      filteredCurrentLectureList === null ||
+      filteredCurrentLectureList === undefined
     ) {
       return null;
     }
 
-    return currentSemesterLectureList.map((lecture: lectureInfo) =>
-      lecture.LectureSection.map((section) => {
-        const professorNames = section.Professor.map(
-          (professor) => professor.name
-        ).join(", ");
+    return filteredCurrentLectureList.map((lecture: lectureInfo) => {
+      const professorNames = concatProfessorNames(lecture.LectureSection);
 
-        return (
-          <StyledLink
-            key={`${section.year}/${section.year}/${section.id}`}
-            to={`/evaluation/${lecture.id}`}
-          >
-            <SearchCard
-              subjectCode={lecture.LectureCode}
-              professorName={professorNames}
-              subjectName={lecture.name}
-            />
-          </StyledLink> // 강의평가 페이지로 이동
-        );
-      })
-    );
+      return (
+        <StyledLink key={`${lecture.id}`} to={`/evaluation/${lecture.id}`}>
+          <SearchCard
+            subjectCode={lecture.LectureCode}
+            professorName={professorNames}
+            subjectName={lecture.name}
+          />
+        </StyledLink> // 강의평가 페이지로 이동
+      );
+    });
   }
 
   return (
     <>
       <SearchBar
-        data={lectureList}
+        data={filteredCurrentLectureList}
         setSearchText={setSearchText}
         searchText={searchText}
-        setSearchTextEnter={setSearchTextEnter}
         enterSearchText={enterSearchText}
         searchTextEnter={searchTextEnter}
+        clearSearchText={clearSearchText}
       />
       <OptionBtnWrap color={theme.colors.secondaryText} fontSize={14}>
         {/* <div onClick={() => setSortOpen(true)}>
@@ -123,7 +130,7 @@ export function CurrentSemesterPage() {
       </OptionBtnWrap>
       {/**case 1: 아무것도 선택되지 않은 경우, 전체 출력/ case 2: 선택된 것이 있는 경우 includes로 필터링하여 출력*/}
       <ItemList>
-        {!isLoading && DisplayItemList()}
+        {DisplayItemList()}
         {DisplayItemList() === null ? (
           <BlankWrap>
             <BlankSvg size={160} src={CatBlankList_Svg} />

@@ -1,4 +1,4 @@
-import { lectureInfo } from "@/Interfaces/interfaces";
+import { lectureInfo, LectureSectionInfo } from "@/Interfaces/interfaces";
 import { concatProfessorNames } from "@/utils";
 
 const CURRENT_YEAR = 2024;
@@ -51,13 +51,15 @@ export const filterLectureByYearSemester = (
     return null;
   }
 
-  const filteredLectureArray = lectureList.map((lecture) => ({
-    ...lecture,
-    LectureSection: lecture.LectureSection.filter(
-      (section) =>
-        section.year === CURRENT_YEAR && section.semester === CURRENT_SEMESTER
-    ),
-  }));
+  const isCurrentYearAndSemester = (section: LectureSectionInfo) =>
+    section.year === CURRENT_YEAR && section.semester === CURRENT_SEMESTER;
+
+  const filteredLectureArray = lectureList
+    .filter((lecture) => lecture.LectureSection.some(isCurrentYearAndSemester))
+    .map((lecture) => ({
+      ...lecture,
+      LectureSection: lecture.LectureSection.filter(isCurrentYearAndSemester),
+    }));
 
   return filteredLectureArray;
 };

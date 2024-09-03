@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { Dispatch, useEffect, useRef, KeyboardEvent } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -101,10 +101,10 @@ export function SearchBar({
   isSearchWrite = false,
 }: {
   data: lectureInfo[];
-  setSearchText: any;
+  setSearchText: Dispatch<React.SetStateAction<string>>;
   searchText: string;
   clearSearchText: () => void;
-  enterSearchText: any;
+  enterSearchText: (e: KeyboardEvent<HTMLInputElement>) => void;
   searchTextEnter: string;
   isSearchWrite: boolean;
 }) {
@@ -176,8 +176,7 @@ export function SearchBar({
   };
 
   const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchText = (e.target as HTMLInputElement).value;
-    setSearchText(searchText);
+    setSearchText((e.target as HTMLInputElement).value);
   };
 
   return (
