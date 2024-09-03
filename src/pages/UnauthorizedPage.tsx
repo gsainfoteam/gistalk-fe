@@ -27,8 +27,8 @@ const Title = styled.h2`
 const Message = styled.p`
   font-size: 1rem;
   color: #666666;
-  margin-bottom: 20px;
   font-family: "NSMedium", sans-serif;
+  margin-bottom: 20px;
 `;
 
 const ModalActions = styled.div`
@@ -82,11 +82,14 @@ function UnauthorizedPage() {
 
   return (
     <ModalContainer>
-      <Title>로그인이 필요한 서비스입니다.</Title>
-      <Message>로그인 하시겠습니까?</Message>
+      <Title> 로그인이 필요한 서비스에요</Title>
+      <Message>
+        <p> GIST 이메일만 있으면 빠른 로그인이 가능해요!</p>
+        <p> 로그인 하시겠어요? </p>
+      </Message>
       <ModalActions>
-        <CancelButton onClick={handleCancel}>취소</CancelButton>
-        <ConfirmButton onClick={handleLogin}>확인</ConfirmButton>
+        <CancelButton onClick={handleCancel}>뒤로가기</CancelButton>
+        <ConfirmButton onClick={handleLogin}>로그인</ConfirmButton>
       </ModalActions>
     </ModalContainer>
   );
