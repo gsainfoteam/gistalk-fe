@@ -143,7 +143,7 @@ export function SearchBar({
         searchTextEnter != searchText
       ) {
         //TODO: 원래는 prof 별로 강의를 하나씩 할당하려고 했는데, 현재 prof별로 강의 id가 다르게 배정되지 않아 한 번에 병함
-        const professorNames = concatProfessorNames(item.LectureSection);
+        const professorNames = concatProfessorNames(item.lectureSection);
 
         return (
           <Link

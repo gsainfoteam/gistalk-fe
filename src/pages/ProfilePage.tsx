@@ -210,7 +210,7 @@ export default function ProfilePage() {
                           {subjects.map((subject, index) => (
                             <StyledLink
                               key={subject.id}
-                              to={`/evaluation/${subject.LectureSection.Lecture.id}`}
+                              to={`/evaluation/${subject.lectureSection.lecture.id}`}
                             >
                               <Subject>
                                 <SubjectTextWrap>
@@ -218,14 +218,14 @@ export default function ProfilePage() {
                                     fontSize={16}
                                     color={theme.colors.primaryText}
                                   >
-                                    {subject.LectureSection.Lecture.name}
+                                    {subject.lectureSection.lecture.name}
                                   </SubjectName>
                                   <ProfessorName
                                     fontSize={14}
                                     color={theme.colors.grayStroke}
                                   >
                                     {convertProfessorNameToString(
-                                      subject.LectureSection.Professor
+                                      subject.lectureSection.professor
                                     ).join(", ")}
                                   </ProfessorName>
                                 </SubjectTextWrap>

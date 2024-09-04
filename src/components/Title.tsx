@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 import { theme } from "@/style/theme";
-import { LectureSectionInfo, professorInfo } from "@/Interfaces/interfaces";
+import { lectureSectionInfo, professorInfo } from "@/Interfaces/interfaces";
 import { extractProfessors } from "@/utils";
 import ProfessorList from "./ProfessorList";
 import { TitleSkeleton } from "@/pages/skeletonComponents/Title.skeleton";
 
 interface IProps {
   subjectTitle: string | undefined;
-  sectionInfo: LectureSectionInfo[] | undefined;
+  sectionInfo: lectureSectionInfo[] | undefined;
   subjectCode: string[] | null;
   selectedStatus?: (number | null)[];
   handleCheckboxChange: (id: number, profNumber: number) => void;

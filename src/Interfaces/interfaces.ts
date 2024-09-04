@@ -59,11 +59,6 @@ export interface UserInfo {
   student_id: string;
 }
 
-export interface LectureCode {
-  code: string;
-  lectureId: number;
-}
-
 /** `/lecture` path api 호출에 대해서 사용하는 info  */
 export interface lectureInfo {
   /** 강의 id */
@@ -71,8 +66,8 @@ export interface lectureInfo {
   /** 강의 이름 */
   name: string;
   /** 강의 코드, "['GS0000']" 형식이기 때문에 다시 필요한 경우 array로 분리해서 써야 함 */
-  LectureCode: LectureCode[];
-  LectureSection: LectureSectionInfo[];
+  lectureCode: string[];
+  lectureSection: lectureSectionInfo[];
 }
 
 export interface professorInfo {
@@ -84,10 +79,10 @@ interface lecture {
   name: string;
 }
 
-export interface LectureSectionInfo {
+export interface lectureSectionInfo {
   id: number;
   lectureId: number;
-  Professor: professorInfo[];
+  professor: professorInfo[];
   year: number;
   semester: string;
   capacity: number;
@@ -95,8 +90,8 @@ export interface LectureSectionInfo {
   fullCapacityTime: number;
 }
 
-export interface RecordLectureSectionInfo extends LectureSectionInfo {
-  Lecture: lecture;
+export interface RecordLectureSectionInfo extends lectureSectionInfo {
+  lecture: lecture;
 }
 
 export interface evaluationData {
@@ -116,13 +111,13 @@ export interface evaluationData {
 
 /** `/record` path api 호출에 대해서 사용하는 info  */
 export interface recordInfo extends evaluationData {
-  isLiked: Boolean;
-  _count: { RecordLike: number };
+  liked: Boolean;
+  likeCount: number;
   id: number;
   review: string;
   lectureId: number;
   professorId: number;
-  LectureSection: RecordLectureSectionInfo;
+  lectureSection: RecordLectureSectionInfo;
   recommendation: string;
   sectionId: number;
   semester: string; //위는 semesterID인데 여기는 semester임

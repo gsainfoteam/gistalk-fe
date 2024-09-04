@@ -1,13 +1,11 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
 import { major, minor, underG } from "@/constants/StdSet";
-import { convertLectureCodeToList } from "@/utils";
 import useSubjectCode from "@/hooks/useSubjectCode";
-import { LectureCode } from "@/Interfaces/interfaces";
 import DepartmentIcon from "./DepartmentIcon";
 
 interface IProps {
-  subjectCode: LectureCode[];
+  subjectCode: string[];
   professorName: string;
   subjectName: string;
 }
@@ -60,8 +58,7 @@ export default function SearchCard({
   professorName,
   subjectName,
 }: IProps) {
-  const lectureCodeList = convertLectureCodeToList(subjectCode); //lecture_code가 string list로 되어있어서 배열로 변경
-  const targetLectureCode = useSubjectCode(lectureCodeList);
+  const targetLectureCode = useSubjectCode(subjectCode);  
 
   if (targetLectureCode === undefined) {
     return <></>;
@@ -82,7 +79,7 @@ export default function SearchCard({
 
         <p>
           <span>{professorName}</span> {/* 교수 이름 */}&nbsp; |&nbsp; &nbsp;
-          {lectureCodeList.join(", ")} {/* 과목 코드 */}
+          {subjectCode.join(", ")} {/* 과목 코드 */}
         </p>
       </CardContentWrap>
     </SearchCardWrap>
