@@ -1,4 +1,4 @@
-import { lectureInfo, LectureSectionInfo } from "@/Interfaces/interfaces";
+import { lectureInfo, lectureSectionInfo } from "@/Interfaces/interfaces";
 import { concatProfessorNames } from "@/utils";
 
 const CURRENT_YEAR = 2024;
@@ -16,8 +16,8 @@ export const filterLectureList = (
 
   const filteredLectureList = lectureList.filter((item: lectureInfo) => {
     //professor list에 있는 professor name을 모두 꺼내서 merge
-    const professorNames = concatProfessorNames(item.LectureSection);
-    const lectureCodes = item.LectureCode.map((code) => code.code).join(", ");
+    const professorNames = concatProfessorNames(item.lectureSection);
+    const lectureCodes = item.lectureCode.join(", ");
     //검색어가 존재하는 경우 해당되는 강의만 display함
     const isNoDepartmentSelected = departmentOption[2].length === 0;
     const isDepartmentSelected = departmentOption[2].some((code) =>
@@ -51,14 +51,14 @@ export const filterLectureByYearSemester = (
     return null;
   }
 
-  const isCurrentYearAndSemester = (section: LectureSectionInfo) =>
+  const isCurrentYearAndSemester = (section: lectureSectionInfo) =>
     section.year === CURRENT_YEAR && section.semester === CURRENT_SEMESTER;
 
   const filteredLectureArray = lectureList
-    .filter((lecture) => lecture.LectureSection.some(isCurrentYearAndSemester))
+    .filter((lecture) => lecture.lectureSection.some(isCurrentYearAndSemester))
     .map((lecture) => ({
       ...lecture,
-      LectureSection: lecture.LectureSection.filter(isCurrentYearAndSemester),
+      lectureSection: lecture.lectureSection.filter(isCurrentYearAndSemester),
     }));
 
   return filteredLectureArray;
