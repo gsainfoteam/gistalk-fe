@@ -198,6 +198,7 @@ export function EvaluationPage() {
     reviewList &&
     makeReviewData(selectedId, selectedReview, reviewList);
   spliceSameReviewAsOne(selectedReview);
+  const selectedReview1DArray = selectedReview.flat();
 
   const selectedEvaluation = //선택한 교수가 없는 경우 전체 점수의 평균을 보여주고, 선택한 교수가 있는 경우 그 교수의 점수의 평균만 보여줌. 만약에 데이터가 모두 없는 경우 각 값에 null을 할당
     !isLectureInfoLoading && !isEvaluationLoading && reviewList
@@ -315,11 +316,9 @@ export function EvaluationPage() {
           ) : //교수를 선택했을 때
           !isAllSelectedIdNull(selectedId) && //로딩중일 때 "데이터가 없습니다"가 뜨지 않도록 핸들링
             selectedReview &&
-            selectedReview.map((select, index) => (
-                alignReviewByTime(select).map((review: recordInfo) => (
-                  <Reply key={review.id} replyData={review} />
-                ))
-            ))
+              alignReviewByTime(selectedReview1DArray).map((review: recordInfo) => (
+                <Reply key={review.id} replyData={review} />
+              ))
           }
         </Upper>
       </Wrap>
