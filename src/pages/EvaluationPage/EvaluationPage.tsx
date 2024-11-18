@@ -33,6 +33,7 @@ import {
   reviewAmount,
   spliceEmptyProfLectureInfo,
   spliceEmptyProfReviewList,
+  alignReviewByTime,
 } from "./EvaluationPage.util";
 import {
   SkeletonDiv,
@@ -304,7 +305,7 @@ export function EvaluationPage() {
               <NoComment />
             ) : (
               reviewList &&
-              reviewList[0].map(
+              alignReviewByTime(reviewList[0]).map(
                 //아무 선택도 안 했지만 데이터가 있을 때 모든 리뷰 나타내기
                 (reviewContent: recordInfo) => (
                   <Reply key={reviewContent.id} replyData={reviewContent} />
@@ -315,7 +316,7 @@ export function EvaluationPage() {
           !isAllSelectedIdNull(selectedId) && //로딩중일 때 "데이터가 없습니다"가 뜨지 않도록 핸들링
             selectedReview &&
             selectedReview.map((select, index) => (
-                select.map((review: recordInfo) => (
+                alignReviewByTime(select).map((review: recordInfo) => (
                   <Reply key={review.id} replyData={review} />
                 ))
             ))
