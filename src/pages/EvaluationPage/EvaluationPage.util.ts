@@ -1,6 +1,6 @@
 import { LectureSectionInfo, professorInfo, recordInfo } from "@/Interfaces/interfaces";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
-import { extractProfessors } from "@/utils";
+import { convertSemesterToNumber, extractProfessors } from "@/utils";
 
 type makeReviewData = (
   selectedId: (number | null)[],
@@ -110,4 +110,35 @@ export const isAllSelectedIdNull = (selectedId: (number | null)[]) => {
 export const indexOfExistData = (selectedEvaluation: evaluationData[]) => {
   return selectedEvaluation.findIndex((select) => 
     Object.values(select).every((value) => value !== null));
+}
+
+/**
+ * 시간 순으로 강의평 데이터 정렬(1차원 배열)
+ * 
+ * @param {recordInfo[]} data 
+ * @returns {recordInfo[]}
+ */
+export const alignReviewByTime = (data: recordInfo[]) => {
+  const returnData: recordInfo[] = [];
+
+  data.map((target) => {
+    let listAddress = 0;
+
+    data.filter((value) => value.id != target.id).map((review) => 
+      {
+        const compareSemesterN = convertSemesterToNumber(review.semester);
+        const targetSemesterN = convertSemesterToNumber(target.semester);
+
+        if (review.year > target.year) listAddress++;
+        else if (review.year === target.year) 
+          if (compareSemesterN > targetSemesterN) listAddress++;
+          else if (compareSemesterN === targetSemesterN) 
+            if (review.id < target.id) listAddress++; //년도, 학기가 모두 같을 시 id가 낮은 데이터가 먼저 보이도록 배치
+      }
+    )
+
+    returnData[listAddress] = target;
+  });
+
+  return returnData;
 }
