@@ -10,15 +10,6 @@ import { isAllSelectedIdNull } from "@/pages/EvaluationPage/EvaluationPage.util"
 
 /**
  *
- * @param lectureCode '["CS101", "CS102"]'와 같은 형태의 string
- * @returns 배열로 변환
- */
-export const convertLectureCodeToList = (lectureCode: string[]) => {
-  return lectureCode.map((lectureCode) => lectureCode);
-};
-
-/**
- *
  * @param lectureSections
  * @returns professorInfo[] 로 flat하게 변환한다.
  */
