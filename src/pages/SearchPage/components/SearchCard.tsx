@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { theme } from "@/style/theme";
-import { convertLectureCodeToList } from "@/utils";
 import useSubjectCode from "@/hooks/useSubjectCode";
 import DepartmentIcon from "@/pages/SearchPage/components/DepartmentIcon";
 
