@@ -80,7 +80,7 @@ export default function Reply({ replyData, isLoading }: IProps) {
                 <RecommendationStatus like={isRecommend} />
                 <ProfessorText fontSize={13} color={theme.colors.primaryText}>
                   {convertProfessorNameToString(
-                    replyData.LectureSection.Professor
+                    replyData.lectureSection.professor
                   ).join(", ")}{" "}
                 </ProfessorText>
                 <SemesterText fontSize={13} color={theme.colors.secondaryText}>
@@ -91,9 +91,9 @@ export default function Reply({ replyData, isLoading }: IProps) {
                 </SemesterText>
               </LeftWrap>
               <LikeButton
-                like={replyData._count.RecordLike}
+                like={replyData.likeCount}
                 recordId={replyData.id}
-                isLiked={replyData.isLiked}
+                liked={replyData.liked}
               />
             </InfoWrap>
             <ContentWrap fontSize={13} color={theme.colors.primaryText}>

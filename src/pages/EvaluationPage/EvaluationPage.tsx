@@ -16,7 +16,6 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import {
   concatProfessorNames,
-  convertLectureCodeToList,
   extractEvaluationData,
   extractProfessors,
 } from "@/utils";
@@ -181,11 +180,11 @@ export function EvaluationPage() {
 
   const { data: lectureInfo } = { ...lectureInfoData };
   if (!isLectureInfoLoading && lectureInfo) {
-    spliceEmptyProfLectureInfo(lectureInfo.LectureSection);
+    spliceEmptyProfLectureInfo(lectureInfo.lectureSection);
   }
   useEffect(() => { //처음 selectedId 모두 null로 설정하기
     if(!isLectureInfoLoading)
-      setSelectedId(extractProfessors(lectureInfo.LectureSection).map(() => null));
+      setSelectedId(extractProfessors(lectureInfo.lectureSection).map(() => null));
   }, [lectureInfo]);
 
   const reviewList = !isEvaluationLoading
@@ -226,10 +225,10 @@ export function EvaluationPage() {
         <Title
           handleCheckboxChange={handleCheckboxChange}
           subjectTitle={lectureInfo?.name}
-          sectionInfo={lectureInfo?.LectureSection}
+          sectionInfo={lectureInfo?.lectureSection}
           subjectCode={
             lectureInfo
-              ? convertLectureCodeToList(lectureInfo?.LectureCode)
+              ? lectureInfo?.lectureCode
               : null
           }
           selectedStatus={selectedId}
@@ -347,7 +346,7 @@ export function EvaluationPage() {
 
       {selectedEvaluation && (
         <ScrolledHeader
-          professor={concatProfessorNames(lectureInfo.LectureSection)}
+          professor={concatProfessorNames(lectureInfo.lectureSection)}
           title={lectureInfo.name}
         />
       )}

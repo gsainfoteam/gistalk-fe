@@ -32,7 +32,7 @@ import { getLectureSingleInfo } from "@/apis/lectures";
 import { postLectureEvaluation } from "@/apis/records";
 import { REDIRECT_PATH } from "@/constants/localStorageKeys";
 import { isAxiosError } from "axios";
-import { LectureSectionInfo } from "@/Interfaces/interfaces";
+import { lectureSectionInfo } from "@/Interfaces/interfaces";
 import ProfessorList from "@components/ProfessorList";
 import Card from "@components/Card";
 import { getProfessorData } from "./WriteReviewPage.util";
@@ -185,8 +185,8 @@ export function WriteReviewPage() {
   //year, semester에 해당하는 걸로 필터링
   const filteredProfessorInfoList =
     lectureInfo && SELECTED_SEMESTER
-      ? lectureInfo.LectureSection.filter(
-          (section: LectureSectionInfo) =>
+      ? lectureInfo.lectureSection.filter(
+          (section: lectureSectionInfo) =>
             section.year === SELECTED_YEAR &&
             section.semester === convertSemesterToString(SELECTED_SEMESTER)
         )
@@ -202,10 +202,10 @@ export function WriteReviewPage() {
         <Title
           handleCheckboxChange={handleCheckboxChange}
           subjectTitle={lectureInfo?.name}
-          sectionInfo={lectureInfo?.LectureSection}
+          sectionInfo={lectureInfo?.lectureSection}
           subjectCode={
             lectureInfo
-              ? convertLectureCodeToList(lectureInfo?.LectureCode)
+              ? lectureInfo?.lectureCode
               : null
           }
           isWrite={true}

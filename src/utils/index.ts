@@ -1,8 +1,7 @@
 import {
   evaluationData,
-  LectureCode,
   lectureInfo,
-  LectureSectionInfo,
+  lectureSectionInfo,
   professorInfo,
   recordInfo,
 } from "@/Interfaces/interfaces";
@@ -14,8 +13,8 @@ import { isAllSelectedIdNull } from "@/pages/EvaluationPage/EvaluationPage.util"
  * @param lectureCode '["CS101", "CS102"]'와 같은 형태의 string
  * @returns 배열로 변환
  */
-export const convertLectureCodeToList = (lectureCode: LectureCode[]) => {
-  return lectureCode.map((lectureCode) => lectureCode.code);
+export const convertLectureCodeToList = (lectureCode: string[]) => {
+  return lectureCode.map((lectureCode) => lectureCode);
 };
 
 /**
@@ -23,12 +22,12 @@ export const convertLectureCodeToList = (lectureCode: LectureCode[]) => {
  * @param lectureSections
  * @returns professorInfo[] 로 flat하게 변환한다.
  */
-export const extractProfessors = (lectureSections: LectureSectionInfo[]) => {
+export const extractProfessors = (lectureSections: lectureSectionInfo[]) => {
   const seenIds = new Set(); // 교수진 중복 방지를 위한 id를 저장하는 set를 둔다
   const professorArray = lectureSections.reduce(
     (professors: professorInfo[], section) => {
-      if (section.Professor && section.Professor.length > 0) {
-        section.Professor.forEach((professor) => {
+      if (section.professor && section.professor.length > 0) {
+        section.professor.forEach((professor) => {
           if (!seenIds.has(professor.id)) {
             seenIds.add(professor.id);
             professors.push(professor);
@@ -44,12 +43,12 @@ export const extractProfessors = (lectureSections: LectureSectionInfo[]) => {
 };
 
 /**
- * LectureSectionInfo[]의 Professor[]의 name을 추출해서 하나의 string으로 변환
+ * lectureSectionInfo[]의 Professor[]의 name을 추출해서 하나의 string으로 변환
  * lectureSection이 array로 오는 경우가 있어서 해당 경우에 교수진 이름 합치는 걸 해결하기 위해 만듬
  */
-export const concatProfessorNames = (LectureSection: LectureSectionInfo[]) => {
+export const concatProfessorNames = (lectureSection: lectureSectionInfo[]) => {
   const professorArray = convertProfessorNameToString(
-    extractProfessors(LectureSection)
+    extractProfessors(lectureSection)
   );
 
   return professorArray.join(", ");
@@ -59,9 +58,9 @@ export const concatProfessorNames = (LectureSection: LectureSectionInfo[]) => {
  * professorInfo[]의 name을 추출해서 중복을 제거한다.
  */
 export const convertProfessorNameToString = (
-  LectureSectionProfessor: professorInfo[]
+  lectureSectionProfessor: professorInfo[]
 ) => {
-  return LectureSectionProfessor.map((section) => section.name);
+  return lectureSectionProfessor.map((section) => section.name);
 };
 
 /**
@@ -77,13 +76,13 @@ export const extractEvaluationData = (
   reviewList: recordInfo[][],
   lectureInfo: lectureInfo
 ) => {
-  const professorArray = extractProfessors(lectureInfo.LectureSection);
+  const professorArray = extractProfessors(lectureInfo.lectureSection);
   let selectedData = professorArray.map(() => new Array());
 
   isAllSelectedIdNull(selectedId)
     ? professorArray.map((prof, pIndex) =>
         reviewList[0].map((review: recordInfo) =>
-          review.LectureSection.Professor.map((member) =>
+          review.lectureSection.professor.map((member) =>
             prof.name === member.name ? selectedData[pIndex].push(review) : null
           )
         )

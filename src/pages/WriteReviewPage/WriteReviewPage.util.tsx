@@ -1,4 +1,4 @@
-import { LectureSectionInfo, professorInfo } from "@/Interfaces/interfaces";
+import { lectureSectionInfo, professorInfo } from "@/Interfaces/interfaces";
 
 export const checkValidation = (
   selectedId: number | null,
@@ -42,11 +42,11 @@ export const checkValidation = (
 /*
 lectureSectionInfo에서 분반 정보를 id로 가지고 교수자명을 name으로 가지는 json 배열을 반환
 */
-export const getProfessorData = (data: LectureSectionInfo[]) => {
-  const result = data.map((item: LectureSectionInfo) => {
+export const getProfessorData = (data: lectureSectionInfo[]) => {
+  const result = data.map((item: lectureSectionInfo) => {
     return {
       id: item.id,
-      name: item.Professor.map((prof: professorInfo) => prof.name).join(", "),
+      name: item.professor.map((prof: professorInfo) => prof.name).join(", "),
     };
   });
 

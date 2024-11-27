@@ -1,4 +1,4 @@
-import { LectureSectionInfo, professorInfo, recordInfo } from "@/Interfaces/interfaces";
+import { lectureSectionInfo, professorInfo, recordInfo } from "@/Interfaces/interfaces";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
 import { convertSemesterToNumber, extractProfessors } from "@/utils";
 
@@ -58,18 +58,18 @@ export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (
  */
 export const spliceEmptyProfReviewList = (reviews: recordInfo[]) => {
   reviews.map((review, index) => 
-    review.LectureSection.Professor.length === 0 
+    review.lectureSection.professor.length === 0 
       && reviews.splice(index, 1));
 }
 
 /**
  * 교수자가 없는 lectureInfo는 그 배열 삭제
  * 
- * @param {LectureSectionInfo[]} lectuerSection
+ * @param {lectureSectionInfo[]} lectuerSection
  */
-export const spliceEmptyProfLectureInfo = (lectureSection: LectureSectionInfo[]) => {
-  lectureSection.map((section: LectureSectionInfo, index) => 
-    section.Professor.length === 0 
+export const spliceEmptyProfLectureInfo = (lectureSection: lectureSectionInfo[]) => {
+  lectureSection.map((section: lectureSectionInfo, index) => 
+    section.professor.length === 0 
       ? lectureSection.splice(index, 1)
       : null);
 }

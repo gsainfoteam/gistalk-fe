@@ -12,7 +12,7 @@ const NONE = "none";
 interface IProps {
   like: number;
   recordId: number;
-  isLiked: Boolean;
+  liked: Boolean;
 }
 
 const ButtonContainer = styled.div`
@@ -45,14 +45,14 @@ const DislikeSvg = styled(Svg)`
   top: 2px;
 `;
 
-export default function LikeButton({ like, recordId, isLiked }: IProps) {
-  const [likeState, setLikeState] = useState(isLiked ? LIKE : NONE);
+export default function LikeButton({ like, recordId, liked }: IProps) {
+  const [likeState, setLikeState] = useState(liked ? LIKE : NONE);
   const [likeNum, setLikeNum] = useState<number>(like);
 
   useEffect(() => {
-    setLikeState(isLiked ? LIKE : NONE);
+    setLikeState(liked ? LIKE : NONE);
     setLikeNum(like);
-  }, [isLiked, like]);
+  }, [liked, like]);
 
   const handleLike = useCallback(async () => {
     if (likeState === LIKE) {
