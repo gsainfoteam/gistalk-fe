@@ -113,32 +113,23 @@ export const indexOfExistData = (selectedEvaluation: evaluationData[]) => {
 }
 
 /**
- * 시간 순으로 강의평 데이터 정렬(1차원 배열)
+ * 시간 순으로 강의평 데이터 정렬.
+ * 소스 데이터도 같이 변경됨.
  * 
  * @param {recordInfo[]} data 
  * @returns {recordInfo[]}
  */
 export const alignReviewByTime = (data: recordInfo[]) => {
-  const returnData: recordInfo[] = [];
+  data.sort((a, b) => {
+    const yearDif = b.year - a.year;
+    const semesterDif = 
+      convertSemesterToNumber(b.semester) - convertSemesterToNumber(a.semester);
 
-  data.map((target) => {
-    let listAddress = 0;
+    if (yearDif != 0) return yearDif;
+    else if (semesterDif != 0) return semesterDif;
+    else return a.id - b.id; //년도, 학기가 모두 같을 시 id가 낮은 데이터가 먼저 보이도록 배치
+    }
+  )
 
-    data.filter((value) => value.id != target.id).map((review) => 
-      {
-        const compareSemesterN = convertSemesterToNumber(review.semester);
-        const targetSemesterN = convertSemesterToNumber(target.semester);
-
-        if (review.year > target.year) listAddress++;
-        else if (review.year === target.year) 
-          if (compareSemesterN > targetSemesterN) listAddress++;
-          else if (compareSemesterN === targetSemesterN) 
-            if (review.id < target.id) listAddress++; //년도, 학기가 모두 같을 시 id가 낮은 데이터가 먼저 보이도록 배치
-      }
-    )
-
-    returnData[listAddress] = target;
-  });
-
-  return returnData;
+  return data;
 }
