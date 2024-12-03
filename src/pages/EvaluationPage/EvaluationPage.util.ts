@@ -1,6 +1,6 @@
-import { LectureSectionInfo, professorInfo, recordInfo } from "@/Interfaces/interfaces";
+import { lectureSectionInfo, professorInfo, recordInfo } from "@/Interfaces/interfaces";
 import { evaluationData, HexagonData } from "./EvaluationPage.const";
-import { extractProfessors } from "@/utils";
+import { convertSemesterToNumber, extractProfessors } from "@/utils";
 
 type makeReviewData = (
   selectedId: (number | null)[],
@@ -58,18 +58,18 @@ export const makeIsEvaluationEmpty: makeIsEvaluationEmpty = (
  */
 export const spliceEmptyProfReviewList = (reviews: recordInfo[]) => {
   reviews.map((review, index) => 
-    review.LectureSection.Professor.length === 0 
+    review.lectureSection.professor.length === 0 
       && reviews.splice(index, 1));
 }
 
 /**
  * 교수자가 없는 lectureInfo는 그 배열 삭제
  * 
- * @param {LectureSectionInfo[]} lectuerSection
+ * @param {lectureSectionInfo[]} lectuerSection
  */
-export const spliceEmptyProfLectureInfo = (lectureSection: LectureSectionInfo[]) => {
-  lectureSection.map((section: LectureSectionInfo, index) => 
-    section.Professor.length === 0 
+export const spliceEmptyProfLectureInfo = (lectureSection: lectureSectionInfo[]) => {
+  lectureSection.map((section: lectureSectionInfo, index) => 
+    section.professor.length === 0 
       ? lectureSection.splice(index, 1)
       : null);
 }
@@ -110,4 +110,26 @@ export const isAllSelectedIdNull = (selectedId: (number | null)[]) => {
 export const indexOfExistData = (selectedEvaluation: evaluationData[]) => {
   return selectedEvaluation.findIndex((select) => 
     Object.values(select).every((value) => value !== null));
+}
+
+/**
+ * 시간 순으로 강의평 데이터 정렬.
+ * 소스 데이터도 같이 변경됨.
+ * 
+ * @param {recordInfo[]} data 
+ * @returns {recordInfo[]}
+ */
+export const alignReviewByTime = (data: recordInfo[]) => {
+  data.sort((a, b) => {
+    const yearDif = b.year - a.year;
+    const semesterDif = 
+      convertSemesterToNumber(b.semester) - convertSemesterToNumber(a.semester);
+
+    if (yearDif != 0) return yearDif;
+    else if (semesterDif != 0) return semesterDif;
+    else return a.id - b.id; //년도, 학기가 모두 같을 시 id가 낮은 데이터가 먼저 보이도록 배치
+    }
+  )
+
+  return data;
 }

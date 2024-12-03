@@ -16,7 +16,6 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import { useCheckValidToken } from "@/hooks/useCheckTokenValid";
 import {
   concatProfessorNames,
-  convertLectureCodeToList,
   extractEvaluationData,
   extractProfessors,
 } from "@/utils";
@@ -33,6 +32,7 @@ import {
   reviewAmount,
   spliceEmptyProfLectureInfo,
   spliceEmptyProfReviewList,
+  alignReviewByTime,
 } from "./EvaluationPage.util";
 import {
   SkeletonDiv,
@@ -180,11 +180,11 @@ export function EvaluationPage() {
 
   const { data: lectureInfo } = { ...lectureInfoData };
   if (!isLectureInfoLoading && lectureInfo) {
-    spliceEmptyProfLectureInfo(lectureInfo.LectureSection);
+    spliceEmptyProfLectureInfo(lectureInfo.lectureSection);
   }
   useEffect(() => { //처음 selectedId 모두 null로 설정하기
     if(!isLectureInfoLoading)
-      setSelectedId(extractProfessors(lectureInfo.LectureSection).map(() => null));
+      setSelectedId(extractProfessors(lectureInfo.lectureSection).map(() => null));
   }, [lectureInfo]);
 
   const reviewList = !isEvaluationLoading
@@ -197,6 +197,7 @@ export function EvaluationPage() {
     reviewList &&
     makeReviewData(selectedId, selectedReview, reviewList);
   spliceSameReviewAsOne(selectedReview);
+  const selectedReview1DArray = selectedReview.flat();
 
   const selectedEvaluation = //선택한 교수가 없는 경우 전체 점수의 평균을 보여주고, 선택한 교수가 있는 경우 그 교수의 점수의 평균만 보여줌. 만약에 데이터가 모두 없는 경우 각 값에 null을 할당
     !isLectureInfoLoading && !isEvaluationLoading && reviewList
@@ -224,10 +225,10 @@ export function EvaluationPage() {
         <Title
           handleCheckboxChange={handleCheckboxChange}
           subjectTitle={lectureInfo?.name}
-          sectionInfo={lectureInfo?.LectureSection}
+          sectionInfo={lectureInfo?.lectureSection}
           subjectCode={
             lectureInfo
-              ? convertLectureCodeToList(lectureInfo?.LectureCode)
+              ? lectureInfo?.lectureCode
               : null
           }
           selectedStatus={selectedId}
@@ -304,7 +305,7 @@ export function EvaluationPage() {
               <NoComment />
             ) : (
               reviewList &&
-              reviewList[0].map(
+              alignReviewByTime(reviewList[0]).map(
                 //아무 선택도 안 했지만 데이터가 있을 때 모든 리뷰 나타내기
                 (reviewContent: recordInfo) => (
                   <Reply key={reviewContent.id} replyData={reviewContent} />
@@ -314,11 +315,9 @@ export function EvaluationPage() {
           ) : //교수를 선택했을 때
           !isAllSelectedIdNull(selectedId) && //로딩중일 때 "데이터가 없습니다"가 뜨지 않도록 핸들링
             selectedReview &&
-            selectedReview.map((select, index) => (
-                select.map((review: recordInfo) => (
-                  <Reply key={review.id} replyData={review} />
-                ))
-            ))
+              alignReviewByTime(selectedReview1DArray).map((review: recordInfo) => (
+                <Reply key={review.id} replyData={review} />
+              ))
           }
         </Upper>
       </Wrap>
@@ -347,7 +346,7 @@ export function EvaluationPage() {
 
       {selectedEvaluation && (
         <ScrolledHeader
-          professor={concatProfessorNames(lectureInfo.LectureSection)}
+          professor={concatProfessorNames(lectureInfo.lectureSection)}
           title={lectureInfo.name}
         />
       )}

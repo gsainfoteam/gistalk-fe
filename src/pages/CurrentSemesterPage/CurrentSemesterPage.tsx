@@ -93,12 +93,12 @@ export function CurrentSemesterPage() {
     }
 
     return filteredCurrentLectureList.map((lecture: lectureInfo) => {
-      const professorNames = concatProfessorNames(lecture.LectureSection);
+      const professorNames = concatProfessorNames(lecture.lectureSection);
 
       return (
         <StyledLink key={`${lecture.id}`} to={`/evaluation/${lecture.id}`}>
           <SearchCard
-            subjectCode={lecture.LectureCode}
+            subjectCode={lecture.lectureCode}
             professorName={professorNames}
             subjectName={lecture.name}
           />

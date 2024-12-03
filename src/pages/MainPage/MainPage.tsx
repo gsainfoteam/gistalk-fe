@@ -37,14 +37,14 @@ export default function MainPage() {
 
     return recentEvaluation.map((evaluation: recordInfo) => (
       <StyledLink
-        to={`/evaluation/${evaluation.LectureSection.Lecture.id}`}
+        to={`/evaluation/${evaluation.lectureSection.lecture.id}`}
         key={evaluation.id}
       >
         <Card isInteractive={true}>
           <LectureInformation
-            LectureName={evaluation.LectureSection.Lecture.name}
+            LectureName={evaluation.lectureSection.lecture.name}
             ProfessorName={convertProfessorNameToString(
-              evaluation.LectureSection.Professor
+              evaluation.lectureSection.professor
             ).join(", ")}
             CourseTakenYear={parseInt(
               evaluation.year.toString().substring(0, 4)

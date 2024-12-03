@@ -69,11 +69,11 @@ export function SearchPage() {
     }
 
     return filteredLectureList.map((item: lectureInfo) => {
-      const professorNames = concatProfessorNames(item.LectureSection);
+      const professorNames = concatProfessorNames(item.lectureSection);
       return (
         <StyledLink key={item.id} to={`/evaluation/${item.id}`}>
           <SearchCard
-            subjectCode={item.LectureCode}
+            subjectCode={item.lectureCode}
             professorName={professorNames}
             subjectName={item.name}
           />
